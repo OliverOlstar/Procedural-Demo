@@ -20,7 +20,7 @@ namespace OliverLoescher.Weapon
 				rb.AddForce(projectile.transform.forward * knockbackForce, ForceMode.Impulse);
 			}
 			ObjectPoolDictionary.Play(particlePrefab, projectile.transform.position, projectile.transform.rotation);
-			audio.Play(projectile.audioSources);
+			audio.Play(projectile.transform.position);
 			return true;
 		}
 		public virtual void DrawGizmos(Projectile pProjectile) { }

@@ -36,8 +36,8 @@ namespace OliverLoescher.Weapon
 
 		[Space]
 		public GameObject sender = null;
-		[SerializeField] private Rigidbody recoilBody = null;
-		public AudioSourcePool sourcePool = null;
+		[SerializeField] 
+		private Rigidbody recoilBody = null;
 
 		[FoldoutGroup("Unity Events")] public UnityEvent OnShoot;
 		[FoldoutGroup("Unity Events")] public UnityEvent OnFailedShoot;
@@ -125,7 +125,7 @@ namespace OliverLoescher.Weapon
 				}
 
 				// Audio
-				data.shotSound.Play(sourcePool);
+				data.shotSound.Play(transform.position);
 
 				// Event
 				OnShoot?.Invoke();
@@ -155,7 +155,7 @@ namespace OliverLoescher.Weapon
 		protected virtual void OnShootFailed()
 		{
 			// Audio
-			data.failedShotSound.Play(sourcePool);
+			data.failedShotSound.Play(transform.position);
 
 			// Event
 			OnFailedShoot?.Invoke();
@@ -172,7 +172,7 @@ namespace OliverLoescher.Weapon
 			projectileScript.Init(pPoint, pDirection, sender);
 
 			// Audio
-			data.shotSound.Play(sourcePool); // TODO Move this incase bulletsPerShot > 1
+			data.shotSound.Play(transform.position); // TODO Move this incase bulletsPerShot > 1
 			OnShoot?.Invoke();
 
 			return projectileScript;

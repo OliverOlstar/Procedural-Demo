@@ -15,10 +15,14 @@ namespace OliverLoescher.Weapon
 		private int clipAmmo;
 		private Coroutine chargeRoutine = null;
 
-		[FoldoutGroup("Unity Events")] public UnityEvent OnReload;
-		[FoldoutGroup("Unity Events")] public UnityEvent OnStartOverHeat;
-		[FoldoutGroup("Unity Events")] public UnityEvent OnEndOverHeat;
-		[FoldoutGroup("Unity Events")] public UnityEvent OnOutOfAmmo;
+		[FoldoutGroup("Unity Events")]
+		public UnityEvent OnReload;
+		[FoldoutGroup("Unity Events")]
+		public UnityEvent OnStartOverHeat;
+		[FoldoutGroup("Unity Events")]
+		public UnityEvent OnEndOverHeat;
+		[FoldoutGroup("Unity Events")]
+		public UnityEvent OnOutOfAmmo;
 
 		private void Start() 
 		{
@@ -41,7 +45,7 @@ namespace OliverLoescher.Weapon
 				weapon.canShoot = false;
 
 				// Audio
-				weapon.Data.outOfAmmoSound.Play(weapon.sourcePool);
+				weapon.Data.outOfAmmoSound.Play(transform.position);
 
 				OnStartOverHeat.Invoke();
 			}
@@ -58,8 +62,7 @@ namespace OliverLoescher.Weapon
 			else
 			{
 				// Recharge
-				if (chargeRoutine != null)
-					StopCoroutine(chargeRoutine);
+				if (chargeRoutine != null) StopCoroutine(chargeRoutine);
 				chargeRoutine = StartCoroutine(AmmoRoutine());
 			}
 		}
@@ -82,7 +85,7 @@ namespace OliverLoescher.Weapon
 				}
 
 				// Audio
-				weapon.Data.reloadSound.Play(weapon.sourcePool);
+				weapon.Data.reloadSound.Play(transform.position);
 
 				OnReload.Invoke();
 			}
@@ -92,7 +95,7 @@ namespace OliverLoescher.Weapon
 				weapon.canShoot = true;
 
 				// Audio
-				weapon.Data.onReloadedSound.Play(weapon.sourcePool);
+				weapon.Data.onReloadedSound.Play(transform.position);
 
 				// Events
 				OnEndOverHeat.Invoke();
