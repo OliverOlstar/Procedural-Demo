@@ -4,6 +4,7 @@ using UnityEngine;
 using OliverLoescher.Util;
 using RootMotion.FinalIK;
 using System.Linq;
+using OliverLoescher.Cue;
 
 public class PATarget : MonoBehaviour, IPAPoint
 {
@@ -37,6 +38,10 @@ public class PATarget : MonoBehaviour, IPAPoint
 	private Vector2 LinecastUpDown = new Vector2(1, -1);
 	[SerializeField]
 	private LayerMask StepLayer = new LayerMask();
+
+	[Header("Cues")]
+	[SerializeField]
+	private SOCue OnStepCue;
 
 	public Vector3 CurrentPosition
 	{
@@ -75,6 +80,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 	{
 		CurrentPosition = CalculateStepPoint();
 		CurrentState = State.Idle;
+		OnStepCue?.Play(new CueContext(CurrentPosition));
 	}
 
 	private Vector3 CalculateStepPoint()

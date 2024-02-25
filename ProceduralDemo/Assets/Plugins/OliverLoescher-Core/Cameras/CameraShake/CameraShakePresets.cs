@@ -12,10 +12,12 @@ namespace EZCameraShake
         {
             get
             {
-                CameraShakeInstance c = new CameraShakeInstance(2.5f, 4, 0.1f, 0.75f);
-                c.PositionInfluence = Vector3.one * 0.15f;
-                c.RotationInfluence = Vector3.one;
-                return c;
+				CameraShakeInstance c = new CameraShakeInstance(2.5f, 4, 0.1f, 0.75f)
+				{
+					PositionInfluence = Vector3.one * 0.15f,
+					RotationInfluence = Vector3.one
+				};
+				return c;
             }
         }
 
@@ -26,10 +28,12 @@ namespace EZCameraShake
         {
             get
             {
-                CameraShakeInstance c = new CameraShakeInstance(5f, 10, 0, 1.5f);
-                c.PositionInfluence = Vector3.one * 0.25f;
-                c.RotationInfluence = new Vector3(4, 1, 1);
-                return c;
+				CameraShakeInstance c = new CameraShakeInstance(5f, 10, 0, 1.5f)
+				{
+					PositionInfluence = Vector3.one * 0.25f,
+					RotationInfluence = new Vector3(4, 1, 1)
+				};
+				return c;
             }
         }
 
@@ -40,10 +44,12 @@ namespace EZCameraShake
         {
             get
             {
-                CameraShakeInstance c = new CameraShakeInstance(0.6f, 3.5f, 2f, 10f);
-                c.PositionInfluence = Vector3.one * 0.25f;
-                c.RotationInfluence = new Vector3(1, 1, 4);
-                return c;
+				CameraShakeInstance c = new CameraShakeInstance(0.6f, 3.5f, 2f, 10f)
+				{
+					PositionInfluence = Vector3.one * 0.25f,
+					RotationInfluence = new Vector3(1, 1, 4)
+				};
+				return c;
             }
         }
 
@@ -54,10 +60,12 @@ namespace EZCameraShake
         {
             get
             {
-                CameraShakeInstance c = new CameraShakeInstance(10f, 0.15f, 5f, 10f);
-                c.PositionInfluence = new Vector3(0, 0, 0.15f);
-                c.RotationInfluence = new Vector3(2, 1, 4);
-                return c;
+				CameraShakeInstance c = new CameraShakeInstance(10f, 0.15f, 5f, 10f)
+				{
+					PositionInfluence = new Vector3(0, 0, 0.15f),
+					RotationInfluence = new Vector3(2, 1, 4)
+				};
+				return c;
             }
         }
 
@@ -68,10 +76,12 @@ namespace EZCameraShake
         {
             get
             {
-                CameraShakeInstance c = new CameraShakeInstance(1f, 0.25f, 5f, 10f);
-                c.PositionInfluence = Vector3.zero;
-                c.RotationInfluence = new Vector3(1, 0.5f, 0.5f);
-                return c;
+				CameraShakeInstance c = new CameraShakeInstance(1f, 0.25f, 5f, 10f)
+				{
+					PositionInfluence = Vector3.zero,
+					RotationInfluence = new Vector3(1, 0.5f, 0.5f)
+				};
+				return c;
             }
         }
 
@@ -82,10 +92,12 @@ namespace EZCameraShake
         {
             get
             {
-                CameraShakeInstance c = new CameraShakeInstance(0.4f, 20f, 2f, 2f);
-                c.PositionInfluence = new Vector3(0, 0.15f, 0);
-                c.RotationInfluence = new Vector3(1.25f, 0, 4);
-                return c;
+				CameraShakeInstance c = new CameraShakeInstance(0.4f, 20f, 2f, 2f)
+				{
+					PositionInfluence = new Vector3(0, 0.15f, 0),
+					RotationInfluence = new Vector3(1.25f, 0, 4)
+				};
+				return c;
             }
         }
 
@@ -96,10 +108,12 @@ namespace EZCameraShake
         {
             get
             {
-                CameraShakeInstance c = new CameraShakeInstance(1, 2f, 1f, 1f);
-                c.PositionInfluence = Vector3.zero;
-                c.RotationInfluence = Vector3.one;
-                return c;
+				CameraShakeInstance c = new CameraShakeInstance(1, 2f, 1f, 1f)
+				{
+					PositionInfluence = Vector3.zero,
+					RotationInfluence = Vector3.one
+				};
+				return c;
             }
         }
     }

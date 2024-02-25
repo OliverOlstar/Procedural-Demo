@@ -375,6 +375,7 @@ MonoBehaviour:
   StepLayer:
     serializedVersion: 2
     m_Bits: 1
+  OnStepCue: {fileID: 11400000, guid: b9c7a419c3d00a14db9c8c12501c9c3c, type: 2}
 --- !u!114 &24995017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2057,6 +2058,7 @@ MonoBehaviour:
   StepLayer:
     serializedVersion: 2
     m_Bits: 1
+  OnStepCue: {fileID: 0}
 --- !u!114 &563808386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3329,6 +3331,7 @@ MonoBehaviour:
   StepLayer:
     serializedVersion: 2
     m_Bits: 1
+  OnStepCue: {fileID: 0}
 --- !u!114 &870299736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4938,6 +4941,7 @@ MonoBehaviour:
   StepLayer:
     serializedVersion: 2
     m_Bits: 1
+  OnStepCue: {fileID: 0}
 --- !u!114 &1429711452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5724,6 +5728,7 @@ MonoBehaviour:
   StepLayer:
     serializedVersion: 2
     m_Bits: 1
+  OnStepCue: {fileID: 11400000, guid: b9c7a419c3d00a14db9c8c12501c9c3c, type: 2}
 --- !u!114 &1799287355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5912,7 +5917,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1824907707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6933,6 +6938,7 @@ MonoBehaviour:
   StepLayer:
     serializedVersion: 2
     m_Bits: 1
+  OnStepCue: {fileID: 0}
 --- !u!114 &2131274620
 MonoBehaviour:
   m_ObjectHideFlags: 0

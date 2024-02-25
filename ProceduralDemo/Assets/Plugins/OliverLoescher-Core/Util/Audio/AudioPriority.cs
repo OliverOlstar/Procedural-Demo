@@ -11,7 +11,9 @@ namespace OliverLoescher
 			None,
 			Player,
 			Dialog,
-			UI
+			UI,
+			Music,
+			Ambiance
 		}
 		
 		// 0 - 256
@@ -20,7 +22,9 @@ namespace OliverLoescher
 			130,
 			130,
 			140,
-			200
+			200,
+			150,
+			100,
 		};
 
 		public static int ToInt(this Enum pEnum) => PriorityInt[(int)pEnum];		
