@@ -46,7 +46,7 @@ namespace OliverLoescher.Util
 		{
 			if (pClip == null)
 			{
-				Debug.LogWarning("Clip cannot be null", "PlayOneShot", typeof(Audio));
+				Debug.LogWarning("Clip is null", "PlayOneShot", typeof(Audio));
 				return;
 			}
 			AudioSource source = AudioPool.Instance.GetFreeSource();

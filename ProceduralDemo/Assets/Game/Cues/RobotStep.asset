@@ -12,3 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889639f47c956344496a415cea10090c, type: 3}
   m_Name: RobotStep
   m_EditorClassIdentifier: 
+  Audio:
+    Sound:
+      Clips: []
+      Volume: 1
+      Pitch: {x: 0.9, y: 1.2}
+      Priority: 0
+  CameraShake:
+    Magnitude: 15
+    Roughness: 4
+    FadeInTime: 0.1
+    FadeOutTime: 0.75
+    PosInfluence: {x: 0.15, y: 0.15, z: 0.15}
+    RotInfluence: {x: 1, y: 1, z: 1}
