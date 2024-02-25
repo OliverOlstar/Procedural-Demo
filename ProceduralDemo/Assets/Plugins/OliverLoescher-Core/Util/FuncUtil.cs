@@ -89,5 +89,51 @@ namespace OliverLoescher.Util
 			}
 			return -1;
 		}
+
+
+
+		/// <summary>
+		/// Checks full array starting at pStartAtIndex, -1 if failed
+		/// </summary>
+		public static int IndexOf<T>(T[] pElements, int pStartAtIndex, Func<T, bool> pPredicate)
+		{
+			for (int i = pStartAtIndex; i < pElements.Length; i++)
+			{
+				if (pPredicate.Invoke(pElements[i]))
+				{
+					return i;
+				}
+			}
+			for (int i = 0; i < pStartAtIndex; i++)
+			{
+				if (pPredicate.Invoke(pElements[i]))
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		/// <summary>
+		/// Checks full list starting at pStartAtIndex, -1 if failed
+		/// </summary>
+		public static int IndexOf<T>(List<T> pElements, int pStartAtIndex, Func<T, bool> pPredicate)
+		{
+			for (int i = pStartAtIndex; i < pElements.Count; i++)
+			{
+				if (pPredicate.Invoke(pElements[i]))
+				{
+					return i;
+				}
+			}
+			for (int i = 0; i < pStartAtIndex; i++)
+			{
+				if (pPredicate.Invoke(pElements[i]))
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
 	}
 }

@@ -8,79 +8,77 @@ namespace OliverLoescher.Util
 	// Static Util class for general playing audio functions
 	public static class Audio
 	{
-		public static AudioClip GetRandomClip(in AudioClip[] clips)
+		public static AudioClip GetRandomClip(in AudioClip[] pClips)
 		{
-			if (clips.Length == 0)
+			if (pClips.Length == 0)
 			{
 				return null;
 			}
 
-			return clips[UnityEngine.Random.Range(0, clips.Length)];
+			return pClips[UnityEngine.Random.Range(0, pClips.Length)];
 		}
 
-		public static void PlayOneShotRandomClip(in AudioSource source, in AudioClip[] clips)
+		public static void PlayOneShotRandomClip(in AudioSource pSource, in AudioClip[] pClips)
 		{
-			if (source == null)
+			if (pSource == null)
 			{
 				LogWarning("PlayOneShotRandomClip() was given a null AudioSource");
 				return;
 			}
 
-			AudioClip clip = GetRandomClip(clips);
+			AudioClip clip = GetRandomClip(pClips);
 			if (clip == null)
 			{
-				LogWarning("GetRandomClip() returned a null reference - " + source.gameObject.name);
+				LogWarning("GetRandomClip() returned a null reference - " + pSource.gameObject.name);
 				return;
 			}
 
-			source.clip = clip;
-			source.Play();
+			pSource.clip = clip;
+			pSource.Play();
 		}
 
-		// Overload to randomize pitch
-		public static void PlayOneShotRandomClip(in AudioSource source, in AudioClip[] clips, in float pitchMin, in float pitchMax)
+		public static void PlayOneShotRandomClip(in AudioSource pSource, in AudioClip[] pClips, in float pPitchMin, in float pPitchMax)
 		{
-			source.pitch = UnityEngine.Random.Range(pitchMin, pitchMax);
-			PlayOneShotRandomClip(source, clips);
+			pSource.pitch = UnityEngine.Random.Range(pPitchMin, pPitchMax);
+			PlayOneShotRandomClip(pSource, pClips);
 		}
 
-		public static void PlayOneShotRandomClip(in AudioSource source, in AudioClip[] clips, in Vector2 pitch)
+		public static void PlayOneShotRandomClip(in AudioSource pSource, in AudioClip[] pClips, in Vector2 pitch)
 		{
-			source.pitch = Random.Range(pitch);
-			PlayOneShotRandomClip(source, clips);
+			pSource.pitch = Random.Range(pitch);
+			PlayOneShotRandomClip(pSource, pClips);
 		}
 
-		public static void PlayOneShotRandomClip(in AudioSource source, in AudioClip[] clips, in float pitchMin, in float pitchMax, in float volume)
+		public static void PlayOneShotRandomClip(in AudioSource pSource, in AudioClip[] pClips, in float pPitchMin, in float pPitchMax, in float pVolume)
 		{
-			source.volume = volume;
-			source.pitch = UnityEngine.Random.Range(pitchMin, pitchMax);
-			PlayOneShotRandomClip(source, clips);
+			pSource.volume = pVolume;
+			pSource.pitch = UnityEngine.Random.Range(pPitchMin, pPitchMax);
+			PlayOneShotRandomClip(pSource, pClips);
 		}
 
-		public static void PlayOneShotRandomClip(in AudioSource source, in AudioClip[] clips, in Vector2 pitch, in float volume)
+		public static void PlayOneShotRandomClip(in AudioSource pSource, in AudioClip[] pClips, in Vector2 pPitch, in float pVolume)
 		{
-			source.volume = volume;
-			source.pitch = Random.Range(pitch);
-			PlayOneShotRandomClip(source, clips);
+			pSource.volume = pVolume;
+			pSource.pitch = Random.Range(pPitch);
+			PlayOneShotRandomClip(pSource, pClips);
 		}
 		
 
 		[System.Serializable]
 		public class AudioPiece
 		{
-			public AudioClip[] clips = new AudioClip[0];
-			[Range(0, 1)] public float volume = 1.0f;
-			[MinMaxSlider(0, 3, true)] public Vector2 pitch = new Vector2(0.9f, 1.2f);
+			public AudioClip[] Clips = new AudioClip[0];
+			[Range(0, 1)] 
+			public float Volume = 1.0f;
+			[MinMaxSlider(0, 3, true)]
+			public Vector2 Pitch = new Vector2(0.9f, 1.2f);
 
-			public void Play(in AudioSource source) => PlayOneShotRandomClip(source, clips, pitch, volume);
-			public void Play(in AudioSourcePool source)
+			public void Play(in AudioSource pSource) => PlayOneShotRandomClip(pSource, Clips, Pitch, Volume);
+			public void Play(in Vector3 pPoint)
 			{
-				if (source == null)
-				{
-					LogWarning("AudioPiece.Play() was passed a null AudioSourcePool");
-					return;
-				}
-				PlayOneShotRandomClip(source.GetSource(), clips, pitch, volume);
+				throw new System.NotImplementedException();
+				//AudioSource.PlayClipAtPoint(Clips[0]);
+				//PlayOneShotRandomClip(source.GetSource(), Clips, Pitch, Volume);
 			}
 		}
 

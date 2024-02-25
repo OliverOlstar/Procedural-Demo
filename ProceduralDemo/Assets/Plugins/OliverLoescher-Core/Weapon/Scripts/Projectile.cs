@@ -13,7 +13,6 @@ namespace OliverLoescher.Weapon
 		public new Rigidbody rigidbody = null;
 		public Collider hitboxCollider = null;
 		public Collider physicsCollider = null;
-		public AudioSourcePool audioSources = null;
 		public GameObject sender = null;
 		private SOTeam team = null;
 

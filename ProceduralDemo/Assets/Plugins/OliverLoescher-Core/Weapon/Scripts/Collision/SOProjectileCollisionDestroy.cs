@@ -16,7 +16,7 @@ namespace OliverLoescher.Weapon
 			{
 				ObjectPoolDictionary.Play(particlePrefab, projectile.transform.position, projectile.transform.rotation);
 			}
-			audio.Play(projectile.audioSources);
+			audio.Play(projectile.transform.position);
 
 			if (other != null)
 			{

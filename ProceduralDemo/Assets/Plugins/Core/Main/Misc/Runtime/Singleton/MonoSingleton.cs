@@ -35,6 +35,7 @@ namespace Core
 
 		protected virtual void OnDestroy()
 		{
+			s_ApplicationIsQuitting = false;
 			s_Instance = null;
 		}
 

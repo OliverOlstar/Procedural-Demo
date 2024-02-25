@@ -33,7 +33,7 @@ namespace OliverLoescher
 
         private static IEnumerator Initalize()
         {
-            Log($"Loading Asset: {CANVASPREFABPATH}");
+            Log($"Loading Asset: {CANVASPREFABPATH}", "Initalize");
             loadCanvas = Resources.LoadAsync(CANVASPREFABPATH);
             while (!loadCanvas.isDone)
             {

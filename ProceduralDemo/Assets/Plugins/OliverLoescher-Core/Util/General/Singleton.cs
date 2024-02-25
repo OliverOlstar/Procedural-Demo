@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using UnityEngine;
 
 
@@ -28,9 +29,13 @@ namespace OliverLoescher
 			}
 		}
 
-		protected static void Log(string pMessage) => Debug.Log($"[{typeof(T).Name}] {pMessage}");
-		protected static void LogWarning(string pMessage) => Debug.LogWarning($"[{typeof(T).Name}] {pMessage}");
-		protected static void LogError(string pMessage) => Debug.LogError($"[{typeof(T).Name}] {pMessage}");
-		protected static void LogExeception(string pMessage) => Debug.LogException(new System.Exception($"[{typeof(T).Name}] {pMessage}"));
+		[Conditional("ENABLE_DEBUG_LOGGING")]
+		protected static void Log(string pMessage, string pMethodName) => Util.Debug.Log(pMessage, pMethodName, typeof(T));
+		[Conditional("ENABLE_DEBUG_LOGGING")]
+		protected static void LogWarning(string pMessage, string pMethodName) => Util.Debug.LogWarning(pMessage, pMethodName, typeof(T));
+		[Conditional("ENABLE_DEBUG_LOGGING")]
+		protected static void LogError(string pMessage, string pMethodName) => Util.Debug.LogError(pMessage, pMethodName, typeof(T));
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS")]
+		protected static void LogExeception(string pMessage, string pMethodName) => Util.Debug.DevException(pMessage, pMethodName, typeof(T));
 	}
 }
