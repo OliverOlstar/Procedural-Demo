@@ -1,0 +1,19 @@
+{
+    "name": "ModelLocator.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:eeca017b6799a164e8f666ace7596ba3",
+        "GUID:8a709a2b7f1ecd64cbd950e76cbc8610"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

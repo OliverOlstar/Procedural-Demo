@@ -1,0 +1,22 @@
+{
+    "name": "Core.ActTree.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:eeca017b6799a164e8f666ace7596ba3",
+        "GUID:2a896f346a4f8d643ae23c36052cc28e",
+        "GUID:417f6d1df6a26974096c3c3d141a70b1"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "CORE_ACTTREE"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

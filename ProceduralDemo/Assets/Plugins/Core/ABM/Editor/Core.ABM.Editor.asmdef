@@ -1,0 +1,22 @@
+{
+    "name": "Core.ABM.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:eeca017b6799a164e8f666ace7596ba3",
+        "GUID:2a896f346a4f8d643ae23c36052cc28e",
+        "GUID:680d458dd4625b7429a16fb8244bb88a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "CORE_ABM"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
