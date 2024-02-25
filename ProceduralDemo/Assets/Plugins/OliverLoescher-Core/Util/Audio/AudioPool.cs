@@ -23,96 +23,29 @@ namespace OliverLoescher
 			ReleasedSourcesTransform.SetParent(transform);
 		}
 
-		// Basic
-		public static void PlayOneShot(in AudioClip pClip, float pPitch = 1.0f, float pVolume01 = 1.0f, int pPriority = 128)
+		public static AudioSource ClaimSource()
 		{
-			if (pClip == null)
-			{
-				LogWarning("Clip cannot be null", "PlayOneShot");
-				return;
-			}
-			AudioSource source = Instance.GetFreeSource();
-			SetValues(source, pClip, pPitch, pVolume01, pPriority, false);
-			source.Play();
-		}
-		public static void PlayOneShot(in AudioClip pClip, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(pClip, UnityEngine.Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
-		public static void PlayOneShot(in AudioClip pClip, in Vector2 pPitch, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(pClip, Util.Random.Range(pPitch), pVolume01, pPriority);
-
-		// Basic 3D
-		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, float pPitch = 1.0f, float pVolume01 = 1.0f, int pPriority = 128)
-		{
-			if (pClip == null)
-			{
-				LogWarning("Clip cannot be null", "PlayOneShot");
-				return;
-			}
-			AudioSource source = Instance.GetFreeSource();
-			SetValues(source, pClip, pPitch, pVolume01, pPriority, true);
-			source.transform.position = pPoint;
-			source.Play();
-		}
-		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(pClip, pPoint, UnityEngine.Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
-		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, in Vector2 pPitch, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(pClip, pPoint, Util.Random.Range(pPitch), pVolume01, pPriority);
-
-		// Random Clip
-		public static void PlayOneShot(in AudioClip[] pClips, float pPitch = 1.0f, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(GetRandomClip(pClips), pPitch, pVolume01, pPriority);
-		public static void PlayOneShot(in AudioClip[] pClips, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(GetRandomClip(pClips), UnityEngine.Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
-		public static void PlayOneShot(in AudioClip[] pClips, in Vector2 pPitch, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(GetRandomClip(pClips), Util.Random.Range(pPitch), pVolume01, pPriority);
-
-		// Random Clip 3D
-		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, float pPitch = 1.0f, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(GetRandomClip(pClips), pPoint, pPitch, pVolume01, pPriority);
-		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(GetRandomClip(pClips), pPoint, UnityEngine.Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
-		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, in Vector2 pPitch, float pVolume01 = 1.0f, int pPriority = 128)
-			=> PlayOneShot(GetRandomClip(pClips), pPoint, Util.Random.Range(pPitch), pVolume01, pPriority);
-
-		public AudioSource ClaimSource()
-		{
-			int index = GetFreeSourceIndex();
-			AudioSource source = Sources[index];
-			Sources.RemoveAt(index);
-			source.transform.SetParent(ReleasedSourcesTransform);
+			AudioPool pool = Instance;
+			int index = pool.GetFreeSourceIndex();
+			AudioSource source = pool.Sources[index];
+			pool.Sources.RemoveAt(index);
+			source.transform.SetParent(pool.ReleasedSourcesTransform);
 			return source;
 		}
-		public void ReturnSource(AudioSource pSource)
-		{
-			Sources.Add(pSource);
-			pSource.loop = false;
-			pSource.transform.SetParent(ActiveSourcesTransform);
-		}
-
-		public static void SetValues(AudioSource pSource, AudioClip pClip, float pPitch = 1.0f, float pVolume01 = 1.0f, int pPriority = 128, bool pIs3D = true, bool pLoop = false)
-		{
-			pSource.clip = pClip;
-			pSource.volume = pVolume01;
-			pSource.pitch = pPitch;
-			pSource.priority = pPriority;
-			pSource.loop = pLoop;
-			pSource.spatialBlend = pIs3D ? 1.0f : 0.0f;
-		}
 		
-		public static AudioClip GetRandomClip(in AudioClip[] pClips)
+		public static void ReturnSource(AudioSource pSource)
 		{
-			if (pClips.Length == 0)
-			{
-				return null;
-			}
-			return pClips[UnityEngine.Random.Range(0, pClips.Length)];
+			AudioPool pool = Instance;
+			pool.Sources.Add(pSource);
+			pSource.transform.SetParent(pool.ActiveSourcesTransform);
 		}
 
-		private AudioSource GetFreeSource()
+		public AudioSource GetFreeSource()
 		{
 			int index = GetFreeSourceIndex();
 			return Sources[index];
 		}
+		
 		private int GetFreeSourceIndex()
 		{
 			LastIndex++;
