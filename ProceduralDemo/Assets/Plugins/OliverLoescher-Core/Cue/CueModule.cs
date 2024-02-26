@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace OliverLoescher.Cue
@@ -8,6 +5,17 @@ namespace OliverLoescher.Cue
 	[System.Serializable]
 	public class CueModule
 	{
-		public virtual void Play(CueContext pContext) { }
+		[SerializeField]
+		private bool IsEnabled = false;
+
+		public void Play(in CueContext pContext, in SOCue pParent)
+		{
+			if (IsEnabled)
+			{
+				PlayInternal(pContext, pParent);
+			}
+		}
+
+		protected virtual void PlayInternal(in CueContext pContext, in SOCue pParent) { }
 	}
 }

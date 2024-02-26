@@ -8,13 +8,21 @@ public class PARoot : MonoBehaviour
 	[SerializeField, DisableInPlayMode]
 	private OliverLoescher.Util.Mono.Updateable Updateable = new OliverLoescher.Util.Mono.Updateable(OliverLoescher.Util.Mono.UpdateType.Late, OliverLoescher.Util.Mono.Priorities.ModelController);
 
+	private bool IsInitalized = false;
+
 	public PACharacter Character { get; private set; }
 	public IPABody Body { get; private set; }
 	public IPAPoint[] Points { get; private set; } = new IPAPoint[0];
 	public IPALimb[] Limbs { get; private set; } = new IPALimb[0];
 
-	private void Start()
+	private void Awake()
 	{
+		if (IsInitalized)
+		{
+			return;
+		}
+		IsInitalized = true;
+
 		Character = GetComponentInChildren<PACharacter>();
 		Body = GetComponentInChildren<IPABody>();
 		Limbs = GetComponentsInChildren<IPALimb>();
@@ -29,7 +37,9 @@ public class PARoot : MonoBehaviour
 		{
 			Limbs[i].Init(this);
 		}
-
+	}
+	private void Start()
+	{
 		Updateable.Register(Tick);
 	}
 	private void OnDestroy()
@@ -48,6 +58,8 @@ public class PARoot : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
+		Awake();
+
 		Body?.DrawGizmos();
 		for (int i = 0; i < Limbs.Length; i++)
 		{

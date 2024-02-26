@@ -13,13 +13,22 @@ MonoBehaviour:
   m_Name: RobotStep
   m_EditorClassIdentifier: 
   Audio:
+    IsEnabled: 1
     Sound:
-      Clips: []
+      Clips:
+      - {fileID: 8300000, guid: 91d8c8d7f92ae994586f51a6d19faf04, type: 3}
+      - {fileID: 8300000, guid: c9a08d6978abe90469444f7452e46e38, type: 3}
+      - {fileID: 8300000, guid: 19d94f8e03b58ec448a6d25559610d04, type: 3}
       Volume: 1
-      Pitch: {x: 0.9, y: 1.2}
+      Pitch: {x: 0.1, y: 0.2}
       Priority: 0
+  Particle:
+    IsEnabled: 1
+    RandomParticles:
+    - {fileID: 3131707097971858360, guid: 790a525fb1310d6418b1230e5e032546, type: 3}
   CameraShake:
-    Magnitude: 15
+    IsEnabled: 1
+    Magnitude: 1.25
     Roughness: 4
     FadeInTime: 0.1
     FadeOutTime: 0.75

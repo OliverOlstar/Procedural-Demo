@@ -119,6 +119,7 @@ namespace OliverLoescher.Util
 		/// </summary>
 		public static int IndexOf<T>(List<T> pElements, int pStartAtIndex, Func<T, bool> pPredicate)
 		{
+			pStartAtIndex = Mathf.Clamp(pStartAtIndex, 0, pElements.Count);
 			for (int i = pStartAtIndex; i < pElements.Count; i++)
 			{
 				if (pPredicate.Invoke(pElements[i]))

@@ -24,7 +24,7 @@ namespace OliverLoescher.Cue
 		[SerializeField, Tooltip("How much this shake influences rotation.")]
 		private Vector3 RotInfluence = Vector3.one;
 
-		public override void Play(CueContext pContext)
+		protected override void PlayInternal(in CueContext pContext, in SOCue pParent)
 		{
 			// TODO Scale by distance
 			CameraShaker.Instance.ShakeOnce(Magnitude, Roughness, FadeInTime, FadeOutTime, PosInfluence, RotInfluence);

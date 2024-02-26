@@ -18,9 +18,9 @@ namespace OliverLoescher.Cue
 
 		public void Play(CueContext pContext)
 		{
-			Audio.Play(pContext);
-			Particle.Play(pContext);
-			CameraShake.Play(pContext);
+			Audio.Play(pContext, this);
+			Particle.Play(pContext, this);
+			CameraShake.Play(pContext, this);
 		}
     }
 }

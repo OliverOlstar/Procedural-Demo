@@ -11,9 +11,12 @@ public class PATarget : MonoBehaviour, IPAPoint
 	public enum State
 	{
 		Idle = 0,
-		Stepping
+		Stepping,
+		Falling
 	}
 
+	[SerializeField]
+	private Vector3 TargetLocalOffset;
 	[SerializeField]
 	private float StepDistance = 1.0f;
 
@@ -50,8 +53,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 	}
 	Vector3 IPAPoint.Position => CurrentPosition;
 	Vector3 IPAPoint.RelativeOriginalPosition => TargetPosition;
-	
-	private Vector3 TargetLocalOffset;
+
 	private Vector3 StepOffset;
 	public State CurrentState { get; private set; } = State.Idle;
 
@@ -59,7 +61,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 
 	void IPAPoint.Init()
 	{
-		TargetLocalOffset = IK.solver.bones.Last().transform.position - Character.Position;
+		//TargetLocalOffset = IK.solver.bones.Last().transform.position - Character.Position;
 	}
 
 	public void TriggerMove()
@@ -67,6 +69,11 @@ public class PATarget : MonoBehaviour, IPAPoint
 		StepOffset = CurrentPosition;
 		CurrentState = State.Stepping;
 		Anim.Play2D(EaseStep, EaseHeight, StepSeconds, StepTick, StepComplete);
+	}
+
+	public void TriggerFalling()
+	{
+		CurrentState = State.Falling;
 	}
 
 	private void StepTick(Vector2 pProgress)

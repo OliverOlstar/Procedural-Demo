@@ -7,10 +7,10 @@ namespace OliverLoescher
 {
     public class AudioPool : MonoBehaviourSingleton<AudioPool>
     {
-		private List<AudioSource> Sources;
+		private List<AudioSource> Sources = new List<AudioSource>();
 
-		private static int NameIndex = 0;
-		private int LastIndex = 0;
+		private static int NameIndex = -1;
+		private int LastIndex = -1;
 
 		private Transform ActiveSourcesTransform;
 		private Transform ReleasedSourcesTransform;
@@ -49,7 +49,7 @@ namespace OliverLoescher
 		private int GetFreeSourceIndex()
 		{
 			LastIndex++;
-			if (LastIndex == Sources.Count)
+			if (LastIndex >= Sources.Count)
 			{
 				LastIndex = 0;
 			}
