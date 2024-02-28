@@ -1975,6 +1975,7 @@ MonoBehaviour:
   sensitivityDelta: 0.2
   sensitivityUpdate: 1
   zoomSpeed: -0.02
+  zoomSmoothTime: 0.08
   zoomDistanceClamp: {x: 8, y: 25}
   collisionLayers:
     serializedVersion: 2
@@ -4043,6 +4044,7 @@ MonoBehaviour:
   sensitivityDelta: 0.2
   sensitivityUpdate: 1
   zoomSpeed: -0.02
+  zoomSmoothTime: 0.1
   zoomDistanceClamp: {x: 1, y: 25}
   collisionLayers:
     serializedVersion: 2
@@ -7116,6 +7118,7 @@ MonoBehaviour:
   sensitivityDelta: 0.2
   sensitivityUpdate: 1
   zoomSpeed: -0.02
+  zoomSmoothTime: 0.1
   zoomDistanceClamp: {x: 1, y: 25}
   collisionLayers:
     serializedVersion: 2

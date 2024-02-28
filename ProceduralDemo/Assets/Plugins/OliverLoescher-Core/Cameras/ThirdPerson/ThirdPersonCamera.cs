@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using OliverLoescher.Util;
 
 namespace OliverLoescher 
 {
@@ -35,7 +36,10 @@ namespace OliverLoescher
         [SerializeField]
 		private float zoomSpeed = 1.0f;
         [SerializeField]
+		private float zoomSmoothTime = 0.1f;
+        [SerializeField]
 		private Vector2 zoomDistanceClamp = new Vector2(1.0f, 5.0f);
+		private Vector3 ZoomVelocity = Vector3.zero;
         private float currZoom = 0.5f;
 
         [Header("Collision")]
@@ -111,13 +115,13 @@ namespace OliverLoescher
 
         private void DoZoom(float pInput)
         {
-            currZoom += (pInput * zoomSpeed);
-            currZoom = Mathf.Clamp(currZoom, zoomDistanceClamp.x, zoomDistanceClamp.y);
+            currZoom += pInput * zoomSpeed;
+            currZoom.Clamp(zoomDistanceClamp);
         }
 
         private void DoZoomUpdate(in float pDeltaTime)
         {
-            cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, childOffset.normalized * currZoom, pDeltaTime * 15.0f);
+            cameraTransform.localPosition = Vector3.SmoothDamp(cameraTransform.localPosition, childOffset.normalized * currZoom, ref ZoomVelocity, zoomSmoothTime, float.PositiveInfinity, deltaTime: pDeltaTime);
         }
 
         private void DoCollision()
