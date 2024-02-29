@@ -9,6 +9,14 @@ public class PABoby : MonoBehaviour, IPABody
 	private PACharacter Character => Root.Character;
 	private IPAPoint[] Points => Root.Points;
 
+	[Header("Position")]
+	[SerializeField]
+	private float Spring = 1.0f;
+	[SerializeField]
+	private float Damper = 10.0f;
+	private Vector3 Velocity = Vector3.zero;
+
+	[Header("Rotation")]
 	[SerializeField]
 	private float RotationDampening = 5.0f;
 	[SerializeField, Range(0.0f, 5.0f)]
@@ -26,7 +34,8 @@ public class PABoby : MonoBehaviour, IPABody
 		{
 			position += point.Position;
 		}
-		transform.position = position / Points.Length;
+		Vector3 targetPosition = position / Points.Length;
+		transform.position = Func.SpringDamper(transform.position, targetPosition, ref Velocity, Spring, Damper, pDeltaTime);
 
 		// Rotation
 		Vector3 up = Vector3.zero;

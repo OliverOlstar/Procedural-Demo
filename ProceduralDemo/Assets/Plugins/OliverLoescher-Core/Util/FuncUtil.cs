@@ -15,6 +15,28 @@ namespace OliverLoescher.Util
 		static void RunOnStart() { IsApplicationQuitting = false; Application.quitting += Quit; }
 		#endregion Application
 
+		public static Vector3 SpringDamper(this Vector3 pFrom, Vector3 pTo, ref Vector3 pVelocity, float pSpring, float pDamper, float pDeltaTime)
+		{
+			Vector3 differance = pFrom - pTo;
+			if (differance.sqrMagnitude > Math.NEARZERO)
+			{
+				float magnitude = differance.magnitude;
+				float force = magnitude * pSpring;
+				Vector3 direction = differance / magnitude;
+
+				pVelocity += (-force * direction) - (pVelocity * pDamper);
+			}
+			else
+			{
+				pVelocity -= pVelocity * pDamper;
+			}
+			if (pVelocity.sqrMagnitude > Math.NEARZERO)
+			{
+				pFrom += pVelocity * pDeltaTime;
+			}
+			return pFrom;
+		}
+
 		public static float SmoothStep(float pMin, float pMax, float pIn)
 		{
 			return Mathf.Clamp01((pIn - pMin) / (pMax - pMin));
