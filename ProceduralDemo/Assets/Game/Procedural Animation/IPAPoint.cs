@@ -7,6 +7,6 @@ public interface IPAPoint
 	Vector3 Position { get; }
 	Vector3 RelativeOriginalPosition { get; }
 	
-	void Init();
+	void Init(PACharacter pCharacter);
 	void DrawGizmos();
 }

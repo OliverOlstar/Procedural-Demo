@@ -30,7 +30,7 @@ public class PARoot : MonoBehaviour
 
 		for (int i = 0; i < Points.Length; i++)
 		{
-			Points[i].Init();
+			Points[i].Init(Character);
 		}
 		Body?.Init(this);
 		for (int i = 0; i < Limbs.Length; i++)

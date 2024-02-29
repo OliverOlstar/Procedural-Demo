@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using OliverLoescher.Util;
 using RootMotion.FinalIK;
-using System.Linq;
 using OliverLoescher.Cue;
+using Sirenix.OdinInspector;
 
 public class PATarget : MonoBehaviour, IPAPoint
 {
@@ -15,8 +15,8 @@ public class PATarget : MonoBehaviour, IPAPoint
 		Falling
 	}
 
-	[SerializeField]
-	private Vector3 TargetLocalOffset;
+	[DisableInPlayMode]
+	public Vector3 TargetLocalOffset;
 	[SerializeField]
 	private float StepDistance = 1.0f;
 
@@ -31,8 +31,6 @@ public class PATarget : MonoBehaviour, IPAPoint
 	private float UpHeight = 1.0f;
 
 	[Header("References")]
-	[SerializeField]
-	private PACharacter Character;
 	[SerializeField]
 	private CCDIK IK;
 
@@ -54,14 +52,17 @@ public class PATarget : MonoBehaviour, IPAPoint
 	Vector3 IPAPoint.Position => CurrentPosition;
 	Vector3 IPAPoint.RelativeOriginalPosition => TargetPosition;
 
+	private PACharacter Character;
 	private Vector3 StepOffset;
+	private Vector3 TargetCharacterOffset;
 	public State CurrentState { get; private set; } = State.Idle;
 
-	public Vector3 TargetPosition => Character.TransformPoint(TargetLocalOffset);
+	public Vector3 TargetPosition => Character.TransformPoint(TargetCharacterOffset);
 
-	void IPAPoint.Init()
+	void IPAPoint.Init(PACharacter pCharacter)
 	{
-		//TargetLocalOffset = IK.solver.bones.Last().transform.position - Character.Position;
+		Character = pCharacter;
+		TargetCharacterOffset = Character.InverseTransformPoint(TargetLocalOffset + transform.position);
 	}
 
 	public void TriggerMove()
