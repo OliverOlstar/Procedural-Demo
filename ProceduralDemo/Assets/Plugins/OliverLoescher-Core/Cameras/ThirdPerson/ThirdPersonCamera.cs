@@ -11,7 +11,7 @@ namespace OliverLoescher
         [SerializeField] 
 		private InputBridge_Camera input = null;
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.UpdateType.Late, Util.Mono.Priorities.Camera);
+		private Mono.Updateable updateable = new Mono.Updateable(Mono.UpdateType.Late, Mono.Priorities.Camera);
 
 		[Header("Follow")]
         public Transform followTransform = null;
@@ -20,6 +20,9 @@ namespace OliverLoescher
         public Transform cameraTransform = null; // Should be child
         [SerializeField]
 		private Vector3 childOffset = new Vector3(0.0f, 2.0f, -5.0f);
+		[SerializeField]
+		private float ySmoothTime = 0.2f;
+		private float yVelocity = 0.0f;
         
         [Header("Look")]
         [SerializeField]
@@ -96,7 +99,12 @@ namespace OliverLoescher
         {
             if (followTransform != null)
             {
-                transform.position = followTransform.position + offset;
+				Vector3 position = followTransform.position + offset;
+				if (ySmoothTime > Math.NEARZERO)
+				{
+					position.y = Mathf.SmoothDamp(transform.position.y, position.y, ref yVelocity, ySmoothTime);
+				}
+				transform.position = position;
             }
         }
 

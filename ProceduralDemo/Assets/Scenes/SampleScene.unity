@@ -792,11 +792,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51d188f9ac1ffb4eb844088cd395835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spring: 1
-  Damper: 0.1
+  SpringXZ: 1
+  DamperXZ: 0.1
+  SpringY: 3
+  DamperY: 0.225
   RotationDampening: 8
-  VerticalRotationBlend: 0.25
-  HorizontalRotationBlend: 1
+  RotationBlendXZ: 1
+  RotationBlendY: 0.25
 --- !u!1 &132576004
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,6 +1973,7 @@ MonoBehaviour:
   offset: {x: 0, y: 2, z: 0}
   cameraTransform: {fileID: 662529017}
   childOffset: {x: 0, y: 1, z: -10}
+  ySmoothTime: 0.2
   lookTransform: {fileID: 531460194}
   lookYClamp: {x: -15, y: 50}
   sensitivityDelta: 0.2
@@ -3197,11 +3200,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51d188f9ac1ffb4eb844088cd395835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spring: 1
-  Damper: 10
+  SpringXZ: 1
+  DamperXZ: 0.1
+  SpringY: 1
+  DamperY: 0.1
   RotationDampening: 8
-  VerticalRotationBlend: 0.65
-  HorizontalRotationBlend: 1
+  RotationBlendXZ: 1
+  RotationBlendY: 1
 --- !u!1 &844197927
 GameObject:
   m_ObjectHideFlags: 0
@@ -4040,6 +4045,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   cameraTransform: {fileID: 1003616122}
   childOffset: {x: 0, y: 1, z: -10}
+  ySmoothTime: 1
   lookTransform: {fileID: 1026014834}
   lookYClamp: {x: -15, y: 50}
   sensitivityDelta: 0.2
@@ -6389,11 +6395,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51d188f9ac1ffb4eb844088cd395835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spring: 1
-  Damper: 10
+  SpringXZ: 1
+  DamperXZ: 0.1
+  SpringY: 1
+  DamperY: 0.1
   RotationDampening: 8
-  VerticalRotationBlend: 1
-  HorizontalRotationBlend: 1
+  RotationBlendXZ: 1
+  RotationBlendY: 1
 --- !u!1 &1860427025
 GameObject:
   m_ObjectHideFlags: 0
@@ -7298,6 +7306,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   cameraTransform: {fileID: 4214231728524673869}
   childOffset: {x: 0, y: 1, z: -10}
+  ySmoothTime: 1
   lookTransform: {fileID: 1533356270635878115}
   lookYClamp: {x: -15, y: 50}
   sensitivityDelta: 0.2
