@@ -43,6 +43,11 @@ namespace OliverLoescher.Util
 			return vector;
 		}
 
+		public static Vector3 Combine(Vector2 pXZ, float pY)
+		{
+			return new Vector3(pXZ.x, pY, pXZ.y);
+		}
+
 		public static float AddPercents(IEnumerable<float> pValues)
 		{
 			float value = 1;

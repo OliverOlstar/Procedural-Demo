@@ -15,6 +15,45 @@ namespace OliverLoescher.Util
 		static void RunOnStart() { IsApplicationQuitting = false; Application.quitting += Quit; }
 		#endregion Application
 
+		public static float SpringDamper(this float pFrom, float pTo, ref float pVelocity, float pSpring, float pDamper, float pDeltaTime)
+		{
+			float differance = pFrom - pTo;
+			float magnitude = Mathf.Abs(differance);
+			if (magnitude > Math.NEARZERO)
+			{
+				float force = magnitude * pSpring;
+				float direction = differance / magnitude;
+
+				pVelocity += (-force * direction) - (pVelocity * pDamper);
+			}
+			else
+			{
+				pVelocity -= pVelocity * pDamper;
+			}
+			pFrom += pVelocity * pDeltaTime;
+			return pFrom;
+		}
+		public static Vector2 SpringDamper(this Vector2 pFrom, Vector2 pTo, ref Vector2 pVelocity, float pSpring, float pDamper, float pDeltaTime)
+		{
+			Vector2 differance = pFrom - pTo;
+			if (differance.sqrMagnitude > Math.NEARZERO)
+			{
+				float magnitude = differance.magnitude;
+				float force = magnitude * pSpring;
+				Vector2 direction = differance / magnitude;
+
+				pVelocity += (-force * direction) - (pVelocity * pDamper);
+			}
+			else
+			{
+				pVelocity -= pVelocity * pDamper;
+			}
+			if (pVelocity.sqrMagnitude > Math.NEARZERO)
+			{
+				pFrom += pVelocity * pDeltaTime;
+			}
+			return pFrom;
+		}
 		public static Vector3 SpringDamper(this Vector3 pFrom, Vector3 pTo, ref Vector3 pVelocity, float pSpring, float pDamper, float pDeltaTime)
 		{
 			Vector3 differance = pFrom - pTo;
