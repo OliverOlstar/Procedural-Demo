@@ -35,12 +35,17 @@ public class PATrigger : MonoBehaviour, IPALimb
 		{
 			return;
 		}
+		int count = 0;
 		foreach (PATarget leg in OppositeTargets)
 		{
 			if (leg != null && leg.CurrentState == PATarget.State.Stepping)
 			{
-				return;
+				count++;
 			}
+		}
+		if (count >= OppositeTargets.Length)
+		{
+			return; // Only return if all oppositeTargets are moving
 		}
 
         if (Math.DistanceHorizontalGreaterThan(CurrentPosition, MyTarget.TargetPosition, MaxDistance))

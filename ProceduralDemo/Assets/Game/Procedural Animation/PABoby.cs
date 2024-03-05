@@ -31,6 +31,12 @@ public class PABoby : MonoBehaviour, IPABody
 	[SerializeField, Range(0.0f, 5.0f)]
 	private float RotationBlendY = 1.0f;
 
+	//[Header("Leaning")]
+	//[SerializeField]
+	//private float LeanMagnitude = 5.0f;
+	//[SerializeField]
+	//private float LeanSmoothTime = 0.2f;
+
 	void IPABody.Init(PARoot pRoot) => Root = pRoot;
 
 	void IPABody.Tick(float pDeltaTime)
@@ -67,6 +73,8 @@ public class PABoby : MonoBehaviour, IPABody
 		targetRotation *= Quaternion.Euler(0.0f, (angle / Points.Length) * RotationBlendXZ, 0.0f);
 
 		transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, pDeltaTime * RotationDampening);
+
+		// TODO Add Leaning
 	}
 
 	void IPABody.DrawGizmos()
