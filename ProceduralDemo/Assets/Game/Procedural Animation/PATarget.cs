@@ -62,7 +62,9 @@ public class PATarget : MonoBehaviour, IPAPoint
 	void IPAPoint.Init(PACharacter pCharacter)
 	{
 		Character = pCharacter;
+		IK.UpdateSolverExternal();
 		TargetCharacterOffset = Character.InverseTransformPoint(TargetLocalOffset + transform.position);
+		CurrentPosition = CalculateStepPoint();
 	}
 
 	public void TriggerMove()

@@ -6,5 +6,6 @@ public interface IPALimb
 {
 	void Init(PARoot pRoot);
 	void Tick(float pDeltaTime);
+	float GetTickPriority();
 	void DrawGizmos();
 }

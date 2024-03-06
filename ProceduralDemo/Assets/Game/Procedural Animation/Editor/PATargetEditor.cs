@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(PATarget))]
+[CustomEditor(typeof(PATarget)), CanEditMultipleObjects]
 public class PATargetEditor : Editor
 {
 	public void OnSceneGUI()
@@ -13,9 +13,9 @@ public class PATargetEditor : Editor
 			return;
 		}
 
-		foreach (PATarget target in targets)
+		if (target is PATarget target2)
 		{
-			target.TargetLocalOffset = Handles.DoPositionHandle(target.TargetLocalOffset + target.transform.position, Quaternion.identity) - target.transform.position;
+			target2.TargetLocalOffset = Handles.DoPositionHandle(target2.TargetLocalOffset + target2.transform.position, Quaternion.identity) - target2.transform.position;
 		}
 	}
 }

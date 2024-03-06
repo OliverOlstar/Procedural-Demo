@@ -29,23 +29,20 @@ public class PATrigger : MonoBehaviour, IPALimb
 		}
     }
 
+	float IPALimb.GetTickPriority() => (MyTarget.TargetPosition - MyTarget.CurrentPosition).sqrMagnitude;
+
 	private void UpdateIdle()
 	{
 		if (MyTarget.CurrentState == PATarget.State.Stepping)
 		{
 			return;
 		}
-		int count = 0;
 		foreach (PATarget leg in OppositeTargets)
 		{
 			if (leg != null && leg.CurrentState == PATarget.State.Stepping)
 			{
-				count++;
+				return;
 			}
-		}
-		if (count >= OppositeTargets.Length)
-		{
-			return; // Only return if all oppositeTargets are moving
 		}
 
         if (Math.DistanceHorizontalGreaterThan(CurrentPosition, MyTarget.TargetPosition, MaxDistance))

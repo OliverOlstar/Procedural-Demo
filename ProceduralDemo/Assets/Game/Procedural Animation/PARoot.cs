@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 public class PARoot : MonoBehaviour
 {
@@ -50,6 +51,8 @@ public class PARoot : MonoBehaviour
 	private void Tick(float pDeltaTime)
 	{
 		Body?.Tick(pDeltaTime);
+		
+		Array.Sort(Limbs, (IPALimb a, IPALimb b) => b.GetTickPriority().CompareTo(a.GetTickPriority()));
 		for (int i = 0; i < Limbs.Length; i++)
 		{
 			Limbs[i].Tick(pDeltaTime);

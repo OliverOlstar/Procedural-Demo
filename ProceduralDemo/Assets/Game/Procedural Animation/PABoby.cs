@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Cinemachine.Utility;
 using OliverLoescher.Util;
+using Sirenix.Utilities;
 using UnityEngine;
 
 public class PABoby : MonoBehaviour, IPABody
@@ -16,6 +14,7 @@ public class PABoby : MonoBehaviour, IPABody
 	[SerializeField]
 	private float DamperXZ = 0.1f;
 	private Vector2 VelocityXZ = Vector2.zero;
+	private Vector3 PositionLocalOffset;
 
 	[SerializeField]
 	private float SpringY = 1.0f;
@@ -37,7 +36,11 @@ public class PABoby : MonoBehaviour, IPABody
 	//[SerializeField]
 	//private float LeanSmoothTime = 0.2f;
 
-	void IPABody.Init(PARoot pRoot) => Root = pRoot;
+	void IPABody.Init(PARoot pRoot)
+	{
+		Root = pRoot;
+		PositionLocalOffset = transform.localPosition;
+	}
 
 	void IPABody.Tick(float pDeltaTime)
 	{
@@ -47,7 +50,7 @@ public class PABoby : MonoBehaviour, IPABody
 		{
 			position += point.Position;
 		}
-		Vector3 targetPosition = position / Points.Length;
+		Vector3 targetPosition = (position / Points.Length) + PositionLocalOffset;
 		Vector2 positionXZ = Func.SpringDamper(Math.Horizontal2D(transform.position), Math.Horizontal2D(targetPosition), ref VelocityXZ, SpringXZ, DamperXZ, pDeltaTime);
 		float positionY = Func.SpringDamper(transform.position.y, targetPosition.y, ref VelocityY, SpringY, DamperY, pDeltaTime);
 		transform.position = Math.Combine(positionXZ, positionY);
@@ -61,9 +64,10 @@ public class PABoby : MonoBehaviour, IPABody
 			Vector3 direction = (transform.position - point.Position).normalized;
 			Vector3 right = Vector3.Cross(direction, Character.Up);
 			up += -Vector3.Cross(direction, right);
-			
+
 			// Angle
 			Vector3 directionOriginal = Math.Horizontalize(transform.position - point.RelativeOriginalPosition);
+			direction = Math.Horizontalize(direction);
 			angle += Vector3.SignedAngle(directionOriginal, direction, Character.Up);
 		}
 
@@ -84,7 +88,7 @@ public class PABoby : MonoBehaviour, IPABody
 			Vector3 direction = (transform.position - point.Position).normalized;
 			Vector3 right = Vector3.Cross(direction, Character.Up);
 			Vector3 up = -Vector3.Cross(direction, right);
-			
+
 			Gizmos.color = Color.red;
 			Gizmos.DrawLine(point.Position, point.Position + direction);
 			Gizmos.color = Color.green;
@@ -94,5 +98,16 @@ public class PABoby : MonoBehaviour, IPABody
 			Gizmos.color = Color.cyan;
 			Gizmos.DrawLine(point.Position, point.Position + up);
 		}
+
+		// Target Pos
+		Gizmos.color = Color.green;
+		Vector3 position = Vector3.zero;
+		foreach (IPAPoint point in Points)
+		{
+			Gizmos.DrawSphere(point.Position, 2.0f);
+			position += point.Position;
+		}
+		Vector3 targetPosition = (position / Points.Length) + PositionLocalOffset;
+		Gizmos.DrawSphere(targetPosition, 1.0f);
 	}
 }
