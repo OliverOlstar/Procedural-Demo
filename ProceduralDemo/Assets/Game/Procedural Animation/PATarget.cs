@@ -26,7 +26,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 	[SerializeField]
 	private Easing.EaseParams EaseHeight;
 	[SerializeField, Min(Math.NEARZERO)]
-	private float StepSeconds = 0.35f;
+	private Vector2 StepSeconds = Vector2.one;
 	[SerializeField]
 	private float UpHeight = 1.0f;
 
@@ -71,7 +71,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 	{
 		StepOffset = CurrentPosition;
 		CurrentState = State.Stepping;
-		Anim.Play2D(EaseStep, EaseHeight, StepSeconds, StepTick, StepComplete);
+		Anim.Play2D(EaseStep, EaseHeight, OliverLoescher.Util.Random.Range(StepSeconds), StepTick, StepComplete);
 	}
 
 	public void TriggerFalling()
