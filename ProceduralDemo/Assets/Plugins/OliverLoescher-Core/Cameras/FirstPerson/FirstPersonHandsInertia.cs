@@ -38,8 +38,8 @@ namespace OliverLoescher.Camera
 
             if (grounded != null)
             {
-                grounded.OnEnter.AddListener( delegate{ doBounce = true;} );
-                grounded.OnExit.AddListener( delegate{ doBounce = false;} );
+                grounded.OnEnterEvent.AddListener( delegate{ doBounce = true;} );
+                grounded.OnExitEvent.AddListener( delegate{ doBounce = false;} );
             }
         }
 

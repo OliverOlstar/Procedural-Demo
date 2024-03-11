@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
@@ -59,6 +57,8 @@ namespace OliverLoescher
 		}
 
 		[SerializeField]
+		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.UpdateType.Fixed, Util.Mono.Priorities.OnGround);
+		[SerializeField]
 		private Linecast[] lines = new Linecast[0];
 		[SerializeField]
 		private Spherecast[] spheres = new Spherecast[1];
@@ -67,11 +67,11 @@ namespace OliverLoescher
 		[SerializeField]
 		private bool followGround;
 
-		public bool isGrounded { get; private set; }
+		public bool IsGrounded { get; private set; }
 		[FoldoutGroup("Events")]
-		public UnityEvent OnEnter;
+		public UnityEvent OnEnterEvent;
 		[FoldoutGroup("Events")]
-		public UnityEvent OnExit;
+		public UnityEvent OnExitEvent;
 
 		private Transform groundFollowTransform = null;
 		private Vector3 groudFollowPosition = Vector3.zero;
@@ -80,25 +80,32 @@ namespace OliverLoescher
 		private void Start()
 		{
 			groundFollowTransform = new GameObject($"{gameObject.name}-GroundFollower").transform;
+
+			updateable.Register(Tick);
+		}
+		
+		private void OnDestroy()
+		{
+			updateable.Deregister();
 		}
 
-		private void FixedUpdate()
+		private void Tick(float pDeltaTime)
 		{
-			if (IsGrounded() != isGrounded)
+			if (CheckIsGrounded() != IsGrounded)
 			{
-				isGrounded = !isGrounded;
-				if (isGrounded == true)
+				IsGrounded = !IsGrounded;
+				if (IsGrounded)
 				{
-					OnEnter?.Invoke();
+					OnEnter();
 				}
 				else
 				{
-					OnExit?.Invoke();
+					OnExit();
 				}
 			}
 		}
 
-		private bool IsGrounded()
+		private bool CheckIsGrounded()
 		{
 			foreach (Linecast line in lines)
 			{
@@ -125,6 +132,24 @@ namespace OliverLoescher
 				total += sphere.hitInfo.normal;
 			}
 			return total / (lines.Length + spheres.Length);
+		}
+
+		private void OnEnter()
+		{
+			OnEnterEvent?.Invoke();
+			if (followGround)
+			{
+				Util.Debug.DevException("followGround == true... NotImplemented", "OnEnter", this);
+			}
+		}
+
+		private void OnExit()
+		{
+			OnExitEvent?.Invoke();
+			if (followGround)
+			{
+				Util.Debug.DevException("followGround == true... NotImplemented", "OnEnter", this);
+			}
 		}
 
 		private void OnDrawGizmosSelected()

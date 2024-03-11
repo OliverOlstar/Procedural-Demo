@@ -38,11 +38,13 @@ namespace OliverLoescher.Util
 			public const int UI = -1000;
 			public const int Default = 0;
 			public const int CharacterController = 400;
+			public const int OnGround = 425;
 			public const int ModelController = 500;
 			public const int Camera = 1000;
 			public const int Last = int.MaxValue;
 		}
 
+		[Serializable]
 		public struct Updateable
 		{
 			private Action<float> action;
