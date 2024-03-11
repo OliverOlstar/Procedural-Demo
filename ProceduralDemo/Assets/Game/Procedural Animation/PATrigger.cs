@@ -45,7 +45,7 @@ public class PATrigger : MonoBehaviour, IPALimb
 			}
 		}
 
-        if (Math.DistanceHorizontalGreaterThan(CurrentPosition, MyTarget.TargetPosition, MaxDistance))
+        if (Math.DistanceXZGreaterThan(CurrentPosition, MyTarget.TargetPosition, MaxDistance))
 		{
 			MyTarget.TriggerMove();
 		}

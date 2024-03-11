@@ -6,7 +6,8 @@ namespace OliverLoescher.Debug2
 {
 	public class GizmoSphere : GizmoBase
 	{
-		[SerializeField, Min(Util.Math.NEARZERO)] private float radius = 1;
+		[SerializeField, Min(Util.Math.NEARZERO)]
+		private float radius = 1;
 
 		protected override void DrawGizmos()
 		{

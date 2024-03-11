@@ -6,8 +6,10 @@ namespace OliverLoescher.Debug2
 {
 	public abstract class GizmoBase : MonoBehaviour
 	{
-		[SerializeField] private Color color = new Color(0, 0.5f, 1, 1);
-		[SerializeField] private bool alwaysShow = false;
+		[SerializeField]
+		private Color color = new Color(0, 0.5f, 1, 1);
+		[SerializeField]
+		private bool alwaysShow = false;
 
 		private void Awake()
 		{

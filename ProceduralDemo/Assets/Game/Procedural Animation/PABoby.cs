@@ -5,7 +5,7 @@ using UnityEngine;
 public class PABoby : MonoBehaviour, IPABody
 {
 	private PARoot Root;
-	private PACharacter Character => Root.Character;
+	private IPACharacter Character => Root.Character;
 	private IPAPoint[] Points => Root.Points;
 
 	[Header("Position")]

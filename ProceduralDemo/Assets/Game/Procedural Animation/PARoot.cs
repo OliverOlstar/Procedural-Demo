@@ -11,7 +11,7 @@ public class PARoot : MonoBehaviour
 
 	private bool IsInitalized = false;
 
-	public PACharacter Character { get; private set; }
+	public IPACharacter Character { get; private set; }
 	public IPABody Body { get; private set; }
 	public IPAPoint[] Points { get; private set; } = new IPAPoint[0];
 	public IPALimb[] Limbs { get; private set; } = new IPALimb[0];
@@ -24,7 +24,7 @@ public class PARoot : MonoBehaviour
 		}
 		IsInitalized = true;
 
-		Character = GetComponentInChildren<PACharacter>();
+		Character = GetComponentInChildren<IPACharacter>();
 		Body = GetComponentInChildren<IPABody>();
 		Limbs = GetComponentsInChildren<IPALimb>();
 		Points = GetComponentsInChildren<IPAPoint>();

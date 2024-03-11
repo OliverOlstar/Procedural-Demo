@@ -20,12 +20,13 @@ public class TestSpear : MonoBehaviour
 	private float RecallSeconds = 5.0f;
 
 	private Transform Camera = null;
+	private TestThrow Thrower = null;
 	private Vector3 Velocity;
 	private float MoveTime = 0.0f;
 	private Vector3 RecallStartPosition = Vector3.zero;
 	private bool IsAnimating = false;
 
-	public void Init(Transform pCamera) => Camera = pCamera;
+	public void Init(Transform pCamera, TestThrow pThrow) { Camera = pCamera; Thrower = pThrow; }
 
 	public void Aim()
 	{
@@ -57,6 +58,7 @@ public class TestSpear : MonoBehaviour
 	{
 		transform.position = Vector3.one * 5000.0f;
 		IsAnimating = false;
+		Thrower.OnRecallComplete();
 	}
 
 	private void RecallTick(float pProgress)
@@ -86,7 +88,8 @@ public class TestSpear : MonoBehaviour
 			Velocity.y += Gravity * Time.deltaTime;
 		}
 		transform.position += Velocity * Time.deltaTime;
-		transform.rotation = Quaternion.LookRotation(Velocity);
+		if (Velocity.NotNearZero())
+			transform.rotation = Quaternion.LookRotation(Velocity);
 	}
 	
 	private void OnDrawGizmos()

@@ -52,14 +52,14 @@ public class PATarget : MonoBehaviour, IPAPoint
 	Vector3 IPAPoint.Position => CurrentPosition;
 	Vector3 IPAPoint.RelativeOriginalPosition => TargetPosition;
 
-	private PACharacter Character;
+	private IPACharacter Character;
 	private Vector3 StepOffset;
 	private Vector3 TargetCharacterOffset;
 	public State CurrentState { get; private set; } = State.Idle;
 
 	public Vector3 TargetPosition => Character.TransformPoint(TargetCharacterOffset);
 
-	void IPAPoint.Init(PACharacter pCharacter)
+	void IPAPoint.Init(IPACharacter pCharacter)
 	{
 		Character = pCharacter;
 		IK.UpdateSolverExternal();

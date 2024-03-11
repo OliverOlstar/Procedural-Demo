@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,12 +18,14 @@ public class TestThrow : MonoBehaviour
 	private TestSpear Spear = null;
 	[SerializeField]
 	private Transform SpearPivot = null;
+	[SerializeField]
+	private float AimTimeScale = 0.2f;
 
 	private State state = State.Has;
 
 	private void Start()
 	{
-		Spear.Init(SpearPivot);
+		Spear.Init(SpearPivot, this);
 	}
 
 	void Update()
@@ -59,18 +62,29 @@ public class TestThrow : MonoBehaviour
 			case State.Has:
 				AimCamera.SetActive(false);
 				Spear.Recall();
+				Time.timeScale = 1.0f;
 				break;
 
 			case State.Aiming:
 				AimCamera.SetActive(true);
 				Spear.Aim();
+				Time.timeScale = AimTimeScale;
 				break;
 
 			case State.Thrown:
 				AimCamera.SetActive(false);
 				Spear.Throw();
+				Time.timeScale = 1.0f;
 				break;
 		}
 		state = pToState;
+	}
+
+	public void OnRecallComplete()
+	{
+		if (Spear.CanThrow() && Input.GetKey(KeyCode.Mouse0))
+		{
+			SetState(State.Aiming);
+		}
 	}
 }

@@ -4,18 +4,18 @@ using OliverLoescher.Util;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class PACharacter : MonoBehaviour
+public class PACharacter : MonoBehaviour, IPACharacter
 {
 	[SerializeField, DisableInPlayMode]
 	private OliverLoescher.Util.Mono.Updateable Updateable = new OliverLoescher.Util.Mono.Updateable(OliverLoescher.Util.Mono.UpdateType.Fixed, OliverLoescher.Util.Mono.Priorities.CharacterController);
 
-	public Vector3 Up => transform.up;
-	public Vector3 Position => transform.position;
-	public Vector3 Forward => transform.forward;
-	public Vector3 TransformPoint(in Vector3 pVector) => transform.TransformPoint(pVector);
-	public Vector3 InverseTransformPoint(in Vector3 pVector) => transform.InverseTransformPoint(pVector);
+	Vector3 IPACharacter.Up => transform.up;
+	Vector3 IPACharacter.Position => transform.position;
+	Vector3 IPACharacter.Forward => transform.forward;
+	Vector3 IPACharacter.TransformPoint(in Vector3 pVector) => transform.TransformPoint(pVector);
+	Vector3 IPACharacter.InverseTransformPoint(in Vector3 pVector) => transform.InverseTransformPoint(pVector);
 
-	public Vector3 MotionForward { get; private set; } = Vector3.forward;
+	public Vector3 MotionForward { get; private set; } = Vector3.forward; // IPACharacter.MotionForward { get; }
 	public Vector3 Motion { get; private set; } = Vector3.zero;
 
 	[Header("Motion")]

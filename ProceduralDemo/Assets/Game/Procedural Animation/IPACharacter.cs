@@ -1,0 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public interface IPACharacter
+{
+	public Vector3 Up { get; }
+	public Vector3 Position { get; }
+	public Vector3 Forward { get; }
+	public Vector3 TransformPoint(in Vector3 pVector);
+	public Vector3 InverseTransformPoint(in Vector3 pVector);
+
+	public Vector3 MotionForward { get; }
+}
