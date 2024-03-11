@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace OliverLoescher.Util
 {
-    public static class Math
-    {
+	public static class Math
+	{
 		public const float NEARZERO = 0.0001f;
 
 		public static Vector3 Horizontal(this Vector3 pVector) { pVector.y = 0; return pVector; }
@@ -120,18 +120,25 @@ namespace OliverLoescher.Util
 		public static bool DistanceOnPlaneEqualLessThan(this Vector3 pA, Vector3 pB, float pDistance, Vector3 pPlaneNormal) =>
 			Vector3.ProjectOnPlane(pA - pB, pPlaneNormal).sqrMagnitude <= Mathf.Pow(pDistance, 2);
 
-		public static bool DistanceHorizontalEqual(this Vector3 pA, Vector3 pB, float pDistance) =>
+		public static bool DistanceXZEqual(this Vector3 pA, Vector3 pB, float pDistance) =>
 			Horizontal2D(pA - pB).sqrMagnitude == Mathf.Pow(pDistance, 2);
-		public static bool DistanceHorizontalGreaterThan(this Vector3 pA, Vector3 pB, float pDistance) =>
+		public static bool DistanceXZGreaterThan(this Vector3 pA, Vector3 pB, float pDistance) =>
 			Horizontal2D(pA - pB).sqrMagnitude > Mathf.Pow(pDistance, 2);
-		public static bool DistanceHorizontalEqualGreaterThan(this Vector3 pA, Vector3 pB, float pDistance) =>
+		public static bool DistanceXZEqualGreaterThan(this Vector3 pA, Vector3 pB, float pDistance) =>
 			Horizontal2D(pA - pB).sqrMagnitude >= Mathf.Pow(pDistance, 2);
-		public static bool DistanceHorizontalLessThan(this Vector3 pA, Vector3 pB, float pDistance) =>
+		public static bool DistanceXZLessThan(this Vector3 pA, Vector3 pB, float pDistance) =>
 			Horizontal2D(pA - pB).sqrMagnitude < Mathf.Pow(pDistance, 2);
-		public static bool DistanceHorizontalEqualLessThan(this Vector3 pA, Vector3 pB, float pDistance) =>
+		public static bool DistanceXZEqualLessThan(this Vector3 pA, Vector3 pB, float pDistance) =>
 			Horizontal2D(pA - pB).sqrMagnitude <= Mathf.Pow(pDistance, 2);
 
-		public static float DistanceHorizontal(Vector3 pA, Vector3 pB) => Horizontal2D(pA - pB).magnitude;
+		public static float DistanceXZ(Vector3 pA, Vector3 pB) => Horizontal2D(pA - pB).magnitude;
+
+		public static bool NotNearZero(this Vector3 pVector) => pVector.sqrMagnitude > NEARZERO;
+		public static bool NotNearZeroXZ(this Vector3 pVector)
+		{
+			pVector.y = 0.0f;
+			return pVector.sqrMagnitude > NEARZERO;
+		}
 		#endregion Compare
 	}
 }

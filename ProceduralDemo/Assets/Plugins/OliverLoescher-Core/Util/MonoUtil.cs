@@ -51,9 +51,9 @@ namespace OliverLoescher.Util
 			[SerializeField, DisableInPlayMode]
 			private float priority;
 
-			public Action<float> Action => action;
-			public UpdateType Type => type;
-			public float Priority => priority;
+			public readonly Action<float> Action => action;
+			public readonly UpdateType Type => type;
+			public readonly float Priority => priority;
 
 			public Updateable(UpdateType pType, float pPriority)
 			{
@@ -90,7 +90,11 @@ namespace OliverLoescher.Util
 
 			public override string ToString()
 			{
-				return $"Updateable(Action: {action.Target} - {action.Method.Name}, Type {type}, Priority {priority})";
+				if (action == null)
+				{
+					return $"Updateable(Action: NULL, Type: {type}, Priority: {priority})";
+				}
+				return $"Updateable(Action: {action.Target} - {action.Method.Name}, Type: {type}, Priority: {priority})";
 			}
 		}
 
