@@ -4,11 +4,8 @@ using OliverLoescher;
 using OliverLoescher.Util;
 using UnityEngine;
 
-public class TestCharacter : MonoBehaviour
+public class TestCharacter : UpdateableMonoBehaviour
 {
-	[SerializeField]
-	private OliverLoescher.Util.Mono.Updateable updateable = new OliverLoescher.Util.Mono.Updateable(OliverLoescher.Util.Mono.UpdateType.Default, OliverLoescher.Util.Mono.Priorities.CharacterController);
-
 	[SerializeField]
 	private float Speed = 10.0f;
 	[SerializeField]
@@ -24,13 +21,13 @@ public class TestCharacter : MonoBehaviour
 	[SerializeField]
 	private float TerminalVelocity = -10.0f;
 
-	private Vector3 Velocity = Vector3.zero;
+	public Vector3 Velocity = Vector3.zero;
 
-	[Header("Climb")]
-	[SerializeField]
-	private LayerMask ClimbLayer;
-	[SerializeField]
-	private float ClimbDistance = 2.0f;
+	// [Header("Climb")]
+	// [SerializeField]
+	// private LayerMask ClimbLayer;
+	// [SerializeField]
+	// private float ClimbDistance = 2.0f;
 
 	[Header("References")]
 	[SerializeField]
@@ -38,17 +35,7 @@ public class TestCharacter : MonoBehaviour
 	[SerializeField]
 	private OnGround Grounded = null;
 
-	private void Start()
-	{
-		updateable.Register(Tick);
-	}
-
-	private void OnDestroy()
-	{
-		updateable.Deregister();
-	}
-
-	public void Tick(float pDeltaTime)
+	protected override void Tick(float pDeltaTime)
 	{
 		Vector3 input = ((Input.GetKey(KeyCode.W) ? 1 : 0) - (Input.GetKey(KeyCode.S) ? 1 : 0)) * Math.Horizontalize(MainCamera.Camera.transform.forward);
 		input += ((Input.GetKey(KeyCode.D) ? 1 : 0) - (Input.GetKey(KeyCode.A) ? 1 : 0)) * Math.Horizontalize(MainCamera.Camera.transform.right);
@@ -80,13 +67,13 @@ public class TestCharacter : MonoBehaviour
 
 		Controller.Move(Velocity * Time.deltaTime);
 
-		if (sqrMag > 0.01f && !Grounded.IsGrounded && Physics.SphereCast(transform.position + Controller.center, Controller.radius, input.normalized, out RaycastHit hit, ClimbDistance, ClimbLayer))
-		{
-			if (Physics.SphereCast(hit.point + Vector3.up * 2, Controller.radius, Vector3.down, out RaycastHit hit2, 4, ClimbLayer))
-			{
-				Velocity = Vector3.zero;
-				transform.position = hit2.point;
-			}
-		}
+		// if (sqrMag > 0.01f && !Grounded.IsGrounded && Physics.SphereCast(transform.position + Controller.center, Controller.radius, input.normalized, out RaycastHit hit, ClimbDistance, ClimbLayer))
+		// {
+		// 	if (Physics.SphereCast(hit.point + Vector3.up * 2, Controller.radius, Vector3.down, out RaycastHit hit2, 4, ClimbLayer))
+		// 	{
+		// 		Velocity = Vector3.zero;
+		// 		transform.position = hit2.point;
+		// 	}
+		// }
 	}
 }
