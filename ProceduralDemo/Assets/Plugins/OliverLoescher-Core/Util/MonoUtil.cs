@@ -31,17 +31,17 @@ namespace OliverLoescher.Util
 			Fixed
 		}
 
-		public static class Priorities
+		public enum Priorities
 		{
-			public const int First = int.MinValue;
-			public const int Input = -2000;
-			public const int UI = -1000;
-			public const int Default = 0;
-			public const int CharacterController = 400;
-			public const int OnGround = 425;
-			public const int ModelController = 500;
-			public const int Camera = 1000;
-			public const int Last = int.MaxValue;
+			First = int.MinValue,
+			Input = -2000,
+			UI = -1000,
+			Default = 0,
+			CharacterController = 400,
+			OnGround = 425,
+			ModelController = 500,
+			Camera = 1000,
+			Last = int.MaxValue
 		}
 
 		[Serializable]
@@ -51,13 +51,13 @@ namespace OliverLoescher.Util
 			[SerializeField, DisableInPlayMode]
 			private UpdateType type;
 			[SerializeField, DisableInPlayMode]
-			private float priority;
+			private Priorities priority;
 
 			public readonly Action<float> Action => action;
 			public readonly UpdateType Type => type;
-			public readonly float Priority => priority;
+			public readonly Priorities Priority => priority;
 
-			public Updateable(UpdateType pType, float pPriority)
+			public Updateable(UpdateType pType, Priorities pPriority)
 			{
 				action = null;
 				type = pType;
@@ -86,6 +86,11 @@ namespace OliverLoescher.Util
 
 			public void Deregister()
 			{
+				if (action == null)
+				{
+					LogWarning("Tried deregistering when not registered", "Deregister");
+					return;
+				}
 				DeregisterUpdate(this);
 				action = null;
 			}

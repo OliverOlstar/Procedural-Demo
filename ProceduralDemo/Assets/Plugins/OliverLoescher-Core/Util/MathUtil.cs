@@ -133,12 +133,14 @@ namespace OliverLoescher.Util
 
 		public static float DistanceXZ(Vector3 pA, Vector3 pB) => Horizontal2D(pA - pB).magnitude;
 
+		public static bool IsNearZero(this Vector3 pVector) => pVector.sqrMagnitude <= NEARZERO;
 		public static bool NotNearZero(this Vector3 pVector) => pVector.sqrMagnitude > NEARZERO;
-		public static bool NotNearZeroXZ(this Vector3 pVector)
+		public static bool IsNearZeroXZ(this Vector3 pVector)
 		{
 			pVector.y = 0.0f;
-			return pVector.sqrMagnitude > NEARZERO;
+			return pVector.sqrMagnitude <= NEARZERO;
 		}
+		public static bool NotNearZeroXZ(this Vector3 pVector) => !IsNearZeroXZ(pVector);
 		#endregion Compare
 	}
 }
