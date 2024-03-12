@@ -86,5 +86,9 @@ public class TestThrow : MonoBehaviour
 		{
 			SetState(State.Aiming);
 		}
+		else
+		{
+			state = State.Has; // If not already, ensure set to has because recall finished
+		}
 	}
 }

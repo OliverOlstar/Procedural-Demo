@@ -57,6 +57,7 @@ public class TestSpear : MonoBehaviour
 		MoveTime = -1.0f;
 	}
 
+	public bool CanThrow() => !IsAnimating;
 	public void Throw()
 	{
 		transform.SetParent(null);
@@ -65,8 +66,6 @@ public class TestSpear : MonoBehaviour
 		Velocity = (toPoint - transform.position) * Force;
 		MoveTime = 0.0f;
 	}
-
-	public bool CanThrow() => !IsAnimating;
 
 	public void Recall()
 	{
@@ -99,49 +98,66 @@ public class TestSpear : MonoBehaviour
 	{
 		if (character != null)
 		{
-			if (jumpCharge < 0.0f)
-			{
-				if (!Input.GetKeyDown(KeyCode.Space))
-				{
-					return;
-				}
-				jumpCharge = 0.0f;
-			}
-			if (Input.GetKey(KeyCode.Space) && jumpCharge < MaxChargeSeconds)
-			{
-				jumpCharge += Time.deltaTime;
-				jumpCharge.ClampMax(MaxChargeSeconds);
-				transform.RotateAround(SpearFront(), transform.right, -JumpRotationSpeed * Time.deltaTime);
-				character.transform.position = CharacterStandPoint;
-			}
-			if (Input.GetKeyUp(KeyCode.Space))
-			{
-				transform.RotateAround(SpearFront(), transform.right, JumpRotationSpeed * jumpCharge);
-				character.Move(new Vector3(0.0f, CharacterStandPoint.y - character.transform.position.y, 0.0f));
-
-				character.SetUpdateEnabled(true);
-				character.Velocity = Math.Scale(transform.up, JumpForceOffsetXZ + (jumpCharge * JumpScalarXZ), JumpForceOffsetY + (jumpCharge * JumpScalarY));
-
-				jumpCharge = -1.0f;
-				character = null;
-			}
-			return;
+			DoJumpCharge();
 		}
-
-		if (MoveTime <= -1.0f)
+		else if (MoveTime > -1.0f)
 		{
-			return;
+			DoThrownUpdate();
 		}
+	}
 
+	private void DoJumpCharge()
+	{
+		if (jumpCharge < 0.0f)
+		{
+			if (!Input.GetKeyDown(KeyCode.Space))
+			{
+				return;
+			}
+			jumpCharge = 0.0f;
+		}
+		if (Input.GetKey(KeyCode.Space) && jumpCharge < MaxChargeSeconds)
+		{
+			// Charging
+			jumpCharge += Time.deltaTime;
+			jumpCharge.ClampMax(MaxChargeSeconds);
+			transform.RotateAround(SpearFront(), transform.right, -JumpRotationSpeed * Time.deltaTime);
+			character.transform.position = CharacterStandPoint;
+		}
+		if (Input.GetKeyUp(KeyCode.Space))
+		{
+			// Jump
+			transform.RotateAround(SpearFront(), transform.right, JumpRotationSpeed * jumpCharge);
+			character.Move(new Vector3(0.0f, CharacterStandPoint.y - character.transform.position.y, 0.0f));
+
+			character.SetUpdateEnabled(true);
+			character.Velocity = Math.Scale(transform.up, JumpForceOffsetXZ + (jumpCharge * JumpScalarXZ), JumpForceOffsetY + (jumpCharge * JumpScalarY));
+
+			jumpCharge = -1.0f;
+			character = null;
+		}
+	}
+
+	private void DoThrownUpdate()
+	{
 		if (Physics.Raycast(SpearBack(), transform.forward, out RaycastHit hit, transform.localScale.z, HitLayer))
 		{
+			// Hit
 			MoveTime = -2.0f;
-			transform.position = hit.point - (0.4f * transform.localScale.z * transform.forward);
+			if (hit.collider.CompareTag("CanNotSpear"))
+			{
+				Recall();
+			}
+			else
+			{
+				transform.position = hit.point - (0.4f * transform.localScale.z * transform.forward);
+			}
 			if (hitCue != null)
 				SOCue.Play(hitCue, new CueContext(hit.point));
 			return;
 		}
 
+		// Moving
 		MoveTime += Time.deltaTime;
 		if (MoveTime >= GravityDelay)
 		{
