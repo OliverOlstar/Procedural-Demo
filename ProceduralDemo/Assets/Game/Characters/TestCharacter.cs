@@ -35,6 +35,11 @@ public class TestCharacter : UpdateableMonoBehaviour
 	[SerializeField]
 	private OnGround Grounded = null;
 
+	public void Move(Vector3 pVector)
+	{
+		Controller.Move(pVector);
+	}
+
 	protected override void Tick(float pDeltaTime)
 	{
 		Vector3 input = ((Input.GetKey(KeyCode.W) ? 1 : 0) - (Input.GetKey(KeyCode.S) ? 1 : 0)) * Math.Horizontalize(MainCamera.Camera.transform.forward);

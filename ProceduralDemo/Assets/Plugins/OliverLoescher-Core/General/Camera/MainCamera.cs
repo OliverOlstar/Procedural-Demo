@@ -11,6 +11,11 @@ namespace OliverLoescher
 		public static Camera Camera = null;
 		private Camera localCamera = null;
 
+		public static Vector3 Position => Instance.transform.position;
+		public static Quaternion Rotation => Instance.transform.rotation;
+		public static Vector3 Forward => Instance.transform.forward;
+		public static Vector3 Up => Instance.transform.up;
+
 		private void Awake()
 		{
 			if (Instance != null)

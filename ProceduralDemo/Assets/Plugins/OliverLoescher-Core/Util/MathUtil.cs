@@ -21,6 +21,8 @@ namespace OliverLoescher.Util
 		public static Vector3 Inverse(in Vector3 pVector) => new Vector3(1.0f / pVector.x, 1.0f / pVector.y, 1.0f / pVector.z);
 
 		public static float Clamp(this float pValue, Vector2 pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
+		public static float ClampMax(this float pValue, float pMax) => Mathf.Min(pValue, pMax);
+		public static float ClampMin(this float pValue, float pMin) => Mathf.Min(pValue, pMin);
 
 		public static Vector3 Mult(Vector3 pA, Vector3 pB) => new Vector3(pA.x * pB.x, pA.y * pB.y, pA.z * pB.z);
 		public static Vector3 Add(Vector3 pA, Vector3 pB) => new Vector3(pA.x + pB.x, pA.y + pB.y, pA.z + pB.z);

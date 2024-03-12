@@ -5,22 +5,35 @@ using UnityEngine;
 namespace OliverLoescher.Cue
 {
 	[CreateAssetMenu(menuName = "ScriptableObject/Cue")]
-    public class SOCue : ScriptableObject
-    {
+	public class SOCue : ScriptableObject
+	{
 		// TODO Add Duration & Motion
 
 		[SerializeField]
-		private CueAudio Audio = new CueAudio();
+		private CueAudio[] Audio = new CueAudio[0];
 		[SerializeField]
-		private CueParticle Particle = new CueParticle();
+		private CueParticle[] Particle = new CueParticle[0];
 		[SerializeField]
-		private CueCameraShake CameraShake = new CueCameraShake();
+		private CueCameraShake[] CameraShake = new CueCameraShake[0];
 
-		public void Play(CueContext pContext)
+		public static void Play(SOCue pCue, in CueContext pContext)
 		{
-			Audio.Play(pContext, this);
-			Particle.Play(pContext, this);
-			CameraShake.Play(pContext, this);
+			if (pCue == null)
+			{
+				return;
+			}
+			foreach (CueModule module in pCue.Audio)
+			{
+				module.Play(pContext, pCue);
+			}
+			foreach (CueModule module in pCue.Particle)
+			{
+				module.Play(pContext, pCue);
+			}
+			foreach (CueModule module in pCue.CameraShake)
+			{
+				module.Play(pContext, pCue);
+			}
 		}
-    }
+	}
 }

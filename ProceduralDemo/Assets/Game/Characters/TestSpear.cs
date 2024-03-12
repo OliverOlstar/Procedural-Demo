@@ -4,6 +4,7 @@ using UnityEngine;
 using OliverLoescher.Util;
 using System;
 using OliverLoescher.Cue;
+using OliverLoescher;
 
 public class TestSpear : MonoBehaviour
 {
@@ -23,7 +24,12 @@ public class TestSpear : MonoBehaviour
 	[SerializeField]
 	private float JumpScalar = 5.0f;
 	[SerializeField]
-	private float MaxJumpForce = 999.0f;
+	private float JumpForceOffset = 10.0f;
+	[SerializeField]
+	private float MaxChargeSeconds = 2.0f;
+
+	[SerializeField]
+	private float JumpRotationSpeed = 5.0f;
 
 	[SerializeField]
 	private SOCue hitCue;
@@ -32,24 +38,28 @@ public class TestSpear : MonoBehaviour
 	private TestThrow Thrower = null;
 	private Vector3 Velocity;
 	private float MoveTime = 0.0f;
-	private Vector3 RecallStartPosition = Vector3.zero;
 	private bool IsAnimating = false;
 	private TestCharacter character;
+
+	private Vector3 CharacterStandPoint => transform.position + (0.5f * transform.localScale.y * Vector3.up) + (0.45f * transform.localScale.z * -transform.forward);
+	private Vector3 SpearBack() => transform.position - (0.5f * transform.localScale.z * transform.forward);
+	private Vector3 SpearFront() => transform.position + (0.5f * transform.localScale.z * transform.forward);
 
 	public void Init(Transform pCamera, TestThrow pThrow) { Camera = pCamera; Thrower = pThrow; }
 
 	public void Aim()
 	{
 		transform.SetParent(Camera, false);
-		transform.localPosition = Vector3.zero;
-		transform.localRotation = Quaternion.identity;
+		transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 		MoveTime = -1.0f;
 	}
 
 	public void Throw()
 	{
 		transform.SetParent(null);
-		Velocity = Camera.forward * Force;
+		Vector3 toPoint = Physics.Raycast(MainCamera.Camera.transform.position, MainCamera.Camera.transform.forward, out RaycastHit hit, 40.0f, HitLayer)
+			? hit.point : MainCamera.Position + (MainCamera.Forward * 40.0f);
+		Velocity = (toPoint - transform.position) * Force;
 		MoveTime = 0.0f;
 	}
 
@@ -64,38 +74,52 @@ public class TestSpear : MonoBehaviour
 		}
 		transform.SetParent(null);
 		MoveTime = -1.0f;
-		RecallStartPosition = transform.position;
+
+		Vector3 recallStartPosition = transform.position;
 		IsAnimating = true;
-		float seconds = Vector3.Distance(RecallStartPosition, Camera.position) * RecallSeconds;
-		Anim.Play(RecallEase, Mathf.Min(seconds, 2.0f), RecallTick, RecallComplete);
+		float seconds = Vector3.Distance(recallStartPosition, Camera.position) * RecallSeconds;
+		Anim.Play(RecallEase, Mathf.Min(seconds, 2.0f),
+		(pProgress) => // OnTick
+		{
+			transform.position = Vector3.LerpUnclamped(recallStartPosition, Camera.position, pProgress);
+		},
+		(_) => // OnComplete
+		{
+			transform.position = Vector3.one * 5000.0f;
+			IsAnimating = false;
+			Thrower.OnRecallComplete();
+		});
 	}
 
-	private void RecallComplete(float pValue)
-	{
-		transform.position = Vector3.one * 5000.0f;
-		IsAnimating = false;
-		Thrower.OnRecallComplete();
-	}
-
-	private void RecallTick(float pProgress)
-	{
-		transform.position = Vector3.LerpUnclamped(RecallStartPosition, Camera.position, pProgress);
-	}
-
-	private float jumpCharge = 0.0f;
+	private float jumpCharge = -1.0f;
 	private void Update()
 	{
 		if (character != null)
 		{
-			if (Input.GetKey(KeyCode.Space))
+			if (jumpCharge < 0.0f)
+			{
+				if (!Input.GetKeyDown(KeyCode.Space))
+				{
+					return;
+				}
+				jumpCharge = 0.0f;
+			}
+			if (Input.GetKey(KeyCode.Space) && jumpCharge < MaxChargeSeconds)
 			{
 				jumpCharge += Time.deltaTime;
+				jumpCharge.ClampMax(MaxChargeSeconds);
+				transform.RotateAround(SpearFront(), transform.right, -JumpRotationSpeed * Time.deltaTime);
+				character.transform.position = CharacterStandPoint;
 			}
-			else if (Input.GetKeyUp(KeyCode.Space))
+			if (Input.GetKeyUp(KeyCode.Space))
 			{
+				transform.RotateAround(SpearFront(), transform.right, JumpRotationSpeed * jumpCharge);
+				character.Move(new Vector3(0.0f, CharacterStandPoint.y - character.transform.position.y, 0.0f));
+
 				character.SetUpdateEnabled(true);
-				character.Velocity = Mathf.Min(jumpCharge * JumpScalar, MaxJumpForce) * Vector3.up;
-				jumpCharge = 0.0f;
+				character.Velocity = (JumpForceOffset + (jumpCharge * JumpScalar)) * transform.up;
+
+				jumpCharge = -1.0f;
 				character = null;
 			}
 			return;
@@ -106,15 +130,15 @@ public class TestSpear : MonoBehaviour
 			return;
 		}
 
-		Vector3 from = transform.position + transform.forward;
-		if (Physics.Raycast(from, transform.forward, out RaycastHit hit, transform.localScale.z * 0.5f, HitLayer))
+		if (Physics.Raycast(SpearBack(), transform.forward, out RaycastHit hit, transform.localScale.z, HitLayer))
 		{
 			MoveTime = -2.0f;
-			transform.position = hit.point - (transform.forward * transform.localScale.z * 0.5f);
-			hitCue?.Play(new CueContext(hit.point));
+			transform.position = hit.point - (0.4f * transform.localScale.z * transform.forward);
+			if (hitCue != null)
+				SOCue.Play(hitCue, new CueContext(hit.point));
 			return;
 		}
-		
+
 		MoveTime += Time.deltaTime;
 		if (MoveTime >= GravityDelay)
 		{
@@ -123,13 +147,6 @@ public class TestSpear : MonoBehaviour
 		transform.position += Velocity * Time.deltaTime;
 		if (Velocity.NotNearZero())
 			transform.rotation = Quaternion.LookRotation(Velocity);
-	}
-	
-	private void OnDrawGizmos()
-	{
-		Vector3 from = transform.position + transform.forward;
-		Vector3 end = from + transform.forward * (transform.localScale.z * 0.5f);
-		Gizmos.DrawLine(from, end);
 	}
 
 	private void OnTriggerEnter(Collider other)
@@ -141,10 +158,15 @@ public class TestSpear : MonoBehaviour
 		character.SetUpdateEnabled(false);
 		Vector3 startPosition = character.transform.position;
 		Anim.Play(Easing.Method.Sine, Easing.Direction.In, 0.2f,
-		(float pProgress) => 
+		(float pProgress) =>
 		{
 			if (character != null)
-				character.transform.position = Vector3.LerpUnclamped(character.transform.position, transform.position + (0.5f * transform.localScale.y * Vector3.up), pProgress);
+				character.transform.position = Vector3.LerpUnclamped(character.transform.position, CharacterStandPoint, pProgress);
 		});
+	}
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.DrawLine(SpearBack(), SpearFront());
 	}
 }

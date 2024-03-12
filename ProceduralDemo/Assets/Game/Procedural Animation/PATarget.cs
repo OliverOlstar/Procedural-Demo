@@ -90,7 +90,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 	{
 		CurrentPosition = CalculateStepPoint();
 		CurrentState = State.Idle;
-		OnStepCue?.Play(new CueContext(CurrentPosition));
+		SOCue.Play(OnStepCue, new CueContext(CurrentPosition));
 	}
 
 	private Vector3 CalculateStepPoint()

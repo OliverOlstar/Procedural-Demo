@@ -6,7 +6,7 @@ namespace OliverLoescher.Cue
 	public class CueModule
 	{
 		[SerializeField]
-		private bool IsEnabled = false;
+		private bool IsEnabled = true;
 
 		public void Play(in CueContext pContext, in SOCue pParent)
 		{
