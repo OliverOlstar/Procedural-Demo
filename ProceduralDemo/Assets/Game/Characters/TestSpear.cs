@@ -41,10 +41,13 @@ public class TestSpear : MonoBehaviour
 	private TestThrow Thrower = null;
 	private Vector3 Velocity;
 	private float MoveTime = 0.0f;
-	private bool IsAnimating = false;
+	private bool isAnimating = false;
+	private bool isAiming = false;
 	private TestCharacter character;
 
 	private Vector3 CharacterStandPoint => transform.position + (0.5f * transform.localScale.y * Vector3.up) + (0.45f * transform.localScale.z * -transform.forward);
+
+
 	private Vector3 SpearBack() => transform.position - (0.5f * transform.localScale.z * transform.forward);
 	private Vector3 SpearFront() => transform.position + (0.5f * transform.localScale.z * transform.forward);
 
@@ -53,18 +56,26 @@ public class TestSpear : MonoBehaviour
 	public void Aim()
 	{
 		transform.SetParent(Camera, false);
-		transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+		transform.localPosition = Vector3.zero;
+		transform.rotation = Quaternion.LookRotation(GetThrowDirection());
 		MoveTime = -1.0f;
+		isAiming = true;
 	}
 
-	public bool CanThrow() => !IsAnimating;
+	public bool CanThrow() => !isAnimating;
 	public void Throw()
 	{
 		transform.SetParent(null);
-		Vector3 toPoint = Physics.Raycast(MainCamera.Camera.transform.position, MainCamera.Camera.transform.forward, out RaycastHit hit, 40.0f, HitLayer)
-			? hit.point : MainCamera.Position + (MainCamera.Forward * 40.0f);
-		Velocity = (toPoint - transform.position) * Force;
+		Velocity = GetThrowDirection() * Force;
 		MoveTime = 0.0f;
+		isAiming = false;
+	}
+
+	private Vector3 GetThrowDirection()
+	{
+		Vector3 toPoint = Physics.Raycast(MainCamera.Camera.transform.position, MainCamera.Camera.transform.forward, out RaycastHit hit, 40.0f, HitLayer)
+					? hit.point : MainCamera.Position + (MainCamera.Forward * 40.0f);
+		return toPoint - transform.position;
 	}
 
 	public void Recall()
@@ -78,7 +89,7 @@ public class TestSpear : MonoBehaviour
 		MoveTime = -1.0f;
 
 		Vector3 recallStartPosition = transform.position;
-		IsAnimating = true;
+		isAnimating = true;
 		float seconds = Vector3.Distance(recallStartPosition, Camera.position) * RecallSeconds;
 		Anim.Play(RecallEase, Mathf.Min(seconds, 2.0f),
 		(pProgress) => // OnTick
@@ -88,7 +99,7 @@ public class TestSpear : MonoBehaviour
 		(_) => // OnComplete
 		{
 			transform.position = Vector3.one * 5000.0f;
-			IsAnimating = false;
+			isAnimating = false;
 			Thrower.OnRecallComplete();
 		});
 	}
@@ -103,6 +114,10 @@ public class TestSpear : MonoBehaviour
 		else if (MoveTime > -1.0f)
 		{
 			DoThrownUpdate();
+		}
+		else if (isAiming)
+		{
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(GetThrowDirection()), Time.deltaTime * 35.0f);
 		}
 	}
 
