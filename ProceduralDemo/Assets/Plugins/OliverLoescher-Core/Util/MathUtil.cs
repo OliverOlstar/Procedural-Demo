@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace OliverLoescher.Util
 		public static float Clamp(this float pValue, Vector2 pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
 		public static float ClampMax(this float pValue, float pMax) => Mathf.Min(pValue, pMax);
 		public static float ClampMin(this float pValue, float pMin) => Mathf.Min(pValue, pMin);
+
+		public static float DistanceXZ(Vector3 pA, Vector3 pB) => Horizontal2D(pA - pB).magnitude;
 
 		public static Vector3 Mult(Vector3 pA, Vector3 pB) => new Vector3(pA.x * pB.x, pA.y * pB.y, pA.z * pB.z);
 		public static Vector3 Add(Vector3 pA, Vector3 pB) => new Vector3(pA.x + pB.x, pA.y + pB.y, pA.z + pB.z);
@@ -50,6 +53,18 @@ namespace OliverLoescher.Util
 			return new Vector3(pXZ.x, pY, pXZ.y);
 		}
 
+		public static Vector3 Scale(this Vector3 pVector, float pScalarXZ, float pScalarY)
+		{
+			pVector.x *= pScalarXZ;
+			pVector.y *= pScalarY;
+			pVector.z *= pScalarXZ;
+			return pVector;
+		}
+
+		public static Quaternion Difference(this Quaternion to, Quaternion from) => to * Quaternion.Inverse(from);
+		public static Quaternion Add(this Quaternion start, Quaternion diff) => diff * start;
+		public static Quaternion UpForwardRotation(Vector3 forward, Vector3 up) => Quaternion.FromToRotation(Vector3.up, up) * Quaternion.LookRotation(forward);
+
 		public static float AddPercents(IEnumerable<float> pValues)
 		{
 			float value = 1;
@@ -69,10 +84,6 @@ namespace OliverLoescher.Util
 			}
 			return value;
 		}
-
-		public static Quaternion Difference(this Quaternion to, Quaternion from) => to * Quaternion.Inverse(from);
-		public static Quaternion Add(this Quaternion start, Quaternion diff) => diff * start;
-		public static Quaternion UpForwardRotation(Vector3 forward, Vector3 up) => Quaternion.FromToRotation(Vector3.up, up) * Quaternion.LookRotation(forward);
 
 		#region Lerp
 		public static float LerpUnclamped(float pA, float pB, float pC, float pT)
@@ -132,8 +143,6 @@ namespace OliverLoescher.Util
 			Horizontal2D(pA - pB).sqrMagnitude < Mathf.Pow(pDistance, 2);
 		public static bool DistanceXZEqualLessThan(this Vector3 pA, Vector3 pB, float pDistance) =>
 			Horizontal2D(pA - pB).sqrMagnitude <= Mathf.Pow(pDistance, 2);
-
-		public static float DistanceXZ(Vector3 pA, Vector3 pB) => Horizontal2D(pA - pB).magnitude;
 
 		public static bool IsNearZero(this Vector3 pVector) => pVector.sqrMagnitude <= NEARZERO;
 		public static bool NotNearZero(this Vector3 pVector) => pVector.sqrMagnitude > NEARZERO;
