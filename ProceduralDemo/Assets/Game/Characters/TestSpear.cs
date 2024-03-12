@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using OliverLoescher.Util;
-using System;
 using OliverLoescher.Cue;
 using OliverLoescher;
 
@@ -22,9 +21,13 @@ public class TestSpear : MonoBehaviour
 	private float RecallSeconds = 5.0f;
 
 	[SerializeField]
-	private float JumpScalar = 5.0f;
+	private float JumpScalarXZ = 8.0f;
 	[SerializeField]
-	private float JumpForceOffset = 10.0f;
+	private float JumpScalarY = 8.0f;
+	[SerializeField]
+	private float JumpForceOffsetXZ = 4.0f;
+	[SerializeField]
+	private float JumpForceOffsetY = 4.0f;
 	[SerializeField]
 	private float MaxChargeSeconds = 2.0f;
 
@@ -117,7 +120,7 @@ public class TestSpear : MonoBehaviour
 				character.Move(new Vector3(0.0f, CharacterStandPoint.y - character.transform.position.y, 0.0f));
 
 				character.SetUpdateEnabled(true);
-				character.Velocity = (JumpForceOffset + (jumpCharge * JumpScalar)) * transform.up;
+				character.Velocity = Math.Scale(transform.up, JumpForceOffsetXZ + (jumpCharge * JumpScalarXZ), JumpForceOffsetY + (jumpCharge * JumpScalarY));
 
 				jumpCharge = -1.0f;
 				character = null;
@@ -157,7 +160,7 @@ public class TestSpear : MonoBehaviour
 		}
 		character.SetUpdateEnabled(false);
 		Vector3 startPosition = character.transform.position;
-		Anim.Play(Easing.Method.Sine, Easing.Direction.In, 0.2f,
+		Anim.Play(Easing.Method.Sine, Easing.Direction.In, 0.35f,
 		(float pProgress) =>
 		{
 			if (character != null)
