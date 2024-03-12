@@ -8,26 +8,26 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Character
+  - Terrian
   - Water
   - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - PlayerCharacter
+  - PlayerModel
+  - Character
   - Model
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
