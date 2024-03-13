@@ -73,20 +73,17 @@ namespace OliverLoescher
 		[FoldoutGroup("Events")]
 		public UnityEvent OnExitEvent;
 
-		// private Transform groundFollowTransform = null;
-		// private Vector3 groudFollowPosition = Vector3.zero;
-		// private Quaternion groudFollowRotation = Quaternion.identity;
+		private PositionFollower follower = new PositionFollower();
 
 		private void Start()
 		{
-			// groundFollowTransform = new GameObject($"{gameObject.name}-GroundFollower").transform;
-
 			updateable.Register(Tick);
 		}
 		
 		private void OnDestroy()
 		{
 			updateable.Deregister();
+			follower.OnDestroy();
 		}
 
 		private void Tick(float pDeltaTime)
@@ -134,12 +131,42 @@ namespace OliverLoescher
 			return total / (lines.Length + spheres.Length);
 		}
 
+		public Vector3 GetAveragePoint()
+		{
+			Vector3 total = Vector3.zero;
+			foreach (Linecast line in lines)
+			{
+				total += line.hitInfo.point;
+			}
+			foreach (Spherecast sphere in spheres)
+			{
+				total += sphere.hitInfo.point;
+			}
+			return total / (lines.Length + spheres.Length);
+		}
+
+		public Transform GetFirstGroundTransform()
+		{
+			foreach (Linecast line in lines)
+			{
+				if (line.hitInfo.collider != null)
+					return line.hitInfo.transform;
+			}
+			foreach (Spherecast sphere in spheres)
+			{
+				if (sphere.hitInfo.collider != null)
+					return sphere.hitInfo.transform;
+			}
+			return null;
+		}
+
 		private void OnEnter()
 		{
 			OnEnterEvent?.Invoke();
 			if (followGround)
 			{
-				Util.Debug.DevException("followGround == true... NotImplemented", "OnEnter", this);
+				follower.Start(GetFirstGroundTransform(), transform, GetAveragePoint(), null, updateable.Type, updateable.Priority, this);
+				// Util.Debug.DevException("followGround == true... NotImplemented", "OnEnter", this);
 			}
 		}
 
@@ -148,7 +175,8 @@ namespace OliverLoescher
 			OnExitEvent?.Invoke();
 			if (followGround)
 			{
-				Util.Debug.DevException("followGround == true... NotImplemented", "OnEnter", this);
+				follower.Stop();
+				// Util.Debug.DevException("followGround == true... NotImplemented", "OnEnter", this);
 			}
 		}
 
@@ -162,6 +190,7 @@ namespace OliverLoescher
 			{
 				sphere.OnDrawGizmos(transform, layerMask);
 			}
+			follower.OnDrawGizmos();
 		}
 	}
 }

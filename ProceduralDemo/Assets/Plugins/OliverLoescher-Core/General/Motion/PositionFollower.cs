@@ -1,34 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using OliverLoescher.Util;
 using UnityEngine;
 
 namespace OliverLoescher
 {
 	/// <summary>
-	/// A solution to follow transform's movement with an offset without childing your transform to it
+	/// A solution to follow transform's position with an offset without childing your transform to it
 	/// </summary>
-	public class TransformFollower
-	{
+    public class PositionFollower
+    {
 		private Util.Mono.Updateable updateable = new Util.Mono.Updateable();
-		// private Transform transform;
 		private Transform parent;
 		private Transform child;
 		private Object debugObject;
 		private System.Action onMoved;
 
 		private Vector3 lastPosition = Vector3.zero;
-		private Quaternion lastRotation = Quaternion.identity;
-
 		private Vector3 localPosition;
 
 		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, System.Action pOnMoved, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
-			// if (transform == null)
-			// {
-			// 	transform = new GameObject($"{pDebugParent.name}-TransformFollower").transform;
-			// }
-
 			if (pChild == null)
 			{
 				Util.Debug.DevException("pChild is null", "Start", debugObject);
@@ -60,10 +51,7 @@ namespace OliverLoescher
 			child = pChild;
 			onMoved = pOnMoved;
 
-			// transform.SetParent(pTarget);
-			// transform.SetPositionAndRotation(pPoint, Quaternion.identity);
 			lastPosition = pPoint;
-			lastRotation = parent.rotation;
 			localPosition = parent.InverseTransformPoint(pPoint);
 
 			updateable.SetProperties(pUpdateType, pUpdatePriority);
@@ -74,10 +62,9 @@ namespace OliverLoescher
 		{
 			if (child == null)
 			{
-				Util.Debug.LogError("Not started, please start first", "Stop", debugObject);
+				Util.Debug.LogWarning("Not started, please start first", "Stop", debugObject);
 				return;
 			}
-			debugObject = null;
 			parent = null;
 			child = null;
 
@@ -86,32 +73,34 @@ namespace OliverLoescher
 
 		private void Tick(float _)
 		{
+			// TODO Check if child moved as well and adjust localPosition
+			// TODO Share code with TransformFollower
+			// TODO Solve for using characterController
+
 			Vector3 currPositon = parent.TransformPoint(localPosition);
 			child.position += currPositon - lastPosition;
 			lastPosition = currPositon;
-
-			Quaternion deltaRotation = lastRotation.Difference(parent.rotation);
-			deltaRotation.ToAngleAxis(out float angle, out Vector3 axis);
-			child.RotateAround(currPositon, axis, -angle);
-			lastRotation = parent.rotation;
 
 			onMoved?.Invoke();
 		}
 
 		public void OnDestroy()
 		{
-			Stop();
+			if (child != null)
+			{
+				Stop();
+			}
 		}
 
 		public void OnDrawGizmos()
 		{
-			if (parent == null)
+			if (child == null)
 			{
 				return;
 			}
 			Gizmos.color = Color.cyan;
-			Gizmos.DrawWireSphere(parent.TransformPoint(localPosition), 1.0f);
+			Gizmos.DrawWireSphere(parent.TransformPoint(localPosition), 0.5f);
 			Gizmos.DrawSphere(parent.TransformPoint(localPosition), 0.25f);
 		}
-	}
+    }
 }

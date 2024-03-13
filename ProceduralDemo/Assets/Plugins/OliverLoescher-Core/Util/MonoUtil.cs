@@ -162,38 +162,30 @@ namespace OliverLoescher.Util
 
 		private void Update()
 		{
-			Profiler.BeginSample("MonoUtil.EarlyUpdate()");
-			foreach (Updateable updatable in earlyUpdatables)
-			{
-				updatable.Action.Invoke(Time.deltaTime);
-			}
-			Profiler.EndSample();
-
-			Profiler.BeginSample("MonoUtil.Update()");
-			foreach (Updateable updatable in updatables)
-			{
-				updatable.Action.Invoke(Time.deltaTime);
-			}
-			Profiler.EndSample();
+			UpdateInternal(earlyUpdatables, Time.deltaTime, "MonoUtil.EarlyUpdate()");
+			UpdateInternal(updatables, Time.deltaTime, "MonoUtil.Update()");
 		}
 
 		private void LateUpdate()
 		{
-			Profiler.BeginSample("MonoUtil.LateUpdate()");
-			foreach (Updateable updatable in lateUpdatables)
-			{
-				updatable.Action.Invoke(Time.deltaTime);
-			}
-			Profiler.EndSample();
+			UpdateInternal(lateUpdatables, Time.deltaTime, "MonoUtil.LateUpdate()");
 		}
 
 		private void FixedUpdate()
 		{
-			Profiler.BeginSample("MonoUtil.FixedUpdate()");
-			foreach (Updateable updatable in fixedUpdatables)
+			UpdateInternal(fixedUpdatables, Time.fixedDeltaTime, "MonoUtil.FixedUpdate()");
+		}
+
+		private readonly List<Updateable> updateables = new List<Updateable>();
+		private void UpdateInternal(List<Updateable> pUpdatables, in float pDeltaTime, string pProfilerName)
+		{
+			Profiler.BeginSample(pProfilerName);
+			updateables.AddRange(pUpdatables); // Copy over incase it changes
+			foreach (Updateable updatable in updateables)
 			{
-				updatable.Action.Invoke(Time.fixedDeltaTime);
+				updatable.Action.Invoke(pDeltaTime);
 			}
+			updateables.Clear();
 			Profiler.EndSample();
 		}
 		#endregion Updatables
