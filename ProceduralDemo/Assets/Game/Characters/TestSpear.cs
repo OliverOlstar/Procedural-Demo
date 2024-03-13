@@ -33,8 +33,13 @@ public class TestSpear : MonoBehaviour
 
 	[SerializeField]
 	private float JumpRotationSpeed = 5.0f;
-
+	
+	[Space, SerializeField]
+	private Easing.EaseParams playerSnapEase = new Easing.EaseParams();
 	[SerializeField]
+	private float playerSnapEaseSeconds = 1.0f;
+
+	[Space, SerializeField]
 	private SOCue hitCue;
 
 	private Transform Camera = null;
@@ -91,7 +96,7 @@ public class TestSpear : MonoBehaviour
 		Vector3 recallStartPosition = transform.position;
 		isAnimating = true;
 		float seconds = Vector3.Distance(recallStartPosition, Camera.position) * RecallSeconds;
-		Anim.Play(RecallEase, Mathf.Min(seconds, 2.0f),
+		Anim.Play(RecallEase, Mathf.Min(seconds, 1.0f),
 		(pProgress) => // OnTick
 		{
 			transform.position = Vector3.LerpUnclamped(recallStartPosition, Camera.position, pProgress);
@@ -168,7 +173,7 @@ public class TestSpear : MonoBehaviour
 			else
 			{
 				transform.position = hit.point - (0.4f * transform.localScale.z * transform.forward);
-				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, OliverLoescher.Util.Mono.Type.Early, OliverLoescher.Util.Mono.Priorities.First, this);
+				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, OliverLoescher.Util.Mono.Type.Default, OliverLoescher.Util.Mono.Priorities.Last, this);
 			}
 			if (hitCue != null)
 				SOCue.Play(hitCue, new CueContext(hit.point));
@@ -188,7 +193,7 @@ public class TestSpear : MonoBehaviour
 
 	private void OnAttachedMoved()
 	{
-		if (character != null)
+		if (character != null && !isAnimating)
 		{
 			character.transform.position = CharacterStandPoint;
 		}
@@ -202,11 +207,17 @@ public class TestSpear : MonoBehaviour
 		}
 		character.SetUpdateEnabled(false);
 		Vector3 startPosition = character.transform.position;
-		Anim.Play(Easing.Method.Sine, Easing.Direction.In, 0.35f,
+		isAnimating = true;
+		Anim.Play(playerSnapEase, playerSnapEaseSeconds,
 		(float pProgress) =>
 		{
 			if (character != null)
-				character.transform.position = Vector3.LerpUnclamped(character.transform.position, CharacterStandPoint, pProgress);
+				character.transform.position = Vector3.LerpUnclamped(startPosition, CharacterStandPoint, pProgress);
+		},
+		(float _) =>
+		{
+			character.transform.position = CharacterStandPoint;
+			isAnimating = false;
 		});
 	}
 
