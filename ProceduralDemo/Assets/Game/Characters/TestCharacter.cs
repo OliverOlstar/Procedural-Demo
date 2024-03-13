@@ -23,12 +23,6 @@ public class TestCharacter : UpdateableMonoBehaviour
 
 	public Vector3 Velocity = Vector3.zero;
 
-	// [Header("Climb")]
-	// [SerializeField]
-	// private LayerMask ClimbLayer;
-	// [SerializeField]
-	// private float ClimbDistance = 2.0f;
-
 	[Header("References")]
 	[SerializeField]
 	private CharacterController Controller = null;
@@ -71,14 +65,5 @@ public class TestCharacter : UpdateableMonoBehaviour
 		}
 
 		Controller.Move(Velocity * Time.deltaTime);
-
-		// if (sqrMag > 0.01f && !Grounded.IsGrounded && Physics.SphereCast(transform.position + Controller.center, Controller.radius, input.normalized, out RaycastHit hit, ClimbDistance, ClimbLayer))
-		// {
-		// 	if (Physics.SphereCast(hit.point + Vector3.up * 2, Controller.radius, Vector3.down, out RaycastHit hit2, 4, ClimbLayer))
-		// 	{
-		// 		Velocity = Vector3.zero;
-		// 		transform.position = hit2.point;
-		// 	}
-		// }
 	}
 }

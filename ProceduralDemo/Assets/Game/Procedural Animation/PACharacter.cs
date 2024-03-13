@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 public class PACharacter : MonoBehaviour, IPACharacter
 {
 	[SerializeField, DisableInPlayMode]
-	private OliverLoescher.Util.Mono.Updateable Updateable = new OliverLoescher.Util.Mono.Updateable(OliverLoescher.Util.Mono.UpdateType.Fixed, OliverLoescher.Util.Mono.Priorities.CharacterController);
+	private OliverLoescher.Util.Mono.Updateable Updateable = new OliverLoescher.Util.Mono.Updateable(OliverLoescher.Util.Mono.Type.Fixed, OliverLoescher.Util.Mono.Priorities.CharacterController);
 
 	Vector3 IPACharacter.Up => transform.up;
 	Vector3 IPACharacter.Position => transform.position;

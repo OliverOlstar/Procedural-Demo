@@ -44,9 +44,9 @@ public class TestSpear : MonoBehaviour
 	private bool isAnimating = false;
 	private bool isAiming = false;
 	private TestCharacter character;
+	private TransformFollower follower = new TransformFollower();
 
 	private Vector3 CharacterStandPoint => transform.position + (0.5f * transform.localScale.y * Vector3.up) + (0.45f * transform.localScale.z * -transform.forward);
-
 
 	private Vector3 SpearBack() => transform.position - (0.5f * transform.localScale.z * transform.forward);
 	private Vector3 SpearFront() => transform.position + (0.5f * transform.localScale.z * transform.forward);
@@ -74,7 +74,7 @@ public class TestSpear : MonoBehaviour
 	private Vector3 GetThrowDirection()
 	{
 		Vector3 toPoint = Physics.Raycast(MainCamera.Camera.transform.position, MainCamera.Camera.transform.forward, out RaycastHit hit, 40.0f, HitLayer)
-					? hit.point : MainCamera.Position + (MainCamera.Forward * 40.0f);
+			? hit.point : MainCamera.Position + (MainCamera.Forward * 40.0f);
 		return toPoint - transform.position;
 	}
 
@@ -102,6 +102,8 @@ public class TestSpear : MonoBehaviour
 			isAnimating = false;
 			Thrower.OnRecallComplete();
 		});
+
+		follower.Stop();
 	}
 
 	private float jumpCharge = -1.0f;
@@ -166,6 +168,7 @@ public class TestSpear : MonoBehaviour
 			else
 			{
 				transform.position = hit.point - (0.4f * transform.localScale.z * transform.forward);
+				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, OliverLoescher.Util.Mono.Type.Early, OliverLoescher.Util.Mono.Priorities.First, this);
 			}
 			if (hitCue != null)
 				SOCue.Play(hitCue, new CueContext(hit.point));
@@ -183,9 +186,17 @@ public class TestSpear : MonoBehaviour
 			transform.rotation = Quaternion.LookRotation(Velocity);
 	}
 
+	private void OnAttachedMoved()
+	{
+		if (character != null)
+		{
+			character.transform.position = CharacterStandPoint;
+		}
+	}
+
 	private void OnTriggerEnter(Collider other)
 	{
-		if (MoveTime > -2.0f || !other.TryGetComponent(out character))
+		if (MoveTime > -2.0f || character || !other.TryGetComponent(out character))
 		{
 			return;
 		}
@@ -202,5 +213,8 @@ public class TestSpear : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		Gizmos.DrawLine(SpearBack(), SpearFront());
+		follower.OnDrawGizmos();
 	}
+
+	private void OnDestroy() => follower.OnDestroy();
 }

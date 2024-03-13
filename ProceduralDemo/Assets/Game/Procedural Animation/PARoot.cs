@@ -7,7 +7,7 @@ using System;
 public class PARoot : MonoBehaviour
 {
 	[SerializeField, DisableInPlayMode]
-	private OliverLoescher.Util.Mono.Updateable Updateable = new OliverLoescher.Util.Mono.Updateable(OliverLoescher.Util.Mono.UpdateType.Late, OliverLoescher.Util.Mono.Priorities.ModelController);
+	private OliverLoescher.Util.Mono.Updateable Updateable = new OliverLoescher.Util.Mono.Updateable(OliverLoescher.Util.Mono.Type.Late, OliverLoescher.Util.Mono.Priorities.ModelController);
 
 	private bool IsInitalized = false;
 
