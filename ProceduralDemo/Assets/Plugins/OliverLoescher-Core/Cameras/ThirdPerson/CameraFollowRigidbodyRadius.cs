@@ -9,7 +9,7 @@ namespace OliverLoescher
     {
         [SerializeField] private Rigidbody target = null;
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.UpdateType.Late, Util.Mono.Priorities.Camera);
+		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
 
 		[Header("Look")]
         [SerializeField] private float lookVelocity = 1.0f;

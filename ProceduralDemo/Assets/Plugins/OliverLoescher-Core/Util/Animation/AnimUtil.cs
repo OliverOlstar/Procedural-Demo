@@ -22,7 +22,7 @@ namespace OliverLoescher.Util
 
 		private static List<IAnimation> Animations = new List<IAnimation>();
 
-		private static Mono.Updateable Updateable = new Mono.Updateable(Mono.UpdateType.Early, Mono.Priorities.ModelController);
+		private static Mono.Updateable Updateable = new Mono.Updateable(Mono.Type.Early, Mono.Priorities.ModelController);
 		private static bool IsInitalized = false;
 
 		private static void Initalize()

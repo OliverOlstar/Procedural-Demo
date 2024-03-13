@@ -10,7 +10,7 @@ namespace OliverLoescher.Input
 		public abstract InputActionMap Actions { get; }
 		public abstract IEnumerable<IInputModule> GetAllInputModules();
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.UpdateType.Early, Util.Mono.Priorities.Input);
+		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Early, Util.Mono.Priorities.Input);
 
 		protected virtual void Awake()
 		{

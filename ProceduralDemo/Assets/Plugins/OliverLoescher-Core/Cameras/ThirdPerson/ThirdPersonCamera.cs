@@ -11,7 +11,7 @@ namespace OliverLoescher
         [SerializeField] 
 		private InputBridge_Camera input = null;
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.UpdateType.Late, Util.Mono.Priorities.Camera);
+		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
 
 		[Header("Follow")]
         public Transform followTransform = null;

@@ -57,7 +57,7 @@ namespace OliverLoescher
 		}
 
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.UpdateType.Fixed, Util.Mono.Priorities.OnGround);
+		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Fixed, Util.Mono.Priorities.OnGround);
 		[SerializeField]
 		private Linecast[] lines = new Linecast[0];
 		[SerializeField]
@@ -73,13 +73,13 @@ namespace OliverLoescher
 		[FoldoutGroup("Events")]
 		public UnityEvent OnExitEvent;
 
-		private Transform groundFollowTransform = null;
-		private Vector3 groudFollowPosition = Vector3.zero;
-		private Quaternion groudFollowRotation = Quaternion.identity;
+		// private Transform groundFollowTransform = null;
+		// private Vector3 groudFollowPosition = Vector3.zero;
+		// private Quaternion groudFollowRotation = Quaternion.identity;
 
 		private void Start()
 		{
-			groundFollowTransform = new GameObject($"{gameObject.name}-GroundFollower").transform;
+			// groundFollowTransform = new GameObject($"{gameObject.name}-GroundFollower").transform;
 
 			updateable.Register(Tick);
 		}

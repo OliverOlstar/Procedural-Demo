@@ -23,7 +23,7 @@ namespace OliverLoescher.Util
 		}
 
 		#region Updatables
-		public enum UpdateType
+		public enum Type
 		{
 			Default = 0,
 			Early,
@@ -49,17 +49,28 @@ namespace OliverLoescher.Util
 		{
 			private Action<float> action;
 			[SerializeField, DisableInPlayMode]
-			private UpdateType type;
+			private Type type;
 			[SerializeField, DisableInPlayMode]
 			private Priorities priority;
 
 			public readonly Action<float> Action => action;
-			public readonly UpdateType Type => type;
+			public readonly Type Type => type;
 			public readonly Priorities Priority => priority;
 
-			public Updateable(UpdateType pType, Priorities pPriority)
+			public Updateable(Type pType, Priorities pPriority)
 			{
 				action = null;
+				type = pType;
+				priority = pPriority;
+			}
+
+			public void SetProperties(Type pType, Priorities pPriority)
+			{
+				if (action != null)
+				{
+					LogError("Tried setting properties when already registered", "SetProperties");
+					return;
+				}
 				type = pType;
 				priority = pPriority;
 			}
@@ -134,15 +145,15 @@ namespace OliverLoescher.Util
 			}
 		}
 
-		private static ref List<Updateable> GetUpdatables(UpdateType pType)
+		private static ref List<Updateable> GetUpdatables(Type pType)
 		{
 			switch (pType)
 			{
-				case UpdateType.Early:
+				case Type.Early:
 					return ref earlyUpdatables;
-				case UpdateType.Late:
+				case Type.Late:
 					return ref lateUpdatables;
-				case UpdateType.Fixed:
+				case Type.Fixed:
 					return ref fixedUpdatables;
 				default:
 					return ref updatables;

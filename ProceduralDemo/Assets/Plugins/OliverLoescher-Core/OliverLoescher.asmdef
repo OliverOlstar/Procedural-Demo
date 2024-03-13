@@ -1,9 +1,7 @@
 {
     "name": "OliverLoescher",
     "rootNamespace": "OliverLoescher",
-    "references": [
-        ""
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

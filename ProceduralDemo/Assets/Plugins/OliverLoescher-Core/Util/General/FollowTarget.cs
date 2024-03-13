@@ -8,7 +8,7 @@ namespace OliverLoescher
 	public class FollowTarget : MonoBehaviour
 	{
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.UpdateType.Default, Util.Mono.Priorities.Camera);
+		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Default, Util.Mono.Priorities.Camera);
 
 		[Header("Position")]
 		public Transform posTarget = null;

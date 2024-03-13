@@ -7,7 +7,7 @@ namespace OliverLoescher
 	public abstract class UpdateableMonoBehaviour : MonoBehaviour
 	{
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.UpdateType.Default, Util.Mono.Priorities.Default);
+		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Default, Util.Mono.Priorities.Default);
 
 		protected virtual void Start() => SetUpdateEnabled(true);
 		// protected virtual void OnDestroy() => SetUpdateEnabled(false);
