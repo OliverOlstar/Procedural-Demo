@@ -16,9 +16,9 @@ MonoBehaviour:
   - IsEnabled: 1
     Sound:
       Clips:
-      - {fileID: 8300000, guid: e86b1da711f1d4143a38834aff77fc9d, type: 3}
-      Volume: 0.5
-      Pitch: {x: 0.1, y: 0.2}
+      - {fileID: 8300000, guid: 7d84a2ebc1f009147af2097162e3899b, type: 3}
+      Volume: 1
+      Pitch: {x: 0.9, y: 1.2}
       Priority: 0
   Particle:
   - IsEnabled: 1
