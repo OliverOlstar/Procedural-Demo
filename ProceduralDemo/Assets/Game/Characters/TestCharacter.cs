@@ -46,10 +46,10 @@ public class TestCharacter : UpdateableMonoBehaviour
 		}
 
 		float speed = Grounded.IsGrounded ? Speed : AirSpeed;
-		Velocity += speed * input * Time.deltaTime;
+		Velocity += speed * Time.deltaTime * input;
 
 		float drag = Grounded.IsGrounded ? Drag : AirDrag;
-		Velocity -= Math.Horizontal(Velocity) * drag * Time.deltaTime;
+		Velocity -= drag * Time.deltaTime * Math.Horizontal(Velocity);
 
 		if (Grounded.IsGrounded)
 		{

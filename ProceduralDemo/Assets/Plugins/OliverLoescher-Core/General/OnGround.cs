@@ -59,6 +59,8 @@ namespace OliverLoescher
 		[SerializeField]
 		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Fixed, Util.Mono.Priorities.OnGround);
 		[SerializeField]
+		private Transform myTransform;
+		[SerializeField]
 		private Linecast[] lines = new Linecast[0];
 		[SerializeField]
 		private Spherecast[] spheres = new Spherecast[1];
@@ -73,10 +75,17 @@ namespace OliverLoescher
 		[FoldoutGroup("Events")]
 		public UnityEvent OnExitEvent;
 
-		private PositionFollower follower = new PositionFollower();
+		private readonly TransformFollower follower = new TransformFollower();
+		private CharacterController myController;
 
 		private void Start()
 		{
+			if (myTransform == null)
+			{
+				myTransform = transform;
+			}
+			myTransform.TryGetComponent(out myController);
+
 			updateable.Register(Tick);
 		}
 		
@@ -106,12 +115,12 @@ namespace OliverLoescher
 		{
 			foreach (Linecast line in lines)
 			{
-				if (line.Check(transform, layerMask))
+				if (line.Check(myTransform, layerMask))
 					return true;
 			}
 			foreach (Spherecast sphere in spheres)
 			{
-				if (sphere.Check(transform, layerMask))
+				if (sphere.Check(myTransform, layerMask))
 					return true;
 			}
 			return false;
@@ -165,8 +174,14 @@ namespace OliverLoescher
 			OnEnterEvent?.Invoke();
 			if (followGround)
 			{
-				follower.Start(GetFirstGroundTransform(), transform, GetAveragePoint(), null, updateable.Type, updateable.Priority, this);
-				// Util.Debug.DevException("followGround == true... NotImplemented", "OnEnter", this);
+				if (myController)
+				{
+					follower.Start(GetFirstGroundTransform(), myController, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
+				}
+				else
+				{
+					follower.Start(GetFirstGroundTransform(), myTransform, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
+				}
 			}
 		}
 
@@ -176,19 +191,22 @@ namespace OliverLoescher
 			if (followGround)
 			{
 				follower.Stop();
-				// Util.Debug.DevException("followGround == true... NotImplemented", "OnEnter", this);
 			}
 		}
 
-		private void OnDrawGizmosSelected()
+		private void OnDrawGizmos()
 		{
+			if (myTransform == null)
+			{
+				myTransform = transform;
+			}
 			foreach (Linecast line in lines)
 			{
-				line.OnDrawGizmos(transform, layerMask);
+				line.OnDrawGizmos(myTransform, layerMask);
 			}
 			foreach (Spherecast sphere in spheres)
 			{
-				sphere.OnDrawGizmos(transform, layerMask);
+				sphere.OnDrawGizmos(myTransform, layerMask);
 			}
 			follower.OnDrawGizmos();
 		}

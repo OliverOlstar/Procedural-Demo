@@ -13,15 +13,30 @@ namespace OliverLoescher
 		private Util.Mono.Updateable updateable = new Util.Mono.Updateable();
 		private Transform parent;
 		private Transform child;
+		private CharacterController childController;
 		private Object debugObject;
-		private System.Action onMoved;
+		private System.Action<Vector3> onMoved;
+		private bool rotateChild;
 
 		private Vector3 lastPosition = Vector3.zero;
 		private Quaternion lastRotation = Quaternion.identity;
 		private Vector3 localPosition;
 
-		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, System.Action pOnMoved, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
+		public void Start(Transform pParent, CharacterController pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
+			debugObject = pDebugParent;
+			if (pChild == null)
+			{
+				Util.Debug.DevException("pChild (CharacterController) is null", "Start", debugObject);
+				return;
+			}
+			childController = pChild;
+			Start(pParent, pChild.transform, pPoint, pOnMoved, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
+		}
+
+		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
+		{
+			debugObject = pDebugParent;
 			if (pChild == null)
 			{
 				Util.Debug.DevException("pChild is null", "Start", debugObject);
@@ -48,10 +63,10 @@ namespace OliverLoescher
 				}
 				return;
 			}
-			debugObject = pDebugParent;
 			parent = pParent;
 			child = pChild;
 			onMoved = pOnMoved;
+			rotateChild = pRotateChild;
 
 			lastPosition = pPoint;
 			lastRotation = parent.rotation;
@@ -77,25 +92,52 @@ namespace OliverLoescher
 		private void Tick(float _)
 		{
 			Vector3 currPositon = parent.TransformPoint(localPosition);
-			child.position += currPositon - lastPosition;
+			Vector3 deltaPosition = currPositon - lastPosition;
+			if (deltaPosition.IsNearZero())
+			{
+				return;
+			}
+
+			SetControllerAcitve(false); // Disable so we can move the transform
+			child.position += deltaPosition;
+			if (rotateChild)
+			{
+				Quaternion deltaRotation = lastRotation.Difference(parent.rotation);
+				deltaRotation.ToAngleAxis(out float angle, out Vector3 axis);
+				child.RotateAround(currPositon, axis, -angle);
+				lastRotation = parent.rotation;
+			}
+			SetControllerAcitve(true);
 			lastPosition = currPositon;
 
-			Quaternion deltaRotation = lastRotation.Difference(parent.rotation);
-			deltaRotation.ToAngleAxis(out float angle, out Vector3 axis);
-			child.RotateAround(currPositon, axis, -angle);
-			lastRotation = parent.rotation;
+			if (currPositon != child.position)
+			{
+				lastPosition += child.position - currPositon;
+				localPosition = parent.InverseTransformPoint(child.position);
+			}
 
-			onMoved?.Invoke();
+			onMoved?.Invoke(deltaPosition);
+		}
+
+		private void SetControllerAcitve(bool pEnabled)
+		{
+			if (childController)
+			{
+				childController.enabled = pEnabled;
+			}
 		}
 
 		public void OnDestroy()
 		{
-			Stop();
+			if (child != null)
+			{
+				Stop();
+			}
 		}
 
 		public void OnDrawGizmos()
 		{
-			if (parent == null)
+			if (child == null)
 			{
 				return;
 			}

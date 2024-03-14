@@ -173,7 +173,7 @@ public class TestSpear : MonoBehaviour
 			else
 			{
 				transform.position = hit.point - (0.4f * transform.localScale.z * transform.forward);
-				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, OliverLoescher.Util.Mono.Type.Default, OliverLoescher.Util.Mono.Priorities.Last, this);
+				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, OliverLoescher.Util.Mono.Type.Default, OliverLoescher.Util.Mono.Priorities.CharacterController, this);
 			}
 			if (hitCue != null)
 				SOCue.Play(hitCue, new CueContext(hit.point));
@@ -191,7 +191,7 @@ public class TestSpear : MonoBehaviour
 			transform.rotation = Quaternion.LookRotation(Velocity);
 	}
 
-	private void OnAttachedMoved()
+	private void OnAttachedMoved(Vector3 _)
 	{
 		if (character != null && !isAnimating)
 		{
@@ -216,7 +216,8 @@ public class TestSpear : MonoBehaviour
 		},
 		(float _) =>
 		{
-			character.transform.position = CharacterStandPoint;
+			if (character != null)
+				character.transform.position = CharacterStandPoint;
 			isAnimating = false;
 		});
 	}
