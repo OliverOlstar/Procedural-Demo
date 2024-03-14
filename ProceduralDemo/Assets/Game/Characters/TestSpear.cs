@@ -49,6 +49,7 @@ public class TestSpear : MonoBehaviour
 	private bool isAnimating = false;
 	private bool isAiming = false;
 	private TestCharacter character;
+	private Collider trigger = null;
 	private TransformFollower follower = new TransformFollower();
 
 	private Vector3 CharacterStandPoint => transform.position + (0.5f * transform.localScale.y * Vector3.up) + (0.45f * transform.localScale.z * -transform.forward);
@@ -56,7 +57,7 @@ public class TestSpear : MonoBehaviour
 	private Vector3 SpearBack() => transform.position - (0.5f * transform.localScale.z * transform.forward);
 	private Vector3 SpearFront() => transform.position + (0.5f * transform.localScale.z * transform.forward);
 
-	public void Init(Transform pCamera, TestThrow pThrow) { Camera = pCamera; Thrower = pThrow; }
+	public void Init(Transform pCamera, TestThrow pThrow) { Camera = pCamera; Thrower = pThrow; trigger = GetComponent<Collider>(); }
 
 	public void Aim()
 	{
@@ -157,8 +158,12 @@ public class TestSpear : MonoBehaviour
 
 			jumpCharge = -1.0f;
 			character = null;
+
+			trigger.enabled = false;
+			Invoke(nameof(SetColliderEnabled), 0.25f);
 		}
 	}
+	private void SetColliderEnabled() => trigger.enabled = true;
 
 	private void DoThrownUpdate()
 	{
@@ -172,7 +177,10 @@ public class TestSpear : MonoBehaviour
 			}
 			else
 			{
+				trigger.enabled = false;
 				transform.position = hit.point - (0.4f * transform.localScale.z * transform.forward);
+				trigger.enabled = true;
+
 				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, OliverLoescher.Util.Mono.Type.Default, OliverLoescher.Util.Mono.Priorities.CharacterController, this);
 			}
 			if (hitCue != null)
