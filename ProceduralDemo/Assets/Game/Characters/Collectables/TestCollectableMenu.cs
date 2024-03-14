@@ -12,6 +12,8 @@ public class TestCollectableMenu : MonoBehaviour
 
 	[SerializeField]
 	private TMPro.TMP_Text text = null;
+	[SerializeField]
+	private float scale = 50.0f;
 
 	private void Start()
 	{
@@ -35,9 +37,10 @@ public class TestCollectableMenu : MonoBehaviour
 		if (collectedCount == collectableTotal)
 		{
 			_Instance.text.text = "Success!";
+			_Instance.text.fontSize = _Instance.scale;
 			return;
 		}
-		_Instance.text.text = $"{collectedCount}/{collectableTotal}";
+		_Instance.text.text = $"{collectedCount} / {collectableTotal}";
 	}
 
 	public static void AddToTotal()
