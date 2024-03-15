@@ -33,7 +33,7 @@ public class TestSpear : MonoBehaviour
 
 	[SerializeField]
 	private float JumpRotationSpeed = 5.0f;
-	
+
 	[Space, SerializeField]
 	private Easing.EaseParams playerSnapEase = new Easing.EaseParams();
 	[SerializeField]
@@ -129,39 +129,55 @@ public class TestSpear : MonoBehaviour
 		}
 	}
 
+	private Vector3 StartPosition = Vector3.zero;
+	private Quaternion StartRotation = Quaternion.identity;
+	private Vector2 JumpInput;
+	private Vector2 LastJumpInput;
 	private void DoJumpCharge()
 	{
 		if (jumpCharge < 0.0f)
 		{
-			if (!Input.GetKeyDown(KeyCode.Space))
+			if (!Input.GetKeyDown(KeyCode.W) && !Input.GetKeyDown(KeyCode.S) && !Input.GetKeyDown(KeyCode.D) && !Input.GetKeyDown(KeyCode.A))
 			{
 				return;
 			}
 			jumpCharge = 0.0f;
+			StartRotation = transform.rotation;
+			StartPosition = transform.position;
 		}
-		if (Input.GetKey(KeyCode.Space) && jumpCharge < MaxChargeSeconds)
+		float x = (Input.GetKey(KeyCode.W) ? 1 : 0) - (Input.GetKey(KeyCode.S) ? 1 : 0);
+		float y = (Input.GetKey(KeyCode.D) ? 1 : 0) - (Input.GetKey(KeyCode.A) ? 1 : 0);
+		JumpInput = Vector2.Lerp(JumpInput, Vector2.ClampMagnitude(new Vector2(x, y), 1.0f), Time.deltaTime * 5.0f);
+		if (jumpCharge < MaxChargeSeconds)
 		{
 			// Charging
 			jumpCharge += Time.deltaTime;
 			jumpCharge.ClampMax(MaxChargeSeconds);
-			transform.RotateAround(SpearFront(), transform.right, -JumpRotationSpeed * Time.deltaTime);
-			character.transform.position = CharacterStandPoint;
 		}
-		if (Input.GetKeyUp(KeyCode.Space))
+
+		// Rotate
+		transform.SetPositionAndRotation(StartPosition, StartRotation);
+		transform.RotateAround(SpearFront(), transform.right, -JumpRotationSpeed * -JumpInput.x * jumpCharge);
+		transform.RotateAround(SpearFront(), transform.up, -JumpRotationSpeed * JumpInput.y * jumpCharge);
+		character.transform.position = CharacterStandPoint;
+
+		if (x == 0 && y == 0)
 		{
 			// Jump
-			transform.RotateAround(SpearFront(), transform.right, JumpRotationSpeed * jumpCharge);
+			transform.SetPositionAndRotation(StartPosition, StartRotation);
 			character.Move(new Vector3(0.0f, CharacterStandPoint.y - character.transform.position.y, 0.0f));
 
 			character.SetUpdateEnabled(true);
-			character.Velocity = Math.Scale(transform.up, JumpForceOffsetXZ + (jumpCharge * JumpScalarXZ), JumpForceOffsetY + (jumpCharge * JumpScalarY));
+			Vector3 dir = (transform.up * -LastJumpInput.x) + (transform.right * -LastJumpInput.y);
+			character.Velocity = Math.Scale(dir, JumpForceOffsetXZ + (jumpCharge * JumpScalarXZ), JumpForceOffsetY + (jumpCharge * JumpScalarY));
 
 			jumpCharge = -1.0f;
 			character = null;
 
 			trigger.enabled = false;
-			Invoke(nameof(SetColliderEnabled), 0.25f);
+			Invoke(nameof(SetColliderEnabled), 0.5f);
 		}
+		LastJumpInput = JumpInput;
 	}
 	private void SetColliderEnabled() => trigger.enabled = true;
 
@@ -179,6 +195,7 @@ public class TestSpear : MonoBehaviour
 			{
 				trigger.enabled = false;
 				transform.position = hit.point - (0.4f * transform.localScale.z * transform.forward);
+				// transform.SetPositionAndRotation(hit.point - (0.4f * transform.localScale.z * transform.forward), Quaternion.LookRotation(-hit.normal));
 				trigger.enabled = true;
 
 				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, OliverLoescher.Util.Mono.Type.Default, OliverLoescher.Util.Mono.Priorities.CharacterController, this);
