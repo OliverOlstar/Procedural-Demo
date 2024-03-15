@@ -33,6 +33,10 @@ public class TestSpear : MonoBehaviour
 
 	[SerializeField]
 	private float JumpRotationSpeed = 5.0f;
+	[SerializeField]
+	private LineRenderer LineRenderer = null;
+	[SerializeField]
+	private Transform HighlightSpear = null;
 
 	[Space, SerializeField]
 	private Easing.EaseParams playerSnapEase = new Easing.EaseParams();
@@ -66,6 +70,7 @@ public class TestSpear : MonoBehaviour
 		transform.rotation = Quaternion.LookRotation(GetThrowDirection());
 		MoveTime = -1.0f;
 		isAiming = true;
+		HighlightSpear.gameObject.SetActive(true);
 	}
 
 	public bool CanThrow() => !isAnimating;
@@ -75,13 +80,18 @@ public class TestSpear : MonoBehaviour
 		Velocity = GetThrowDirection() * Force;
 		MoveTime = 0.0f;
 		isAiming = false;
+		HighlightSpear.gameObject.SetActive(false);
 	}
 
-	private Vector3 GetThrowDirection()
+	private Vector3 GetThrowPoint()
 	{
 		Vector3 toPoint = Physics.Raycast(MainCamera.Camera.transform.position, MainCamera.Camera.transform.forward, out RaycastHit hit, 40.0f, HitLayer)
 			? hit.point : MainCamera.Position + (MainCamera.Forward * 40.0f);
-		return toPoint - transform.position;
+		return toPoint;
+	}
+	private Vector3 GetThrowDirection()
+	{
+		return GetThrowPoint() - transform.position;
 	}
 
 	public void Recall()
@@ -125,7 +135,12 @@ public class TestSpear : MonoBehaviour
 		}
 		else if (isAiming)
 		{
-			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(GetThrowDirection()), Time.deltaTime * 35.0f);
+			Vector3 point = GetThrowPoint();
+			Quaternion direction = Quaternion.LookRotation(point - transform.position);
+			transform.rotation = Quaternion.Slerp(transform.rotation, direction, Time.deltaTime * 35.0f);
+			LineRenderer.SetPosition(0, SpearFront());
+			LineRenderer.SetPosition(1, point);
+			HighlightSpear.transform.SetPositionAndRotation(point - (0.4f * transform.localScale.z * transform.forward), direction);
 		}
 	}
 
@@ -200,8 +215,7 @@ public class TestSpear : MonoBehaviour
 
 				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, OliverLoescher.Util.Mono.Type.Default, OliverLoescher.Util.Mono.Priorities.CharacterController, this);
 			}
-			if (hitCue != null)
-				SOCue.Play(hitCue, new CueContext(hit.point));
+			SOCue.Play(hitCue, new CueContext(hit.point));
 			return;
 		}
 
