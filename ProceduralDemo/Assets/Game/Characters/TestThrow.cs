@@ -20,8 +20,11 @@ public class TestThrow : MonoBehaviour
 	private Transform SpearPivot = null;
 	[SerializeField]
 	private float AimTimeScale = 0.2f;
+	[SerializeField]
+	private float TimeScaleSmoothTime = 0.2f;
 
 	private State state = State.Has;
+	private float timeScaleVelocity = 0.0f;
 
 	private void Start()
 	{
@@ -30,6 +33,9 @@ public class TestThrow : MonoBehaviour
 
 	void Update()
 	{
+		bool isAiming = Input.GetKey(KeyCode.Mouse0) && (state == State.Has || state == State.Aiming);
+		AimCamera.SetActive(isAiming);
+		Time.timeScale = Mathf.SmoothDamp(Time.timeScale, isAiming ? AimTimeScale : 1.0f, ref timeScaleVelocity, TimeScaleSmoothTime);
 		switch (state)
 		{
 			case State.Has:
@@ -60,19 +66,16 @@ public class TestThrow : MonoBehaviour
 		switch (pToState)
 		{
 			case State.Has:
-				AimCamera.SetActive(false);
 				Spear.Recall();
 				Time.timeScale = 1.0f;
 				break;
 
 			case State.Aiming:
-				AimCamera.SetActive(true);
 				Spear.Aim();
-				Time.timeScale = AimTimeScale;
+				
 				break;
 
 			case State.Thrown:
-				AimCamera.SetActive(false);
 				Spear.Throw();
 				Time.timeScale = 1.0f;
 				break;
