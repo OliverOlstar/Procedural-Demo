@@ -107,7 +107,7 @@ public class TestSpear : MonoBehaviour
 		Vector3 recallStartPosition = transform.position;
 		isAnimating = true;
 		float seconds = Vector3.Distance(recallStartPosition, Camera.position) * RecallSeconds;
-		Anim.Play(RecallEase, Mathf.Min(seconds, 1.0f),
+		Anim.Play(RecallEase, Mathf.Min(seconds, 0.6f),
 		(pProgress) => // OnTick
 		{
 			transform.position = Vector3.LerpUnclamped(recallStartPosition, Camera.position, pProgress);
