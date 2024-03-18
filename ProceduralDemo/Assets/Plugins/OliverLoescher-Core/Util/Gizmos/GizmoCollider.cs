@@ -11,19 +11,19 @@ namespace OliverLoescher
 		[SerializeField]
 		private bool wireframe = false;
 
-		private new Collider collider = null;
+		private Collider target = null;
 
 		protected override void DrawGizmos()
 		{
 			base.DrawGizmos();
-			if (collider == null && !TryGetComponent(out collider))
+			if (target == null && !TryGetComponent(out target))
 			{
 				return;
 			}
 			Gizmos.matrix = transform.localToWorldMatrix;
 			if (wireframe)
 			{
-				switch (collider)
+				switch (target)
 				{
 					case BoxCollider box:
 						Gizmos.DrawWireCube(box.center, box.size);
@@ -41,7 +41,7 @@ namespace OliverLoescher
 			}
 			else
 			{
-				switch (collider)
+				switch (target)
 				{
 					case BoxCollider box:
 						Gizmos.DrawCube(box.center, box.size);

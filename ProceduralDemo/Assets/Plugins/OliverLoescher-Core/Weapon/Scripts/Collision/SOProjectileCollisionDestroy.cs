@@ -9,7 +9,7 @@ namespace OliverLoescher.Weapon
 	{
 		public override bool DoCollision(Projectile projectile, Collider other, ref bool canDamage, ref bool activeSelf)
 		{
-			projectile.rigidbody.isKinematic = true;
+			projectile.myRigidbody.isKinematic = true;
 			canDamage = false;
 
 			if (particlePrefab != null)

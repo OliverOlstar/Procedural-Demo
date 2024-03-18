@@ -8,7 +8,7 @@ namespace OliverLoescher.Camera
 {
     public class FirstPersonCameraInertia : MonoBehaviour
     {
-        [SerializeField] private new CinemachineVirtualCamera camera = null;
+        [SerializeField] private CinemachineVirtualCamera myCamera = null;
         [SerializeField] private Rigidbody rigid = null;
         private Vector3 lastVelocity;
         private Vector3 lastPosition;
@@ -32,9 +32,9 @@ namespace OliverLoescher.Camera
         private void Start()
         {
             lastPosition = transform.position;
-            if (camera != null)
+            if (myCamera != null)
 			{
-                camera.m_Lens.FieldOfView = fovMinMax.x;
+                myCamera.m_Lens.FieldOfView = fovMinMax.x;
             }
         }
 
@@ -77,12 +77,12 @@ namespace OliverLoescher.Camera
 
         private void DoFOV(float pDeltaTime)
 		{
-            if (camera == null)
+            if (myCamera == null)
 			{
                 return;
 			}
             float fov01 = Util.Func.SmoothStep(fovVelocity, Util.Math.Horizontalize(rigid.velocity).magnitude);
-            camera.m_Lens.FieldOfView = Mathf.Lerp(camera.m_Lens.FieldOfView, Mathf.Lerp(fovMinMax.x, fovMinMax.y, fov01), pDeltaTime * fovDampening);
+            myCamera.m_Lens.FieldOfView = Mathf.Lerp(myCamera.m_Lens.FieldOfView, Mathf.Lerp(fovMinMax.x, fovMinMax.y, fov01), pDeltaTime * fovDampening);
         }
     }
 }

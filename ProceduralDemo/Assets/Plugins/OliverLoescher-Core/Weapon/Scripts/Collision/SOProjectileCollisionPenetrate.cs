@@ -11,7 +11,7 @@ namespace OliverLoescher.Weapon
 		{
 			if (pOther.gameObject.isStatic)
 			{
-				pProjectile.rigidbody.isKinematic = true;
+				pProjectile.myRigidbody.isKinematic = true;
 				canDamage = false;
 				base.DoCollision(pProjectile, pOther, ref canDamage, ref activeSelf);
 				return true;

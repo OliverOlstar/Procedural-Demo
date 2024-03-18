@@ -19,7 +19,7 @@ namespace OliverLoescher.Weapon
 
 		public override bool DoCollision(Projectile pProjectile, Collider pOther, ref bool canDamage, ref bool activeSelf)
 		{
-			pProjectile.rigidbody.isKinematic = true;
+			pProjectile.myRigidbody.isKinematic = true;
 			canDamage = false;
 			base.DoCollision(pProjectile, pOther, ref canDamage, ref activeSelf);
 			Explode(pProjectile.transform.position, pProjectile);

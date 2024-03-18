@@ -23,11 +23,18 @@ namespace OliverLoescher.Cue
 		private Vector3 PosInfluence = Vector3.one * 0.15f;
 		[SerializeField, Tooltip("How much this shake influences rotation.")]
 		private Vector3 RotInfluence = Vector3.one;
+		[Header("Distance")]
+		[SerializeField]
+		private float InnerDistance = 0.0f;
+		[SerializeField]
+		private float MaxDistance = float.PositiveInfinity;
 
 		protected override void PlayInternal(in CueContext pContext, in SOCue pParent)
 		{
-			// TODO Scale by distance
-			CameraShaker.Instance.ShakeOnce(Magnitude, Roughness, FadeInTime, FadeOutTime, PosInfluence, RotInfluence);
+			float distance = (pContext.Point - MainCamera.Position).magnitude;
+			float distanceScalar = 1 - Util.Func.SmoothStep(InnerDistance, MaxDistance, distance);
+			Debug.Log("DistanceScale " + distanceScalar + " | Distance " + distance);
+			CameraShaker.Instance.ShakeOnce(Magnitude * distanceScalar, Roughness, FadeInTime, FadeOutTime, PosInfluence, RotInfluence);
 		}
 	}
 }

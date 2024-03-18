@@ -9,7 +9,7 @@ namespace OliverLoescher.Weapon
 	{
 		public override bool DoCollision(Projectile pProjectile, Collider pOther, ref bool canDamage, ref bool activeSelf)
 		{
-			pProjectile.rigidbody.isKinematic = true;
+			pProjectile.myRigidbody.isKinematic = true;
 			if (pOther.gameObject.isStatic == false)
 				pProjectile.transform.SetParent(pOther.transform);
 			canDamage = false;

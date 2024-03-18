@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class BillboardToMainCamera : MonoBehaviour
 {
-	private new Transform camera = null;
+	private Transform myCamera = null;
 
 	void Start()
 	{
-		camera = Camera.main.transform;
+		myCamera = Camera.main.transform;
 	}
 
 	void LateUpdate()
 	{
-		Vector3 dir = transform.position - camera.transform.position;
+		Vector3 dir = transform.position - myCamera.transform.position;
 		dir.y = 0;
 
 		if (dir != Vector3.zero)

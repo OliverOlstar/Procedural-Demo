@@ -10,7 +10,7 @@ namespace OliverLoescher.Weapon
 		[Required]
 		public SOProjectile data = null;
 
-		public new Rigidbody rigidbody = null;
+		public Rigidbody myRigidbody = null;
 		public Collider hitboxCollider = null;
 		public Collider physicsCollider = null;
 		public GameObject sender = null;
@@ -44,8 +44,8 @@ namespace OliverLoescher.Weapon
 		public override void OnExitPool()
 		{
 			currentFrame = 0;
-			rigidbody.isKinematic = false;
-			rigidbody.useGravity = false;
+			myRigidbody.isKinematic = false;
+			myRigidbody.useGravity = false;
 			canDamage = true;
 			lastHitCollider = null;
 			hitboxCollider.enabled = true;
@@ -63,7 +63,7 @@ namespace OliverLoescher.Weapon
 			transform.position = pPosition;
 			transform.rotation = Quaternion.LookRotation(pDirection);
 
-			rigidbody.velocity = pDirection.normalized * Util.Random.Range(data.shootForce);
+			myRigidbody.velocity = pDirection.normalized * Util.Random.Range(data.shootForce);
 			transform.position += transform.forward * spawnOffsetZ;
 
 			startPos = transform.position;
@@ -84,13 +84,13 @@ namespace OliverLoescher.Weapon
 			bool updateRot = false;
 			if (data.bulletGravity > 0)
 			{
-				rigidbody.AddForce(Vector3.down * data.bulletGravity * Time.fixedDeltaTime, ForceMode.VelocityChange);
+				myRigidbody.AddForce(Vector3.down * data.bulletGravity * Time.fixedDeltaTime, ForceMode.VelocityChange);
 				updateRot = true;
 			}
 
 			if (updateRot)
 			{
-				transform.rotation = Quaternion.LookRotation(rigidbody.velocity);
+				transform.rotation = Quaternion.LookRotation(myRigidbody.velocity);
 			}
 		}
 
@@ -167,11 +167,11 @@ namespace OliverLoescher.Weapon
 			
 			if (Random.value > data.critChance01)
 			{
-				damageable.Damage(data.damage, sender, transform.position, rigidbody.velocity);
+				damageable.Damage(data.damage, sender, transform.position, myRigidbody.velocity);
 			}
 			else
 			{
-				damageable.Damage(Mathf.RoundToInt(data.critDamageMultiplier * data.damage), sender, transform.position, rigidbody.velocity, critColor);
+				damageable.Damage(Mathf.RoundToInt(data.critDamageMultiplier * data.damage), sender, transform.position, myRigidbody.velocity, critColor);
 			}
 		}
 
