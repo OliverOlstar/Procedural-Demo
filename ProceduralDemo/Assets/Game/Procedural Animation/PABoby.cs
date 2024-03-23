@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using OliverLoescher.Util;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class PABoby : MonoBehaviour, IPABody
 {
 	private PARoot Root;
 	private IPACharacter Character => Root.Character;
-	private IPAPoint[] Points => Root.Points;
+	private List<IPAPoint> Points => Root.Points;
 
 	[Header("Position")]
 	[SerializeField]
@@ -50,7 +51,7 @@ public class PABoby : MonoBehaviour, IPABody
 		{
 			position += point.Position;
 		}
-		Vector3 targetPosition = (position / Points.Length) + PositionLocalOffset;
+		Vector3 targetPosition = (position / Points.Count) + PositionLocalOffset;
 		Vector2 positionXZ = Func.SpringDamper(Math.Horizontal2D(transform.position), Math.Horizontal2D(targetPosition), ref VelocityXZ, SpringXZ, DamperXZ, pDeltaTime);
 		float positionY = Func.SpringDamper(transform.position.y, targetPosition.y, ref VelocityY, SpringY, DamperY, pDeltaTime);
 		transform.position = Math.Combine(positionXZ, positionY);
@@ -74,7 +75,7 @@ public class PABoby : MonoBehaviour, IPABody
 		// Apply Rotation
 		Quaternion targetRotation = Math.UpForwardRotation(Character.Forward, up.normalized);
 		targetRotation = Quaternion.LerpUnclamped(Quaternion.LookRotation(Character.Forward), targetRotation, RotationBlendY);
-		targetRotation *= Quaternion.Euler(0.0f, (angle / Points.Length) * RotationBlendXZ, 0.0f);
+		targetRotation *= Quaternion.Euler(0.0f, (angle / Points.Count) * RotationBlendXZ, 0.0f);
 
 		transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, pDeltaTime * RotationDampening);
 
@@ -107,7 +108,7 @@ public class PABoby : MonoBehaviour, IPABody
 			Gizmos.DrawSphere(point.Position, 2.0f);
 			position += point.Position;
 		}
-		Vector3 targetPosition = (position / Points.Length) + PositionLocalOffset;
+		Vector3 targetPosition = (position / Points.Count) + PositionLocalOffset;
 		Gizmos.DrawSphere(targetPosition, 1.0f);
 	}
 }

@@ -15,7 +15,9 @@ public class PATargetEditor : Editor
 
 		if (target is PATarget target2)
 		{
-			target2.TargetLocalOffset = Handles.DoPositionHandle(target2.TargetLocalOffset + target2.transform.position, Quaternion.identity) - target2.transform.position;
+			Vector3 worldPosition = target2.transform.TransformPoint(target2.TargetLocalOffset);
+			worldPosition = Handles.DoPositionHandle(worldPosition, target2.transform.rotation);
+			target2.TargetLocalOffset = target2.transform.InverseTransformPoint(worldPosition);
 		}
 	}
 }

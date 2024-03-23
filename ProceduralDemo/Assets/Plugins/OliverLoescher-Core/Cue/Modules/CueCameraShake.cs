@@ -33,7 +33,7 @@ namespace OliverLoescher.Cue
 		{
 			float distance = (pContext.Point - MainCamera.Position).magnitude;
 			float distanceScalar = 1 - Util.Func.SmoothStep(InnerDistance, MaxDistance, distance);
-			Debug.Log("DistanceScale " + distanceScalar + " | Distance " + distance);
+			// Debug.Log("DistanceScale " + distanceScalar + " | Distance " + distance);
 			CameraShaker.Instance.ShakeOnce(Magnitude * distanceScalar, Roughness, FadeInTime, FadeOutTime, PosInfluence, RotInfluence);
 		}
 	}
