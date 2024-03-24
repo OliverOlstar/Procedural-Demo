@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Start/Charge")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Start/Charge")]
 	public class SOWeaponShootStartCharge : SOWeaponShootStartBase
 	{
 		[SerializeField]

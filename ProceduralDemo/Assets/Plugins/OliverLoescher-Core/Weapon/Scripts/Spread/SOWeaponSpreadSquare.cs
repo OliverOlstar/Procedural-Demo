@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Spread/Square")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Spread/Square")]
 	public class SOWeaponSpreadSquare : SOWeaponSpreadExpandBase
 	{
 		public Vector2 spreadVector = new Vector2(0.2f, 0.2f);

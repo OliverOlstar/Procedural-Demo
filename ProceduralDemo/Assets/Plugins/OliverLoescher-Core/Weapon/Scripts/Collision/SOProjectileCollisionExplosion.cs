@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Collision/Explosion")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Collision/Explosion")]
 	public class SOProjectileCollisionExplosion : SOProjectileCollisionBase
 	{
 		[Space, SerializeField, Min(0.1f)]

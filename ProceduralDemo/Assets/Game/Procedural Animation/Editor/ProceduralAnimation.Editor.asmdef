@@ -1,6 +1,6 @@
 {
     "name": "ProceduralAnimation.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "PA",
     "references": [
         "GUID:03029325b9e1aa84587926c3087fe7ec",
         "GUID:5b10c1f9ecd537f4dbe3d211152286e8"

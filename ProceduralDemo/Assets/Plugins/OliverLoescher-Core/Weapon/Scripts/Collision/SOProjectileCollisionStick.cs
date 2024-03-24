@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Collision/Stick")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Collision/Stick")]
 	public class SOProjectileCollisionStick : SOProjectileCollisionBase
 	{
 		public override bool DoCollision(Projectile pProjectile, Collider pOther, ref bool canDamage, ref bool activeSelf)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Cue
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Cue")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Cue")]
 	public class SOCue : ScriptableObject
 	{
 		// TODO Add Duration & Motion

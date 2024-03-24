@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Start/Instant")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Start/Instant")]
 	public class SOWeaponShootStartInstant : SOWeaponShootStartBase
 	{
 

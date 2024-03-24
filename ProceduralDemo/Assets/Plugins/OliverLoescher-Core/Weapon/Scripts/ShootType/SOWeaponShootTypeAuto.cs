@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/ShootType/Auto")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/ShootType/Auto")]
 	public class SOWeaponShootTypeAuto : SOWeaponShootTypeBase
 	{
 		[SerializeField, Min(0.0f)]

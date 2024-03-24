@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Start/InstantLimitedByFirerate")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Start/InstantLimitedByFirerate")]
 	public class SOWeaponShootStartInstantLimitedByFirerate : SOWeaponShootStartBase
 	{
 		public override void ShootStart()

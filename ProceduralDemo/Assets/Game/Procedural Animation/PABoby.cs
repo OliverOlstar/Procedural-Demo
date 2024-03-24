@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using OliverLoescher.Util;
-using Sirenix.Utilities;
 using UnityEngine;
 
 public class PABoby : MonoBehaviour, IPABody
@@ -30,12 +29,6 @@ public class PABoby : MonoBehaviour, IPABody
 	private float RotationBlendXZ = 1.0f;
 	[SerializeField, Range(0.0f, 5.0f)]
 	private float RotationBlendY = 1.0f;
-
-	//[Header("Leaning")]
-	//[SerializeField]
-	//private float LeanMagnitude = 5.0f;
-	//[SerializeField]
-	//private float LeanSmoothTime = 0.2f;
 
 	void IPABody.Init(PARoot pRoot)
 	{
@@ -75,7 +68,7 @@ public class PABoby : MonoBehaviour, IPABody
 		// Apply Rotation
 		Quaternion targetRotation = Math.UpForwardRotation(Character.Forward, up.normalized);
 		targetRotation = Quaternion.LerpUnclamped(Quaternion.LookRotation(Character.Forward), targetRotation, RotationBlendY);
-		targetRotation *= Quaternion.Euler(0.0f, (angle / Points.Count) * RotationBlendXZ, 0.0f);
+		targetRotation *= Quaternion.Euler(0.0f, RotationBlendXZ * (angle / Points.Count), 0.0f);
 
 		transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, pDeltaTime * RotationDampening);
 

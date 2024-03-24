@@ -38,6 +38,7 @@ namespace OliverLoescher.Util
 			}
 			return vector;
 		}
+		public static Vector3 Add(this Vector3 pVector, params Vector3[] pVectors) => Add(pVectors) + pVector;
 		public static Vector3 Add(IEnumerable<Vector3> pVectors)
 		{
 			Vector3 vector = Vector3.zero;
@@ -47,6 +48,7 @@ namespace OliverLoescher.Util
 			}
 			return vector;
 		}
+		public static Vector3 Add(this Vector3 pVector, IEnumerable<Vector3> pVectors) => Add(pVectors) + pVector;
 
 		public static Vector3 Combine(Vector2 pXZ, float pY)
 		{

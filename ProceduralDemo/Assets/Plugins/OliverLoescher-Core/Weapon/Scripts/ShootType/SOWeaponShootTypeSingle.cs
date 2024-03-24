@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/ShootType/Single")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/ShootType/Single")]
 	public class SOWeaponShootTypeSingle : SOWeaponShootTypeBase
 	{
 		public override void ShootStart()

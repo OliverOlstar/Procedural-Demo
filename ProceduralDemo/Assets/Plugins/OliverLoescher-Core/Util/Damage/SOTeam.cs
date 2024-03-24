@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 
 namespace OliverLoescher
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Team Data")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Team Data")]
 	public class SOTeam : ScriptableObject
 	{
 		public bool ignoreTeamCollisions = true;

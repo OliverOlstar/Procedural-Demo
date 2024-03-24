@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Spread/None")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Spread/None")]
 	public class SOWeaponSpreadNone : SOWeaponSpreadBase
 	{
 		public override Vector3 ApplySpread(Vector3 pDirection) => pDirection;

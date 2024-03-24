@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Spread/Ellipse")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Spread/Ellipse")]
 	public class SOWeaponSpreadEllipse : SOWeaponSpreadExpandBase
 	{
 		public Vector2 spreadVector = new Vector2(0.2f, 0.2f);

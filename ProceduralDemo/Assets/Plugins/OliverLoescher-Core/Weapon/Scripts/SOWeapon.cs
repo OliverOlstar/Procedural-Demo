@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Weapon Data")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Weapon Data")]
 	public class SOWeapon : ScriptableObject
 	{
 		public enum BulletType 

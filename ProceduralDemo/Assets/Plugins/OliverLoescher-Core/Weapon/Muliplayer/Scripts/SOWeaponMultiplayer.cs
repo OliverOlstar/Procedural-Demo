@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 
 namespace OliverLoescher.Weapon.Multiplayer
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Weapon Multiplayer Data")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Weapon Multiplayer Data")]
 	public class SOWeaponMultiplayer : SOWeapon
 	{
 		[Title("Multiplayer")]

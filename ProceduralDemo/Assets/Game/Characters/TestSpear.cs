@@ -159,7 +159,7 @@ public class TestSpear : MonoBehaviour
 	{
 		if (jumpCharge < 0.0f)
 		{
-			if (!Input.GetKeyDown(KeyCode.W) && !Input.GetKeyDown(KeyCode.S) && !Input.GetKeyDown(KeyCode.D) && !Input.GetKeyDown(KeyCode.A))
+			if (!Input.GetKeyDown(KeyCode.S) && !Input.GetKeyDown(KeyCode.D) && !Input.GetKeyDown(KeyCode.A))
 			{
 				return;
 			}
@@ -167,7 +167,7 @@ public class TestSpear : MonoBehaviour
 			StartRotation = transform.rotation;
 			StartPosition = transform.position;
 		}
-		float x = (Input.GetKey(KeyCode.W) ? 1 : 0) - (Input.GetKey(KeyCode.S) ? 1 : 0);
+		float x = Input.GetKey(KeyCode.S) ? -1 : 0;
 		float y = (Input.GetKey(KeyCode.D) ? 1 : 0) - (Input.GetKey(KeyCode.A) ? 1 : 0);
 		JumpInput = Vector2.Lerp(JumpInput, Vector2.ClampMagnitude(new Vector2(x, y), 1.0f), Time.deltaTime * 5.0f);
 		if (jumpCharge < MaxChargeSeconds)

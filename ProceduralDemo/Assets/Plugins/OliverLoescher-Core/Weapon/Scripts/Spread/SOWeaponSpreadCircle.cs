@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace OliverLoescher.Weapon
 {
-	[CreateAssetMenu(menuName = "ScriptableObject/Weapon/Spread/Circle")]
+	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Spread/Circle")]
 	public class SOWeaponSpreadCircle : SOWeaponSpreadExpandBase
 	{
 		public float spreadRadius = 0.2f;

@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100501957235057453}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.9659259, y: -0.00000009499489, z: 0.00000005483161, w: 0.25881907}
+  m_LocalRotation: {x: 0.9659259, y: -0.0000001634471, z: 0.00000013981479, w: 0.2588191}
   m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axis: {x: 1, y: 0, z: 0}
-  defaultLocalRotation: {x: 0.9659259, y: -0.00000007171183, z: 0.00000004831235, w: 0.25881907}
+  defaultLocalRotation: {x: 0.9659259, y: -0.00000015273689, z: 0.00000013678799, w: 0.2588191}
   useLimits: 1
   min: -45
   max: 45
@@ -515,10 +515,10 @@ MonoBehaviour:
       solverPosition: {x: 0, y: 0, z: 0}
       solverRotation: {x: 0, y: 0, z: 0, w: 0}
       defaultLocalPosition: {x: 0, y: 4, z: 0}
-      defaultLocalRotation: {x: 0.9659258, y: -0.00000007264316, z: -0.000000071828254, w: 0.25881916}
-      length: 8
+      defaultLocalRotation: {x: 0.9659258, y: -0.0000001359731, z: -0.00000008800998, w: 0.25881928}
+      length: 8.000001
       sqrMag: 0
-      axis: {x: -0.000003884347, y: 8, z: -0.0000030444455}
+      axis: {x: -0.0000029678424, y: 8.000003, z: -0.0000011226713}
     - transform: {fileID: 2875430460890387257}
       weight: 1
       solverPosition: {x: 0, y: 0, z: 0}
@@ -527,7 +527,7 @@ MonoBehaviour:
       defaultLocalRotation: {x: 0, y: 0, z: 0, w: 1}
       length: 3.9999971
       sqrMag: 0
-      axis: {x: -0.0000031913303, y: 4.535899, z: -2.0000098}
+      axis: {x: -0.000002586568, y: 4.535901, z: -2.0000088}
 --- !u!114 &4188552188444573571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,7 +535,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3012148355245813990}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45281828b4c9247558c7c695124d6877, type: 3}
   m_Name: 
@@ -980,7 +980,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5858604075971015062}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.9659258, y: -0.00000010244548, z: -0.00000009732321, w: 0.25881925}
+  m_LocalRotation: {x: 0.9659258, y: -0.00000016158447, z: -0.00000008067582, w: 0.25881928}
   m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1002,7 +1002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axis: {x: 1, y: 0, z: 0}
-  defaultLocalRotation: {x: 0.9659258, y: -0.00000007264316, z: -0.000000071828254, w: 0.25881916}
+  defaultLocalRotation: {x: 0.9659258, y: -0.0000001359731, z: -0.00000008800998, w: 0.25881928}
   useLimits: 1
   min: -45
   max: 45
@@ -1397,10 +1397,10 @@ MonoBehaviour:
       solverPosition: {x: 0, y: 0, z: 0}
       solverRotation: {x: 0, y: 0, z: 0, w: 0}
       defaultLocalPosition: {x: 0, y: 4, z: 0}
-      defaultLocalRotation: {x: 0.9659259, y: -0.00000007171183, z: 0.00000004831235, w: 0.25881907}
+      defaultLocalRotation: {x: 0.9659259, y: -0.00000015273689, z: 0.00000013678799, w: 0.2588191}
       length: 8.000002
       sqrMag: 0
-      axis: {x: 0.00000084906674, y: 8.000007, z: 0.0000061845344}
+      axis: {x: 0.0000025034024, y: 8.000006, z: 0.0000065986287}
     - transform: {fileID: 6604146757970456685}
       weight: 1
       solverPosition: {x: 0, y: 0, z: 0}
@@ -1409,7 +1409,7 @@ MonoBehaviour:
       defaultLocalRotation: {x: 0, y: 0, z: 0, w: 1}
       length: 3.9999971
       sqrMag: 0
-      axis: {x: -0.000005135161, y: 4.535903, z: -1.999996}
+      axis: {x: -0.000003778553, y: 4.5359025, z: -1.9999956}
 --- !u!114 &6050142691779588815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1417,7 +1417,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8434982371719983403}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45281828b4c9247558c7c695124d6877, type: 3}
   m_Name: 
