@@ -71,7 +71,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 	{
 		StepOffset = CurrentPosition;
 		CurrentState = State.Stepping;
-		Anim.Play2D(EaseStep, EaseHeight, OliverLoescher.Util.Random2.Range(StepSeconds), StepTick, StepComplete);
+		Anim.Play2D(EaseStep, EaseHeight, Random2.Range(StepSeconds), StepTick, StepComplete);
 	}
 
 	public void TriggerFalling()

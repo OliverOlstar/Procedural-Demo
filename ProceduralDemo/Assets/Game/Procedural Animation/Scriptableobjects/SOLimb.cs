@@ -7,8 +7,8 @@ using UnityEngine;
 namespace PA
 {
 	[CreateAssetMenu(fileName = "New PA Limb", menuName = "Procedural Animation/Limb/Limb")]
-    public class SOLimb : ScriptableObject
-    {
+	public class SOLimb : ScriptableObject
+	{
 		public enum State
 		{
 			None,
@@ -36,7 +36,7 @@ namespace PA
 			m_StepMovement = ScriptableObject.Instantiate(m_StepMovement);
 
 			m_Point.Init(pRoot, pIK);
-			m_StepTrigger.Init(this);
+			m_StepTrigger.Init(pRoot, this);
 			m_StepMovement.Init(pRoot, this);
 		}
 
@@ -52,7 +52,7 @@ namespace PA
 			}
 			// m_Movement.Tick(pDeltaTime);
 		}
-		
+
 		public void SwitchState(State pState)
 		{
 			if (m_State == pState)
@@ -62,11 +62,14 @@ namespace PA
 
 			switch (m_State)
 			{
+				case State.None:
+					break;
+
 				case State.Moving:
 					m_StepMovement.StopMove();
 					break;
 
-				case State.Falling:
+				default:
 					throw new NotImplementedException();
 			}
 
@@ -74,11 +77,14 @@ namespace PA
 
 			switch (m_State)
 			{
+				case State.None:
+					break;
+
 				case State.Moving:
 					m_StepMovement.StartMove();
 					break;
 
-				case State.Falling:
+				default:
 					throw new NotImplementedException();
 			}
 		}

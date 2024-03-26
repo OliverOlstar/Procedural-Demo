@@ -24,9 +24,9 @@ namespace PA
 
 		[Header("Linecast")]
 		[SerializeField]
-		private Vector2 LinecastUpDown = new Vector2(1, -1);
+		private Vector2 LinecastUpDown = new(1, -1);
 		[SerializeField]
-		private LayerMask StepLayer = new LayerMask();
+		private LayerMask StepLayer = new();
 
 		[Header("Cues")]
 		[SerializeField]
@@ -44,6 +44,7 @@ namespace PA
 
 		private PARoot2 m_Root;
 		private SOLimb m_Limb;
+		Anim.IAnimation m_Animation;
 
 		public void Init(PARoot2 pRoot, SOLimb pLimb)
 		{
@@ -55,11 +56,15 @@ namespace PA
 		public void StartMove()
 		{
 			StepOffset = Position;
-			Anim.Play2D(EaseStep, EaseHeight, Random2.Range(StepSeconds), StepTick, StepComplete);
+			m_Animation = Anim.Play2D(EaseStep, EaseHeight, Random2.Range(StepSeconds), StepTick, StepComplete);
 		}
 		public void StopMove()
 		{
-			// Debug2.NotImplementedException();
+			if (m_Animation != null)
+			{
+				m_Animation.Cancel();
+				m_Animation = null;
+			}
 		}
 
 		private void StepTick(Vector2 pProgress)
@@ -74,6 +79,7 @@ namespace PA
 			Position = CalculateStepPoint();
 			SOCue.Play(OnStepCue, new CueContext(Position));
 			m_Limb.SwitchState(SOLimb.State.None);
+			m_Animation = null;
 		}
 
 		private Vector3 CalculateStepPoint()

@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StepDistance: 1
   EaseStep:
-    Method: 0
+    Method: 1
     Direction: 0
   EaseHeight:
-    Method: 0
+    Method: 5
     Direction: 0
-  StepSeconds: {x: 1, y: 1}
-  UpHeight: 1
-  LinecastUpDown: {x: 1, y: -1}
+  StepSeconds: {x: 0.6, y: 0.7}
+  UpHeight: 2
+  LinecastUpDown: {x: 10, y: -15}
   StepLayer:
     serializedVersion: 2
     m_Bits: 9
-  OnStepCue: {fileID: 0}
+  OnStepCue: {fileID: 11400000, guid: b9c7a419c3d00a14db9c8c12501c9c3c, type: 2}

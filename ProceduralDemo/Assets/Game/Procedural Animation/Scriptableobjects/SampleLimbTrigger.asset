@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355bee3cc61615a4c9b50d92ebdcfc69, type: 3}
   m_Name: SampleLimbTrigger
   m_EditorClassIdentifier: 
-  MaxDistance: 5
-  OppositeTargets: []
+  m_MaxDistance: 0.75
+  m_Cooldown: 1.42
