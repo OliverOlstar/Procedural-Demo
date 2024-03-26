@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using RootMotion.FinalIK;
 using UnityEngine;
 
 namespace PA
@@ -7,27 +9,85 @@ namespace PA
 	[CreateAssetMenu(fileName = "New PA Limb", menuName = "Procedural Animation/Limb/Limb")]
     public class SOLimb : ScriptableObject
     {
-		[SerializeField]
-		private SOLimbTrigger m_Trigger = null;
-		[SerializeField]
-		private SOLimbMovement m_Movement = null;
-
-		public void Init(PARoot2 pRoot)
+		public enum State
 		{
-			m_Trigger.Init();
-			m_Movement.Init();
+			None,
+			Moving,
+			Falling
+		}
+
+		[SerializeField]
+		private SOLimbTrigger m_StepTrigger = null;
+		[SerializeField]
+		private SOLimbMovement m_StepMovement = null;
+
+		private readonly PAPoint m_Point = new();
+		public Vector3 Position { get => m_Point.Position; set { m_Point.Position = value; } }
+		public Vector3 OriginalPositionWorld() => m_Point.OriginalPositionWorld();
+		public PAPoint Point => m_Point;
+
+		private State m_State = State.None;
+		public bool IsIdle => m_State == State.None;
+		public bool IsMoving => m_State == State.Moving;
+
+		public void Init(PARoot2 pRoot, IKSolverCCD pIK)
+		{
+			m_StepTrigger = ScriptableObject.Instantiate(m_StepTrigger);
+			m_StepMovement = ScriptableObject.Instantiate(m_StepMovement);
+
+			m_Point.Init(pRoot, pIK);
+			m_StepTrigger.Init(this);
+			m_StepMovement.Init(pRoot, this);
 		}
 
 		public void Tick(float pDeltaTime)
 		{
-			m_Trigger.Tick(pDeltaTime);
+			if (!IsIdle)
+			{
+				return;
+			}
+			if (m_StepTrigger.Tick(pDeltaTime))
+			{
+				SwitchState(State.Moving);
+			}
 			// m_Movement.Tick(pDeltaTime);
+		}
+		
+		public void SwitchState(State pState)
+		{
+			if (m_State == pState)
+			{
+				return;
+			}
+
+			switch (m_State)
+			{
+				case State.Moving:
+					m_StepMovement.StopMove();
+					break;
+
+				case State.Falling:
+					throw new NotImplementedException();
+			}
+
+			m_State = pState;
+
+			switch (m_State)
+			{
+				case State.Moving:
+					m_StepMovement.StartMove();
+					break;
+
+				case State.Falling:
+					throw new NotImplementedException();
+			}
 		}
 
 		public void DrawGizmos()
 		{
-			m_Trigger.DrawGizmos();
-			m_Movement.DrawGizmos();
+			m_Point.DrawGizmos();
+			m_StepTrigger.DrawGizmos();
+			m_StepMovement.DrawGizmos();
 		}
-    }
+	}
 }

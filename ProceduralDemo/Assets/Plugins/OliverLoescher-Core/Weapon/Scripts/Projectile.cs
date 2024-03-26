@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using OliverLoescher.Util;
 using Sirenix.OdinInspector;
 
 namespace OliverLoescher.Weapon
@@ -63,7 +64,7 @@ namespace OliverLoescher.Weapon
 			transform.position = pPosition;
 			transform.rotation = Quaternion.LookRotation(pDirection);
 
-			myRigidbody.velocity = pDirection.normalized * Util.Random.Range(data.shootForce);
+			myRigidbody.velocity = pDirection.normalized * Random2.Range(data.shootForce);
 			transform.position += transform.forward * spawnOffsetZ;
 
 			startPos = transform.position;
@@ -71,7 +72,7 @@ namespace OliverLoescher.Weapon
 
 			sender = pSender;
 			team = pTeam;
-			Invoke(nameof(DoLifeEnd), Util.Random.Range(data.lifeTime));
+			Invoke(nameof(DoLifeEnd), Random2.Range(data.lifeTime));
 		}
 
 		private void FixedUpdate() 

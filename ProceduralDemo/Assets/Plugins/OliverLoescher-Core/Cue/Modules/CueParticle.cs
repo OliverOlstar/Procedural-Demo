@@ -15,7 +15,7 @@ namespace OliverLoescher.Cue
 		{
 			if (RandomParticles.IsNullOrEmpty())
 			{
-				Util.Debug.LogWarning("IsEnabled is true but RandomParticles is empty", "PlayInternal", pParent);
+				Util.Debug2.LogWarning("IsEnabled is true but RandomParticles is empty", "PlayInternal", pParent);
 				return;
 			}
 			int index = Random.Range(0, RandomParticles.Length - 1);

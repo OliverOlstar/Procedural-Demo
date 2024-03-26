@@ -3,22 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using OliverLoescher.Util;
 using OliverLoescher.Cue;
-using Sirenix.OdinInspector;
 
 namespace PA
 {
 	[CreateAssetMenu(fileName = "New PA Limb Movement", menuName = "Procedural Animation/Limb/Movement")]
 	public class SOLimbMovement : ScriptableObject
 	{
-		public enum State
-		{
-			Idle = 0,
-			Stepping,
-			Falling
-		}
-
-		[DisableInPlayMode]
-		public Vector3 TargetLocalOffset;
 		[SerializeField]
 		private float StepDistance = 1.0f;
 
@@ -42,81 +32,80 @@ namespace PA
 		[SerializeField]
 		private SOCue OnStepCue;
 
-		public Vector3 CurrentPosition
+		public Vector3 Position
 		{
-			get => IK.solver.IKPosition;
-			set => IK.solver.IKPosition = value;
+			get => m_Limb.Position;
+			set => m_Limb.Position = value;
 		}
-		public Vector3 Position => CurrentPosition;
-		public Vector3 RelativeOriginalPosition => TargetPosition;
 
-		private IPACharacter Character => null;
 		private Vector3 StepOffset;
-		private Vector3 TargetCharacterOffset;
-		public State CurrentState { get; private set; } = State.Idle;
 
-		public Vector3 TargetPosition => Character.TransformPoint(TargetCharacterOffset);
+		public Vector3 TargetPosition() => m_Limb.OriginalPositionWorld();
 
-		public void Init()
+		private PARoot2 m_Root;
+		private SOLimb m_Limb;
+
+		public void Init(PARoot2 pRoot, SOLimb pLimb)
 		{
-			IK.UpdateSolverExternal();
-			TargetCharacterOffset = Character.InverseTransformPoint(transform.TransformPoint(TargetLocalOffset));
-			CurrentPosition = CalculateStepPoint();
+			m_Root = pRoot;
+			m_Limb = pLimb;
+			Position = CalculateStepPoint();
 		}
 
-		public void TriggerMove()
+		public void StartMove()
 		{
-			StepOffset = CurrentPosition;
-			CurrentState = State.Stepping;
-			Anim.Play2D(EaseStep, EaseHeight, OliverLoescher.Util.Random.Range(StepSeconds), StepTick, StepComplete);
+			StepOffset = Position;
+			Anim.Play2D(EaseStep, EaseHeight, Random2.Range(StepSeconds), StepTick, StepComplete);
 		}
-
-		public void TriggerFalling()
+		public void StopMove()
 		{
-			CurrentState = State.Falling;
+			// Debug2.NotImplementedException();
 		}
 
 		private void StepTick(Vector2 pProgress)
 		{
 			Vector3 endStepPoint = CalculateStepPoint();
-			Vector3 up = Character.Up * Math.LerpUnclamped(0, UpHeight, 0, pProgress.y);
+			Vector3 up = m_Root.Up * Math.LerpUnclamped(0, UpHeight, 0, pProgress.y);
 			Vector3 horizontal = Vector3.LerpUnclamped(StepOffset, endStepPoint, pProgress.x);
-			CurrentPosition = horizontal + up;
+			Position = horizontal + up;
 		}
 		private void StepComplete(Vector2 _)
 		{
-			CurrentPosition = CalculateStepPoint();
-			CurrentState = State.Idle;
-			SOCue.Play(OnStepCue, new CueContext(CurrentPosition));
+			Position = CalculateStepPoint();
+			SOCue.Play(OnStepCue, new CueContext(Position));
+			m_Limb.SwitchState(SOLimb.State.None);
 		}
 
 		private Vector3 CalculateStepPoint()
 		{
-			Vector3 stepMotion = Character.MotionForward * -StepDistance;
-			Vector3 stepEndPoint = stepMotion + TargetPosition;
-			Vector3 upPoint = (LinecastUpDown.x * Character.Up) + stepEndPoint;
-			Vector3 downPoint = (LinecastUpDown.y * Character.Up) + stepEndPoint;
+			Vector3 targetPosition = TargetPosition();
+			Vector3 stepMotion = m_Root.Velocity.normalized * -StepDistance;
+			Vector3 stepEndPoint = stepMotion + targetPosition;
+			Vector3 upPoint = (LinecastUpDown.x * m_Root.Up) + stepEndPoint;
+			Vector3 downPoint = (LinecastUpDown.y * m_Root.Up) + stepEndPoint;
 			if (Physics.Linecast(upPoint, downPoint, out RaycastHit hit, StepLayer))
 			{
-				stepMotion = hit.point - TargetPosition;
+				stepMotion = hit.point - targetPosition;
 			}
-			return TargetPosition + stepMotion;
+			return targetPosition + stepMotion;
 		}
 
 		public void DrawGizmos()
 		{
+			Vector3 targetPosition = TargetPosition();
+
 			// Points
 			Gizmos.color = Color.blue;
-			Gizmos.DrawSphere(CurrentPosition, 0.2f);
+			Gizmos.DrawSphere(Position, 0.2f);
 			Gizmos.color = Color.yellow;
-			Gizmos.DrawSphere(TargetPosition, 0.2f);
-			Gizmos.DrawWireSphere(TargetPosition, StepDistance);
+			Gizmos.DrawSphere(targetPosition, 0.2f);
+			Gizmos.DrawWireSphere(targetPosition, StepDistance);
 
 			// Linecast
-			Vector3 stepMotion = Character.MotionForward * -StepDistance;
-			Vector3 stepEndPoint = stepMotion + TargetPosition;
-			Vector3 upPoint = (LinecastUpDown.x * Character.Up) + stepEndPoint;
-			Vector3 downPoint = (LinecastUpDown.y * Character.Up) + stepEndPoint;
+			Vector3 stepMotion = m_Root.Velocity.normalized * -StepDistance;
+			Vector3 stepEndPoint = stepMotion + targetPosition;
+			Vector3 upPoint = (LinecastUpDown.x * m_Root.Up) + stepEndPoint;
+			Vector3 downPoint = (LinecastUpDown.y * m_Root.Up) + stepEndPoint;
 			Gizmos.color = Color.cyan;
 			Gizmos.DrawLine(upPoint, downPoint);
 		}

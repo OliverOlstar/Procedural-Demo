@@ -45,12 +45,12 @@ namespace OliverLoescher
 
 		private static GameObject LogContext => _Instance != null ? _Instance.gameObject : null;
 		[Conditional("ENABLE_DEBUG_LOGGING")]
-        protected static void Log(string pMessage, string pMethodName) => Util.Debug.Log(pMessage, pMethodName, LogContext);
+        protected static void Log(string pMessage, string pMethodName) => Util.Debug2.Log(pMessage, pMethodName, LogContext);
 		[Conditional("ENABLE_DEBUG_LOGGING")]
-        protected static void LogWarning(string pMessage, string pMethodName) => Util.Debug.LogWarning(pMessage, pMethodName, LogContext);
+        protected static void LogWarning(string pMessage, string pMethodName) => Util.Debug2.LogWarning(pMessage, pMethodName, LogContext);
 		[Conditional("ENABLE_DEBUG_LOGGING")]
-        protected static void LogError(string pMessage, string pMethodName) => Util.Debug.LogError(pMessage, pMethodName, LogContext);
+        protected static void LogError(string pMessage, string pMethodName) => Util.Debug2.LogError(pMessage, pMethodName, LogContext);
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS")]
-        protected static void LogExeception(string pMessage, string pMethodName) => Util.Debug.DevException(pMessage, pMethodName, LogContext);
+        protected static void LogExeception(string pMessage, string pMethodName) => Util.Debug2.DevException(pMessage, pMethodName, LogContext);
     }
 }

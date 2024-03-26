@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Util
 {
-	public static class Debug
+	public static class Debug2
 	{
 		#region Logs
 		private static StringBuilder StringBuilder = new StringBuilder();
@@ -50,6 +50,16 @@ namespace OliverLoescher.Util
 			UnityEngine.Debug.LogException(new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, pObject)));
 #else
 			throw new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, pObject));
+#endif
+		}
+
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS")]
+		public static void NotImplementedException()
+		{
+#if RELEASE
+			UnityEngine.Debug.LogException(new NotImplementedException());
+#else
+			throw new InvalidOperationException();
 #endif
 		}
 

@@ -26,11 +26,14 @@ public class TestMoveBetweenPoints : MonoBehaviour, IPACharacter
 	Vector3 IPACharacter.Forward => transform.forward;
 	Vector3 IPACharacter.TransformPoint(in Vector3 pVector) => transform.TransformPoint(pVector);
 	Vector3 IPACharacter.InverseTransformPoint(in Vector3 pVector) => transform.InverseTransformPoint(pVector);
-	Vector3 IPACharacter.MotionForward => lerpedforward;
+	Vector3 IPACharacter.Veclocity => lerpedforward;
+	Quaternion IPACharacter.Rotation => transform.rotation;
+
 	private Vector3 lerpedforward = Vector3.zero;
 
-	private void Start()
+	private IEnumerator Start()
 	{
+		yield return null;
 		Anim.Play(Ease, Points[pCurrIndex].Seconds, OnTick, OnComplete);
 	}
 

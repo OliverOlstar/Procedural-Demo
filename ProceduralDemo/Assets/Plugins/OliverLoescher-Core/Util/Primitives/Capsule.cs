@@ -111,7 +111,7 @@ namespace OliverLoescher
 		{
 			pPosition += center;
 			Vector3 up = Up * ((height * 0.5f) - radius);
-			Util.Debug.GizmoCapsule(pPosition + up, pPosition - up, radius);
+			Util.Debug2.GizmoCapsule(pPosition + up, pPosition - up, radius);
 		}
 	}
 

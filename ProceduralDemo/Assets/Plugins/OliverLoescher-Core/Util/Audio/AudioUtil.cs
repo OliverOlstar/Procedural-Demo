@@ -29,7 +29,7 @@ namespace OliverLoescher.Util
 		{
 			if (pClip == null)
 			{
-				Debug.LogWarning("Clip cannot be null", "PlayOneShot", typeof(Audio));
+				Debug2.LogWarning("Clip cannot be null", "PlayOneShot", typeof(Audio));
 				return;
 			}
 			AudioSource source = AudioPool.Instance.GetFreeSource();
@@ -39,14 +39,14 @@ namespace OliverLoescher.Util
 		public static void PlayOneShot(in AudioClip pClip, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 			=> PlayOneShot(pClip, UnityEngine.Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
 		public static void PlayOneShot(in AudioClip pClip, in Vector2 pPitch, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
-			=> PlayOneShot(pClip, Random.Range(pPitch), pVolume01, pPriority);
+			=> PlayOneShot(pClip, Random2.Range(pPitch), pVolume01, pPriority);
 
 		// Basic 3D
 		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, float pPitch = 1.0f, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 		{
 			if (pClip == null)
 			{
-				Debug.LogWarning("Clip is null", "PlayOneShot", typeof(Audio));
+				Debug2.LogWarning("Clip is null", "PlayOneShot", typeof(Audio));
 				return;
 			}
 			AudioSource source = AudioPool.Instance.GetFreeSource();
@@ -57,7 +57,7 @@ namespace OliverLoescher.Util
 		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 			=> PlayOneShot(pClip, pPoint, UnityEngine.Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
 		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, in Vector2 pPitch, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
-			=> PlayOneShot(pClip, pPoint, Random.Range(pPitch), pVolume01, pPriority);
+			=> PlayOneShot(pClip, pPoint, Random2.Range(pPitch), pVolume01, pPriority);
 
 		// Random Clip
 		public static void PlayOneShot(in AudioClip[] pClips, float pPitch = 1.0f, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
@@ -65,7 +65,7 @@ namespace OliverLoescher.Util
 		public static void PlayOneShot(in AudioClip[] pClips, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 			=> PlayOneShot(GetRandomClip(pClips), UnityEngine.Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
 		public static void PlayOneShot(in AudioClip[] pClips, in Vector2 pPitch, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
-			=> PlayOneShot(GetRandomClip(pClips), Random.Range(pPitch), pVolume01, pPriority);
+			=> PlayOneShot(GetRandomClip(pClips), Random2.Range(pPitch), pVolume01, pPriority);
 
 		// Random Clip 3D
 		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, float pPitch = 1.0f, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
@@ -73,7 +73,7 @@ namespace OliverLoescher.Util
 		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 			=> PlayOneShot(GetRandomClip(pClips), pPoint, UnityEngine.Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
 		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, in Vector2 pPitch, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
-			=> PlayOneShot(GetRandomClip(pClips), pPoint, Random.Range(pPitch), pVolume01, pPriority);
+			=> PlayOneShot(GetRandomClip(pClips), pPoint, Random2.Range(pPitch), pVolume01, pPriority);
 		
 		public static void SetValues(AudioSource pSource, AudioClip pClip, float pPitch = 1.0f, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None, bool pIs3D = true, bool pLoop = false)
 		{

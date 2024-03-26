@@ -18,6 +18,9 @@ public class PACharacter : MonoBehaviour, IPACharacter
 	public Vector3 MotionForward { get; private set; } = Vector3.forward; // IPACharacter.MotionForward { get; }
 	public Vector3 Motion { get; private set; } = Vector3.zero;
 
+	Quaternion IPACharacter.Rotation => transform.rotation;
+	Vector3 IPACharacter.Veclocity => Motion;
+
 	[Header("Motion")]
 	[SerializeField]
 	private CharacterController Controller;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OliverLoescher.Util
 {
-	public static class Random
+	public static class Random2
 	{
 		public static float Range(Vector2 pRange) => UnityEngine.Random.Range(pRange.x, pRange.y);
 		public static int Range(Vector2Int pRange) => UnityEngine.Random.Range(pRange.x, pRange.y);

@@ -20,43 +20,43 @@ namespace OliverLoescher.Util
         public delegate void TickEvent(float pValue);
         public delegate void Tick2DEvent(Vector2 pValue);
 
-		private static List<IAnimation> Animations = new List<IAnimation>();
+		private static readonly List<IAnimation> s_Animations = new();
 
-		private static Mono.Updateable Updateable = new Mono.Updateable(Mono.Type.Early, Mono.Priorities.ModelController);
-		private static bool IsInitalized = false;
+		private static Mono.Updateable s_Updateable = new(Mono.Type.Early, Mono.Priorities.ModelController);
+		private static bool s_IsInitalized = false;
 
 		private static void Initalize()
 		{
-			if (Func.IsApplicationQuitting || IsInitalized)
+			if (Func.IsApplicationQuitting || s_IsInitalized)
 			{
 				return;
 			}
-			Animations.Clear();
-			IsInitalized = true;
-			Updateable.Register(Tick);
+			s_Animations.Clear();
+			s_IsInitalized = true;
+			s_Updateable.Register(Tick);
 			Application.quitting += OnQuit;
 		}
 
 		private static void OnQuit()
 		{
-			Animations.Clear();
-			IsInitalized = false;
-			Updateable.Deregister();
+			s_Animations.Clear();
+			s_IsInitalized = false;
+			s_Updateable.Deregister();
 			Application.quitting -= OnQuit;
 		}
 
 		private static void Tick(float pDeltaTime)
 		{
-			if (Animations.IsNullOrEmpty())
+			if (s_Animations.IsNullOrEmpty())
 			{
-				return;	
+				return;
 			}
 			Profiler.BeginSample("AnimUtil.Tick()");
-			for (int i = Animations.Count - 1; i >= 0; i--)
+			for (int i = s_Animations.Count - 1; i >= 0; i--)
 			{
-				if (Animations[i].Tick(pDeltaTime))
+				if (s_Animations[i].Tick(pDeltaTime))
 				{
-					Animations.RemoveAt(i);
+					s_Animations.RemoveAt(i);
 					continue;
 				}
 			}
@@ -67,11 +67,11 @@ namespace OliverLoescher.Util
 		{
 			if (pOnTick == null)
 			{
-				Debug.DevException("pOnTick can not be null", nameof(Play), typeof(Anim));
+				Debug2.DevException("pOnTick can not be null", nameof(Play), typeof(Anim));
 				return;
 			}
 			Initalize();
-			Animations.Add(new AnimUtilEase(pEase, pSeconds, pOnTick, pOnComplete));
+			s_Animations.Add(new AnimUtilEase(pEase, pSeconds, pOnTick, pOnComplete));
 		}
         public static void Play(Easing.Method pMethod, Easing.Direction pDirection, float pSeconds, TickEvent pOnTick, TickEvent pOnComplete = null)
 			=> Play(new Easing.EaseParams(pMethod, pDirection), pSeconds, pOnTick, pOnComplete);
@@ -81,11 +81,11 @@ namespace OliverLoescher.Util
 		{
 			if (pOnTick == null)
 			{
-				Debug.DevException("pOnTick can not be null", nameof(Play), typeof(Anim));
+				Debug2.DevException("pOnTick can not be null", nameof(Play), typeof(Anim));
 				return;
 			}
 			Initalize();
-			Animations.Add(new AnimUtilEase2D(pEaseX, pEaseY, pSeconds, pOnTick, pOnComplete));
+			s_Animations.Add(new AnimUtilEase2D(pEaseX, pEaseY, pSeconds, pOnTick, pOnComplete));
 		}
 		public static void Play2D(Easing.Method pMethodX, Easing.Direction pDirectionX, Easing.Method pMethodY, Easing.Direction pDirectionY, float pSeconds, Tick2DEvent pOnTick = null, Tick2DEvent pOnComplete = null)
 			=> Play2D(new Easing.EaseParams(pMethodX, pDirectionX), new Easing.EaseParams(pMethodY, pDirectionY), pSeconds, pOnTick, pOnComplete);

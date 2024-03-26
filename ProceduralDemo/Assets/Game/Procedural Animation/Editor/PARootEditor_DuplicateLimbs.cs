@@ -26,7 +26,7 @@ public static class PARootEditor_DuplicateLimbs
 				limb = pRoot.GetComponentInChildren<IPALimb>();
 				if (limb == null)
 				{
-					OliverLoescher.Util.Debug.LogError("Could not find a limb", "DuplicateLimbs.DrawGUI", pRoot);
+					OliverLoescher.Util.Debug2.LogError("Could not find a limb", "DuplicateLimbs.DrawGUI", pRoot);
 					return;
 				}
 			}
@@ -36,7 +36,7 @@ public static class PARootEditor_DuplicateLimbs
 			}
 			if (limb is not MonoBehaviour limbBehaviour)
 			{
-				OliverLoescher.Util.Debug.LogError("The selected limb is not a monoBehaviour", "DuplicateLimbs.DrawGUI", pRoot);
+				OliverLoescher.Util.Debug2.LogError("The selected limb is not a monoBehaviour", "DuplicateLimbs.DrawGUI", pRoot);
 				return;
 			}
 

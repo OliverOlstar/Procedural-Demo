@@ -11,57 +11,30 @@ namespace PA
 		[Header("Values"), SerializeField]
 		private float MaxDistance = 5.0f;
 
-		[Header("References"), SerializeField]
-		private PATarget MyTarget;
 		[SerializeField]
-		private PATarget[] OppositeTargets;
+		private SOLimb[] OppositeTargets;
 
-		private Vector3 CurrentPosition
+		private SOLimb m_Limb;
+
+		public void Init(SOLimb pLimb) { m_Limb = pLimb; }
+
+		public bool Tick(float pDeltaTime)
 		{
-			get => MyTarget.CurrentPosition;
-			set => MyTarget.CurrentPosition = value;
-		}
-
-		public void Init() { }
-
-		public void Tick(float pDeltaTime)
-		{
-			if (MyTarget.CurrentState == PATarget.State.Idle)
+			foreach (SOLimb leg in OppositeTargets)
 			{
-				UpdateIdle();
-			}
-		}
-
-		public float GetTickPriority() => (MyTarget.TargetPosition - MyTarget.CurrentPosition).sqrMagnitude;
-
-		private void UpdateIdle()
-		{
-			if (MyTarget.CurrentState == PATarget.State.Stepping)
-			{
-				return;
-			}
-			foreach (PATarget leg in OppositeTargets)
-			{
-				if (leg != null && leg.CurrentState == PATarget.State.Stepping)
+				if (leg != null && leg.IsMoving)
 				{
-					return;
+					return false;
 				}
 			}
-
-			if (Math.DistanceXZGreaterThan(CurrentPosition, MyTarget.TargetPosition, MaxDistance))
-			{
-				MyTarget.TriggerMove();
-			}
+			return Math.DistanceXZGreaterThan(m_Limb.Position, m_Limb.OriginalPositionWorld(), MaxDistance);
 		}
+
+		public float GetTickPriority() => (m_Limb.OriginalPositionWorld() - m_Limb.Position).sqrMagnitude;
 
 		public void DrawGizmos()
 		{
-			if (MyTarget == null)
-			{
-				return;
-			}
-			Gizmos.color = Color.red;
-			Gizmos.DrawWireSphere(MyTarget.TargetPosition, MaxDistance);
+			
 		}
 	}
 }

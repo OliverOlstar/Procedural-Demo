@@ -11085,6 +11085,14 @@ MonoBehaviour:
     priority: 500
   m_Body: {fileID: 11400000, guid: aeac4f7750ab83542b7774af63c2de28, type: 2}
   m_BodyTransform: {fileID: 5875486318378398002}
+  m_Limbs:
+  - {fileID: 11400000, guid: 59cfa47fab3a33c4198441ee700e665f, type: 2}
+  - {fileID: 11400000, guid: 59cfa47fab3a33c4198441ee700e665f, type: 2}
+  - {fileID: 11400000, guid: 59cfa47fab3a33c4198441ee700e665f, type: 2}
+  m_LimbIKs:
+  - {fileID: 1742180863831612254}
+  - {fileID: 50823089284947633}
+  - {fileID: 767626430151353896}
 --- !u!1 &803681622
 GameObject:
   m_ObjectHideFlags: 0

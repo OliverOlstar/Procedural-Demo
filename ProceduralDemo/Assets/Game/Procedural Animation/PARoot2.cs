@@ -17,18 +17,35 @@ namespace PA
 		public IPACharacter Character { get; private set; }
 		[SerializeField]
 		private SOBody m_Body;
+		private SOBody m_BodyInstances;
 		[SerializeField]
 		private Transform m_BodyTransform;
 		[SerializeField]
 		private SOLimb[] m_Limbs;
+		private SOLimb[] m_LimbInstances;
 		[SerializeField]
 		private CCDIK[] m_LimbIKs;
-		public List<PAPoint> Points { get; private set; } = new();
+		public IEnumerable<PAPoint> GetAllPoints()
+		{
+			foreach (SOLimb limb in Limbs)
+			{
+				yield return limb.Point;
+			}
+		}
+		public int PointsCount => Limbs.Length;
 
-		public SOBody Body => m_Body;
+		public SOBody Body => m_BodyInstances;
 		public Transform BodyTransform => m_BodyTransform;
-		public SOLimb[] Limbs => m_Limbs;
+		public SOLimb[] Limbs => m_LimbInstances;
 		public CCDIK[] LimbIKs => m_LimbIKs;
+
+		public Vector3 Center => Character.Position;
+		public Vector3 Forward => Character.Forward;
+		public Vector3 Up => Character.Up;
+		public Quaternion Rotation => Character.Rotation;
+		public Vector3 Velocity => Character.Veclocity;
+		public Vector3 TransformPoint(Vector3 pPoint) => Character.TransformPoint(pPoint); // Local to World
+		public Vector3 InverseTransformPoint(Vector3 pPoint) => Character.InverseTransformPoint(pPoint); // World to Local
 
 		public void Initalize()
 		{
@@ -37,14 +54,18 @@ namespace PA
 				return;
 			}
 			m_IsInitalized = true;
-
+			
+			Character = GetComponentInChildren<IPACharacter>();
 			if (m_Body != null)
 			{
-				m_Body.Init(this);
+				m_BodyInstances = ScriptableObject.Instantiate(m_Body);
+				m_BodyInstances.Init(this);
 			}
+			m_LimbInstances = new SOLimb[m_Limbs.Length];
 			for (int i = 0; i < m_Limbs.Length; i++)
 			{
-				m_Limbs[i].Init(this);
+				m_LimbInstances[i] = ScriptableObject.Instantiate(m_Limbs[i]);
+				m_LimbInstances[i].Init(this, m_LimbIKs[i].solver);
 			}
 		}
 
@@ -56,19 +77,24 @@ namespace PA
 		private void OnDestroy()
 		{
 			m_Updateable.Deregister();
+			Destroy(m_BodyInstances);
+			for (int i = 0; i < m_LimbInstances.Length; i++)
+			{
+				Destroy(m_LimbInstances[i]);
+			}
 		}
 
 		private void Tick(float pDeltaTime)
 		{
-			if (m_Body != null)
+			if (Body != null)
 			{
-				m_Body.Tick(pDeltaTime);
+				Body.Tick(pDeltaTime);
 			}
 
 			// Array.Sort(m_Limbs, (SOLimb a, SOLimb b) => b.GetTickPriority().CompareTo(a.GetTickPriority()));
-			for (int i = 0; i < m_Limbs.Length; i++)
+			for (int i = 0; i < Limbs.Length; i++)
 			{
-				m_Limbs[i].Tick(pDeltaTime);
+				Limbs[i].Tick(pDeltaTime);
 			}
 		}
 
@@ -76,17 +102,17 @@ namespace PA
 		{
 			Initalize();
 
-			if (m_Body != null)
+			if (Body != null)
 			{
-				m_Body.DrawGizmos();
+				Body.DrawGizmos();
 			}
-			for (int i = 0; i < m_Limbs.Length; i++)
+			for (int i = 0; i < Limbs.Length; i++)
 			{
-				m_Limbs[i].DrawGizmos();
+				Limbs[i].DrawGizmos();
 			}
-			for (int i = 0; i < Points.Count; i++)
+			foreach (PAPoint point in GetAllPoints())
 			{
-				Points[i].DrawGizmos();
+				point.DrawGizmos();
 			}
 		}
 

@@ -23,7 +23,7 @@ namespace Core
 				s_Set.Remove(collection);
 				if (collection.Count > 0)
 				{
-					Debug.DevException($"CollectionPool.Request() {typeof(TCollection).Name} {collection.GetHashCode()} is not empty, " +
+					Debug2.DevException($"CollectionPool.Request() {typeof(TCollection).Name} {collection.GetHashCode()} is not empty, " +
 						$"this means someone has been modifying the collection after calling Return()");
 					collection.Clear();
 				}
@@ -55,7 +55,7 @@ namespace Core
 			//UnityEngine.Debug.Log($"{typeof(TCollection).Name}.Return() " + collection.GetHashCode());
 			if (s_Set.Contains(collection))
 			{
-				Debug.DevException($"CollectionPool.Return() {typeof(TCollection).Name} {collection.GetHashCode()} has already been returned. " +
+				Debug2.DevException($"CollectionPool.Return() {typeof(TCollection).Name} {collection.GetHashCode()} has already been returned. " +
 					"Requests and Returns must be 1 to 1 or pool instances can get leaked");
 				return;
 			}

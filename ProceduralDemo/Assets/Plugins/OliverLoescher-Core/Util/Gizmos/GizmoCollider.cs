@@ -29,7 +29,7 @@ namespace OliverLoescher
 						Gizmos.DrawWireCube(box.center, box.size);
 						break;
 					case CapsuleCollider capsule:
-						Util.Debug.GizmoCapsule(capsule.center, capsule.radius, capsule.height);
+						Util.Debug2.GizmoCapsule(capsule.center, capsule.radius, capsule.height);
 						break;
 					case SphereCollider sphere:
 						Gizmos.DrawWireSphere(sphere.center, sphere.radius);

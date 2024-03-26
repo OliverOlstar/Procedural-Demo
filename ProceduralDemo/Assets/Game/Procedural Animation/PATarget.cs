@@ -71,7 +71,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 	{
 		StepOffset = CurrentPosition;
 		CurrentState = State.Stepping;
-		Anim.Play2D(EaseStep, EaseHeight, OliverLoescher.Util.Random.Range(StepSeconds), StepTick, StepComplete);
+		Anim.Play2D(EaseStep, EaseHeight, OliverLoescher.Util.Random2.Range(StepSeconds), StepTick, StepComplete);
 	}
 
 	public void TriggerFalling()
@@ -95,7 +95,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 
 	private Vector3 CalculateStepPoint()
 	{
-		Vector3 stepMotion = Character.MotionForward * -StepDistance;
+		Vector3 stepMotion = Character.Veclocity.normalized * -StepDistance;
 		Vector3 stepEndPoint = stepMotion + TargetPosition;
 		Vector3 upPoint = (LinecastUpDown.x * Character.Up) + stepEndPoint;
 		Vector3 downPoint = (LinecastUpDown.y * Character.Up) + stepEndPoint;
@@ -116,7 +116,7 @@ public class PATarget : MonoBehaviour, IPAPoint
 		Gizmos.DrawWireSphere(TargetPosition, StepDistance);
 
 		// Linecast
-		Vector3 stepMotion = Character.MotionForward * -StepDistance;
+		Vector3 stepMotion = Character.Veclocity.normalized * -StepDistance;
 		Vector3 stepEndPoint = stepMotion + TargetPosition;
 		Vector3 upPoint = (LinecastUpDown.x * Character.Up) + stepEndPoint;
 		Vector3 downPoint = (LinecastUpDown.y * Character.Up) + stepEndPoint;

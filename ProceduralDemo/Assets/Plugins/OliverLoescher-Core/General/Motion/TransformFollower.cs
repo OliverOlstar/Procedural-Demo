@@ -27,7 +27,7 @@ namespace OliverLoescher
 			debugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug.DevException("pChild (CharacterController) is null", "Start", debugObject);
+				Util.Debug2.DevException("pChild (CharacterController) is null", "Start", debugObject);
 				return;
 			}
 			childController = pChild;
@@ -39,27 +39,27 @@ namespace OliverLoescher
 			debugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug.DevException("pChild is null", "Start", debugObject);
+				Util.Debug2.DevException("pChild is null", "Start", debugObject);
 				return;
 			}
 			if (pParent == null)
 			{
-				Util.Debug.DevException("pParent is null", "Start", debugObject);
+				Util.Debug2.DevException("pParent is null", "Start", debugObject);
 				return;
 			}
 			if (child != null) // Already started
 			{
 				if (child != pChild)
 				{
-					Util.Debug.DevException("Already started but with a different child transform", "Start", debugObject);
+					Util.Debug2.DevException("Already started but with a different child transform", "Start", debugObject);
 				}
 				else if (pParent != parent)
 				{
-					Util.Debug.DevException("Already started but with a different parent transform", "Start", debugObject);
+					Util.Debug2.DevException("Already started but with a different parent transform", "Start", debugObject);
 				}
 				else
 				{
-					Util.Debug.LogError("Already started", "Start", debugObject);
+					Util.Debug2.LogError("Already started", "Start", debugObject);
 				}
 				return;
 			}
@@ -80,7 +80,7 @@ namespace OliverLoescher
 		{
 			if (child == null)
 			{
-				Util.Debug.LogWarning("Not started, please start first", "Stop", debugObject);
+				Util.Debug2.LogWarning("Not started, please start first", "Stop", debugObject);
 				return;
 			}
 			parent = null;

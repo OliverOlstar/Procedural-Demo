@@ -80,12 +80,12 @@ public class PARoot : MonoBehaviour
 	{
 		if (!IsInitalized)
 		{
-			OliverLoescher.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddLimb", this);
+			OliverLoescher.Util.Debug2.LogWarning("Not initalized yet, skipping add", "AddLimb", this);
 			return;
 		}
 		if (Limbs.Contains(pLimb))
 		{
-			OliverLoescher.Util.Debug.LogWarning("Limb already added", "AddLimb", this);
+			OliverLoescher.Util.Debug2.LogWarning("Limb already added", "AddLimb", this);
 			return;
 		}
 		Limbs.Add(pLimb);
@@ -95,7 +95,7 @@ public class PARoot : MonoBehaviour
 	{
 		if (!Limbs.Remove(pLimb))
 		{
-			OliverLoescher.Util.Debug.LogWarning("Failed to remove", "RemoveLimb", this);
+			OliverLoescher.Util.Debug2.LogWarning("Failed to remove", "RemoveLimb", this);
 		}
 	}
 
@@ -103,12 +103,12 @@ public class PARoot : MonoBehaviour
 	{
 		if (!IsInitalized)
 		{
-			OliverLoescher.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddPoint", this);
+			OliverLoescher.Util.Debug2.LogWarning("Not initalized yet, skipping add", "AddPoint", this);
 			return;
 		}
 		if (Points.Contains(pPoint))
 		{
-			OliverLoescher.Util.Debug.LogWarning("Point already added", "AddPoint", this);
+			OliverLoescher.Util.Debug2.LogWarning("Point already added", "AddPoint", this);
 			return;
 		}
 		Points.Add(pPoint);
@@ -118,7 +118,7 @@ public class PARoot : MonoBehaviour
 	{
 		if (!Points.Remove(pAPoint))
 		{
-			OliverLoescher.Util.Debug.LogWarning("Failed to remove", "RemovePoint", this);
+			OliverLoescher.Util.Debug2.LogWarning("Failed to remove", "RemovePoint", this);
 		}
 	}
 }
