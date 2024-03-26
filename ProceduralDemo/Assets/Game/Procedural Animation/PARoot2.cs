@@ -82,6 +82,7 @@ namespace PA
 			{
 				Destroy(m_LimbInstances[i]);
 			}
+			m_IsInitalized = false;
 		}
 
 		private void Tick(float pDeltaTime)
@@ -100,8 +101,10 @@ namespace PA
 
 		private void OnDrawGizmos()
 		{
-			Initalize();
-
+			if (!m_IsInitalized)
+			{
+				return;
+			}
 			if (Body != null)
 			{
 				Body.DrawGizmos();
