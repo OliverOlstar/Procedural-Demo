@@ -12,15 +12,17 @@ namespace OliverLoescher.Util
 		public interface IAnimation
 		{
 			bool IsComplete { get; }
-
-			bool Tick(float pDeltaTime); // Return if complete
 			void Cancel();
+		}
+		public interface IAnimationInternal : IAnimation
+		{
+			bool Tick(float pDeltaTime); // Return if complete
 		}
 
         public delegate void TickEvent(float pValue);
         public delegate void Tick2DEvent(Vector2 pValue);
 
-		private static readonly List<IAnimation> s_Animations = new();
+		private static readonly List<IAnimationInternal> s_Animations = new();
 
 		private static Mono.Updateable s_Updateable = new(Mono.Type.Early, Mono.Priorities.ModelController);
 		private static bool s_IsInitalized = false;
@@ -63,31 +65,35 @@ namespace OliverLoescher.Util
 			Profiler.EndSample();
 		}
 
-        public static void Play(Easing.EaseParams pEase, float pSeconds, TickEvent pOnTick, TickEvent pOnComplete = null)
+        public static IAnimation Play(Easing.EaseParams pEase, float pSeconds, TickEvent pOnTick, TickEvent pOnComplete = null)
 		{
 			if (pOnTick == null)
 			{
 				Debug2.DevException("pOnTick can not be null", nameof(Play), typeof(Anim));
-				return;
+				return null;
 			}
 			Initalize();
-			s_Animations.Add(new AnimUtilEase(pEase, pSeconds, pOnTick, pOnComplete));
+			AnimUtilEase anim = new(pEase, pSeconds, pOnTick, pOnComplete);
+			s_Animations.Add(anim);
+			return anim;
 		}
-        public static void Play(Easing.Method pMethod, Easing.Direction pDirection, float pSeconds, TickEvent pOnTick, TickEvent pOnComplete = null)
+        public static IAnimation Play(Easing.Method pMethod, Easing.Direction pDirection, float pSeconds, TickEvent pOnTick, TickEvent pOnComplete = null)
 			=> Play(new Easing.EaseParams(pMethod, pDirection), pSeconds, pOnTick, pOnComplete);
 
 
-		public static void Play2D(Easing.EaseParams pEaseX, Easing.EaseParams pEaseY, float pSeconds, Tick2DEvent pOnTick = null, Tick2DEvent pOnComplete = null)
+		public static IAnimation Play2D(Easing.EaseParams pEaseX, Easing.EaseParams pEaseY, float pSeconds, Tick2DEvent pOnTick = null, Tick2DEvent pOnComplete = null)
 		{
 			if (pOnTick == null)
 			{
 				Debug2.DevException("pOnTick can not be null", nameof(Play), typeof(Anim));
-				return;
+				return null;
 			}
 			Initalize();
-			s_Animations.Add(new AnimUtilEase2D(pEaseX, pEaseY, pSeconds, pOnTick, pOnComplete));
+			AnimUtilEase2D anim = new(pEaseX, pEaseY, pSeconds, pOnTick, pOnComplete);
+			s_Animations.Add(anim);
+			return anim;
 		}
-		public static void Play2D(Easing.Method pMethodX, Easing.Direction pDirectionX, Easing.Method pMethodY, Easing.Direction pDirectionY, float pSeconds, Tick2DEvent pOnTick = null, Tick2DEvent pOnComplete = null)
+		public static IAnimation Play2D(Easing.Method pMethodX, Easing.Direction pDirectionX, Easing.Method pMethodY, Easing.Direction pDirectionY, float pSeconds, Tick2DEvent pOnTick = null, Tick2DEvent pOnComplete = null)
 			=> Play2D(new Easing.EaseParams(pMethodX, pDirectionX), new Easing.EaseParams(pMethodY, pDirectionY), pSeconds, pOnTick, pOnComplete);
     }
 }

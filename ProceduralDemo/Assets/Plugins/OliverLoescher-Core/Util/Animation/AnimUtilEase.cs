@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace OliverLoescher.Util
 {
-    public class AnimUtilEase : Anim.IAnimation
+    public class AnimUtilEase : Anim.IAnimationInternal
     {
         Easing.EaseParams Ease;
-		private Anim.TickEvent OnTick;
-		private Anim.TickEvent OnComplete;
+		private readonly Anim.TickEvent OnTick;
+		private readonly Anim.TickEvent OnComplete;
 		
-		private float InverseSeconds;
+		private readonly float InverseSeconds;
 		private float Progress01;
 		
 		public bool IsComplete => Progress01 >= 1.0f;
@@ -25,7 +25,7 @@ namespace OliverLoescher.Util
 			Progress01 = 0.0f;
 		}
 
-		bool Anim.IAnimation.Tick(float pDeltaTime)
+		bool Anim.IAnimationInternal.Tick(float pDeltaTime)
 		{
 			if (IsComplete)
 			{
