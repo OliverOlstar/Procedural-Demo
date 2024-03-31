@@ -783,7 +783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axis: {x: 0, y: 0, z: 1}
-  defaultLocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
+  defaultLocalRotation: {x: 0, y: 0, z: 0, w: 1}
   limit: 70
   twistLimit: 0
 --- !u!1 &1097140241360041720
@@ -2330,9 +2330,9 @@ MonoBehaviour:
   m_Updateable:
     type: 0
     priority: 500
-  m_Body: {fileID: 11400000, guid: 54b7f567ab03c6a4f9bea4a917e0f13b, type: 2}
+  m_BodyData: {fileID: 11400000, guid: 54b7f567ab03c6a4f9bea4a917e0f13b, type: 2}
   m_BodyTransform: {fileID: 5875486318856981891}
-  m_Limbs:
+  m_LimbDatas:
   - {fileID: 11400000, guid: ad33f014fa55e3f48a84583f0258048f, type: 2}
   - {fileID: 11400000, guid: ad33f014fa55e3f48a84583f0258048f, type: 2}
   - {fileID: 11400000, guid: ad33f014fa55e3f48a84583f0258048f, type: 2}

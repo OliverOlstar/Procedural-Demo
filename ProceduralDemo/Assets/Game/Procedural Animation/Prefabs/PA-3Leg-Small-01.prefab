@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 5651517364148967022}
   - component: {fileID: 1310936257391508999}
   - component: {fileID: 2781389275609675284}
-  - component: {fileID: 6048126598354812772}
   m_Layer: 22
   m_Name: Leg (0)(Clone)
   m_TagString: Untagged
@@ -236,21 +235,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axis: {x: 0, y: 1, z: 1}
-  defaultLocalRotation: {x: 0.3007058, y: 0, z: 0, w: 0.95371693}
+  defaultLocalRotation: {x: -0.15035291, y: 0.8259431, z: -0.2604189, w: -0.4768585}
   limit: 50
   twistLimit: 5
---- !u!114 &6048126598354812772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 703684375975782306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e53a37678901444e84b1e5a0e2b5d56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &710720421471471274
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +354,6 @@ GameObject:
   - component: {fileID: 1146049266615530180}
   - component: {fileID: 6169505363747000868}
   - component: {fileID: 7924354220495980612}
-  - component: {fileID: 1539210348972486613}
   m_Layer: 22
   m_Name: Leg (0)
   m_TagString: Untagged
@@ -459,18 +445,6 @@ MonoBehaviour:
   defaultLocalRotation: {x: 0.3007058, y: 0, z: 0, w: 0.95371693}
   limit: 50
   twistLimit: 5
---- !u!114 &1539210348972486613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 763080429699995847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e53a37678901444e84b1e5a0e2b5d56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1307752036663026756
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,9 +494,9 @@ MonoBehaviour:
   m_Updateable:
     type: 0
     priority: 500
-  m_Body: {fileID: 11400000, guid: aeac4f7750ab83542b7774af63c2de28, type: 2}
+  m_BodyData: {fileID: 11400000, guid: aeac4f7750ab83542b7774af63c2de28, type: 2}
   m_BodyTransform: {fileID: 4844417054958235457}
-  m_Limbs:
+  m_LimbDatas:
   - {fileID: 11400000, guid: 59cfa47fab3a33c4198441ee700e665f, type: 2}
   - {fileID: 11400000, guid: 59cfa47fab3a33c4198441ee700e665f, type: 2}
   - {fileID: 11400000, guid: 59cfa47fab3a33c4198441ee700e665f, type: 2}
@@ -541,7 +515,6 @@ GameObject:
   - component: {fileID: 7795412365576703184}
   - component: {fileID: 3812632422129827591}
   - component: {fileID: 5074032387728905219}
-  - component: {fileID: 4394160848210994653}
   m_Layer: 22
   m_Name: Leg (0)(Clone)
   m_TagString: Untagged
@@ -630,21 +603,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axis: {x: 0, y: 1, z: 1}
-  defaultLocalRotation: {x: 0.3007058, y: 0, z: 0, w: 0.95371693}
+  defaultLocalRotation: {x: 0.1503529, y: 0.8259432, z: -0.2604189, w: 0.47685844}
   limit: 50
   twistLimit: 5
---- !u!114 &4394160848210994653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501949234404032401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e53a37678901444e84b1e5a0e2b5d56, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2202015387151719833
 GameObject:
   m_ObjectHideFlags: 0

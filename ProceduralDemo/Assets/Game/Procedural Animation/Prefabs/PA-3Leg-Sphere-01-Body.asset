@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd39773445692a4b996003fa27a48cf, type: 3}
   m_Name: PA-3Leg-Sphere-01-Body
   m_EditorClassIdentifier: 
-  m_SpringXZ: 1
-  m_DamperXZ: 0.05
-  m_SpringY: 2
-  m_DamperY: 0.05625
-  m_RotationDampening: 8
-  m_RotationBlendXZ: 1
-  m_RotationBlendY: 0.25
+  SpringXZ: 1
+  DamperXZ: 0.05
+  SpringY: 2
+  DamperY: 0.06
+  RotationDampening: 8
+  RotationBlendXZ: 1
+  RotationBlendY: 0.25

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace OliverLoescher.Util
@@ -126,6 +127,10 @@ namespace OliverLoescher.Util
 		/// <summary> Iterate through collection starting at an index, returning false in predicate ends the loop </summary>
 		public static int Foreach<T>(this T[] pElements, int pStartAtIndex, Func<T, int, bool> pPredicate)
 		{
+			if (pElements.IsNullOrEmpty())
+			{
+				return -1;
+			}
 			pStartAtIndex.Loop(pElements.Length - 1);
 			for (int i = pStartAtIndex; i < pElements.Length; i++)
 			{
@@ -147,6 +152,10 @@ namespace OliverLoescher.Util
 		/// <summary> Iterate through collection starting at an index, returning false in predicate ends the loop </summary>
 		public static int Foreach<T>(this List<T> pElements, int pStartAtIndex, Func<T, int, bool> pPredicate)
 		{
+			if (pElements.IsNullOrEmpty())
+			{
+				return -1;
+			}
 			pStartAtIndex.Loop(pElements.Count - 1);
 			for (int i = pStartAtIndex; i < pElements.Count; i++)
 			{

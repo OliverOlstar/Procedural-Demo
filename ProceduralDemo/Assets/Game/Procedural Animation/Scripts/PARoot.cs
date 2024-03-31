@@ -17,28 +17,27 @@ namespace PA
 
 		public IPACharacter Character { get; private set; }
 		[SerializeField]
-		private SOBody m_Body;
-		private SOBody m_BodyInstances;
+		private SOBody m_BodyData;
+		private PABody m_Body;
 		[SerializeField]
 		private Transform m_BodyTransform;
 		[SerializeField]
-		private SOLimb[] m_Limbs;
-		private SOLimb[] m_LimbInstances;
+		private SOLimb[] m_LimbDatas;
+		private PALimb[] m_Limbs;
 		private int m_LastLimbIndex = 0;
 		[SerializeField]
 		private CCDIK[] m_LimbIKs;
 		public IEnumerable<PAPoint> GetAllPoints()
 		{
-			foreach (SOLimb limb in Limbs)
+			foreach (PALimb limb in Limbs)
 			{
 				yield return limb.Point;
 			}
 		}
 		public int PointsCount => Limbs.Length;
 
-		public SOBody Body => m_BodyInstances;
-		public Transform BodyTransform => m_BodyTransform;
-		public SOLimb[] Limbs => m_LimbInstances;
+		public PABody Body => m_Body;
+		public PALimb[] Limbs => m_Limbs;
 		public CCDIK[] LimbIKs => m_LimbIKs;
 
 		public Vector3 Center => Character.Position;
@@ -58,16 +57,11 @@ namespace PA
 			m_IsInitalized = true;
 			
 			Character = GetComponentInChildren<IPACharacter>();
-			if (m_Body != null)
-			{
-				m_BodyInstances = Instantiate(m_Body);
-				m_BodyInstances.Init(this);
-			}
-			m_LimbInstances = new SOLimb[m_Limbs.Length];
+			m_Body = new PABody(m_BodyData, m_BodyTransform, this);
+			m_Limbs = new PALimb[m_LimbDatas.Length];
 			for (int i = 0; i < m_Limbs.Length; i++)
 			{
-				m_LimbInstances[i] = Instantiate(m_Limbs[i]);
-				m_LimbInstances[i].Init(this, m_LimbIKs[i].solver);
+				m_Limbs[i] = new PALimb(m_LimbDatas[i], m_LimbIKs[i].solver, this);
 			}
 		}
 
@@ -79,11 +73,6 @@ namespace PA
 		private void OnDestroy()
 		{
 			m_Updateable.Deregister();
-			Destroy(m_BodyInstances);
-			for (int i = 0; i < m_LimbInstances.Length; i++)
-			{
-				Destroy(m_LimbInstances[i]);
-			}
 			m_IsInitalized = false;
 		}
 
@@ -94,7 +83,7 @@ namespace PA
 				Body.Tick(pDeltaTime);
 			}
 			
-			Func.Foreach(Limbs, m_LastLimbIndex + 1, (SOLimb pLimb, int pIndex) =>
+			Func.Foreach(Limbs, m_LastLimbIndex + 1, (PALimb pLimb, int pIndex) =>
 			{
 				if (pLimb.TickTriggers(pDeltaTime))
 				{

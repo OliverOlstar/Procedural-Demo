@@ -20,7 +20,7 @@ MonoBehaviour:
     Method: 5
     Direction: 0
   StepSeconds: {x: 0.5, y: 0.7}
-  UpHeight: 1.4
+  UpHeight: 2
   LinecastUpDown: {x: 10, y: -15}
   StepLayer:
     serializedVersion: 2
