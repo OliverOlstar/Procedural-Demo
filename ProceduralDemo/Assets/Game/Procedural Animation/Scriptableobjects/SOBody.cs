@@ -54,7 +54,7 @@ namespace PA
 			Vector3 position = Vector3.zero;
 			foreach (PAPoint point in Points)
 			{
-				position += point.Position;
+				position += (point.Position * 2.0f) - point.OriginalPositionWorld();
 			}
 			Vector3 targetPosition = (position / PointsCount) + m_PositionLocalOffset;
 			Vector2 positionXZ = Func.SpringDamper(Math.Horizontal2D(Transform.position), Math.Horizontal2D(targetPosition), ref m_VelocityXZ, m_SpringXZ, m_DamperXZ, pDeltaTime);

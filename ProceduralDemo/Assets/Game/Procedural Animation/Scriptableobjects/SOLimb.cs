@@ -32,8 +32,8 @@ namespace PA
 
 		public void Init(PARoot2 pRoot, IKSolverCCD pIK)
 		{
-			m_StepTrigger = ScriptableObject.Instantiate(m_StepTrigger);
-			m_StepMovement = ScriptableObject.Instantiate(m_StepMovement);
+			m_StepTrigger = Instantiate(m_StepTrigger);
+			m_StepMovement = Instantiate(m_StepMovement);
 
 			m_Point.Init(pRoot, pIK);
 			m_StepTrigger.Init(pRoot, this);

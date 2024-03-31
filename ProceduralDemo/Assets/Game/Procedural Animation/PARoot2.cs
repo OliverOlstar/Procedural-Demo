@@ -58,13 +58,13 @@ namespace PA
 			Character = GetComponentInChildren<IPACharacter>();
 			if (m_Body != null)
 			{
-				m_BodyInstances = ScriptableObject.Instantiate(m_Body);
+				m_BodyInstances = Instantiate(m_Body);
 				m_BodyInstances.Init(this);
 			}
 			m_LimbInstances = new SOLimb[m_Limbs.Length];
 			for (int i = 0; i < m_Limbs.Length; i++)
 			{
-				m_LimbInstances[i] = ScriptableObject.Instantiate(m_Limbs[i]);
+				m_LimbInstances[i] = Instantiate(m_Limbs[i]);
 				m_LimbInstances[i].Init(this, m_LimbIKs[i].solver);
 			}
 		}

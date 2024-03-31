@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b903f75fbd38b254c9aea226f5f39a66, type: 3}
+  m_Name: PA-3Leg-Sphere-01-Limb
+  m_EditorClassIdentifier: 
+  m_StepTrigger: {fileID: 11400000, guid: 7b92954981ed8724e94cede4dfb44f2d, type: 2}
+  m_StepMovement: {fileID: 11400000, guid: ae1ec2a0401fd114c9b67ae81f4664e3, type: 2}

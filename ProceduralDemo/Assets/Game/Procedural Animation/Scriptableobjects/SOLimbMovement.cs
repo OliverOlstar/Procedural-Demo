@@ -101,10 +101,10 @@ namespace PA
 			Vector3 targetPosition = TargetPosition();
 
 			// Points
-			Gizmos.color = Color.blue;
-			Gizmos.DrawSphere(Position, 0.2f);
-			Gizmos.color = Color.yellow;
-			Gizmos.DrawSphere(targetPosition, 0.2f);
+			// Gizmos.color = Color.blue;
+			// Gizmos.DrawSphere(Position, 0.2f);
+			// Gizmos.color = Color.yellow;
+			// Gizmos.DrawSphere(targetPosition, 0.2f);
 			Gizmos.DrawWireSphere(targetPosition, StepDistance);
 
 			// Linecast

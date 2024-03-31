@@ -654,6 +654,7 @@ GameObject:
   m_Component:
   - component: {fileID: 380397129765185876}
   - component: {fileID: 2046182783794299182}
+  - component: {fileID: -7599792858543284911}
   m_Layer: 0
   m_Name: PA-3Leg-Small-01
   m_TagString: Untagged
@@ -693,6 +694,25 @@ MonoBehaviour:
   Updateable:
     type: 2
     priority: 500
+--- !u!114 &-7599792858543284911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4563906454812056302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9070f3e16dad6044681283d8691cdab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Updateable:
+    type: 2
+    priority: 500
+  m_Body: {fileID: 11400000, guid: aeac4f7750ab83542b7774af63c2de28, type: 2}
+  m_BodyTransform: {fileID: 0}
+  m_Limbs: []
+  m_LimbIKs: []
 --- !u!1 &4860558382138804620
 GameObject:
   m_ObjectHideFlags: 0

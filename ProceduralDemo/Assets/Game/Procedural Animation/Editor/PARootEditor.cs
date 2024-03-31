@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using PA;
 
-[CustomEditor(typeof(PARoot))]
+[CustomEditor(typeof(PARoot2))]
 public class PARootEditor : Editor
 {
 	public override void OnInspectorGUI()
@@ -15,7 +16,7 @@ public class PARootEditor : Editor
 			return;
 		}
 
-		if (target is PARoot root)
+		if (target is PARoot2 root)
 		{
 			PARootEditor_DuplicateLimbs.DrawGUI(root);
 		}

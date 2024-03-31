@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32a11fc22a8b2294a8d5f9a4c85b3cf6, type: 3}
+  m_Name: PA-3Leg-Small-01-LimbMovement
+  m_EditorClassIdentifier: 
+  StepDistance: 1
+  EaseStep:
+    Method: 1
+    Direction: 0
+  EaseHeight:
+    Method: 5
+    Direction: 0
+  StepSeconds: {x: 0.6, y: 0.7}
+  UpHeight: 2
+  LinecastUpDown: {x: 10, y: -15}
+  StepLayer:
+    serializedVersion: 2
+    m_Bits: 9
+  OnStepCue: {fileID: 11400000, guid: b9c7a419c3d00a14db9c8c12501c9c3c, type: 2}

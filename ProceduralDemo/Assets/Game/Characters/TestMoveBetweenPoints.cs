@@ -56,7 +56,7 @@ public class TestMoveBetweenPoints : MonoBehaviour, IPACharacter
 		{
 			pNextIndex = 0;
 		}
-		Start();
+		StartCoroutine(Start());
 	}
 
 	private void OnDrawGizmosSelected()
