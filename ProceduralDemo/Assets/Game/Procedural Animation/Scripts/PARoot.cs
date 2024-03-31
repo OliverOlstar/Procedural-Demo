@@ -4,6 +4,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using RootMotion.FinalIK;
 using System;
+using OliverLoescher.Util;
 
 namespace PA
 {
@@ -23,6 +24,7 @@ namespace PA
 		[SerializeField]
 		private SOLimb[] m_Limbs;
 		private SOLimb[] m_LimbInstances;
+		private int m_LastLimbIndex = 0;
 		[SerializeField]
 		private CCDIK[] m_LimbIKs;
 		public IEnumerable<PAPoint> GetAllPoints()
@@ -91,12 +93,15 @@ namespace PA
 			{
 				Body.Tick(pDeltaTime);
 			}
-
-			// Array.Sort(m_Limbs, (SOLimb a, SOLimb b) => b.GetTickPriority().CompareTo(a.GetTickPriority()));
-			for (int i = 0; i < Limbs.Length; i++)
+			
+			Func.Foreach(Limbs, m_LastLimbIndex + 1, (SOLimb pLimb, int pIndex) =>
 			{
-				Limbs[i].Tick(pDeltaTime);
-			}
+				if (pLimb.TickTriggers(pDeltaTime))
+				{
+					m_LastLimbIndex = pIndex;
+				}
+				return false;
+			});
 		}
 
 		private void OnDrawGizmos()

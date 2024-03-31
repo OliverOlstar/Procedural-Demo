@@ -107,21 +107,36 @@ namespace OliverLoescher.Util
 			return pValue;
 		}
 
-		/// <summary>
-		/// Checks full array starting at pStartAtIndex, -1 if failed
-		/// </summary>
-		public static int IndexOf<T>(T[] pElements, int pStartAtIndex, T pElement = null) where T : class
+		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
+		public static int IndexOf<T>(this T[] pElements, int pStartAtIndex, T pElement = null) where T : class
+			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => pItem == pElement);
+
+		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
+		public static int IndexOf<T>(this List<T> pElements, int pStartAtIndex, T pElement = null) where T : class
+			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => pItem == pElement);
+
+		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
+		public static int IndexOf<T>(ref T[] pElements, int pStartAtIndex, Func<T, bool> pPredicate)
+			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => !pPredicate(pItem));
+
+		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
+		public static int IndexOf<T>(this List<T> pElements, int pStartAtIndex, Func<T, bool> pPredicate)
+			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => !pPredicate(pItem));
+
+		/// <summary> Iterate through collection starting at an index, returning false in predicate ends the loop </summary>
+		public static int Foreach<T>(this T[] pElements, int pStartAtIndex, Func<T, int, bool> pPredicate)
 		{
+			pStartAtIndex.Loop(pElements.Length - 1);
 			for (int i = pStartAtIndex; i < pElements.Length; i++)
 			{
-				if (pElements[i] == pElement)
+				if (!pPredicate.Invoke(pElements[i], i))
 				{
 					return i;
 				}
 			}
 			for (int i = 0; i < pStartAtIndex; i++)
 			{
-				if (pElements[i] == pElement)
+				if (!pPredicate.Invoke(pElements[i], i))
 				{
 					return i;
 				}
@@ -129,68 +144,20 @@ namespace OliverLoescher.Util
 			return -1;
 		}
 
-		/// <summary>
-		/// Checks full list starting at pStartAtIndex, -1 if failed
-		/// </summary>
-		public static int IndexOf<T>(List<T> pElements, int pStartAtIndex, T pElement = null) where T : class
+		/// <summary> Iterate through collection starting at an index, returning false in predicate ends the loop </summary>
+		public static int Foreach<T>(this List<T> pElements, int pStartAtIndex, Func<T, int, bool> pPredicate)
 		{
+			pStartAtIndex.Loop(pElements.Count - 1);
 			for (int i = pStartAtIndex; i < pElements.Count; i++)
 			{
-				if (pElements[i] == pElement)
+				if (!pPredicate.Invoke(pElements[i], i))
 				{
 					return i;
 				}
 			}
 			for (int i = 0; i < pStartAtIndex; i++)
 			{
-				if (pElements[i] == pElement)
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
-
-
-
-		/// <summary>
-		/// Checks full array starting at pStartAtIndex, -1 if failed
-		/// </summary>
-		public static int IndexOf<T>(T[] pElements, int pStartAtIndex, Func<T, bool> pPredicate)
-		{
-			for (int i = pStartAtIndex; i < pElements.Length; i++)
-			{
-				if (pPredicate.Invoke(pElements[i]))
-				{
-					return i;
-				}
-			}
-			for (int i = 0; i < pStartAtIndex; i++)
-			{
-				if (pPredicate.Invoke(pElements[i]))
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
-
-		/// <summary>
-		/// Checks full list starting at pStartAtIndex, -1 if failed
-		/// </summary>
-		public static int IndexOf<T>(List<T> pElements, int pStartAtIndex, Func<T, bool> pPredicate)
-		{
-			pStartAtIndex = Mathf.Clamp(pStartAtIndex, 0, pElements.Count);
-			for (int i = pStartAtIndex; i < pElements.Count; i++)
-			{
-				if (pPredicate.Invoke(pElements[i]))
-				{
-					return i;
-				}
-			}
-			for (int i = 0; i < pStartAtIndex; i++)
-			{
-				if (pPredicate.Invoke(pElements[i]))
+				if (!pPredicate.Invoke(pElements[i], i))
 				{
 					return i;
 				}

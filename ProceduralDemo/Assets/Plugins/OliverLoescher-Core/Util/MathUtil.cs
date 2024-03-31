@@ -24,6 +24,26 @@ namespace OliverLoescher.Util
 		public static float Clamp(this float pValue, Vector2 pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
 		public static float ClampMax(this float pValue, float pMax) => Mathf.Min(pValue, pMax);
 		public static float ClampMin(this float pValue, float pMin) => Mathf.Min(pValue, pMin);
+		public static float Loop(this float pValue, float pMax)
+		{
+			while (pValue > pMax)
+			{
+				pValue -= pMax;
+			}
+			return pValue;
+		}
+		public static int Clamp(this int pValue, Vector2 pClamp) => Mathf.Clamp(pValue, (int)pClamp.x, (int)pClamp.y);
+		public static int Clamp(this int pValue, Vector2Int pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
+		public static int ClampMax(this int pValue, int pMax) => Mathf.Min(pValue, pMax);
+		public static int ClampMin(this int pValue, int pMin) => Mathf.Min(pValue, pMin);
+		public static int Loop(this int pValue, int pMax)
+		{
+			while (pValue > pMax)
+			{
+				pValue -= pMax;
+			}
+			return pValue;
+		}
 
 		public static float DistanceXZ(Vector3 pA, Vector3 pB) => Horizontal2D(pA - pB).magnitude;
 

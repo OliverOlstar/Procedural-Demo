@@ -40,17 +40,21 @@ namespace PA
 			m_StepMovement.Init(pRoot, this);
 		}
 
-		public void Tick(float pDeltaTime)
+		/// <summary>
+		/// Returns true if a trigger is hit
+		/// </summary>
+		public bool TickTriggers(float pDeltaTime)
 		{
 			if (!IsIdle)
 			{
-				return;
+				return false;
 			}
 			if (m_StepTrigger.Tick(pDeltaTime))
 			{
 				SwitchState(State.Moving);
+				return true;
 			}
-			// m_Movement.Tick(pDeltaTime);
+			return false;
 		}
 
 		public void SwitchState(State pState)

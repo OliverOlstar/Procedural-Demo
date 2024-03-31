@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PA-3Leg-Small-01-LimbTrigger
   m_EditorClassIdentifier: 
   m_MaxDistance: 0.75
-  m_Cooldown: 1.42
+  m_Cooldown: 1.5

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a11fc22a8b2294a8d5f9a4c85b3cf6, type: 3}
   m_Name: PA-3Leg-Small-01-LimbMovement
   m_EditorClassIdentifier: 
-  StepDistance: 1
+  StepDistance: 3
   EaseStep:
     Method: 1
     Direction: 0
   EaseHeight:
     Method: 5
     Direction: 0
-  StepSeconds: {x: 0.6, y: 0.7}
-  UpHeight: 2
+  StepSeconds: {x: 0.5, y: 0.7}
+  UpHeight: 1.4
   LinecastUpDown: {x: 10, y: -15}
   StepLayer:
     serializedVersion: 2
