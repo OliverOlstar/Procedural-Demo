@@ -7,7 +7,7 @@ using System;
 
 namespace PA
 {
-	public class PARoot2 : MonoBehaviour
+	public class PARoot : MonoBehaviour
 	{
 		[SerializeField, DisableInPlayMode]
 		private OliverLoescher.Util.Mono.Updateable m_Updateable = new(OliverLoescher.Util.Mono.Type.Late, OliverLoescher.Util.Mono.Priorities.ModelController);

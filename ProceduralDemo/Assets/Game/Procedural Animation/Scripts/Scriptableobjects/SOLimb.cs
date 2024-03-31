@@ -30,7 +30,7 @@ namespace PA
 		public bool IsIdle => m_State == State.None;
 		public bool IsMoving => m_State == State.Moving;
 
-		public void Init(PARoot2 pRoot, IKSolverCCD pIK)
+		public void Init(PARoot pRoot, IKSolverCCD pIK)
 		{
 			m_StepTrigger = Instantiate(m_StepTrigger);
 			m_StepMovement = Instantiate(m_StepMovement);

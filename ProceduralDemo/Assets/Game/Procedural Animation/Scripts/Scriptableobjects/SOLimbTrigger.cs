@@ -13,11 +13,11 @@ namespace PA
 		[SerializeField]
 		private float m_Cooldown = 1.0f;
 
-		private PARoot2 m_Root;
+		private PARoot m_Root;
 		private SOLimb m_Limb;
 		private Coroutine m_CooldownRoutine;
 
-		public void Init(PARoot2 pRoot, SOLimb pLimb) { m_Root = pRoot; m_Limb = pLimb; }
+		public void Init(PARoot pRoot, SOLimb pLimb) { m_Root = pRoot; m_Limb = pLimb; }
 
 		public bool Tick(float pDeltaTime)
 		{

@@ -18,11 +18,11 @@ namespace PA
 		public Vector3 OriginalPositionWorld() => m_Root.TransformPoint(m_OriginalPositionLocal);
 		public Vector3 OriginalPositionLocal => m_OriginalPositionLocal;
 
-		private PARoot2 m_Root;
+		private PARoot m_Root;
 		private Transform m_Target;
 		private Vector3 m_OriginalPositionLocal;
 
-		public void Init(PARoot2 pRoot, IKSolverCCD pIKSolver)
+		public void Init(PARoot pRoot, IKSolverCCD pIKSolver)
 		{
 			m_Root = pRoot;
 			m_Target = pIKSolver.target;

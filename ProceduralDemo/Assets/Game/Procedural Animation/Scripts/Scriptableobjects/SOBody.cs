@@ -8,7 +8,7 @@ namespace PA
 	[CreateAssetMenu(fileName = "New PA Body", menuName = "Procedural Animation/Body")]
 	public class SOBody : ScriptableObject
 	{
-		private PARoot2 m_Root;
+		private PARoot m_Root;
 		private IPACharacter Character => m_Root.Character;
 		private IEnumerable<PAPoint> Points => m_Root.GetAllPoints();
 		private int PointsCount => m_Root.PointsCount;
@@ -37,7 +37,7 @@ namespace PA
 
 		public Transform Transform => m_Root.BodyTransform;
 
-		public void Init(PARoot2 pRoot)
+		public void Init(PARoot pRoot)
 		{
 			m_Root = pRoot;
 			m_PositionLocalOffset = Transform.localPosition;

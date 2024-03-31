@@ -42,11 +42,11 @@ namespace PA
 
 		public Vector3 TargetPosition() => m_Limb.OriginalPositionWorld();
 
-		private PARoot2 m_Root;
+		private PARoot m_Root;
 		private SOLimb m_Limb;
 		Anim.IAnimation m_Animation;
 
-		public void Init(PARoot2 pRoot, SOLimb pLimb)
+		public void Init(PARoot pRoot, SOLimb pLimb)
 		{
 			m_Root = pRoot;
 			m_Limb = pLimb;

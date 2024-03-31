@@ -10,7 +10,7 @@ public static class PARootEditor_DuplicateLimbs
 {
 	public static int Count = 3;
 
-	public static void DrawGUI(PARoot2 pRoot)
+	public static void DrawGUI(PARoot pRoot)
 	{
 		using (new GUILayout.VerticalScope(GUI.skin.textField))
 		{
