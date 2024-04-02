@@ -10,13 +10,13 @@ namespace OliverLoescher
 	public class InputBridge_EagleEye : InputBridge_Base
 	{
 		[SerializeField]
-		private InputModule_Vector2 moveInput = new InputModule_Vector2();
+		private InputModule_Vector2 moveInput = new();
 		[SerializeField]
-		private InputModule_ToggledInput<InputModule_Vector2> moveDeltaInput = new InputModule_ToggledInput<InputModule_Vector2>();
+		private InputModule_ToggledInput<InputModule_Vector2> moveDeltaInput = new();
 		[SerializeField]
-		private InputModule_Scroll zoomInput = new InputModule_Scroll();
+		private InputModule_Scroll zoomInput = new();
 		[SerializeField]
-		private InputModule_Scroll rotateInput = new InputModule_Scroll();
+		private InputModule_Scroll rotateInput = new();
 
 		public InputModule_Vector2 Move => moveInput;
 		public InputModule_ToggledInput<InputModule_Vector2> MoveDelta => moveDeltaInput;

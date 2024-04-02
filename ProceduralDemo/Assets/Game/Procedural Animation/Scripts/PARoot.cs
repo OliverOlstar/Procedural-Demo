@@ -78,10 +78,7 @@ namespace PA
 
 		private void Tick(float pDeltaTime)
 		{
-			if (Body != null)
-			{
-				Body.Tick(pDeltaTime);
-			}
+			Body?.Tick(pDeltaTime);
 			
 			Func.Foreach(Limbs, m_LastLimbIndex + 1, (PALimb pLimb, int pIndex) =>
 			{
@@ -99,10 +96,7 @@ namespace PA
 			{
 				return;
 			}
-			if (Body != null)
-			{
-				Body.DrawGizmos();
-			}
+			Body?.DrawGizmos();
 			for (int i = 0; i < Limbs.Length; i++)
 			{
 				Limbs[i].DrawGizmos();

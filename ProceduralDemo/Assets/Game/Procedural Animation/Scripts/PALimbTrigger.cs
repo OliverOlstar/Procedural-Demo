@@ -27,7 +27,7 @@ namespace PA
 					return false;
 				}
 			}
-			return Math.DistanceXZGreaterThan(m_Limb.Position, m_Limb.OriginalPositionWorld(), m_Data.m_MaxDistance);
+			return Math.DistanceXZGreaterThan(m_Limb.Position, m_Limb.OriginalPositionWorld(), m_Data.MaxDistance);
 		}
 
 		public void DrawGizmos()

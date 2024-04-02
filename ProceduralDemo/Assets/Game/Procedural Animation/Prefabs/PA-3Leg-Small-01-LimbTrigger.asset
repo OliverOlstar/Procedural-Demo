@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355bee3cc61615a4c9b50d92ebdcfc69, type: 3}
   m_Name: PA-3Leg-Small-01-LimbTrigger
   m_EditorClassIdentifier: 
-  m_MaxDistance: 0.75
-  m_Cooldown: 1.5
+  MaxDistance: 0.75

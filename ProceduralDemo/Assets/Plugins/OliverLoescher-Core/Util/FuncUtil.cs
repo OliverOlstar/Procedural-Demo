@@ -108,6 +108,17 @@ namespace OliverLoescher.Util
 			return pValue;
 		}
 
+		public static T GetOrAddComponent<T>(this GameObject pObject) where T : Component
+		{
+			if (!pObject.TryGetComponent(out T component))
+			{
+				component = pObject.AddComponent<T>();
+			}
+			return component;
+		}
+		public static void GetOrAddComponent<T>(this GameObject pObject, out T pComponent) where T : Component
+			=> pComponent = pObject.GetOrAddComponent<T>();
+
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(this T[] pElements, int pStartAtIndex, T pElement = null) where T : class
 			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => pItem == pElement);
