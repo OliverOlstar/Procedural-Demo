@@ -9,11 +9,11 @@ namespace OliverLoescher.Input
     public class InputModule_Vector2Update : InputModule_Vector2
 	{
 		[BoxGroup]
-		public UnityEventsUtil.Vector2Event onUpdate;
+		public UnityEventsUtil.Vector2Event OnUpdate;
 
 		public override void Update(in float pDeltaTime)
 		{
-			onUpdate?.Invoke(Input);
+			OnUpdate?.Invoke(Input);
 		}
 	}
 }

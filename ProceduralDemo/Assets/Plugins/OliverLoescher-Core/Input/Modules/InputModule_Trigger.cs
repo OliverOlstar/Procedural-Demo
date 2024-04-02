@@ -9,25 +9,25 @@ namespace OliverLoescher.Input
     public class InputModule_Trigger : InputModule_Base
 	{
 		[BoxGroup]
-		public UnityEvent onPerformed;
+		public UnityEvent OnPerformed;
 
 		public override void Enable()
 		{
-			inputAction.performed += OnPerformed;
+			m_InputAction.performed += OnPerformedInternal;
 		}
 		public override void Disable()
 		{
-			inputAction.performed -= OnPerformed;
+			m_InputAction.performed -= OnPerformedInternal;
 		}
 		public override void Clear() { }
 
-		private void OnPerformed(InputAction.CallbackContext ctx)
+		private void OnPerformedInternal(InputAction.CallbackContext ctx)
 		{
-			if (!isValid.Invoke())
+			if (!m_IsValid.Invoke())
 			{
 				return;
 			}
-			onPerformed?.Invoke();
+			OnPerformed?.Invoke();
 		}
 	}
 }

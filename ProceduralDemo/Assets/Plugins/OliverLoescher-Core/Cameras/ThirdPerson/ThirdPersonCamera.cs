@@ -69,8 +69,8 @@ namespace OliverLoescher
 
             if (input != null)
 			{
-				input.Look.onChanged.AddListener(OnLook);
-				input.LookDelta.onChanged.AddListener(OnLookDelta);
+				input.Look.OnChanged.AddListener(OnLook);
+				input.LookDelta.OnChanged.AddListener(OnLookDelta);
 				input.Zoom.onChanged.AddListener(OnZoom);
 			}
 

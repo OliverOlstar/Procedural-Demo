@@ -66,7 +66,7 @@ namespace OliverLoescher.Camera
 
 			if (input != null)
 			{
-				input.MoveDelta.Value.onChanged.AddListener(OnMoveDelta);
+				input.MoveDelta.Value.OnChanged.AddListener(OnMoveDelta);
 				input.Zoom.onChanged.AddListener(OnZoom);
 			}
 

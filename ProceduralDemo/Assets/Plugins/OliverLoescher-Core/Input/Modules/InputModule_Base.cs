@@ -8,13 +8,13 @@ namespace OliverLoescher.Input
 {
     public abstract class InputModule_Base : IInputModule
 	{
-		protected Func<bool> isValid = null;
-		protected InputAction inputAction = null;
+		protected Func<bool> m_IsValid = null;
+		protected InputAction m_InputAction = null;
 
 		public virtual void Initalize(InputAction pInputAction, Func<bool> pIsValid)
 		{
-			inputAction = pInputAction;
-			isValid = pIsValid;
+			m_InputAction = pInputAction;
+			m_IsValid = pIsValid;
 		}
 
 		public abstract void Enable();

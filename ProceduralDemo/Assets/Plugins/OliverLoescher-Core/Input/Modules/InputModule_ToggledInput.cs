@@ -10,52 +10,52 @@ namespace OliverLoescher.Input
     public class InputModule_ToggledInput<T> : IInputModule where T : InputModule_Base, new()
 	{
 		[SerializeField]
-		private InputModule_Toggle toggle = new InputModule_Toggle();
+		private InputModule_Toggle m_Toggle = new();
 		[SerializeField]
-		private T value = new T();
+		private T m_Value = new();
 
-		public InputModule_Toggle Toggle => toggle;
-		public T Value => value;
+		public InputModule_Toggle Toggle => m_Toggle;
+		public T Value => m_Value;
 
 		public void Initalize(InputAction pInputAction, InputAction pToggleInputAction, Func<bool> pIsValid)
 		{
-			toggle.Initalize(pToggleInputAction, pIsValid);
-			value.Initalize(pInputAction, pIsValid);
+			m_Toggle.Initalize(pToggleInputAction, pIsValid);
+			m_Value.Initalize(pInputAction, pIsValid);
 		}
 
 		public void Enable() // IInputModule
 		{
-			toggle.Enable();
+			m_Toggle.Enable();
 
-			toggle.onPerformed.AddListener(EnableValue);
-			toggle.onCanceled.AddListener(DisableValue);
+			m_Toggle.onPerformed.AddListener(EnableValue);
+			m_Toggle.onCanceled.AddListener(DisableValue);
 		}
 
 		public void Disable() // IInputModule
 		{
-			toggle.Disable();
-			value.Disable();
+			m_Toggle.Disable();
+			m_Value.Disable();
 
-			toggle.onPerformed.RemoveListener(EnableValue);
-			toggle.onCanceled.RemoveListener(DisableValue);
+			m_Toggle.onPerformed.RemoveListener(EnableValue);
+			m_Toggle.onCanceled.RemoveListener(DisableValue);
 		}
 
 		public void Clear() // IInputModule
 		{
-			toggle.Clear();
-			value.Clear();
+			m_Toggle.Clear();
+			m_Value.Clear();
 		}
 
 		public void Update(in float pDeltaTime) { } // IInputModule
 
 		private void DisableValue()
 		{
-			value.Disable();
-			value.Clear();
+			m_Value.Disable();
+			m_Value.Clear();
 		}
 		private void EnableValue()
 		{
-			value.Enable();
+			m_Value.Enable();
 		}
 	}
 }

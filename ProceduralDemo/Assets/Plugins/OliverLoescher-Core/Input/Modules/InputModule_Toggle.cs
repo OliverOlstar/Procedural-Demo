@@ -9,11 +9,11 @@ namespace OliverLoescher.Input
     public class InputModule_Toggle : InputModule_Base
 	{
 		[SerializeField, BoxGroup]
-		private bool isToggle = false;
-		public bool IsToggle => isToggle;
+		private bool m_IsToggle = false;
+		public bool IsToggle => m_IsToggle;
 		[Space, HideInEditorMode, SerializeField, BoxGroup]
-		private bool input = false;
-		public bool Input => input;
+		private bool m_Input = false;
+		public bool Input => m_Input;
 
 		// Events
 		[BoxGroup]
@@ -25,13 +25,13 @@ namespace OliverLoescher.Input
 
 		public override void Enable()
 		{
-			inputAction.performed += OnPerformed;
-			inputAction.canceled += OnCanceled;
+			m_InputAction.performed += OnPerformed;
+			m_InputAction.canceled += OnCanceled;
 		}
 		public override void Disable()
 		{
-			inputAction.performed -= OnPerformed;
-			inputAction.canceled -= OnCanceled;
+			m_InputAction.performed -= OnPerformed;
+			m_InputAction.canceled -= OnCanceled;
 		}
 		public override void Clear()
 		{
@@ -40,21 +40,21 @@ namespace OliverLoescher.Input
 
 		private void OnPerformed(InputAction.CallbackContext ctx)
 		{
-			if (!isValid.Invoke())
+			if (!m_IsValid.Invoke())
 			{
 				return;
 			}
 			// True if not toggle || not currently pressed
 			// False if toggle && currently pressed
-			Set(isToggle == false || input == false);
+			Set(m_IsToggle == false || m_Input == false);
 		}
 		private void OnCanceled(InputAction.CallbackContext ctx)
 		{
-			if (!isValid.Invoke())
+			if (!m_IsValid.Invoke())
 			{
 				return;
 			}
-			if (!isToggle)
+			if (!m_IsToggle)
 			{
 				Set(false);
 			}
@@ -62,13 +62,13 @@ namespace OliverLoescher.Input
 
 		private void Set(bool pValue)
 		{
-			if (input != pValue)
+			if (m_Input != pValue)
 			{
-				input = pValue;
+				m_Input = pValue;
 
 				// Events
-				onChanged.Invoke(input);
-				if (input)
+				onChanged.Invoke(m_Input);
+				if (m_Input)
 				{
 					onPerformed?.Invoke();
 				}

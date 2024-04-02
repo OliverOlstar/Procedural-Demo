@@ -4,7 +4,5 @@ using UnityEngine;
 
 namespace OliverLoescher 
 {
-	public class InputSystem : Singleton<PlayerInput>
-	{
-	}
+	public class InputSystem : Singleton<PlayerInput> {}
 }

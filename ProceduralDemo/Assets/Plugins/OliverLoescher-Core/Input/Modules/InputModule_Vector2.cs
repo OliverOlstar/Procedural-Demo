@@ -9,9 +9,9 @@ namespace OliverLoescher.Input
     public class InputModule_Vector2 : InputModule_Base
 	{
 		[BoxGroup, HideInEditorMode, SerializeField]
-		private Vector2 input = new Vector2();
+		private Vector2 input = new();
 		public Vector2 Input => input;
-		public Vector3 InputHorizontal => new Vector3(input.x, 0.0f, input.y);
+		public Vector3 InputHorizontal => new(input.x, 0.0f, input.y);
 
 		[BoxGroup, SerializeField] 
 		private Vector2 scalar = Vector2.one;
@@ -21,27 +21,27 @@ namespace OliverLoescher.Input
 		private bool invertY = false;
 
 		[BoxGroup]
-		public UnityEventsUtil.Vector2Event onChanged;
+		public UnityEventsUtil.Vector2Event OnChanged;
 
 		public override void Enable()
 		{
-			inputAction.performed += OnPerformed;
-			inputAction.canceled += OnPerformed;
+			m_InputAction.performed += OnPerformed;
+			m_InputAction.canceled += OnPerformed;
 		}
 		public override void Disable()
 		{
-			inputAction.performed -= OnPerformed;
-			inputAction.canceled += OnPerformed;
+			m_InputAction.performed -= OnPerformed;
+			m_InputAction.canceled += OnPerformed;
 		}
 		public override void Clear()
 		{
 			input = Vector2.zero;
-			onChanged?.Invoke(input);
+			OnChanged?.Invoke(input);
 		}
 
 		private void OnPerformed(InputAction.CallbackContext ctx)
 		{
-			if (!isValid.Invoke())
+			if (!m_IsValid.Invoke())
 			{
 				return;
 			}
@@ -52,7 +52,7 @@ namespace OliverLoescher.Input
 			{
 				input.Normalize();
 			}
-			onChanged?.Invoke(input);
+			OnChanged?.Invoke(input);
 		}
 	}
 }

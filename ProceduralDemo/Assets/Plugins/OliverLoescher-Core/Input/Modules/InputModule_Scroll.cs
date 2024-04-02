@@ -10,8 +10,8 @@ namespace OliverLoescher.Input
     public class InputModule_Scroll : InputModule_Base
 	{
 		[Space, SerializeField, BoxGroup]
-		private float input = 0.0f;
-		public float Input => input;
+		private float m_Input = 0.0f;
+		public float Input => m_Input;
 
 		// Events
 		[BoxGroup]
@@ -24,22 +24,22 @@ namespace OliverLoescher.Input
 
 		public override void Enable()
 		{
-			inputAction.performed += OnPerformed;
+			m_InputAction.performed += OnPerformed;
 		}
 		public override void Disable()
 		{
-			inputAction.performed -= OnPerformed;
+			m_InputAction.performed -= OnPerformed;
 		}
 		public override void Clear() { }
 
 		private void OnPerformed(InputAction.CallbackContext ctx)
 		{
-			if (!isValid.Invoke())
+			if (!m_IsValid.Invoke())
 			{
 				return;
 			}
-			input = ctx.ReadValue<float>();
-			onChanged?.Invoke(input);
+			m_Input = ctx.ReadValue<float>();
+			onChanged?.Invoke(m_Input);
 		}
 	}
 }
