@@ -13,7 +13,7 @@ namespace OliverLoescher.Util
 		#region Logs
 		private static StringBuilder StringBuilder = new StringBuilder();
 
-		[Conditional("ENABLE_DEBUG_EXCEPTIONS")]
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void DevException<T>(T pException) where T : Exception
 		{
 #if RELEASE
@@ -23,7 +23,7 @@ namespace OliverLoescher.Util
 #endif
 		}
 
-		[Conditional("ENABLE_DEBUG_EXCEPTIONS")]
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void DevException(string pMessage)
 		{
 #if RELEASE
@@ -33,7 +33,7 @@ namespace OliverLoescher.Util
 #endif
 		}
 
-		[Conditional("ENABLE_DEBUG_EXCEPTIONS")]
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void DevException(string pMessage, string pMethodName, UnityEngine.Object pObject)
 		{
 #if RELEASE
@@ -43,7 +43,7 @@ namespace OliverLoescher.Util
 #endif
 		}
 
-		[Conditional("ENABLE_DEBUG_EXCEPTIONS")]
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void DevException(string pMessage, string pMethodName, Type pObject)
 		{
 #if RELEASE
@@ -53,7 +53,7 @@ namespace OliverLoescher.Util
 #endif
 		}
 
-		[Conditional("ENABLE_DEBUG_EXCEPTIONS")]
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void NotImplementedException()
 		{
 #if RELEASE
@@ -63,46 +63,46 @@ namespace OliverLoescher.Util
 #endif
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogBasic(string pMessage)
 		{
 			UnityEngine.Debug.Log(pMessage);
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log(string pMessage, string pMethodName, UnityEngine.Object pObject)
 		{
 			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, pObject), pObject);
 		}
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log(string pMessage, string pMethodName, Type pObject)
 		{
 			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, pObject));
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogWarning(string pMessage, string pMethodName, UnityEngine.Object pObject)
 		{
 			UnityEngine.Debug.LogWarning(CreateLogMessage(pMessage, pMethodName, pObject), pObject);
 		}
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogWarning(string pMessage, string pMethodName, Type pObject)
 		{
 			UnityEngine.Debug.LogWarning(CreateLogMessage(pMessage, pMethodName, pObject));
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogError(string pMessage, string pMethodName, UnityEngine.Object pObject)
 		{
 			UnityEngine.Debug.LogError(CreateLogMessage(pMessage, pMethodName, pObject), pObject);
 		}
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogError(string pMessage, string pMethodName, Type pObject)
 		{
 			UnityEngine.Debug.LogError(CreateLogMessage(pMessage, pMethodName, pObject));
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log<TKey, TValue>(string pMessage, Dictionary<TKey, TValue> pDictionary)
 		{
 			StringBuilder.Clear();
@@ -117,7 +117,7 @@ namespace OliverLoescher.Util
 			UnityEngine.Debug.Log($"{pMessage} [{StringBuilder}]");
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log<TValue>(string pMessage, IEnumerable<TValue> pValues)
 		{
 			StringBuilder.Clear();
@@ -135,7 +135,7 @@ namespace OliverLoescher.Util
 			UnityEngine.Debug.Log(StringBuilder.ToString());
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING")]
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log<TValue>(string pMessage, TValue[,] pValues)
 		{
 			StringBuilder.Clear();
