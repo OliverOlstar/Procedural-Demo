@@ -38,9 +38,11 @@ namespace OliverLoescher.Util
 		public static int Clamp(this int pValue, Vector2Int pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
 		public static int ClampMax(this int pValue, int pMax) => Mathf.Min(pValue, pMax);
 		public static int ClampMin(this int pValue, int pMin) => Mathf.Min(pValue, pMin);
+		/// <summary>Wraps value to max, returned value will always be below the max</summary>
+		/// <param name="pMax">Max is exclusive</param>
 		public static int Loop(this int pValue, int pMax)
 		{
-			while (pValue > pMax)
+			while (pValue >= pMax)
 			{
 				pValue -= pMax;
 			}

@@ -72,7 +72,7 @@ namespace OliverLoescher
 		}
 
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Fixed, Util.Mono.Priorities.OnGround);
+		private Util.Mono.Updateable updateable = new(Util.Mono.Type.Fixed, Util.Mono.Priorities.OnGround);
 		[SerializeField]
 		private Transform myTransform;
 		[SerializeField]
@@ -80,7 +80,7 @@ namespace OliverLoescher
 		[SerializeField]
 		private Spherecast[] spheres = new Spherecast[1];
 		[SerializeField]
-		private LayerMask layerMask = new LayerMask();
+		private LayerMask layerMask = new();
 		[SerializeField]
 		private float slopeLimit = 45;
 		[SerializeField]
@@ -114,9 +114,6 @@ namespace OliverLoescher
 
 		private void Tick(float pDeltaTime)
 		{
-			bool hasGround = CastToGrounded();
-			bool validGround = hasGround && IsGroundValid();
-			Util.Debug2.Log($"{hasGround} && {validGround} | {hasGround && validGround} != {IsGrounded}", "Tick", this);
 			if ((CastToGrounded() && IsGroundValid()) != IsGrounded)
 			{
 				IsGrounded = !IsGrounded;
@@ -128,6 +125,12 @@ namespace OliverLoescher
 				{
 					OnExit();
 				}
+			}
+
+			Transform groundTransform = GetFirstGroundTransform();
+			if (follower.IsStarted && follower.ParentTransform != groundTransform)
+			{
+				follower.ChangeParent(groundTransform);
 			}
 		}
 
@@ -206,24 +209,27 @@ namespace OliverLoescher
 
 		private void OnEnter()
 		{
-			Util.Debug2.Log("", "OnEnter", this);
 			OnEnterEvent?.Invoke();
+			SetFollowTarget(GetFirstGroundTransform());
+		}
+
+		private void SetFollowTarget(Transform pTarget)
+		{
 			if (followGround)
 			{
 				if (myController)
 				{
-					follower.Start(GetFirstGroundTransform(), myController, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
+					follower.Start(pTarget, myController, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
 				}
 				else
 				{
-					follower.Start(GetFirstGroundTransform(), myTransform, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
+					follower.Start(pTarget, myTransform, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
 				}
 			}
 		}
 
 		private void OnExit()
 		{
-			Util.Debug2.Log("", "OnExit", this);
 			OnExitEvent?.Invoke();
 			if (followGround)
 			{

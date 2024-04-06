@@ -16,7 +16,7 @@ namespace OliverLoescher.Util
 
 		public bool IsComplete => Progress01 >= 1.0f;
 
-		public AnimUtilEase2D(Easing.EaseParams pEaseX, Easing.EaseParams pEaseY, float pSeconds, Anim.Tick2DEvent pOnTick, Anim.Tick2DEvent pOnComplete)
+		public AnimUtilEase2D(Easing.EaseParams pEaseX, Easing.EaseParams pEaseY, float pSeconds, Anim.Tick2DEvent pOnTick, Anim.Tick2DEvent pOnComplete, float pDelay)
 		{
 			EaseX = pEaseX;
 			EaseY = pEaseY;
@@ -24,7 +24,7 @@ namespace OliverLoescher.Util
 			OnComplete = pOnComplete ?? pOnTick;
 
 			InverseSeconds = 1.0f / pSeconds;
-			Progress01 = 0.0f;
+			Progress01 = -pDelay * InverseSeconds;
 		}
 
 		bool Anim.IAnimationInternal.Tick(float pDeltaTime)
@@ -39,7 +39,10 @@ namespace OliverLoescher.Util
 				OnComplete.Invoke(Vector2.one);
 				return true;
 			}
-			OnTick.Invoke(new Vector2(EaseX.Ease(Progress01), EaseY.Ease(Progress01)));
+			if (Progress01 >= 0.0f)
+			{
+				OnTick.Invoke(new Vector2(EaseX.Ease(Progress01), EaseY.Ease(Progress01)));
+			}
 			return false;
 		}
 

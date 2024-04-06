@@ -56,6 +56,7 @@ namespace OliverLoescher.Util
 			public readonly Action<float> Action => action;
 			public readonly Type Type => type;
 			public readonly Priorities Priority => priority;
+			public readonly bool IsRegistered => action != null;
 
 			public Updateable(Type pType, Priorities pPriority)
 			{
@@ -82,7 +83,7 @@ namespace OliverLoescher.Util
 					LogExeception("Was passed a null action", "Register");
 					return;
 				}
-				if (action != null)
+				if (IsRegistered)
 				{
 					if (action.Method == pAction.Method)
 					{

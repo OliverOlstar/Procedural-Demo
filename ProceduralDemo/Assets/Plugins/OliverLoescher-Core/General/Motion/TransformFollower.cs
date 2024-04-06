@@ -22,6 +22,10 @@ namespace OliverLoescher
 		private Quaternion lastRotation = Quaternion.identity;
 		private Vector3 localPosition;
 
+		public bool IsStarted => updateable.IsRegistered;
+		public Transform ParentTransform => parent;
+		public Transform ChildTransform => child;
+
 		public void Start(Transform pParent, CharacterController pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
 			debugObject = pDebugParent;
@@ -87,6 +91,19 @@ namespace OliverLoescher
 			child = null;
 
 			updateable.Deregister();
+		}
+
+		public void ChangeParent(Transform pParent)
+		{
+			if (pParent == null)
+			{
+				Util.Debug2.DevException("pParent is null", "ChangePoint", debugObject);
+				return;
+			}
+			parent = pParent;
+			
+			lastRotation = parent.rotation;
+			localPosition = parent.InverseTransformPoint(lastPosition);
 		}
 
 		private void Tick(float _)

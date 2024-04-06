@@ -142,7 +142,7 @@ namespace OliverLoescher.Util
 			{
 				return -1;
 			}
-			pStartAtIndex.Loop(pElements.Length - 1);
+			pStartAtIndex.Loop(pElements.Length);
 			for (int i = pStartAtIndex; i < pElements.Length; i++)
 			{
 				if (!pPredicate.Invoke(pElements[i], i))
@@ -167,7 +167,7 @@ namespace OliverLoescher.Util
 			{
 				return -1;
 			}
-			pStartAtIndex.Loop(pElements.Count - 1);
+			pStartAtIndex.Loop(pElements.Count);
 			for (int i = pStartAtIndex; i < pElements.Count; i++)
 			{
 				if (!pPredicate.Invoke(pElements[i], i))
