@@ -59,6 +59,15 @@ public class CharacterMovement : MonoBehaviour
 	{
 		JumpTick();
 		MoveTick();
+
+		// Vector3 center = m_Controller.transform.position + m_Controller.center;
+		// float distance = m_Velocity.magnitude * pDeltaTime;
+		// if (Physics.CapsuleCast(center + (Vector3.up * m_Controller.height), center + (Vector3.down * m_Controller.height), m_Controller.radius, m_Velocity, out RaycastHit hit, distance, m_GroundLayer))
+		// {
+		// 	float y = m_Velocity.y;
+		// 	m_Velocity *= hit.distance / distance;
+		// 	m_Velocity.y = y;
+		// }
 		m_Controller.Move(m_Velocity * pDeltaTime);
 	}
 
@@ -68,12 +77,12 @@ public class CharacterMovement : MonoBehaviour
 		{
 			return;
 		}
-		Vector3 input = m_Input.Move.Input.y * Math.Horizontalize(MainCamera.Camera.transform.forward);
-		input += m_Input.Move.Input.x * Math.Horizontalize(MainCamera.Camera.transform.right);
-		input.Horizontalize();
+		Vector3 normal = m_Grounded.GetAverageNormal();
+		Vector3 input = m_Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
+		input += m_Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
+		input = input.normalized;
 
-		m_Velocity.x = input.x * m_Speed;
-		m_Velocity.z = input.z * m_Speed;
+		m_Velocity = input * m_Speed;
 	}
 
 	private void JumpTick()
@@ -123,5 +132,12 @@ public class CharacterMovement : MonoBehaviour
 			progress01 += Time.deltaTime * timeScale;
 		}
 		pOnComplete?.Invoke();
+	}
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.yellow;
+		Vector3 start = transform.position + m_Controller.center;
+		Gizmos.DrawLine(start, start + m_Velocity);
 	}
 }

@@ -101,10 +101,6 @@ namespace PA
 			{
 				Limbs[i].DrawGizmos();
 			}
-			foreach (PAPoint point in GetAllPoints())
-			{
-				point.DrawGizmos();
-			}
 		}
 
 		// public void AddLimb(IPALimb pLimb)

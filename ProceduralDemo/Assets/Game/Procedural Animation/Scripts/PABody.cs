@@ -93,7 +93,6 @@ namespace PA
 			Vector3 position = Vector3.zero;
 			foreach (PAPoint point in Points)
 			{
-				Gizmos.DrawSphere(point.Position, 2.0f);
 				position += point.Position;
 			}
 			Vector3 targetPosition = (position / PointsCount) + m_PositionLocalOffset;
