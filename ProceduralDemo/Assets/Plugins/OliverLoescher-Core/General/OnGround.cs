@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using System;
 
 namespace OliverLoescher
 {
@@ -21,11 +22,18 @@ namespace OliverLoescher
 				return Physics.Linecast(start, end, out hitInfo, pLayerMask);
 			}
 
-			public void OnDrawGizmos(Transform pTransform, LayerMask pLayerMask)
+			public void OnDrawGizmos(Transform pTransform, LayerMask pLayerMask, Func<RaycastHit, bool> pIsValid = null)
 			{
 				Vector3 start = pTransform.TransformPoint(startPosition);
 				Vector3 end = start - (pTransform.up * distance);
-				Gizmos.color = Check(pTransform, pLayerMask) ? Color.green : Color.red;
+				if (Check(pTransform, pLayerMask))
+				{
+					Gizmos.color = (pIsValid != null && pIsValid.Invoke(hitInfo)) ? Color.green : Color.yellow;
+				}
+				else
+				{
+					Gizmos.color = Color.red;
+				}
 				Gizmos.DrawLine(start, end);
 			}
 		}
@@ -45,12 +53,19 @@ namespace OliverLoescher
 				return Physics.SphereCast(start, radius, -pTransform.up, out hitInfo, distance, pLayerMask);
 			}
 
-			public void OnDrawGizmos(Transform pTransform, LayerMask pLayerMask)
+			public void OnDrawGizmos(Transform pTransform, LayerMask pLayerMask, Func<RaycastHit, bool> pIsValid = null)
 			{
 				Vector3 start = pTransform.TransformPoint(startPosition);
 				Vector3 end = start - (pTransform.up * distance);
 				Gizmos.DrawWireSphere(start, radius);
-				Gizmos.color = Check(pTransform, pLayerMask) ? Color.green : Color.red;
+				if (Check(pTransform, pLayerMask))
+				{
+					Gizmos.color = (pIsValid != null && pIsValid.Invoke(hitInfo)) ? Color.green : Color.yellow;
+				}
+				else
+				{
+					Gizmos.color = Color.red;
+				}
 				Gizmos.DrawWireSphere(end, radius);
 				Gizmos.DrawLine(start, end);
 			}
@@ -66,6 +81,8 @@ namespace OliverLoescher
 		private Spherecast[] spheres = new Spherecast[1];
 		[SerializeField]
 		private LayerMask layerMask = new LayerMask();
+		[SerializeField]
+		private float slopeLimit = 45;
 		[SerializeField]
 		private bool followGround;
 
@@ -97,7 +114,10 @@ namespace OliverLoescher
 
 		private void Tick(float pDeltaTime)
 		{
-			if (CheckIsGrounded() != IsGrounded)
+			bool hasGround = CastToGrounded();
+			bool validGround = hasGround && IsGroundValid();
+			Util.Debug2.Log($"{hasGround} && {validGround} | {hasGround && validGround} != {IsGrounded}", "Tick", this);
+			if ((CastToGrounded() && IsGroundValid()) != IsGrounded)
 			{
 				IsGrounded = !IsGrounded;
 				if (IsGrounded)
@@ -111,7 +131,7 @@ namespace OliverLoescher
 			}
 		}
 
-		private bool CheckIsGrounded()
+		private bool CastToGrounded()
 		{
 			foreach (Linecast line in lines)
 			{
@@ -126,6 +146,17 @@ namespace OliverLoescher
 			return false;
 		}
 
+		private bool IsGroundValid()
+		{
+			Vector3 normal = GetAverageNormal();
+			return IsGroundValidInternal(normal);
+		}
+
+		private bool IsGroundValidInternal(Vector3 pNormal)
+		{
+			return Vector3.Angle(Vector3.up, pNormal) < slopeLimit;
+		}
+
 		public Vector3 GetAverageNormal()
 		{
 			Vector3 total = Vector3.zero;
@@ -136,6 +167,10 @@ namespace OliverLoescher
 			foreach (Spherecast sphere in spheres)
 			{
 				total += sphere.hitInfo.normal;
+			}
+			if (total.sqrMagnitude < 1.0f) // If no normal was added
+			{
+				return Vector3.up;
 			}
 			return total / (lines.Length + spheres.Length);
 		}
@@ -171,6 +206,7 @@ namespace OliverLoescher
 
 		private void OnEnter()
 		{
+			Util.Debug2.Log("", "OnEnter", this);
 			OnEnterEvent?.Invoke();
 			if (followGround)
 			{
@@ -187,6 +223,7 @@ namespace OliverLoescher
 
 		private void OnExit()
 		{
+			Util.Debug2.Log("", "OnExit", this);
 			OnExitEvent?.Invoke();
 			if (followGround)
 			{
@@ -202,11 +239,11 @@ namespace OliverLoescher
 			}
 			foreach (Linecast line in lines)
 			{
-				line.OnDrawGizmos(myTransform, layerMask);
+				line.OnDrawGizmos(myTransform, layerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
 			}
 			foreach (Spherecast sphere in spheres)
 			{
-				sphere.OnDrawGizmos(myTransform, layerMask);
+				sphere.OnDrawGizmos(myTransform, layerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
 			}
 			follower.OnDrawGizmos();
 		}
