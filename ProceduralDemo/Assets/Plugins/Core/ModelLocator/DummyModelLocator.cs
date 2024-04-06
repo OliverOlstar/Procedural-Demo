@@ -31,11 +31,11 @@ namespace ModelLocator
 			if (UnityEditor.Selection.Contains(gameObject))
 			{
 				Gizmos.color = Color.yellow;
-				Gizmos.DrawSphere(transform.position, 0.15f);
+				Gizmos.DrawSphere(transform.position, 0.05f);
 			}
 			else
 			{
-				Gizmos.DrawSphere(transform.position, 0.15f);
+				Gizmos.DrawSphere(transform.position, 0.05f);
 				Gizmos.color = Color.red;
 				Gizmos.DrawRay(transform.position, transform.right);
 				Gizmos.color = Color.green;

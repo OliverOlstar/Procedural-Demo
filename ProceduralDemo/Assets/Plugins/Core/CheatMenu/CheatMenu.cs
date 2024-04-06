@@ -385,7 +385,7 @@ namespace Core.CheatMenu
 			m_InputBlocker.gameObject.SetActive(true);
 			m_TimeScaleHandle = Core.TimeScaleManager.StartTimeEvent(0.0f);
 			OnOpened();
-			if (TryGetCurrentCurrentGroup(out CheatMenuGroup currentGroup))
+			if (!TryGetCurrentCurrentGroup(out CheatMenuGroup currentGroup))
 			{
 				return;
 			}
