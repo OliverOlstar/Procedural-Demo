@@ -84,7 +84,7 @@ namespace OliverLoescher
 		[SerializeField]
 		private float slopeLimit = 45;
 		[SerializeField]
-		private bool followGround;
+		private bool m_FollowGround = false;
 
 		public bool IsGrounded { get; private set; }
 		[FoldoutGroup("Events")]
@@ -92,8 +92,9 @@ namespace OliverLoescher
 		[FoldoutGroup("Events")]
 		public UnityEvent OnExitEvent;
 
-		private readonly TransformFollower follower = new TransformFollower();
-		private CharacterController myController;
+		private readonly TransformFollower m_Follower = new();
+		private CharacterController m_Controller;
+		private Rigidbody m_Rigidbody;
 
 		private void Start()
 		{
@@ -101,7 +102,8 @@ namespace OliverLoescher
 			{
 				myTransform = transform;
 			}
-			myTransform.TryGetComponent(out myController);
+			if (!myTransform.TryGetComponent(out m_Rigidbody))
+				myTransform.TryGetComponent(out m_Controller);
 
 			updateable.Register(Tick);
 		}
@@ -109,7 +111,7 @@ namespace OliverLoescher
 		private void OnDestroy()
 		{
 			updateable.Deregister();
-			follower.OnDestroy();
+			m_Follower.OnDestroy();
 		}
 
 		private void Tick(float pDeltaTime)
@@ -128,9 +130,9 @@ namespace OliverLoescher
 			}
 
 			Transform groundTransform = GetFirstGroundTransform();
-			if (follower.IsStarted && follower.ParentTransform != groundTransform)
+			if (m_Follower.IsStarted && m_Follower.ParentTransform != groundTransform)
 			{
-				follower.ChangeParent(groundTransform);
+				m_Follower.ChangeParent(groundTransform);
 			}
 		}
 
@@ -215,15 +217,19 @@ namespace OliverLoescher
 
 		private void SetFollowTarget(Transform pTarget)
 		{
-			if (followGround)
+			if (m_FollowGround)
 			{
-				if (myController)
+				if (m_Rigidbody)
 				{
-					follower.Start(pTarget, myController, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
+					m_Follower.Start(pTarget, m_Rigidbody, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
+				}
+				else if (m_Controller)
+				{
+					m_Follower.Start(pTarget, m_Controller, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
 				}
 				else
 				{
-					follower.Start(pTarget, myTransform, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
+					m_Follower.Start(pTarget, myTransform, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
 				}
 			}
 		}
@@ -231,9 +237,9 @@ namespace OliverLoescher
 		private void OnExit()
 		{
 			OnExitEvent?.Invoke();
-			if (followGround)
+			if (m_FollowGround)
 			{
-				follower.Stop();
+				m_Follower.Stop();
 			}
 		}
 
@@ -251,7 +257,7 @@ namespace OliverLoescher
 			{
 				sphere.OnDrawGizmos(myTransform, layerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
 			}
-			follower.OnDrawGizmos();
+			m_Follower.OnDrawGizmos();
 		}
 	}
 }

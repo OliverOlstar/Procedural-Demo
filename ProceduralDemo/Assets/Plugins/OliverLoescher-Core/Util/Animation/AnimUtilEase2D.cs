@@ -18,6 +18,11 @@ namespace OliverLoescher.Util
 
 		public AnimUtilEase2D(Easing.EaseParams pEaseX, Easing.EaseParams pEaseY, float pSeconds, Anim.Tick2DEvent pOnTick, Anim.Tick2DEvent pOnComplete, float pDelay)
 		{
+			if (pOnTick == null)
+			{
+				Debug2.DevException("pOnTick should never be null", "", typeof(AnimUtilEase));
+			}
+			
 			EaseX = pEaseX;
 			EaseY = pEaseY;
 			OnTick = pOnTick;

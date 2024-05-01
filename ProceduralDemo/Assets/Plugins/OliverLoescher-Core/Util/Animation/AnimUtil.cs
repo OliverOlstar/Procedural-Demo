@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.Utilities;
-using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -37,7 +36,7 @@ namespace OliverLoescher.Util
 			}
 			s_Animations.Clear();
 			s_IsInitalized = true;
-			s_Updateable.Register(Tick);
+			s_Updateable.Register((float pDeltaTime) => Tick(pDeltaTime, s_Animations));
 			Application.quitting += OnQuit;
 		}
 
@@ -49,52 +48,38 @@ namespace OliverLoescher.Util
 			Application.quitting -= OnQuit;
 		}
 
-		private static void Tick(float pDeltaTime)
+		private static void Tick(float pDeltaTime, in IList<IAnimationInternal> pAnimations)
 		{
-			if (s_Animations.IsNullOrEmpty())
+			if (pAnimations.IsNullOrEmpty())
 			{
 				return;
 			}
 			Profiler.BeginSample("AnimUtil.Tick()");
-			for (int i = s_Animations.Count - 1; i >= 0; i--)
+			for (int i = pAnimations.Count - 1; i >= 0; i--)
 			{
-				if (s_Animations[i].Tick(pDeltaTime))
+				if (pAnimations[i].Tick(pDeltaTime))
 				{
-					s_Animations.RemoveAt(i);
+					pAnimations.RemoveAt(i);
 					continue;
 				}
 			}
 			Profiler.EndSample();
 		}
 
-        public static IAnimation Play(Easing.EaseParams pEase, float pSeconds, TickEvent pOnTick, TickEvent pOnComplete = null, float pDelay = 0.0f)
+		private static IAnimation PlayInternal(IAnimationInternal pAnim)
 		{
-			if (pOnTick == null)
-			{
-				Debug2.DevException("pOnTick can not be null", nameof(Play), typeof(Anim));
-				return null;
-			}
 			Initalize();
-			AnimUtilEase anim = new(pEase, pSeconds, pOnTick, pOnComplete, pDelay);
-			s_Animations.Add(anim);
-			return anim;
+			s_Animations.Add(pAnim);
+			return pAnim;
 		}
+
+        public static IAnimation Play(Easing.EaseParams pEase, float pSeconds, TickEvent pOnTick, TickEvent pOnComplete = null, float pDelay = 0.0f)
+			=> PlayInternal(new AnimUtilEase(pEase, pSeconds, pOnTick, pOnComplete, pDelay));
         public static IAnimation Play(Easing.Method pMethod, Easing.Direction pDirection, float pSeconds, TickEvent pOnTick, TickEvent pOnComplete = null, float pDelay = 0.0f)
 			=> Play(new Easing.EaseParams(pMethod, pDirection), pSeconds, pOnTick, pOnComplete, pDelay);
 
-
 		public static IAnimation Play2D(Easing.EaseParams pEaseX, Easing.EaseParams pEaseY, float pSeconds, Tick2DEvent pOnTick = null, Tick2DEvent pOnComplete = null, float pDelay = 0.0f)
-		{
-			if (pOnTick == null)
-			{
-				Debug2.DevException("pOnTick can not be null", nameof(Play), typeof(Anim));
-				return null;
-			}
-			Initalize();
-			AnimUtilEase2D anim = new(pEaseX, pEaseY, pSeconds, pOnTick, pOnComplete, pDelay);
-			s_Animations.Add(anim);
-			return anim;
-		}
+			=> PlayInternal(new AnimUtilEase2D(pEaseX, pEaseY, pSeconds, pOnTick, pOnComplete, pDelay));
 		public static IAnimation Play2D(Easing.Method pMethodX, Easing.Direction pDirectionX, Easing.Method pMethodY, Easing.Direction pDirectionY, float pSeconds, Tick2DEvent pOnTick = null, Tick2DEvent pOnComplete = null, float pDelay = 0.0f)
 			=> Play2D(new Easing.EaseParams(pMethodX, pDirectionX), new Easing.EaseParams(pMethodY, pDirectionY), pSeconds, pOnTick, pOnComplete, pDelay);
     }

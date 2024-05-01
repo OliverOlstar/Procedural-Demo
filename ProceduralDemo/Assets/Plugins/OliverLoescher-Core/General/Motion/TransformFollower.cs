@@ -10,10 +10,11 @@ namespace OliverLoescher
 	/// </summary>
 	public class TransformFollower
 	{
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable();
+		private Util.Mono.Updateable updateable = new();
 		private Transform parent;
 		private Transform child;
 		private CharacterController childController;
+		private Rigidbody childRigidbody;
 		private Object debugObject;
 		private System.Action<Vector3> onMoved;
 		private bool rotateChild;
@@ -25,6 +26,18 @@ namespace OliverLoescher
 		public bool IsStarted => updateable.IsRegistered;
 		public Transform ParentTransform => parent;
 		public Transform ChildTransform => child;
+
+		public void Start(Transform pParent, Rigidbody pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
+		{
+			debugObject = pDebugParent;
+			if (pChild == null)
+			{
+				Util.Debug2.DevException("pChild (Rigidbody) is null", "Start", debugObject);
+				return;
+			}
+			childRigidbody = pChild;
+			Start(pParent, pChild.transform, pPoint, pOnMoved, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
+		}
 
 		public void Start(Transform pParent, CharacterController pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
@@ -106,7 +119,7 @@ namespace OliverLoescher
 			localPosition = parent.InverseTransformPoint(lastPosition);
 		}
 
-		private void Tick(float _)
+		private void Tick(float pDeltaTime)
 		{
 			Vector3 currPositon = parent.TransformPoint(localPosition);
 			Vector3 deltaPosition = currPositon - lastPosition;
@@ -117,6 +130,10 @@ namespace OliverLoescher
 
 			SetControllerAcitve(false); // Disable so we can move the transform
 			child.position += deltaPosition;
+			if (childRigidbody != null)
+			{
+				childRigidbody.position += deltaPosition;
+			}
 			if (rotateChild)
 			{
 				Quaternion deltaRotation = lastRotation.Difference(parent.rotation);
@@ -138,6 +155,10 @@ namespace OliverLoescher
 
 		private void SetControllerAcitve(bool pEnabled)
 		{
+			// if (childRigidbody)
+			// {
+			// 	childRigidbody.isKinematic = !pEnabled;
+			// }
 			if (childController)
 			{
 				childController.enabled = pEnabled;

@@ -19,11 +19,11 @@ namespace OliverLoescher
 			public void Play(Transform pTransform, Vector3 pToPoint, Vector3 pOffset, System.Action pOnComplete)
 			{
 				Anim.Play(Ease, Seconds,
-				(float pProgress) =>
+				(float pProgress) => // OnTick
 				{
 					pTransform.position = Vector3.LerpUnclamped(Point, pToPoint, pProgress) + pOffset;
 				},
-				(_) =>
+				(_) => // OnComplete
 				{
 					pTransform.position = pToPoint + pOffset;
 					pOnComplete.Invoke();

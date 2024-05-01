@@ -15,7 +15,7 @@ public class CharacterMovement : MonoBehaviour
 	[SerializeField]
 	private InputBridge_PlayerCharacter m_Input = null;
 
-	[Header("Jump")]
+	[Space]
 	[SerializeField]
 	private AnimationCurve m_JumpVelocityCurve = new();
 	[SerializeField]
@@ -33,7 +33,9 @@ public class CharacterMovement : MonoBehaviour
 	private float m_Speed = 5.0f;
 
 	[Space, SerializeField]
-	private Vector3 m_Velocity;
+	private Vector3 m_AccelerationMovement;
+	private Vector3 m_AccelerationGravity;
+	private Vector3 Acceleration => m_AccelerationMovement + m_AccelerationGravity;
 
 	private Coroutine m_VelocityYRoutine = null;
 
@@ -58,7 +60,7 @@ public class CharacterMovement : MonoBehaviour
 	void Tick(float pDeltaTime)
 	{
 		JumpTick();
-		MoveTick();
+		MoveTick(pDeltaTime);
 
 		// Vector3 center = m_Controller.transform.position + m_Controller.center;
 		// float distance = m_Velocity.magnitude * pDeltaTime;
@@ -68,13 +70,14 @@ public class CharacterMovement : MonoBehaviour
 		// 	m_Velocity *= hit.distance / distance;
 		// 	m_Velocity.y = y;
 		// }
-		m_Controller.Move(m_Velocity * pDeltaTime);
+		m_Controller.Move(Acceleration * pDeltaTime);
 	}
 
-	private void MoveTick()
+	private void MoveTick(float pDeltaTime)
 	{
 		if (!m_Grounded.IsGrounded)
 		{
+			m_AccelerationMovement -= 0.99f * pDeltaTime * m_AccelerationMovement;
 			return;
 		}
 		Vector3 normal = m_Grounded.GetAverageNormal();
@@ -82,7 +85,7 @@ public class CharacterMovement : MonoBehaviour
 		input += m_Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
 		input = input.normalized;
 
-		m_Velocity = input * m_Speed;
+		m_AccelerationMovement = input * m_Speed;
 	}
 
 	private void JumpTick()
@@ -91,7 +94,7 @@ public class CharacterMovement : MonoBehaviour
 		{
 			return;
 		}
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKey(KeyCode.Space))
 		{
 			if (m_VelocityYRoutine != null)
 			{
@@ -111,7 +114,7 @@ public class CharacterMovement : MonoBehaviour
 			StopCoroutine(m_VelocityYRoutine);
 			m_VelocityYRoutine = null;
 		}
-		m_Velocity.y = -1.0f;
+		m_AccelerationGravity.y = -1.0f;
 	}
 
 	private void OnGroundExit()
@@ -124,11 +127,11 @@ public class CharacterMovement : MonoBehaviour
 		float progress01 = 0.0f;
 		float timeScale = 1 / pSeconds;
 
-		m_Velocity.y = pCurve.Evaluate(0) * pScalar;
+		m_AccelerationGravity.y = pCurve.Evaluate(0) * pScalar;
 		while (progress01 < 1.0f)
 		{
 			yield return null;
-			m_Velocity.y = pCurve.Evaluate(progress01) * pScalar;
+			m_AccelerationGravity.y = pCurve.Evaluate(progress01) * pScalar;
 			progress01 += Time.deltaTime * timeScale;
 		}
 		pOnComplete?.Invoke();
@@ -138,6 +141,6 @@ public class CharacterMovement : MonoBehaviour
 	{
 		Gizmos.color = Color.yellow;
 		Vector3 start = transform.position + m_Controller.center;
-		Gizmos.DrawLine(start, start + m_Velocity);
+		Gizmos.DrawLine(start, start + m_AccelerationGravity);
 	}
 }
