@@ -12,7 +12,7 @@ public abstract class Messaging<TKey> : Messaging where TKey : Enum
 {
 	public delegate void Message<TData>(TData data) where TData : IMessageData;
 
-	private static Dictionary<TKey, Router> s_Routers;
+	private static readonly Dictionary<TKey, Router> s_Routers;
 
 	static Messaging()
 	{
