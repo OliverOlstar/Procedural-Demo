@@ -2,7 +2,5 @@
 
 namespace Core
 {
-	public sealed class ListPool<T> : CollectionPool<List<T>, T>
-	{
-	}
+	public sealed class ListPool<T> : CollectionPool<List<T>, T> { }
 }

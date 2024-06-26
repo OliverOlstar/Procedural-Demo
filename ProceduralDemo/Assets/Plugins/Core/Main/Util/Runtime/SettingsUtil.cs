@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using UnityEngine;
-
-public static class SettingsUtil
+﻿public static class SettingsUtil
 {
 	private const string PLAYERPREFPREFIX = "ECGSETTINGS_";
 	private static bool? s_SFXState = null;

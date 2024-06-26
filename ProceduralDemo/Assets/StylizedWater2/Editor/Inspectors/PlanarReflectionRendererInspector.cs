@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.XR;
 
 namespace StylizedWater2
 {
-    [CustomEditor(typeof(PlanarReflectionRenderer))]
+	[CustomEditor(typeof(PlanarReflectionRenderer))]
     public class PlanarReflectionRendererInspector : Editor
     {
         private PlanarReflectionRenderer renderer;
@@ -82,11 +80,17 @@ namespace StylizedWater2
         
         private void OnEndCameraRendering(ScriptableRenderContext context, Camera camera)
         {
-            if (!previewReflection) return;
+            if (!previewReflection)
+			{
+				return;
+			}
 
-            if (PlanarReflectionRenderer.InvalidContext(camera)) return;
+			if (PlanarReflectionRenderer.InvalidContext(camera))
+			{
+				return;
+			}
 
-            currentCamera = camera;
+			currentCamera = camera;
             
             waterObjectsVisible = renderer.WaterObjectsVisible(currentCamera);
             
@@ -122,7 +126,7 @@ namespace StylizedWater2
             
             UI.DrawNotification(PipelineUtilities.VREnabled(), "Not supported with VR rendering", MessageType.Error);
             
-            UI.DrawNotification(PlanarReflectionRenderer.AllowReflections == false, "Reflections have been globally disabled by an external script", MessageType.Warning);
+            UI.DrawNotification(!PlanarReflectionRenderer.AllowReflections, "Reflections have been globally disabled by an external script", MessageType.Warning);
             
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
@@ -222,7 +226,7 @@ namespace StylizedWater2
                 
                 if (renderer.waterObjects.Count > 0)
                 {
-                    UI.DrawNotification(curBounds.size != renderer.bounds.size || (moveWithTransform.boolValue == false && curBounds.center != renderer.bounds.center), "Water objects have changed or moved, bounds needs to be recalculated", "Recalculate",() => RecalculateBounds(), MessageType.Error);
+                    UI.DrawNotification(curBounds.size != renderer.bounds.size || (!moveWithTransform.boolValue && curBounds.center != renderer.bounds.center), "Water objects have changed or moved, bounds needs to be recalculated", "Recalculate",() => RecalculateBounds(), MessageType.Error);
                 }
                 
                 UI.DrawNotification(waterLayerError, "One or more Water Objects aren't on the \"Water\" layer.\n\nThis causes recursive reflections", "Fix", () => SetObjectsOnWaterLayer(), MessageType.Error);
@@ -275,9 +279,12 @@ namespace StylizedWater2
 
         public override void OnPreviewSettings()
         {
-            if (HasPreviewGUI() == false) return;
+            if (!HasPreviewGUI())
+			{
+				return;
+			}
 
-            GUILayout.Label($"Resolution ({previewTexture.width}x{previewTexture.height})");
+			GUILayout.Label($"Resolution ({previewTexture.width}x{previewTexture.height})");
         }
 
         private bool drawAlpha;
@@ -304,9 +311,12 @@ namespace StylizedWater2
 
         private void ValidateWaterObjectLayer()
         {
-            if (renderer.waterObjects == null) return;
+            if (renderer.waterObjects == null)
+			{
+				return;
+			}
 
-            waterLayerError = false;
+			waterLayerError = false;
             int layerID = LayerMask.NameToLayer("Water");
 
             foreach (WaterObject obj in renderer.waterObjects)

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
 	/// <summary>
 	/// Public access point for any class to access MonoBehaviour functions
 	/// </summary>
-    public class Mono : MonoBehaviourSingleton<Mono>
-    {
+	public class Mono : MonoBehaviourSingleton<Mono>
+	{
 		private void Awake()
 		{
 			DontDestroyOnLoad(this);
@@ -47,33 +47,33 @@ namespace OliverLoescher.Util
 		[Serializable]
 		public struct Updateable
 		{
-			private Action<float> action;
+			private Action<float> m_Action;
 			[SerializeField, DisableInPlayMode]
-			private Type type;
+			private Type m_Type;
 			[SerializeField, DisableInPlayMode]
-			private Priorities priority;
+			private Priorities m_Priority;
 
-			public readonly Action<float> Action => action;
-			public readonly Type Type => type;
-			public readonly Priorities Priority => priority;
-			public readonly bool IsRegistered => action != null;
+			public readonly Action<float> Action => m_Action;
+			public readonly Type Type => m_Type;
+			public readonly Priorities Priority => m_Priority;
+			public readonly bool IsRegistered => m_Action != null;
 
 			public Updateable(Type pType, Priorities pPriority)
 			{
-				action = null;
-				type = pType;
-				priority = pPriority;
+				m_Action = null;
+				m_Type = pType;
+				m_Priority = pPriority;
 			}
 
 			public void SetProperties(Type pType, Priorities pPriority)
 			{
-				if (action != null)
+				if (m_Action != null)
 				{
 					LogError("Tried setting properties when already registered", "SetProperties");
 					return;
 				}
-				type = pType;
-				priority = pPriority;
+				m_Type = pType;
+				m_Priority = pPriority;
 			}
 
 			public void Register(Action<float> pAction)
@@ -85,42 +85,42 @@ namespace OliverLoescher.Util
 				}
 				if (IsRegistered)
 				{
-					if (action.Method == pAction.Method)
+					if (m_Action.Method == pAction.Method)
 					{
 						LogWarning("Was passed the same method which was already registered, returning.", "Register");
 						return;
 					}
 					Deregister(); // Remove old action before registering the new one
 				}
-				action = pAction;
+				m_Action = pAction;
 				RegisterUpdate(this);
 			}
 
 			public void Deregister()
 			{
-				if (action == null)
+				if (m_Action == null)
 				{
 					LogWarning("Tried deregistering when not registered", "Deregister");
 					return;
 				}
 				DeregisterUpdate(this);
-				action = null;
+				m_Action = null;
 			}
 
-			public override string ToString()
+			public override readonly string ToString()
 			{
-				if (action == null)
+				if (m_Action == null)
 				{
-					return $"Updateable(Action: NULL, Type: {type}, Priority: {priority})";
+					return $"Updateable(Action: NULL, Type: {m_Type}, Priority: {m_Priority})";
 				}
-				return $"Updateable(Action: {action.Target} - {action.Method.Name}, Type: {type}, Priority: {priority})";
+				return $"Updateable(Action: {m_Action.Target} - {m_Action.Method.Name}, Type: {m_Type}, Priority: {m_Priority})";
 			}
 		}
 
-		private static List<Updateable> updatables = new List<Updateable>();
-		private static List<Updateable> earlyUpdatables = new List<Updateable>();
-		private static List<Updateable> lateUpdatables = new List<Updateable>();
-		private static List<Updateable> fixedUpdatables = new List<Updateable>();
+		private static List<Updateable> s_Updatables = new();
+		private static List<Updateable> s_EarlyUpdatables = new();
+		private static List<Updateable> s_LateUpdatables = new();
+		private static List<Updateable> s_FixedUpdatables = new();
 
 		private static void RegisterUpdate(in Updateable pUpdatable)
 		{
@@ -151,42 +151,42 @@ namespace OliverLoescher.Util
 			switch (pType)
 			{
 				case Type.Early:
-					return ref earlyUpdatables;
+					return ref s_EarlyUpdatables;
 				case Type.Late:
-					return ref lateUpdatables;
+					return ref s_LateUpdatables;
 				case Type.Fixed:
-					return ref fixedUpdatables;
+					return ref s_FixedUpdatables;
 				default:
-					return ref updatables;
+					return ref s_Updatables;
 			}
 		}
 
 		private void Update()
 		{
-			UpdateInternal(earlyUpdatables, Time.deltaTime, "MonoUtil.EarlyUpdate()");
-			UpdateInternal(updatables, Time.deltaTime, "MonoUtil.Update()");
+			UpdateInternal(s_EarlyUpdatables, Time.deltaTime, "MonoUtil.EarlyUpdate()");
+			UpdateInternal(s_Updatables, Time.deltaTime, "MonoUtil.Update()");
 		}
 
 		private void LateUpdate()
 		{
-			UpdateInternal(lateUpdatables, Time.deltaTime, "MonoUtil.LateUpdate()");
+			UpdateInternal(s_LateUpdatables, Time.deltaTime, "MonoUtil.LateUpdate()");
 		}
 
 		private void FixedUpdate()
 		{
-			UpdateInternal(fixedUpdatables, Time.fixedDeltaTime, "MonoUtil.FixedUpdate()");
+			UpdateInternal(s_FixedUpdatables, Time.fixedDeltaTime, "MonoUtil.FixedUpdate()");
 		}
 
-		private readonly List<Updateable> updateables = new List<Updateable>();
+		private readonly List<Updateable> m_Updateables = new(); // Resuse instead of making new every frame
 		private void UpdateInternal(List<Updateable> pUpdatables, in float pDeltaTime, string pProfilerName)
 		{
 			Profiler.BeginSample(pProfilerName);
-			updateables.AddRange(pUpdatables); // Copy over incase it changes
-			foreach (Updateable updatable in updateables)
+			m_Updateables.AddRange(pUpdatables); // Copy over incase it changes
+			foreach (Updateable updatable in m_Updateables)
 			{
 				updatable.Action.Invoke(pDeltaTime);
 			}
-			updateables.Clear();
+			m_Updateables.Clear();
 			Profiler.EndSample();
 		}
 		#endregion Updatables

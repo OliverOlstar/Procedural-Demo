@@ -49,7 +49,7 @@ namespace Core
 					return;
 				}
 
-				float canvasScale = Core.Util.GetCanvasScale(m_RectTransform);
+				float canvasScale = Util.GetCanvasScale(m_RectTransform);
 				if (m_SetWidth)
 				{
 					TextGenerationSettings textGenerationSettings = m_SizeFromText.GetGenerationSettings(new Vector2(m_MinWidth, m_RectTransform.rect.height));
@@ -161,7 +161,7 @@ namespace Core
 				{
 					return false;
 				}
-				return !Core.Str.Equals(m_CachedText, m_SizeFromText.text) 
+				return !Str.Equals(m_CachedText, m_SizeFromText.text) 
 					|| m_CachedFontSize != m_SizeFromText.fontSize;
 			}
 

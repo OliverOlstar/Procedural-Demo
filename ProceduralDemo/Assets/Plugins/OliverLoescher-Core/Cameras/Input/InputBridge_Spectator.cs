@@ -1,59 +1,56 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using Sirenix.OdinInspector;
-using OliverLoescher.Input;
+using OCore.Input;
 
-namespace OliverLoescher.Camera
+namespace OCore.Camera
 {
 	public class InputBridge_Spectator : InputBridge_Base
 	{
 		[SerializeField]
-		private InputModule_Vector2Update lookInput = new InputModule_Vector2Update();
+		private InputModule_Vector2Update m_LookInput = new();
 		[SerializeField]
-		private InputModule_Vector2 lookDeltaInput = new InputModule_Vector2();
+		private InputModule_Vector2 m_LookDeltaInput = new();
 		[SerializeField]
-		private InputModule_Vector2 moveInput = new InputModule_Vector2();
+		private InputModule_Vector2 m_MoveInput = new();
 		[SerializeField]
-		private InputModule_Scroll moveVerticalInput = new InputModule_Scroll();
+		private InputModule_Scroll m_MoveVerticalInput = new();
 		[SerializeField]
-		private InputModule_Scroll zoomInput = new InputModule_Scroll();
+		private InputModule_Scroll m_ZoomInput = new();
 		[SerializeField]
-		private InputModule_Toggle modeInput = new InputModule_Toggle();
+		private InputModule_Toggle m_ModeInput = new();
 		[SerializeField]
-		private InputModule_Toggle targetInput = new InputModule_Toggle();
+		private InputModule_Toggle m_TargetInput = new();
 
-		public InputModule_Vector2Update Look => lookInput;
-		public InputModule_Vector2 LookDelta => lookDeltaInput;
-		public InputModule_Vector2 Move => moveInput;
-		public InputModule_Scroll MoveVertical => moveVerticalInput;
-		public InputModule_Scroll Zoom => zoomInput;
-		public InputModule_Toggle Mode => modeInput;
-		public InputModule_Toggle Target => targetInput;
+		public InputModule_Vector2Update Look => m_LookInput;
+		public InputModule_Vector2 LookDelta => m_LookDeltaInput;
+		public InputModule_Vector2 Move => m_MoveInput;
+		public InputModule_Scroll MoveVertical => m_MoveVerticalInput;
+		public InputModule_Scroll Zoom => m_ZoomInput;
+		public InputModule_Toggle Mode => m_ModeInput;
+		public InputModule_Toggle Target => m_TargetInput;
 
 		public override InputActionMap Actions => InputSystem.Instance.SpectatorCamera.Get();
 		public override IEnumerable<IInputModule> GetAllInputModules()
 		{
-			yield return lookInput;
-			yield return lookDeltaInput;
-			yield return moveInput;
-			yield return moveVerticalInput;
-			yield return zoomInput;
-			yield return modeInput;
-			yield return targetInput;
+			yield return m_LookInput;
+			yield return m_LookDeltaInput;
+			yield return m_MoveInput;
+			yield return m_MoveVerticalInput;
+			yield return m_ZoomInput;
+			yield return m_ModeInput;
+			yield return m_TargetInput;
 		}
 
 		protected override void Awake()
 		{
-			lookInput.Initalize(InputSystem.Instance.SpectatorCamera.Look, IsValid);
-			lookDeltaInput.Initalize(InputSystem.Instance.SpectatorCamera.LookDelta, IsValid);
-			moveInput.Initalize(InputSystem.Instance.SpectatorCamera.MoveHorizontal, IsValid);
-			moveVerticalInput.Initalize(InputSystem.Instance.SpectatorCamera.MoveVertical, IsValid);
-			zoomInput.Initalize(InputSystem.Instance.SpectatorCamera.Zoom, IsValid);
-			modeInput.Initalize(InputSystem.Instance.SpectatorCamera.ModeToggle, IsValid);
-			targetInput.Initalize(InputSystem.Instance.SpectatorCamera.TargetToggle, IsValid);
+			m_LookInput.Initalize(InputSystem.Instance.SpectatorCamera.Look, IsValid);
+			m_LookDeltaInput.Initalize(InputSystem.Instance.SpectatorCamera.LookDelta, IsValid);
+			m_MoveInput.Initalize(InputSystem.Instance.SpectatorCamera.MoveHorizontal, IsValid);
+			m_MoveVerticalInput.Initalize(InputSystem.Instance.SpectatorCamera.MoveVertical, IsValid);
+			m_ZoomInput.Initalize(InputSystem.Instance.SpectatorCamera.Zoom, IsValid);
+			m_ModeInput.Initalize(InputSystem.Instance.SpectatorCamera.ModeToggle, IsValid);
+			m_TargetInput.Initalize(InputSystem.Instance.SpectatorCamera.TargetToggle, IsValid);
 
 			base.Awake();
 		}

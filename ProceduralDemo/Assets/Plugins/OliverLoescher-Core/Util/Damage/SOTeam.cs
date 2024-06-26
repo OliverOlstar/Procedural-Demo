@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher
+namespace OCore
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Team Data")]
 	public class SOTeam : ScriptableObject
 	{
-		public bool ignoreTeamCollisions = true;
-		[ShowIf(@"ignoreTeamCollisions")] public bool teamDamage = false;
+		public bool IgnoreTeamCollisions = true;
+		[ShowIf(@"ignoreTeamCollisions")]
+		public bool TeamDamage = false;
 
 		public static bool Compare(SOTeam teamA, SOTeam teamB)
 		{

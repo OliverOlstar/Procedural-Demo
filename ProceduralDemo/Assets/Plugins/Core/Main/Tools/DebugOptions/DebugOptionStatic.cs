@@ -17,7 +17,7 @@ namespace Core
 			public const string Build = "Build";
 			public const string Misc = "Misc";
 
-			public static readonly HashSet<string> EditorOnlyGroups = new HashSet<string>
+			public static readonly HashSet<string> EditorOnlyGroups = new()
 			{
 				Draw,
 				Editor
@@ -29,7 +29,7 @@ namespace Core
 		//private static List<DebugOption> s_Options = new List<DebugOption>();
 
 		private static SortedDictionary<string, SortedDictionary<string, DebugOption>> s_Options =
-			new SortedDictionary<string, SortedDictionary<string, DebugOption>>();
+			new();
 
 		private static void Initialize()
 		{

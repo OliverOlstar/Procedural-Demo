@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UnimateGreyscale : UnimateTween<UnimateGreyscale, UnimateGreyscale.Player>
 {
 	[SerializeField]
-	private AnimationCurve m_GreyScaleAmount = new AnimationCurve(new Keyframe(0.0f, 1.0f), new Keyframe(1.0f, 1.0f));
+	private AnimationCurve m_GreyScaleAmount = new(new Keyframe(0.0f, 1.0f), new Keyframe(1.0f, 1.0f));
 	[SerializeField]
 	private float m_Duration = 1.0f;
 	public override float Duration => m_Duration;
@@ -35,7 +35,7 @@ public class UnimateGreyscale : UnimateTween<UnimateGreyscale, UnimateGreyscale.
 
 	public class Player : UnimaTweenPlayer<UnimateGreyscale>
 	{
-		private List<Image> m_Components = new List<Image>();
+		private List<Image> m_Components = new();
 
 		protected override void OnInitialize()
 		{

@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
 namespace RootMotion.FinalIK
 {
-    [CustomEditor(typeof(EditorIK))]
+	[CustomEditor(typeof(EditorIK))]
     public class EditorIKInspector : Editor
     {
         private EditorIK script { get { return target as EditorIK; } }
@@ -15,10 +13,17 @@ namespace RootMotion.FinalIK
         {
             base.OnInspectorGUI();
 
-            if (Application.isPlaying) return;
-            if (!script.enabled) return;
+            if (Application.isPlaying)
+			{
+				return;
+			}
 
-            EditorGUILayout.Space();
+			if (!script.enabled)
+			{
+				return;
+			}
+
+			EditorGUILayout.Space();
 
             if (script.defaultPose != null && script.ik != null && !script.ik.GetIKSolver().executedInEditor)
             {
@@ -38,7 +43,7 @@ namespace RootMotion.FinalIK
                     {
                         script.defaultPose.Restore(script.bones);
 
-                        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+                        EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
                     }
                 }
             }
@@ -60,13 +65,13 @@ namespace RootMotion.FinalIK
                         AssetDatabase.SaveAssets();
                         AssetDatabase.Refresh();
 
-                        var ikS = new SerializedObject(script.ik);
+						SerializedObject ikS = new SerializedObject(script.ik);
                         ikS.FindProperty("solver").FindPropertyRelative("executedInEditor").boolValue = initiated;
                         ikS.ApplyModifiedProperties();
 
                         script.Update();
 
-                        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+                        EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
                     }
                     EditorGUI.EndDisabledGroup();
                 }
@@ -75,7 +80,7 @@ namespace RootMotion.FinalIK
                 {
                     if (GUILayout.Button("Stop"))
                     {
-                        var ikS = new SerializedObject(script.ik);
+						SerializedObject ikS = new SerializedObject(script.ik);
                         ikS.FindProperty("solver").FindPropertyRelative("executedInEditor").boolValue = false;
                         ikS.ApplyModifiedProperties();
                     }

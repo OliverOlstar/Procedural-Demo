@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Procedural body tilting with FBBIK.
@@ -32,7 +33,11 @@ namespace RootMotion.FinalIK {
 			float deltaAngle = 0;
 			Vector3 axis = Vector3.zero;
 			change.ToAngleAxis(out deltaAngle, out axis);
-			if (axis.y > 0) deltaAngle = -deltaAngle;
+			if (axis.y > 0)
+			{
+				deltaAngle = -deltaAngle;
+			}
+
 
 			deltaAngle *= tiltSensitivity * 0.01f;
 			deltaAngle /= deltaTime;
@@ -42,10 +47,17 @@ namespace RootMotion.FinalIK {
 
 			// Applying positionOffsets
 			float tiltF = Mathf.Abs(tiltAngle) / 1f;
-			if (tiltAngle < 0) poseRight.Apply(ik.solver, tiltF);
-			else poseLeft.Apply(ik.solver, tiltF);
+			if (tiltAngle < 0)
+			{
+				poseRight.Apply(ik.solver, tiltF);
+			}
+			else
+			{
+				poseLeft.Apply(ik.solver, tiltF);
+			}
 
 			// Store current character forward axis and Time
+
 			lastForward = transform.forward;
 		}
 	}

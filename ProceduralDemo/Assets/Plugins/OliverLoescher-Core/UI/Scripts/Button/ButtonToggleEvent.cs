@@ -2,39 +2,39 @@
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-namespace OliverLoescher.UI
+namespace OCore.UI
 {
 	[RequireComponent(typeof(Button))]
 	public class ButtonToggleEvent : MonoBehaviour
 	{
-		private Button button;
-		public UnityEventsUtil.BoolEvent onToggle;
-		public UnityEvent onDotoggle;
-		public UnityEvent onUntoggle;
-		private bool toggle = false;
+		private Button m_Button;
+		public UnityEventsUtil.BoolEvent m_OnToggle;
+		public UnityEvent m_OnDotoggle;
+		public UnityEvent m_OnUntoggle;
+		private bool m_Toggle = false;
 
 		private void Awake()
 		{
-			button = GetComponent<Button>();
-			button.onClick.AddListener(OnClick);
+			m_Button = GetComponent<Button>();
+			m_Button.onClick.AddListener(OnClick);
 		}
 
 		private void OnDestroy()
 		{
-			button.onClick.RemoveListener(OnClick);
+			m_Button.onClick.RemoveListener(OnClick);
 		}
 
 		public void OnClick()
 		{
-			toggle = !toggle;
-			onToggle.Invoke(toggle);
-			if (toggle)
+			m_Toggle = !m_Toggle;
+			m_OnToggle.Invoke(m_Toggle);
+			if (m_Toggle)
 			{
-				onDotoggle.Invoke();
+				m_OnDotoggle.Invoke();
 			}
 			else
 			{
-				onUntoggle.Invoke();
+				m_OnUntoggle.Invoke();
 			}
 		}
 	}

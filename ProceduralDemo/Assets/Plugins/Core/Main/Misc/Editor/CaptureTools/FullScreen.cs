@@ -5,7 +5,6 @@ using System.Collections;
 using System.Reflection;
 
 //[InitializeOnLoad]
-using System.Collections.Generic;
 
 
 public static class FullscreenPlayMode //: MonoBehaviour
@@ -16,7 +15,7 @@ public static class FullscreenPlayMode //: MonoBehaviour
 	static EditorWindow GetCaptureWindow()
 	{
 		System.Type T = System.Type.GetType("UnityEditor.GameView,UnityEditor");
-		FieldInfo gameViews = T.GetField("s_GameViews", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+		FieldInfo gameViews = T.GetField("s_GameViews", BindingFlags.NonPublic | BindingFlags.Static);
 		IEnumerable enumerable = (IEnumerable)gameViews.GetValue(null);
 		foreach (object obj in enumerable)
 		{
@@ -27,14 +26,14 @@ public static class FullscreenPlayMode //: MonoBehaviour
 			}
 		}
 
-		EditorWindow w = (EditorWindow)EditorWindow.CreateInstance(T);
+		EditorWindow w = (EditorWindow)ScriptableObject.CreateInstance(T);
 		w.name = "CaptureWindow";
 		w.titleContent = new GUIContent("Capture");
 
-		FieldInfo targetDisplay = T.GetField("m_TargetDisplay", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+		FieldInfo targetDisplay = T.GetField("m_TargetDisplay", BindingFlags.NonPublic | BindingFlags.Instance);
 		targetDisplay.SetValue(w, 1);
 
-		MethodInfo GetMainGameView = T.GetMethod("GetMainGameView",System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+		MethodInfo GetMainGameView = T.GetMethod("GetMainGameView", BindingFlags.NonPublic | BindingFlags.Static);
 		EditorWindow mainView = (EditorWindow)GetMainGameView.Invoke(null,null);
 		w.minSize = mainView.minSize;
 		w.maxSize = mainView.maxSize;
@@ -101,7 +100,7 @@ public static class FullscreenPlayMode //: MonoBehaviour
 //			height = 2160;
 //		}
 
-		Rect newPos = new Rect(0, 0 - tabHeight, width, height + tabHeight);
+		Rect newPos = new(0, 0 - tabHeight, width, height + tabHeight);
 
 		gameView.position = newPos;
 		gameView.minSize = new Vector2(width, height + tabHeight);
@@ -113,11 +112,10 @@ public static class FullscreenPlayMode //: MonoBehaviour
 	static void CaptureCamera()
 	{
 		Camera prefab = AssetDatabase.LoadAssetAtPath<Camera>("Assets/Prefabs/Capture/CaptureCamera.prefab");
-		Camera captureCamera = Object.Instantiate<Camera>(prefab);
+		Camera captureCamera = Object.Instantiate(prefab);
 		Object.DontDestroyOnLoad(captureCamera);
 		Camera mainCamera = Camera.main;
-		captureCamera.transform.position = mainCamera.transform.position;
-		captureCamera.transform.rotation = mainCamera.transform.rotation;
+		captureCamera.transform.SetPositionAndRotation(mainCamera.transform.position, mainCamera.transform.rotation);
 	}
 
 //	[MenuItem("Window/Capture Resolution/Full Screen", false, 9999)]

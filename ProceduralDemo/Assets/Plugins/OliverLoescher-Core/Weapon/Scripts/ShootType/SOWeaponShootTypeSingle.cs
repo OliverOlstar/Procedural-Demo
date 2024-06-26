@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/ShootType/Single")]
 	public class SOWeaponShootTypeSingle : SOWeaponShootTypeBase
 	{
 		public override void ShootStart()
 		{
-			shoot.Invoke();
+			m_Shoot.Invoke();
 		}
 		public override void ShootEnd() { }
 		public override void OnUpdate(float pDeltaTime) { }

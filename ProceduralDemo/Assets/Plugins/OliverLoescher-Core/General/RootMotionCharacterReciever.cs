@@ -1,22 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
-    [RequireComponent(typeof(CharacterController))]
+	[RequireComponent(typeof(CharacterController))]
     public class RootMotionCharacterReciever : MonoBehaviour
     {
-        private RootMotionCharacter parent;
+        private RootMotionCharacter m_Parent;
 
         public void Init(RootMotionCharacter pParent)
         {
-            parent = pParent;
+            m_Parent = pParent;
         }
         
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            parent.OnControllerColliderHit(hit);
+            m_Parent.OnControllerColliderHit(hit);
         }
     }
 }

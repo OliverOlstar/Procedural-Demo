@@ -1,28 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	public abstract class SOProjectileCollisionBase : ScriptableObject
 	{
 		[SerializeField]
-		protected PoolElement particlePrefab = null;
+		protected PoolElement m_ParticlePrefab = null;
 		[SerializeField]
-		protected Util.Audio.AudioPiece audio = null;
+		protected Util.Audio.AudioPiece m_Audio = null;
 		[SerializeField, Min(0.0f)]
-		protected float knockbackForce = 300.0f;
+		protected float m_KnockbackForce = 300.0f;
 
-		public virtual bool DoCollision(Projectile projectile, Collider other, ref bool canDamage, ref bool activeSelf)
+		public virtual bool DoCollision(Projectile pProjectile, Collider pOther, ref bool rCanDamage, ref bool rActiveSelf)
 		{
-			if (other != null && other.TryGetComponent(out Rigidbody rb))
+			if (pOther != null && pOther.TryGetComponent(out Rigidbody rb))
 			{
-				rb.AddForce(projectile.transform.forward * knockbackForce, ForceMode.Impulse);
+				rb.AddForce(pProjectile.transform.forward * m_KnockbackForce, ForceMode.Impulse);
 			}
-			ObjectPoolDictionary.Play(particlePrefab, projectile.transform.position, projectile.transform.rotation);
-			audio.Play(projectile.transform.position);
+			ObjectPoolDictionary.Play(m_ParticlePrefab, pProjectile.transform.position, pProjectile.transform.rotation);
+			m_Audio.Play(pProjectile.transform.position);
 			return true;
 		}
+
 		public virtual void DrawGizmos(Projectile pProjectile) { }
 	}
 }

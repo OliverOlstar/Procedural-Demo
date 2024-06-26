@@ -20,12 +20,12 @@ namespace StylizedWater2
         {
             public bool enable;
         }
-        public ScreenSpaceReflectionSettings screenSpaceReflectionSettings = new ScreenSpaceReflectionSettings();
+        public ScreenSpaceReflectionSettings screenSpaceReflectionSettings = new();
         
         [Tooltip("Project caustics from the main directional light.")]
         public bool directionalCaustics;
         
-        public DisplacementPrePass.Settings displacementPrePassSettings = new DisplacementPrePass.Settings();
+        public DisplacementPrePass.Settings displacementPrePassSettings = new();
         
         private SetupConstants constantsSetup;
         private DisplacementPrePass displacementPass;

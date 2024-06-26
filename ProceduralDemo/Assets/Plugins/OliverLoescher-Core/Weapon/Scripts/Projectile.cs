@@ -1,143 +1,138 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using OliverLoescher.Util;
+﻿using UnityEngine;
+using OCore.Util;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	public class Projectile : PoolElement
 	{
 		[Required]
-		public SOProjectile data = null;
+		public SOProjectile Data = null;
 
-		public Rigidbody myRigidbody = null;
-		public Collider hitboxCollider = null;
-		public Collider physicsCollider = null;
-		public GameObject sender = null;
-		private SOTeam team = null;
+		public Rigidbody MyRigidbody = null;
+		public Collider HitboxCollider = null;
+		public Collider PhysicsCollider = null;
+		public GameObject Sender = null;
+		private SOTeam Team = null;
 
-		protected bool canDamage = true;
-		protected bool activeSelf = true;
-		private int currentFrame = 0;
-		private int lastHitFrame = 0;
-		private Collider lastHitCollider = null;
+		protected bool m_CanDamage = true;
+		protected bool m_ActiveSelf = true;
+		private int m_CurrentFrame = 0;
+		private int m_LastHitFrame = 0;
+		private Collider m_LastHitCollider = null;
 
 		[Header("Floating Numbers")]
 		[ColorPalette("UI"), SerializeField]
-		private Color hitColor = new Color(1, 0, 0, 1);
+		private Color m_HitColor = new(1, 0, 0, 1);
 		[ColorPalette("UI"), SerializeField]
-		private Color critColor = new Color(1, 1, 0, 1);
+		private Color m_CritColor = new(1, 1, 0, 1);
 
-		private Vector3 startPos = new Vector3();
-		private Vector3 previousPosition = new Vector3();
+		private Vector3 m_StartPos = new();
+		private Vector3 m_PreviousPosition = new();
 
 		[SerializeField]
-		private float spawnOffsetZ = 0;
+		private float m_SpawnOffsetZ = 0;
 
 		public override void ReturnToPool()
 		{
-			activeSelf = false;
+			m_ActiveSelf = false;
 			CancelInvoke();
 			base.ReturnToPool();
 		}
 
 		public override void OnExitPool()
 		{
-			currentFrame = 0;
-			myRigidbody.isKinematic = false;
-			myRigidbody.useGravity = false;
-			canDamage = true;
-			lastHitCollider = null;
-			hitboxCollider.enabled = true;
-			if (physicsCollider != null)
+			m_CurrentFrame = 0;
+			MyRigidbody.isKinematic = false;
+			MyRigidbody.useGravity = false;
+			m_CanDamage = true;
+			m_LastHitCollider = null;
+			HitboxCollider.enabled = true;
+			if (PhysicsCollider != null)
 			{
-				physicsCollider.enabled = false;
+				PhysicsCollider.enabled = false;
 			}
-			activeSelf = true;
+			m_ActiveSelf = true;
 
 			base.OnExitPool();
 		}
 
 		public void Init(Vector3 pPosition, Vector3 pDirection, GameObject pSender, SOTeam pTeam = null)
 		{
-			transform.position = pPosition;
-			transform.rotation = Quaternion.LookRotation(pDirection);
+			transform.SetPositionAndRotation(pPosition, Quaternion.LookRotation(pDirection));
+			MyRigidbody.velocity = pDirection.normalized * Random2.Range(Data.ShootForce);
+			transform.position += transform.forward * m_SpawnOffsetZ;
 
-			myRigidbody.velocity = pDirection.normalized * Random2.Range(data.shootForce);
-			transform.position += transform.forward * spawnOffsetZ;
+			m_StartPos = transform.position;
+			m_PreviousPosition = transform.position;
 
-			startPos = transform.position;
-			previousPosition = transform.position;
-
-			sender = pSender;
-			team = pTeam;
-			Invoke(nameof(DoLifeEnd), Random2.Range(data.lifeTime));
+			Sender = pSender;
+			Team = pTeam;
+			Invoke(nameof(DoLifeEnd), Random2.Range(Data.LifeTime));
 		}
 
-		private void FixedUpdate() 
+		private void FixedUpdate()
 		{
-			if (!activeSelf)
+			if (!m_ActiveSelf)
 			{
 				return;
 			}
 
 			bool updateRot = false;
-			if (data.bulletGravity > 0)
+			if (Data.BulletGravity > 0)
 			{
-				myRigidbody.AddForce(Vector3.down * data.bulletGravity * Time.fixedDeltaTime, ForceMode.VelocityChange);
+				MyRigidbody.AddForce(Data.BulletGravity * Time.fixedDeltaTime * Vector3.down, ForceMode.VelocityChange);
 				updateRot = true;
 			}
 
 			if (updateRot)
 			{
-				transform.rotation = Quaternion.LookRotation(myRigidbody.velocity);
+				transform.rotation = Quaternion.LookRotation(MyRigidbody.velocity);
 			}
 		}
 
-		protected virtual void Update() 
+		protected virtual void Update()
 		{
-			if (!activeSelf || !canDamage)
+			if (!m_ActiveSelf || !m_CanDamage)
 			{
 				return;
 			}
 
-			currentFrame++; // Used to ignore collision on first two frames
-			if (currentFrame >= -1 && data.useRaycast && // Raycast Projectile
-				Physics.Linecast(previousPosition, transform.position, out RaycastHit hit, data.layerMask, QueryTriggerInteraction.Ignore))
+			m_CurrentFrame++; // Used to ignore collision on first two frames
+			if (m_CurrentFrame >= -1 && Data.UseRaycast && // Raycast Projectile
+				Physics.Linecast(m_PreviousPosition, transform.position, out RaycastHit hit, Data.LayerMask, QueryTriggerInteraction.Ignore))
 			{
 				DoHitOther(hit.collider, hit.point);
 			}
-			previousPosition = transform.position;
+			m_PreviousPosition = transform.position;
 		}
 
-		protected virtual void OnTriggerEnter(Collider other) 
+		protected virtual void OnTriggerEnter(Collider other)
 		{
-			if (!activeSelf)
+			if (!m_ActiveSelf)
 			{
 				return;
 			}
 			DoHitOther(other, transform.position);
 		}
 
-	#region Hit/Damage
+		#region Hit/Damage
 		private void DoHitOther(Collider pOther, Vector3 pPoint)
 		{
-			if (canDamage == false || currentFrame < 1 || pOther.isTrigger || pOther == lastHitCollider || IsSender(pOther.transform))
+			if (!m_CanDamage || m_CurrentFrame < 1 || pOther.isTrigger || pOther == m_LastHitCollider || IsSender(pOther.transform))
 			{
 				return;
 			}
 
 			bool didDamage = false;
-			IDamageable damageable = pOther.GetComponent<IDamageable>();
-			if (damageable != null)
+			if (pOther.TryGetComponent<IDamageable>(out IDamageable damageable))
 			{
-				bool isSameTeam = SOTeam.Compare(damageable.GetTeam(), team);
-				if (isSameTeam && team.ignoreTeamCollisions)
+				bool isSameTeam = SOTeam.Compare(damageable.GetTeam(), Team);
+				if (isSameTeam && Team.IgnoreTeamCollisions)
 				{
 					return;
 				}
-				if (!isSameTeam || team.teamDamage)
+				if (!isSameTeam || Team.TeamDamage)
 				{
 					Debug.Log($"[{nameof(Projectile)}] {nameof(DamageOther)}({pOther.name}, {damageable.GetGameObject().name}, {(damageable.GetTeam() == null ? "No Team" : damageable.GetTeam().name)})", pOther);
 					DamageOther(damageable, pPoint);
@@ -145,14 +140,14 @@ namespace OliverLoescher.Weapon
 				}
 			}
 
-			lastHitFrame = currentFrame;
-			lastHitCollider = pOther;
+			m_LastHitFrame = m_CurrentFrame;
+			m_LastHitCollider = pOther;
 			DoHitOtherInternal(pOther, didDamage);
 		}
 
 		protected virtual bool DoHitOtherInternal(Collider pOther, bool pDidDamage)
 		{
-			if ((pDidDamage ? data.projectileDamagableCollision : data.projectileEnviromentCollision).DoCollision(this, pOther, ref canDamage, ref activeSelf))
+			if ((pDidDamage ? Data.ProjectileDamagableCollision : Data.ProjectileEnviromentCollision).DoCollision(this, pOther, ref m_CanDamage, ref m_ActiveSelf))
 			{
 				ReturnToPool();
 				return true;
@@ -165,30 +160,30 @@ namespace OliverLoescher.Weapon
 			// Rigidbody otherRb = other.GetComponentInParent<Rigidbody>();
 			// if (otherRb != null)
 			//	 otherRb.AddForceAtPosition(rigidbody.velocity.normalized * data.hitForce, point);
-			
-			if (Random.value > data.critChance01)
+
+			if (Random.value > Data.CritChance01)
 			{
-				damageable.Damage(data.damage, sender, transform.position, myRigidbody.velocity);
+				damageable.Damage(Data.Damage, Sender, transform.position, MyRigidbody.velocity);
 			}
 			else
 			{
-				damageable.Damage(Mathf.RoundToInt(data.critDamageMultiplier * data.damage), sender, transform.position, myRigidbody.velocity, critColor);
+				damageable.Damage(Mathf.RoundToInt(Data.CritDamageMultiplier * Data.Damage), Sender, transform.position, MyRigidbody.velocity, m_CritColor);
 			}
 		}
 
 		protected virtual void DoLifeEnd()
 		{
-			data.projectileLifeEnd.DoCollision(this, null, ref canDamage, ref activeSelf);
+			Data.ProjectileLifeEnd.DoCollision(this, null, ref m_CanDamage, ref m_ActiveSelf);
 			ReturnToPool();
 		}
 
 		private bool IsSender(Transform other)
 		{
-			if (sender == null)
+			if (Sender == null)
 			{
 				return false;
 			}
-			if (other == sender.transform)
+			if (other == Sender.transform)
 			{
 				return true;
 			}
@@ -202,37 +197,38 @@ namespace OliverLoescher.Weapon
 
 		private void PlayParticle(ParticleSystem pParticle, Vector3 pPosition)
 		{
-			if (pParticle != null)
-			{
-				pParticle.gameObject.SetActive(true);
-				pParticle.Play();
-				pParticle.transform.position = pPosition;
-				pParticle.transform.SetParent(null);
-			}
-		}
-
-		private void OnDrawGizmosSelected() 
-		{
-			Gizmos.color = Color.green;
-			Vector3 endPos = transform.position + (transform.forward * -spawnOffsetZ);
-			Gizmos.DrawLine(transform.position, endPos);
-			Gizmos.DrawWireSphere(endPos, 0.01f);
-
-			if (data == null)
+			if (pParticle == null)
 			{
 				return;
 			}
-			if (data.projectileEnviromentCollision != null)
+			pParticle.gameObject.SetActive(true);
+			pParticle.Play();
+			pParticle.transform.position = pPosition;
+			pParticle.transform.SetParent(null);
+		}
+
+		private void OnDrawGizmosSelected()
+		{
+			Gizmos.color = Color.green;
+			Vector3 endPos = transform.position + (transform.forward * -m_SpawnOffsetZ);
+			Gizmos.DrawLine(transform.position, endPos);
+			Gizmos.DrawWireSphere(endPos, 0.01f);
+
+			if (Data == null)
 			{
-				data.projectileEnviromentCollision.DrawGizmos(this);
+				return;
 			}
-			if (data.projectileDamagableCollision != null)
+			if (Data.ProjectileEnviromentCollision != null)
 			{
-				data.projectileDamagableCollision.DrawGizmos(this);
+				Data.ProjectileEnviromentCollision.DrawGizmos(this);
 			}
-			if (data.projectileLifeEnd != null)
+			if (Data.ProjectileDamagableCollision != null)
 			{
-				data.projectileLifeEnd.DrawGizmos(this);
+				Data.ProjectileDamagableCollision.DrawGizmos(this);
+			}
+			if (Data.ProjectileLifeEnd != null)
+			{
+				Data.ProjectileLifeEnd.DrawGizmos(this);
 			}
 		}
 	}

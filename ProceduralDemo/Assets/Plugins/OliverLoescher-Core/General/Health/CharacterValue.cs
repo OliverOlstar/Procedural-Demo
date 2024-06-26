@@ -4,189 +4,195 @@ using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher
+namespace OCore
 {
-    [DisallowMultipleComponent]
-    public class CharacterValue : MonoBehaviour
-    {
-        public delegate void ValueChangeEvent(float pValue, float pChange);
-        public delegate void ValueEvent();
+	[DisallowMultipleComponent]
+	public class CharacterValue : MonoBehaviour
+	{
+		[FoldoutGroup("Events")]
+		public UnityEventsUtil.DoubleFloatEvent OnValueChangedEvent;
+		[FoldoutGroup("Events")]
+		public UnityEventsUtil.DoubleFloatEvent OnValueLoweredEvent;
+		[FoldoutGroup("Events")]
+		public UnityEventsUtil.DoubleFloatEvent OnValueRaisedEvent;
+		[FoldoutGroup("Events"), ShowIf("@canRunOut")]
+		public UnityEvent OnValueOutEvent;
+		[FoldoutGroup("Events"), ShowIf("@canRunOut && doRecharge && canRechargeBackIn")]
+		public UnityEvent OnValueInEvent;
+		[FoldoutGroup("Events")]
+		public UnityEventsUtil.DoubleFloatEvent OnMaxValueChangedEvent;
 
-        // [Tooltip("Zero counts as infinite")]
-        [SerializeField, Min(0.0f)] protected float value = 100.0f;
-        protected float maxValue = 100.0f;
+		public bool IsOut { get; protected set; } = false;
 
-        [SerializeField] protected bool doRecharge = false;
-        [SerializeField] private bool canRunOut = true;
-        [SerializeField, ShowIf("@canRunOut && doRecharge")] private bool canRechargeBackIn = true;
+		// [Tooltip("Zero counts as infinite")]
+		[SerializeField, Min(0.0f)]
+		protected float m_Value = 100.0f;
+		protected float m_MaxValue = 100.0f;
 
-        [Header("Recharge")]
-        [SerializeField, Min(0.0f), ShowIf("@doRecharge")] private float rechargeValueTo = 100.0f;
-        [SerializeField, Min(0.0f), ShowIf("@doRecharge")] private float rechargeDelay = 1.0f;
-        [SerializeField, Min(0.0f), ShowIf("@doRecharge")] private float rechargeRate = 20.0f;
+		[SerializeField]
+		protected bool m_DoRecharge = false;
+		[SerializeField]
+		private bool m_CanRunOut = true;
+		[SerializeField, ShowIf("@canRunOut && doRecharge")]
+		private bool m_CanRechargeBackIn = true;
 
-        [Header("UI")]
-        [SerializeField] protected List<BarValue> UIBars = new List<BarValue>();
+		[Header("Recharge")]
+		[SerializeField, Min(0.0f), ShowIf("@doRecharge")]
+		private float m_RechargeValueTo = 100.0f;
+		[SerializeField, Min(0.0f), ShowIf("@doRecharge")]
+		private float m_RechargeDelay = 1.0f;
+		[SerializeField, Min(0.0f), ShowIf("@doRecharge")]
+		private float m_RechargeRate = 20.0f;
 
-        public ValueChangeEvent onValueChangedEvent;
-        public ValueChangeEvent onValueLoweredEvent;
-        public ValueChangeEvent onValueRaisedEvent;
-        public ValueEvent onValueOutEvent;
-        public ValueEvent onValueInEvent;
-        public ValueChangeEvent onMaxValueChangedEvent;
+		[Header("UI")]
+		[SerializeField]
+		protected List<BarValue> m_UIBars = new();
 
-        [FoldoutGroup("Events")] public UnityEventsUtil.DoubleFloatEvent onValueChanged;
-        [FoldoutGroup("Events")] public UnityEventsUtil.DoubleFloatEvent onValueLowered;
-        [FoldoutGroup("Events")] public UnityEventsUtil.DoubleFloatEvent onValueRaised;
-        [FoldoutGroup("Events"), ShowIf("@canRunOut")] public UnityEvent onValueOut;
-        [FoldoutGroup("Events"), ShowIf("@canRunOut && doRecharge && canRechargeBackIn")] public UnityEvent onValueIn;
-        [FoldoutGroup("Events")] public UnityEventsUtil.DoubleFloatEvent onMaxValueChanged;
+		protected virtual void Start()
+		{
+			m_MaxValue = m_Value;
 
-        public bool isOut { get; protected set; } = false;
+			for (int i = 0; i < m_UIBars.Count; i++)
+			{
+				if (m_UIBars[i] == null)
+				{
+					m_UIBars.RemoveAt(i);
+					i--;
+				}
+				else
+				{
+					m_UIBars[i].InitValue(1.0f);
+				}
+			}
+		}
 
-        protected virtual void Start() 
-        {
-            maxValue = value;
+		public float Value => m_Value;
+		public void Modify(float pValue)
+		{
+			Set(m_Value + pValue);
+		}
+		public void Set(float pValue)
+		{
+			float change = pValue - m_Value;
+			bool lower = pValue < m_Value;
+			m_Value = Mathf.Clamp(pValue, 0.0f, m_MaxValue);
 
-            for (int i = 0; i < UIBars.Count; i++)
-            {
-                if (UIBars[i] == null)
-                {
-                    UIBars.RemoveAt(i);
-                    i--;
-                }
-                else
-                {
-                    UIBars[i].InitValue(1.0f);
-                }
-            }
-        }
+			if (lower)
+			{
+				if (m_CanRunOut && !IsOut && m_Value == 0.0f)
+				{
+					OnValueOut();
+				}
+				else
+				{
+					OnValueLowered(m_Value, change);
+				}
+			}
+			else
+			{
+				if (m_CanRechargeBackIn && IsOut && m_Value == m_MaxValue)
+				{
+					OnValueIn();
+				}
+				else
+				{
+					OnValueRaised(m_Value, change);
+				}
+			}
 
-        public float Get() { return value; }
-        public void Modify(float pValue)
-        {
-            Set(value + pValue);
-        }
-        public void Set(float pValue)
-        {
-            float change = pValue - value;
-            bool lower = pValue < value;
-            value = Mathf.Clamp(pValue, 0.0f, maxValue);
+			if (m_DoRecharge)
+			{
+				StopAllCoroutines();
+				StartCoroutine(RechargeRoutine());
+			}
 
-            if (lower)
-            {
-                if (canRunOut && isOut == false && value == 0.0f)
-                {
-                    OnValueOut();
-                }
-                else
-                {
-                    OnValueLowered(value, change);
-                }
-            }
-            else
-            {
-                if (canRechargeBackIn && isOut == true && value == maxValue)
-                {
-                    OnValueIn();
-                }
-                else
-                {
-                    OnValueRaised(value, change);
-                }
-            }
+			OnValueChanged(m_Value, change);
+		}
 
-            if (doRecharge)
-            {
-                StopAllCoroutines();
-                StartCoroutine(RechargeRoutine());
-            }
-            
-            OnValueChanged(value, change);
-        }
+		public float MaxValue => m_MaxValue;
+		public void ModifyMax(float pValue)
+		{
+			SetMax(m_MaxValue + pValue);
+		}
+		public void SetMax(float pValue)
+		{
+			float change = Mathf.Abs(m_MaxValue - pValue);
 
-        public float GetMax() { return maxValue; }
-        public void ModifyMax(float pValue)
-        {
-            SetMax(maxValue + pValue);
-        }
-        public void SetMax(float pValue)
-        {
-            float change = Mathf.Abs(maxValue - pValue);
-            
-            maxValue = pValue;
-            value = Mathf.Clamp(pValue, 0.0f, maxValue);
-            
-            OnMaxValueChanged(maxValue, change);
-        }
+			m_MaxValue = pValue;
+			m_Value = Mathf.Clamp(pValue, 0.0f, m_MaxValue);
 
-        private IEnumerator RechargeRoutine()
-        {
-            yield return new WaitForSeconds(rechargeDelay);
+			OnMaxValueChanged(m_MaxValue, change);
+		}
 
-            while (value < Mathf.Min(maxValue, rechargeValueTo))
-            {
-                value += Time.deltaTime * rechargeRate;
-                value = Mathf.Min(value, maxValue);
+		private IEnumerator RechargeRoutine()
+		{
+			yield return new WaitForSeconds(m_RechargeDelay);
 
-                foreach (BarValue bar in UIBars)
-                    bar.SetValue(value / maxValue);
+			while (m_Value < Mathf.Min(m_MaxValue, m_RechargeValueTo))
+			{
+				m_Value += Time.deltaTime * m_RechargeRate;
+				m_Value = Mathf.Min(m_Value, m_MaxValue);
 
-                yield return null;
-            }
+				foreach (BarValue bar in m_UIBars)
+				{
+					bar.SetValue(m_Value / m_MaxValue);
+				}
 
-            if (canRechargeBackIn && isOut)
-                OnValueIn();
-        }
+				yield return null;
+			}
 
-        public virtual void OnValueChanged(float pValue, float pChange)
-        {
-            foreach (BarValue bar in UIBars)
-                bar.SetValue(pValue / maxValue);
+			if (m_CanRechargeBackIn && IsOut)
+			{
+				OnValueIn();
+			}
+		}
 
-            onValueChangedEvent?.Invoke(pValue, pChange);
-            onValueChanged?.Invoke(pValue, pChange);
-        }
+		public virtual void OnValueChanged(float pValue, float pChange)
+		{
+			foreach (BarValue bar in m_UIBars)
+			{
+				bar.SetValue(pValue / m_MaxValue);
+			}
+			OnValueChangedEvent?.Invoke(pValue, pChange);
+		}
 
-        public virtual void OnValueLowered(float pValue, float pChange)
-        {
-            onValueLoweredEvent?.Invoke(pValue, pChange);
-            onValueLowered?.Invoke(pValue, pChange);
-        }
+		public virtual void OnValueLowered(float pValue, float pChange)
+		{
+			OnValueLoweredEvent?.Invoke(pValue, pChange);
+		}
 
-        public virtual void OnValueRaised(float pValue, float pChange)
-        {
-            onValueRaisedEvent?.Invoke(pValue, pChange);
-            onValueRaised?.Invoke(pValue, pChange);
-        }
+		public virtual void OnValueRaised(float pValue, float pChange)
+		{
+			OnValueRaisedEvent?.Invoke(pValue, pChange);
+		}
 
-        public virtual void OnValueOut()
-        {
-            isOut = true;
-            foreach (BarValue bar in UIBars)
-                bar.SetToggled(true);
+		public virtual void OnValueOut()
+		{
+			IsOut = true;
+			foreach (BarValue bar in m_UIBars)
+			{
+				bar.SetToggled(true);
+			}
+			OnValueOutEvent?.Invoke();
+		}
 
-            onValueOutEvent?.Invoke();
-            onValueOut?.Invoke();
-        }
+		public virtual void OnValueIn()
+		{
+			IsOut = false;
+			foreach (BarValue bar in m_UIBars)
+			{
+				bar.SetToggled(false);
+			}
+			OnValueInEvent?.Invoke();
+		}
 
-        public virtual void OnValueIn()
-        {
-            isOut = false;
-            foreach (BarValue bar in UIBars)
-                bar.SetToggled(false);
-
-            onValueInEvent?.Invoke();
-            onValueIn?.Invoke();
-        }
-
-        public virtual void OnMaxValueChanged(float pMaxValue, float pChange)
-        {
-            foreach (BarValue bar in UIBars)
-                bar.SetValue(value / pMaxValue);
-            
-            onMaxValueChangedEvent?.Invoke(pMaxValue, pChange);
-            onMaxValueChanged?.Invoke(pMaxValue, pChange);
-        }
-    }
+		public virtual void OnMaxValueChanged(float pMaxValue, float pChange)
+		{
+			foreach (BarValue bar in m_UIBars)
+			{
+				bar.SetValue(m_Value / pMaxValue);
+			}
+			OnMaxValueChangedEvent?.Invoke(pMaxValue, pChange);
+		}
+	}
 }

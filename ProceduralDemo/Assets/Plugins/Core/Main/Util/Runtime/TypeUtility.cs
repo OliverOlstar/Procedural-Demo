@@ -25,7 +25,7 @@ namespace Core
 		{
 			// Get Assemblies
 			s_Types = new List<Type>();
-			System.Reflection.Assembly[] assemblies = null;
+			Assembly[] assemblies = null;
 			if (AppDomain.CurrentDomain == null)
 			{
 				Debug.LogError("TypeUtility CurrentDomaing is null");
@@ -37,14 +37,14 @@ namespace Core
 			}
 			catch (Exception e)
 			{
-				Core.DebugUtil.DevException($"TypeUtility constructor had exception: {e} could not get assemblies");
+				DebugUtil.DevException($"TypeUtility constructor had exception: {e} could not get assemblies");
 			}
 			if (assemblies == null)
 			{
 				return;
 			}
 			// Get Types
-			foreach (System.Reflection.Assembly assembly in assemblies)
+			foreach (Assembly assembly in assemblies)
 			{
 				if (assembly == null)
 				{
@@ -154,9 +154,9 @@ namespace Core
 		public static void DebugLogAllTypes()
 		{
 			// Debug
-			if (!Core.Util.IsRelease())
+			if (!Util.IsRelease())
 			{
-				StringBuilder debugMessage = new StringBuilder("TypeUtility finished with types:", 778000);
+				StringBuilder debugMessage = new("TypeUtility finished with types:", 778000);
 				Assembly currAssembly = null;
 				foreach (Type t in s_Types)
 				{

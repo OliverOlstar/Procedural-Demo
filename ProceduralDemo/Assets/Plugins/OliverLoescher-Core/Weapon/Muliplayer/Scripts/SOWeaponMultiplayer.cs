@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Weapon.Multiplayer
+namespace OCore.Weapon.Multiplayer
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Weapon Multiplayer Data")]
 	public class SOWeaponMultiplayer : SOWeapon

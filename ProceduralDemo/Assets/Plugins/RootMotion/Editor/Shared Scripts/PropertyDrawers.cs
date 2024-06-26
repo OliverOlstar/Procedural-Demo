@@ -13,21 +13,27 @@ namespace RootMotion
         
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            if (!Show(property) && showIfAttribute.mode == ShowIfMode.Hidden) return -EditorGUIUtility.standardVerticalSpacing;
+            if (!Show(property) && showIfAttribute.mode == ShowIfMode.Hidden)
+			{
+				return -EditorGUIUtility.standardVerticalSpacing;
+			}
 
-            return EditorGUI.GetPropertyHeight(property, label);
+			return EditorGUI.GetPropertyHeight(property, label);
         }
 
         protected bool Show(SerializedProperty property)
         {
             showIfAttribute = attribute as ShowIfAttribute;
 
-            var path = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, showIfAttribute.propName) : showIfAttribute.propName;
+			string path = property.propertyPath.Contains(".") ? System.IO.Path.ChangeExtension(property.propertyPath, showIfAttribute.propName) : showIfAttribute.propName;
 
             prop = property.serializedObject.FindProperty(path);
-            if (prop == null) return true;
-            
-            switch(prop.propertyType)
+            if (prop == null)
+			{
+				return true;
+			}
+
+			switch (prop.propertyType)
             {
                 case SerializedPropertyType.Enum:
                     return prop.enumValueIndex.Equals((int)showIfAttribute.propValue);
@@ -64,18 +70,32 @@ namespace RootMotion
 
             if (Show(property))
             {
-                if (showIfAttribute.indent) EditorGUI.indentLevel++;
-                Draw(position, property, attribute, label);
-                if (showIfAttribute.indent) EditorGUI.indentLevel--;
-            }
+                if (showIfAttribute.indent)
+				{
+					EditorGUI.indentLevel++;
+				}
+
+				Draw(position, property, attribute, label);
+                if (showIfAttribute.indent)
+				{
+					EditorGUI.indentLevel--;
+				}
+			}
             else if (showIfAttribute.mode == ShowIfMode.Disabled)
             {
-                if (showIfAttribute.indent) EditorGUI.indentLevel++;
-                GUI.enabled = false;
+                if (showIfAttribute.indent)
+				{
+					EditorGUI.indentLevel++;
+				}
+
+				GUI.enabled = false;
                 Draw(position, property, attribute, label);
                 GUI.enabled = true;
-                if (showIfAttribute.indent) EditorGUI.indentLevel--;
-            }
+                if (showIfAttribute.indent)
+				{
+					EditorGUI.indentLevel--;
+				}
+			}
 
             EditorGUI.EndProperty();
         }
@@ -95,12 +115,18 @@ namespace RootMotion
             ShowRangeIfAttribute range = attribute as ShowRangeIfAttribute;
 
             if (property.propertyType == SerializedPropertyType.Float)
-                EditorGUI.Slider(position, property, range.min, range.max, label);
-            else if (property.propertyType == SerializedPropertyType.Integer)
-                EditorGUI.IntSlider(position, property, Convert.ToInt32(range.min), Convert.ToInt32(range.max), label);
-            else
-                EditorGUI.LabelField(position, label.text, "Use Range with float or int.");
-        }
+			{
+				EditorGUI.Slider(position, property, range.min, range.max, label);
+			}
+			else if (property.propertyType == SerializedPropertyType.Integer)
+			{
+				EditorGUI.IntSlider(position, property, Convert.ToInt32(range.min), Convert.ToInt32(range.max), label);
+			}
+			else
+			{
+				EditorGUI.LabelField(position, label.text, "Use Range with float or int.");
+			}
+		}
     }
 
     // Custom drawer for the LargeHeader attribute
@@ -109,15 +135,18 @@ namespace RootMotion
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            if (!Show(property) && showIfAttribute.mode == ShowIfMode.Hidden) return -EditorGUIUtility.standardVerticalSpacing;
+            if (!Show(property) && showIfAttribute.mode == ShowIfMode.Hidden)
+			{
+				return -EditorGUIUtility.standardVerticalSpacing;
+			}
 
-            return base.GetPropertyHeight(property, label) * 2f;
+			return base.GetPropertyHeight(property, label) * 2f;
         }
 
         // Override the GUI drawing for this attribute
         protected override void Draw(Rect position, SerializedProperty property, PropertyAttribute attribute, GUIContent label)
         {
-            var largeHeader = (ShowLargeHeaderIf)attribute;
+			ShowLargeHeaderIf largeHeader = (ShowLargeHeaderIf)attribute;
             LargeHeaderDrawer.Draw(position, largeHeader.name, largeHeader.color);
         }
     }
@@ -135,7 +164,7 @@ namespace RootMotion
         // Override the GUI drawing for this attribute
         public override void OnGUI(Rect position)
         {
-            var largeHeader = (LargeHeader)attribute;
+			LargeHeader largeHeader = (LargeHeader)attribute;
             Draw(position, largeHeader.name, largeHeader.color);
         }
 
@@ -156,7 +185,7 @@ namespace RootMotion
 
             c *= 0.7f;
 
-           var style = new GUIStyle(GUI.skin.label);
+			GUIStyle style = new GUIStyle(GUI.skin.label);
             style.fontSize = 16;
             style.fontStyle = FontStyle.Normal;
             style.alignment = TextAnchor.LowerLeft;

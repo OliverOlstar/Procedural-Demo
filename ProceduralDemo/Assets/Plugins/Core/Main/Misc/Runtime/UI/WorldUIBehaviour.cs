@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace Core
 {
@@ -121,7 +120,7 @@ namespace Core
 
 			public void SetScreenPosition(Vector2 position)
 			{
-				Vector3 positionWithDepth = new Vector3(position.x, position.y, mDepth);
+				Vector3 positionWithDepth = new(position.x, position.y, mDepth);
 				mRectTransform.position = positionWithDepth;
 				SetWorldPosition(GetCamera().ScreenToWorldPoint(positionWithDepth));
 			}

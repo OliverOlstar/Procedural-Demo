@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
-	[RequireComponent(typeof(UnityEngine.Camera))]
+	[RequireComponent(typeof(Camera))]
     public class MainCamera : MonoBehaviour
     {
 		public static MainCamera Instance = null;
@@ -25,7 +23,7 @@ namespace OliverLoescher
 				return;
 			}
 			Instance = this;
-			localCamera = GetComponent<UnityEngine.Camera>();
+			localCamera = GetComponent<Camera>();
 			OnEnable();
 		}
 

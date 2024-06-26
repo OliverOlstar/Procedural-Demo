@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion
 {
 
-    /// <summary>
-    /// Helper methods for dealing with 2-dimensional vectors.
-    /// </summary>
-    public static class V2Tools
+	/// <summary>
+	/// Helper methods for dealing with 2-dimensional vectors.
+	/// </summary>
+	public static class V2Tools
     {
         /// <summary>
         /// Converts Vector3 to Vector2 on the XZ plane
@@ -50,16 +49,27 @@ namespace RootMotion
             float z = Vector2.Dot(f, f) - r * r;
 
             float discr = b * b - 4f * a * z;
-            if (discr < 0f) return false;
+            if (discr < 0f)
+			{
+				return false;
+			}
 
-            discr = Mathf.Sqrt(discr);
+			discr = Mathf.Sqrt(discr);
             float a2 = 2f * a;
             float t1 = (b - discr) / a2;
             float t2 = (b + discr) / a2;
 
-            if (t1 >= 0f && t1 <= 1f) return true;
-            if (t2 >= 0f && t2 <= 1f) return true;
-            return false;
+            if (t1 >= 0f && t1 <= 1f)
+			{
+				return true;
+			}
+
+			if (t2 >= 0f && t2 <= 1f)
+			{
+				return true;
+			}
+
+			return false;
         }
 
         /// <summary>

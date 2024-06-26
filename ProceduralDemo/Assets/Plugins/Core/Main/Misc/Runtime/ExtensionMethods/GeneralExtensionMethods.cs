@@ -19,7 +19,7 @@ public static class GeneralExtensionMethods  {
 
 	public static void Foreach<T>(this IEnumerable<T> self, Action action)
 	{
-		foreach (var element in self)
+		foreach (T element in self)
 		{
 			action?.Invoke();
 		}
@@ -27,7 +27,7 @@ public static class GeneralExtensionMethods  {
 
 	public static void Foreach<T>(this IEnumerable<T> self, Action<T> action, Func<T, bool> predic)
 	{
-		foreach (var element in self)
+		foreach (T element in self)
 		{
 			if (predic(element))
 			{
@@ -38,7 +38,7 @@ public static class GeneralExtensionMethods  {
 
 	public static void Foreach<T>(this IEnumerable<T> self, Predicate<T> predic, Action<T> action)
 	{
-		foreach (var element in self)
+		foreach (T element in self)
 		{
 			if(predic(element))
 			{
@@ -49,7 +49,7 @@ public static class GeneralExtensionMethods  {
 
 	public static void Foreach<T>(this IEnumerable<T> self, Action<T> action)
 	{
-		foreach (var element in self)
+		foreach (T element in self)
 		{
 			action?.Invoke(element);
 		}
@@ -58,7 +58,7 @@ public static class GeneralExtensionMethods  {
 	public static void Foreach<T>(this IEnumerable<T> self, Action<T, int> action)
 	{
 		int index = 0;
-		foreach (var element in self)
+		foreach (T element in self)
 		{
 			action?.Invoke(element, index++);
 		}

@@ -1,16 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion
 {
-    public static class BakerUtilities
+	public static class BakerUtilities
     {
 
         public static void ReduceKeyframes(AnimationCurve curve, float maxError)
         {
-            if (maxError <= 0f) return;
+            if (maxError <= 0f)
+			{
+				return;
+			}
 
-            curve.keys = GetReducedKeyframes(curve, maxError);
+			curve.keys = GetReducedKeyframes(curve, maxError);
 
             // TODO Flatten outTangent for keys that have the next key and testAfter sampled to the same value in the original clip. Same thing for the inTangent
         }
@@ -33,7 +35,7 @@ namespace RootMotion
                     }
                 }
 
-                AnimationCurve testCurve = new AnimationCurve();
+                AnimationCurve testCurve = new();
                 testCurve.keys = testKeys;
 
                 float test0 = Mathf.Abs(testCurve.Evaluate(keys[i].time) - keys[i].value);
@@ -70,17 +72,17 @@ namespace RootMotion
             */
 
             Keyframe[] keys = curve.keys;
-            keys[keys.Length - 1].value = keys[0].value;
+            keys[^1].value = keys[0].value;
 
-            float inTangent = Mathf.Lerp(keys[0].inTangent, keys[keys.Length - 1].inTangent, 0.5f);
+            float inTangent = Mathf.Lerp(keys[0].inTangent, keys[^1].inTangent, 0.5f);
             keys[0].inTangent = inTangent;
-            keys[keys.Length - 1].inTangent = inTangent;
+            keys[^1].inTangent = inTangent;
 
-            float outTangent = Mathf.Lerp(keys[0].outTangent, keys[keys.Length - 1].outTangent, 0.5f);
+            float outTangent = Mathf.Lerp(keys[0].outTangent, keys[^1].outTangent, 0.5f);
             keys[0].outTangent = outTangent;
-            keys[keys.Length - 1].outTangent = outTangent;
+            keys[^1].outTangent = outTangent;
 
-            keys[keys.Length - 1].time = time;
+            keys[^1].time = time;
             curve.keys = keys;
         }
 
@@ -88,9 +90,12 @@ namespace RootMotion
         {
 #if UNITY_EDITOR
 
-            if (curve.length < 2) return;
+            if (curve.length < 2)
+			{
+				return;
+			}
 
-            for (int i = 1; i < curve.length - 1; i++)
+			for (int i = 1; i < curve.length - 1; i++)
             {
                 UnityEditor.AnimationUtility.SetKeyLeftTangentMode(curve, i, UnityEditor.AnimationUtility.TangentMode.ClampedAuto);
                 UnityEditor.AnimationUtility.SetKeyRightTangentMode(curve, i, UnityEditor.AnimationUtility.TangentMode.ClampedAuto);
@@ -102,16 +107,16 @@ namespace RootMotion
         // Realigns quaternion keys to ensure shortest interpolation paths.
         public static Quaternion EnsureQuaternionContinuity(Quaternion lastQ, Quaternion q)
         {
-            Quaternion flipped = new Quaternion(-q.x, -q.y, -q.z, -q.w);
+            Quaternion flipped = new(-q.x, -q.y, -q.z, -q.w);
 
-            Quaternion midQ = new Quaternion(
+            Quaternion midQ = new(
                 Mathf.Lerp(lastQ.x, q.x, 0.5f),
                 Mathf.Lerp(lastQ.y, q.y, 0.5f),
                 Mathf.Lerp(lastQ.z, q.z, 0.5f),
                 Mathf.Lerp(lastQ.w, q.w, 0.5f)
                 );
 
-            Quaternion midQFlipped = new Quaternion(
+            Quaternion midQFlipped = new(
                 Mathf.Lerp(lastQ.x, flipped.x, 0.5f),
                 Mathf.Lerp(lastQ.y, flipped.y, 0.5f),
                 Mathf.Lerp(lastQ.z, flipped.z, 0.5f),
@@ -176,7 +181,7 @@ namespace RootMotion
 
         public Quaternion EvaluateRotation(float time)
         {
-            Quaternion q = new Quaternion(rotX.Evaluate(time), rotY.Evaluate(time), rotZ.Evaluate(time), rotW.Evaluate(time));
+            Quaternion q = new(rotX.Evaluate(time), rotY.Evaluate(time), rotZ.Evaluate(time), rotW.Evaluate(time));
             return q;
             //return q.normalized;
         }
@@ -208,7 +213,7 @@ namespace RootMotion
 #if UNITY_EDITOR
         private AnimationCurve GetEditorCurve(AnimationClip clip, string propertyPath)
         {
-            var binding = UnityEditor.EditorCurveBinding.FloatCurve(string.Empty, typeof(Animator), propertyPath);
+			UnityEditor.EditorCurveBinding binding = UnityEditor.EditorCurveBinding.FloatCurve(string.Empty, typeof(Animator), propertyPath);
             return UnityEditor.AnimationUtility.GetEditorCurve(clip, binding);
         }
 #endif
@@ -243,11 +248,14 @@ namespace RootMotion
             TQ IKTQ = AvatarUtility.GetIKGoalTQ(avatar, humanScale, goal, new TQ(bodyPosition, bodyRotation), new TQ(bonePos, boneRot));
 
             Quaternion rot = IKTQ.q;
-            if (lastQSet) rot = BakerUtilities.EnsureQuaternionContinuity(lastQ, IKTQ.q);
+            if (lastQSet)
+			{
+				rot = BakerUtilities.EnsureQuaternionContinuity(lastQ, IKTQ.q);
+			}
 
-            //rot.Normalize();
+			//rot.Normalize();
 
-            lastQ = rot;
+			lastQ = rot;
             lastQSet = true;
 
             rotX.AddKey(time, rot.x);
@@ -315,7 +323,7 @@ namespace RootMotion
         private void MoveLastKeyframe(float time, AnimationCurve curve)
         {
             Keyframe[] keys = curve.keys;
-            keys[keys.Length - 1].time = time;
+            keys[^1].time = time;
             curve.keys = keys;
         }
 
@@ -395,60 +403,208 @@ namespace RootMotion
         private string MuscleNameToPropertyName(string n)
         {
             // Left fingers
-            if (n == "Left Index 1 Stretched") return "LeftHand.Index.1 Stretched";
-            if (n == "Left Index 2 Stretched") return "LeftHand.Index.2 Stretched";
-            if (n == "Left Index 3 Stretched") return "LeftHand.Index.3 Stretched";
+            if (n == "Left Index 1 Stretched")
+			{
+				return "LeftHand.Index.1 Stretched";
+			}
 
-            if (n == "Left Middle 1 Stretched") return "LeftHand.Middle.1 Stretched";
-            if (n == "Left Middle 2 Stretched") return "LeftHand.Middle.2 Stretched";
-            if (n == "Left Middle 3 Stretched") return "LeftHand.Middle.3 Stretched";
+			if (n == "Left Index 2 Stretched")
+			{
+				return "LeftHand.Index.2 Stretched";
+			}
 
-            if (n == "Left Ring 1 Stretched") return "LeftHand.Ring.1 Stretched";
-            if (n == "Left Ring 2 Stretched") return "LeftHand.Ring.2 Stretched";
-            if (n == "Left Ring 3 Stretched") return "LeftHand.Ring.3 Stretched";
+			if (n == "Left Index 3 Stretched")
+			{
+				return "LeftHand.Index.3 Stretched";
+			}
 
-            if (n == "Left Little 1 Stretched") return "LeftHand.Little.1 Stretched";
-            if (n == "Left Little 2 Stretched") return "LeftHand.Little.2 Stretched";
-            if (n == "Left Little 3 Stretched") return "LeftHand.Little.3 Stretched";
+			if (n == "Left Middle 1 Stretched")
+			{
+				return "LeftHand.Middle.1 Stretched";
+			}
 
-            if (n == "Left Thumb 1 Stretched") return "LeftHand.Thumb.1 Stretched";
-            if (n == "Left Thumb 2 Stretched") return "LeftHand.Thumb.2 Stretched";
-            if (n == "Left Thumb 3 Stretched") return "LeftHand.Thumb.3 Stretched";
+			if (n == "Left Middle 2 Stretched")
+			{
+				return "LeftHand.Middle.2 Stretched";
+			}
 
-            if (n == "Left Index Spread") return "LeftHand.Index.Spread";
-            if (n == "Left Middle Spread") return "LeftHand.Middle.Spread";
-            if (n == "Left Ring Spread") return "LeftHand.Ring.Spread";
-            if (n == "Left Little Spread") return "LeftHand.Little.Spread";
-            if (n == "Left Thumb Spread") return "LeftHand.Thumb.Spread";
+			if (n == "Left Middle 3 Stretched")
+			{
+				return "LeftHand.Middle.3 Stretched";
+			}
 
-            // Right fingers
-            if (n == "Right Index 1 Stretched") return "RightHand.Index.1 Stretched";
-            if (n == "Right Index 2 Stretched") return "RightHand.Index.2 Stretched";
-            if (n == "Right Index 3 Stretched") return "RightHand.Index.3 Stretched";
+			if (n == "Left Ring 1 Stretched")
+			{
+				return "LeftHand.Ring.1 Stretched";
+			}
 
-            if (n == "Right Middle 1 Stretched") return "RightHand.Middle.1 Stretched";
-            if (n == "Right Middle 2 Stretched") return "RightHand.Middle.2 Stretched";
-            if (n == "Right Middle 3 Stretched") return "RightHand.Middle.3 Stretched";
+			if (n == "Left Ring 2 Stretched")
+			{
+				return "LeftHand.Ring.2 Stretched";
+			}
 
-            if (n == "Right Ring 1 Stretched") return "RightHand.Ring.1 Stretched";
-            if (n == "Right Ring 2 Stretched") return "RightHand.Ring.2 Stretched";
-            if (n == "Right Ring 3 Stretched") return "RightHand.Ring.3 Stretched";
+			if (n == "Left Ring 3 Stretched")
+			{
+				return "LeftHand.Ring.3 Stretched";
+			}
 
-            if (n == "Right Little 1 Stretched") return "RightHand.Little.1 Stretched";
-            if (n == "Right Little 2 Stretched") return "RightHand.Little.2 Stretched";
-            if (n == "Right Little 3 Stretched") return "RightHand.Little.3 Stretched";
+			if (n == "Left Little 1 Stretched")
+			{
+				return "LeftHand.Little.1 Stretched";
+			}
 
-            if (n == "Right Thumb 1 Stretched") return "RightHand.Thumb.1 Stretched";
-            if (n == "Right Thumb 2 Stretched") return "RightHand.Thumb.2 Stretched";
-            if (n == "Right Thumb 3 Stretched") return "RightHand.Thumb.3 Stretched";
+			if (n == "Left Little 2 Stretched")
+			{
+				return "LeftHand.Little.2 Stretched";
+			}
 
-            if (n == "Right Index Spread") return "RightHand.Index.Spread";
-            if (n == "Right Middle Spread") return "RightHand.Middle.Spread";
-            if (n == "Right Ring Spread") return "RightHand.Ring.Spread";
-            if (n == "Right Little Spread") return "RightHand.Little.Spread";
-            if (n == "Right Thumb Spread") return "RightHand.Thumb.Spread";
+			if (n == "Left Little 3 Stretched")
+			{
+				return "LeftHand.Little.3 Stretched";
+			}
 
-            return n;
+			if (n == "Left Thumb 1 Stretched")
+			{
+				return "LeftHand.Thumb.1 Stretched";
+			}
+
+			if (n == "Left Thumb 2 Stretched")
+			{
+				return "LeftHand.Thumb.2 Stretched";
+			}
+
+			if (n == "Left Thumb 3 Stretched")
+			{
+				return "LeftHand.Thumb.3 Stretched";
+			}
+
+			if (n == "Left Index Spread")
+			{
+				return "LeftHand.Index.Spread";
+			}
+
+			if (n == "Left Middle Spread")
+			{
+				return "LeftHand.Middle.Spread";
+			}
+
+			if (n == "Left Ring Spread")
+			{
+				return "LeftHand.Ring.Spread";
+			}
+
+			if (n == "Left Little Spread")
+			{
+				return "LeftHand.Little.Spread";
+			}
+
+			if (n == "Left Thumb Spread")
+			{
+				return "LeftHand.Thumb.Spread";
+			}
+
+			// Right fingers
+			if (n == "Right Index 1 Stretched")
+			{
+				return "RightHand.Index.1 Stretched";
+			}
+
+			if (n == "Right Index 2 Stretched")
+			{
+				return "RightHand.Index.2 Stretched";
+			}
+
+			if (n == "Right Index 3 Stretched")
+			{
+				return "RightHand.Index.3 Stretched";
+			}
+
+			if (n == "Right Middle 1 Stretched")
+			{
+				return "RightHand.Middle.1 Stretched";
+			}
+
+			if (n == "Right Middle 2 Stretched")
+			{
+				return "RightHand.Middle.2 Stretched";
+			}
+
+			if (n == "Right Middle 3 Stretched")
+			{
+				return "RightHand.Middle.3 Stretched";
+			}
+
+			if (n == "Right Ring 1 Stretched")
+			{
+				return "RightHand.Ring.1 Stretched";
+			}
+
+			if (n == "Right Ring 2 Stretched")
+			{
+				return "RightHand.Ring.2 Stretched";
+			}
+
+			if (n == "Right Ring 3 Stretched")
+			{
+				return "RightHand.Ring.3 Stretched";
+			}
+
+			if (n == "Right Little 1 Stretched")
+			{
+				return "RightHand.Little.1 Stretched";
+			}
+
+			if (n == "Right Little 2 Stretched")
+			{
+				return "RightHand.Little.2 Stretched";
+			}
+
+			if (n == "Right Little 3 Stretched")
+			{
+				return "RightHand.Little.3 Stretched";
+			}
+
+			if (n == "Right Thumb 1 Stretched")
+			{
+				return "RightHand.Thumb.1 Stretched";
+			}
+
+			if (n == "Right Thumb 2 Stretched")
+			{
+				return "RightHand.Thumb.2 Stretched";
+			}
+
+			if (n == "Right Thumb 3 Stretched")
+			{
+				return "RightHand.Thumb.3 Stretched";
+			}
+
+			if (n == "Right Index Spread")
+			{
+				return "RightHand.Index.Spread";
+			}
+
+			if (n == "Right Middle Spread")
+			{
+				return "RightHand.Middle.Spread";
+			}
+
+			if (n == "Right Ring Spread")
+			{
+				return "RightHand.Ring.Spread";
+			}
+
+			if (n == "Right Little Spread")
+			{
+				return "RightHand.Little.Spread";
+			}
+
+			if (n == "Right Thumb Spread")
+			{
+				return "RightHand.Thumb.Spread";
+			}
+
+			return n;
         }
 
         public void MultiplyLength(AnimationCurve curve, float mlp)
@@ -545,10 +701,13 @@ namespace RootMotion
             clip.SetCurve(relativePath, typeof(Transform), "localRotation.z", rotZ);
             clip.SetCurve(relativePath, typeof(Transform), "localRotation.w", rotW);
 
-            if (isRootNode) AddRootMotionCurves(ref clip);
+            if (isRootNode)
+			{
+				AddRootMotionCurves(ref clip);
+			}
 
-            // @todo probably only need to do it once for the clip
-            clip.EnsureQuaternionContinuity(); // DOH!
+			// @todo probably only need to do it once for the clip
+			clip.EnsureQuaternionContinuity(); // DOH!
         }
 
         private void AddRootMotionCurves(ref AnimationClip clip)

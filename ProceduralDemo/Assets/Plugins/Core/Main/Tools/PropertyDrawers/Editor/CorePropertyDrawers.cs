@@ -1,6 +1,5 @@
 ﻿
 using System.Linq;
-using System.IO;
 using System;
 using UnityEngine;
 using UnityEditor;
@@ -34,9 +33,9 @@ namespace Core
 			return method;
 		}
 
-		public static System.Type GetUnderlyingType(FieldInfo fieldInfo) => GetUnderlyingType(fieldInfo.FieldType);
+		public static Type GetUnderlyingType(FieldInfo fieldInfo) => GetUnderlyingType(fieldInfo.FieldType);
 		/// <summary>Utility function for property drawers to get the field type and clean it up in the case the drawer is applied to a list or array</summary>
-		public static System.Type GetUnderlyingType(System.Type fieldType)
+		public static Type GetUnderlyingType(Type fieldType)
 		{
 			if (fieldType.IsArray) // Attribute could be attached to an Array element
 			{
@@ -49,14 +48,14 @@ namespace Core
 			return fieldType;
 		}
 
-		public static bool TryGetAttribute<TAttribute>(FieldInfo fieldInfo, out TAttribute attribute) where TAttribute : System.Attribute
+		public static bool TryGetAttribute<TAttribute>(FieldInfo fieldInfo, out TAttribute attribute) where TAttribute : Attribute
 		{
 			attribute = fieldInfo.GetCustomAttribute<TAttribute>();
 			if (attribute != null)
 			{
 				return true;
 			}
-			System.Type type = GetUnderlyingType(fieldInfo);
+			Type type = GetUnderlyingType(fieldInfo);
 			attribute = type.GetCustomAttribute<TAttribute>(true);
 			if (attribute != null)
 			{
@@ -64,7 +63,7 @@ namespace Core
 			}
 			return false;
 		}
-		public static bool HasAttribute<TAttribute>(FieldInfo fieldInfo) where TAttribute : System.Attribute
+		public static bool HasAttribute<TAttribute>(FieldInfo fieldInfo) where TAttribute : Attribute
 		{
 			return TryGetAttribute<TAttribute>(fieldInfo, out _);
 		}
@@ -75,7 +74,7 @@ namespace Core
 		{
 			// Apparently EditorGUI.IndentedRect sometimes indents without increasing EditorGUI.indentLevel but sometimes it doesn't
 			Rect indented = EditorGUI.IndentedRect(rect);
-			if (Core.Util.Approximately(indented.x, rect.x))
+			if (Util.Approximately(indented.x, rect.x))
 			{
 				EditorGUI.indentLevel++;
 				indented = EditorGUI.IndentedRect(rect);
@@ -102,7 +101,7 @@ namespace Core
 			}
 			position = EditorGUI.IndentedRect(position);
 			Vector2 size = EditorStyles.label.CalcSize(label);
-			Rect r = new Rect(position.x + size.x - 4, position.y - 4, 12, position.height);
+			Rect r = new(position.x + size.x - 4, position.y - 4, 12, position.height);
 			GUI.Label(r, "\u25E5", TOOL_TIP_ICON_STYLE);
 		}
 	}
@@ -146,7 +145,7 @@ namespace Core
 		public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
 		{
 			PercentAttribute pctAtt = attribute as PercentAttribute;
-			GUIContent newLabel = new GUIContent(label); // Seems when we modify incoming label weird stuff happens, maybe only when using Odin Inspector?
+			GUIContent newLabel = new(label); // Seems when we modify incoming label weird stuff happens, maybe only when using Odin Inspector?
 			newLabel.text += " %";
 
 			PropertyDrawerUtil.ApplyTooltipAttribute(position, newLabel, pctAtt);
@@ -165,14 +164,14 @@ namespace Core
 	{
 		public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
 		{
-			GUIContent newLabel = new GUIContent(label); // Seems when we modify incoming label weird stuff happens, maybe only when using Odin Inspector?
+			GUIContent newLabel = new(label); // Seems when we modify incoming label weird stuff happens, maybe only when using Odin Inspector?
 			newLabel.text += " (30fps)";
 
 			PropertyDrawerUtil.ApplyTooltipAttribute(position, label, attribute as TooltipAttribute);
 
-			float frames = prop.floatValue * Core.Util.FPS30;
+			float frames = prop.floatValue * Util.FPS30;
 			frames = EditorGUI.FloatField(position, newLabel, frames);
-			prop.floatValue = frames / Core.Util.FPS30;
+			prop.floatValue = frames / Util.FPS30;
 		}
 	}
 	[CustomPropertyDrawer(typeof(Frames60Attribute))]
@@ -180,7 +179,7 @@ namespace Core
 	{
 		public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
 		{
-			GUIContent newLabel = new GUIContent(label); // Seems when we modify incoming label weird stuff happens, maybe only when using Odin Inspector?
+			GUIContent newLabel = new(label); // Seems when we modify incoming label weird stuff happens, maybe only when using Odin Inspector?
 			newLabel.text += " (60fps)";
 
 			PropertyDrawerUtil.ApplyTooltipAttribute(position, label, attribute as TooltipAttribute);
@@ -196,7 +195,7 @@ namespace Core
 	{
 		public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
 		{
-			GUIContent newLabel = new GUIContent(label); // Seems when we modify incoming label weird stuff happens, maybe only when using Odin Inspector?
+			GUIContent newLabel = new(label); // Seems when we modify incoming label weird stuff happens, maybe only when using Odin Inspector?
 			newLabel.text += " (degrees)";
 
 			PropertyDrawerUtil.ApplyTooltipAttribute(position, label, attribute as TooltipAttribute);
@@ -371,7 +370,7 @@ namespace Core
 		public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)
 		{
 			EnumListAttribute enumAttr = (EnumListAttribute)attribute;
-			string[] enumNames = System.Enum.GetNames(enumAttr.mEnumType);
+			string[] enumNames = Enum.GetNames(enumAttr.mEnumType);
 			SerializedProperty array = null;
 			int i = IndexOf(prop, ref array);
 			if (i < 0)
@@ -392,7 +391,7 @@ namespace Core
 				return;
 			}
 
-			Rect labelpos = new Rect(position.x, position.y, position.width, 16.0f);
+			Rect labelpos = new(position.x, position.y, position.width, 16.0f);
 			labelpos.x += 16.0f * (EditorGUI.indentLevel - 1);
 			GUI.Label(labelpos, enumName, EditorStyles.boldLabel);
 
@@ -403,7 +402,7 @@ namespace Core
 			foreach (SerializedProperty p in prop)
 			{
 				hasChildren = true;
-				string[] s = p.propertyPath.Split(new string[] { propPath, "." }, System.StringSplitOptions.RemoveEmptyEntries);
+				string[] s = p.propertyPath.Split(new string[] { propPath, "." }, StringSplitOptions.RemoveEmptyEntries);
 				if (s.Length > 1)
 				{
 					break;
@@ -415,9 +414,9 @@ namespace Core
 
 				//Debug.Log(p.propertyType + "|" + p.propertyPath);
 				//GUI.Label(r, p.propertyType + "|" + p.propertyPath);
-				Rect r1 = new Rect(labelpos.x, y, position.width, height);
+				Rect r1 = new(labelpos.x, y, position.width, height);
 				GUI.Box(r1, string.Empty);
-				Rect r2 = new Rect(position.x, y, position.width, height);
+				Rect r2 = new(position.x, y, position.width, height);
 				EditorGUI.PropertyField(r2, p, true);
 
 				y += height;
@@ -427,7 +426,7 @@ namespace Core
 			{
 				float height = 16.0f;
 				float indent = 96.0f;
-				Rect r = new Rect(labelpos.x + indent, labelpos.y, position.width - indent, height);
+				Rect r = new(labelpos.x + indent, labelpos.y, position.width - indent, height);
 				EditorGUI.PropertyField(r, array.GetArrayElementAtIndex(i), GUIContent.none);
 			}
 		}
@@ -437,7 +436,7 @@ namespace Core
 			float height = 0.0f;
 
 			EnumListAttribute enumAttr = (EnumListAttribute)attribute;
-			string[] enumNames = System.Enum.GetNames(enumAttr.mEnumType);
+			string[] enumNames = Enum.GetNames(enumAttr.mEnumType);
 
 			SerializedProperty array = null;
 			int i = IndexOf(prop, ref array);
@@ -458,7 +457,7 @@ namespace Core
 			string parentPath = prop.propertyPath;
 			foreach (SerializedProperty p in prop)
 			{
-				string[] s = p.propertyPath.Split(new string[] { parentPath, "." }, System.StringSplitOptions.RemoveEmptyEntries);
+				string[] s = p.propertyPath.Split(new string[] { parentPath, "." }, StringSplitOptions.RemoveEmptyEntries);
 				if (s.Length > 1)
 				{
 					break;
@@ -475,7 +474,7 @@ namespace Core
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
 			EnumMaskAttribute at = attribute as EnumMaskAttribute;
-			string[] options = System.Enum.GetNames(at.Type != null && at.Type.IsEnum ? at.Type : fieldInfo.FieldType);
+			string[] options = Enum.GetNames(at.Type != null && at.Type.IsEnum ? at.Type : fieldInfo.FieldType);
 			property.intValue = EditorGUI.MaskField(position, label, property.intValue, options);
 		}
 	}

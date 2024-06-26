@@ -1,6 +1,6 @@
 {
-    "name": "OliverLoescher.Weapon.Demo",
-    "rootNamespace": "OliverLoescher.Weapon.Demo",
+    "name": "OCore.Weapon.Demo",
+    "rootNamespace": "OCore.Weapon.Demo",
     "references": [
         "GUID:75469ad4d38634e559750d17036d5f7c"
     ],

@@ -1,56 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
-using OliverLoescher.Util;
+using OCore.Util;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace OliverLoescher.UI
+namespace OCore.UI
 {
-    public class ButtonFloatEvent : MonoBehaviour
+	public class ButtonFloatEvent : MonoBehaviour
 	{
 		[SerializeField]
-		private float value = 0.0f;
-		[SerializeField, Min(Util.Math.NEARZERO)]
-		private float increaseDelta = 0.1f;
-		[SerializeField, Min(Util.Math.NEARZERO)]
-		private float decreaseDelta = 0.1f;
+		private float m_Value = 0.0f;
+		[SerializeField, Min(Math.NEARZERO)]
+		private float m_IncreaseDelta = 0.1f;
+		[SerializeField, Min(Math.NEARZERO)]
+		private float m_DecreaseDelta = 0.1f;
 		[SerializeField]
-		private Vector2 clamp = new Vector2(0.0f, 1.0f);
+		private Vector2 m_Clamp = new(0.0f, 1.0f);
 
 		[Space, SerializeField]
-		private Button buttonIncrease = null;
+		private Button m_ButtonIncrease = null;
 		[SerializeField]
-		private Button buttonDecrease = null;
+		private Button m_ButtonDecrease = null;
 
 		[Space]
-		public UnityEventsUtil.FloatEvent onChange;
+		public UnityEventsUtil.FloatEvent OnChange;
 
-		public float Value => value;
+		public float Value => m_Value;
 
 		protected virtual void Awake()
 		{
-			buttonIncrease.onClick.AddListener(OnIncreaseClicked);
-			buttonDecrease.onClick.AddListener(OnDecreaseClicked);
+			m_ButtonIncrease.onClick.AddListener(OnIncreaseClicked);
+			m_ButtonDecrease.onClick.AddListener(OnDecreaseClicked);
 		}
 
 		protected virtual void OnDestroy()
 		{
-			buttonIncrease.onClick.RemoveListener(OnIncreaseClicked);
-			buttonDecrease.onClick.RemoveListener(OnDecreaseClicked);
+			m_ButtonIncrease.onClick.RemoveListener(OnIncreaseClicked);
+			m_ButtonDecrease.onClick.RemoveListener(OnDecreaseClicked);
 		}
 
 		protected virtual void OnValidate()
 		{
-			value = Util.Math.Clamp(value, clamp);
-
+			m_Value = Math.Clamp(m_Value, m_Clamp);
 		}
 
-		protected virtual void OnIncreaseClicked() => ModifyValue(increaseDelta);
-		protected virtual void OnDecreaseClicked() => ModifyValue(-decreaseDelta);
+		protected virtual void OnIncreaseClicked() => ModifyValue(m_IncreaseDelta);
+		protected virtual void OnDecreaseClicked() => ModifyValue(-m_DecreaseDelta);
 		protected virtual void ModifyValue(float pDelta)
 		{
-			value = (value + pDelta).Clamp(clamp);
-			onChange.Invoke(value);
+			m_Value = (m_Value + pDelta).Clamp(m_Clamp);
+			OnChange.Invoke(m_Value);
 		}
 	}
 }

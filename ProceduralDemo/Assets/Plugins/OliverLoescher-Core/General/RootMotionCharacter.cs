@@ -1,72 +1,71 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher 
+namespace OCore
 {
 	[RequireComponent(typeof(Animator))]
 	public class RootMotionCharacter : MonoBehaviour
 	{
-		public bool ignoreYValue = false;
+		public bool IgnoreYValue = false;
 
 		[Header("Root Motion")]
-		[SerializeField] private CharacterController character = null;
-		[SerializeField] private OnGround grounded = null;
-		private Animator animator = null;
+		[SerializeField]
+		private CharacterController m_Character = null;
+		[SerializeField]
+		private OnGround m_Grounded = null;
+		private Animator m_Animator = null;
 
-		[Space, SerializeField] private float gravity = 9.81f;
-		[SerializeField] private float stepDown = 0.1f; 
-		// [SerializeField] private float slopeLimit = 45.0f;
-		// [SerializeField] private float slideFriction = 1.0f;
-		private bool inAir = false;
-		private Vector3 rootMotion = new Vector3();
-		private Vector3 velocity = Vector3.zero;
+		[Space, SerializeField]
+		private float m_Gravity = 9.81f;
+		[SerializeField]
+		private float m_StepDown = 0.1f;
 
-		[Space, SerializeField] private float pushPower = 2.0f;
+		private bool m_InAir = false;
+		private Vector3 m_RootMotion = new();
+		private Vector3 m_Velocity = Vector3.zero;
+
+		[Space, SerializeField]
+		private float m_PushPower = 2.0f;
 
 		void Start()
 		{
-			animator = GetComponent<Animator>();
+			m_Animator = GetComponent<Animator>();
 
-			RootMotionCharacterReciever reciever = character.gameObject.AddComponent<RootMotionCharacterReciever>();
+			RootMotionCharacterReciever reciever = m_Character.gameObject.AddComponent<RootMotionCharacterReciever>();
 			reciever.Init(this);
 		}
 
-		private void OnAnimatorMove() 
+		private void OnAnimatorMove()
 		{
-			rootMotion += animator.deltaPosition;
-
-			character.transform.rotation *= animator.deltaRotation;
+			m_RootMotion += m_Animator.deltaPosition;
+			m_Character.transform.rotation *= m_Animator.deltaRotation;
 		}
 
-		private void FixedUpdate() 
+		private void FixedUpdate()
 		{
-			if (ignoreYValue)
+			if (IgnoreYValue)
 			{
 				MoveRootMotion();
-				inAir = true;
+				m_InAir = true;
+				return;
 			}
-			else if (inAir)
+			if (m_InAir)
 			{
 				UpdateInAir();
+				return;
 			}
-			else
-			{
-				UpdateOnGround();
-			}
+			UpdateOnGround();
 		}
 
 		private void UpdateInAir()
 		{
-			// Gravity
-			velocity.y -= gravity * Time.fixedDeltaTime;
+			m_Velocity.y -= m_Gravity * Time.fixedDeltaTime; // Gravity
 
-			character.Move(velocity * Time.fixedDeltaTime);
+			m_Character.Move(m_Velocity * Time.fixedDeltaTime);
 
-			if (character.isGrounded == true)
+			if (m_Character.isGrounded)
 			{
-				inAir = false;
-				rootMotion = Vector3.zero;
+				m_InAir = false;
+				m_RootMotion = Vector3.zero;
 			}
 		}
 
@@ -74,53 +73,52 @@ namespace OliverLoescher
 		{
 			MoveRootMotion();
 
-			if (grounded.IsGrounded)
+			if (m_Grounded.IsGrounded)
 			{
-				character.Move(Vector3.down * stepDown);
+				m_Character.Move(Vector3.down * m_StepDown);
 			}
 
-			if (character.isGrounded == false)
+			if (!m_Character.isGrounded)
 			{
-				inAir = true;
-				velocity = animator.velocity;
+				m_InAir = true;
+				m_Velocity = m_Animator.velocity;
 			}
 		}
 
 		private void MoveRootMotion()
 		{
-			character.Move(rootMotion);
-			rootMotion = Vector3.zero;
+			m_Character.Move(m_RootMotion);
+			m_RootMotion = Vector3.zero;
 		}
 
 		public void DoJump(float pUp, float pForward)
 		{
-			inAir = true;
-			velocity = Util.Math.Horizontalize(animator.velocity) * pForward;
-			velocity.y = Mathf.Sqrt(2 * gravity * pUp);
+			m_InAir = true;
+			m_Velocity = Util.Math.Horizontalize(m_Animator.velocity) * pForward;
+			m_Velocity.y = Mathf.Sqrt(2 * m_Gravity * pUp);
 		}
 
 		public void OnControllerColliderHit(ControllerColliderHit hit)
 		{
 
 			Rigidbody body = hit.collider.attachedRigidbody;
-
-			// no rigidbody
 			if (body == null || body.isKinematic)
-				return;
+			{
+				return; // No rigidbody
+			}
 
-			// We dont want to push objects below us
 			if (hit.moveDirection.y < -0.3f)
-				return;
+			{
+				return; // We dont want to push objects below us
+			}
 
 			// Calculate push direction from move direction,
 			// we only push objects to the sides never up and down
-			Vector3 pushDir = new Vector3(hit.moveDirection.x, 0, hit.moveDirection.z);
+			Vector3 pushDir = new(hit.moveDirection.x, 0, hit.moveDirection.z);
 
 			// If you know how fast your character is trying to move,
 			// then you can also multiply the push velocity by that.
-
-			// Apply the push
-			body.velocity = pushDir * pushPower;
+			body.velocity = pushDir * m_PushPower; // Apply the push
 		}
 	}
 }

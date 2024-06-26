@@ -2,8 +2,6 @@
 using System;
 using UnityEngine;
 using System.Text;
-using UnityEditor;
-using UnityEngine.Rendering;
 
 namespace Core
 {
@@ -132,11 +130,11 @@ namespace Core
 
 			// Cross a plane normal with any non-parallel vector and you get a vector in the normal's plane
 			float dot = Vector3.Dot(normal, Vector3.right);
-			Vector3 cross = dot < 1.0f - Core.Util.EPSILON && dot > -1.0f + Core.Util.EPSILON ?
+			Vector3 cross = dot < 1.0f - Util.EPSILON && dot > -1.0f + Util.EPSILON ?
 				Vector3.right :
 				Vector3.forward;
 			Vector3 vectorInPlane = Vector3.Cross(normal, cross);
-			Core.Util.Normalize(ref vectorInPlane);
+			Util.Normalize(ref vectorInPlane);
 
 			Vector3 lastV = vectorInPlane * radius;
 			for (int i = 1; i <= divisions; i++)
@@ -161,7 +159,7 @@ namespace Core
 			Color color,
 			float duration = 0.0f)
 		{
-			DrawCircle(Core.Util.Vector2To3(position, height), radius, color, duration);
+			DrawCircle(Util.Vector2To3(position, height), radius, color, duration);
 		}
 
 		public static void DrawLine2(
@@ -190,7 +188,10 @@ namespace Core
 			Color color,
 			float duration = 0.0f)
 		{
-			if (op.IsSet()) Debug.DrawLine(p1, p2, color, duration);
+			if (op.IsSet())
+			{
+				Debug.DrawLine(p1, p2, color, duration);
+			}
 		}
 
 		public static void DrawLine2(
@@ -200,7 +201,7 @@ namespace Core
 			Color color,
 			float duration = 0.0f)
 		{
-			Debug.DrawLine(Core.Util.Vector2To3(p1, height), Core.Util.Vector2To3(p2, height), color, duration);
+			Debug.DrawLine(Util.Vector2To3(p1, height), Util.Vector2To3(p2, height), color, duration);
 		}
 
 //		public static void DrawTransform(Transform transform, float duration)
@@ -218,7 +219,7 @@ namespace Core
 		public static string GetScenePath(GameObject obj)
 		{
 			Transform parent = obj.transform.parent;
-			StringBuilder str = new StringBuilder();
+			StringBuilder str = new();
 			while (parent != null)
 			{
 				str.Insert(0, parent.name).Insert(0, ".");
@@ -272,9 +273,9 @@ namespace Core
 			float duration = 0.0f)
 		{
 			DrawArc(
-				Core.Util.Vector2To3(position, height),
+				Util.Vector2To3(position, height),
 				Vector3.up,
-				Core.Util.Vector2To3(direction),
+				Util.Vector2To3(direction),
 				degrees,
 				color,
 				duration);
@@ -353,7 +354,7 @@ namespace Core
 			DrawCircle2(p1, height, radius, color, duration);
 			DrawCircle2(p2, height, radius, color, duration);
 			Vector2 forward = (p2 - p1).normalized;
-			Vector2 right = radius * Core.Util.Rotate2D(forward, 90 * Mathf.Deg2Rad);
+			Vector2 right = radius * Util.Rotate2D(forward, 90 * Mathf.Deg2Rad);
 
 			DrawLine2(p1 + right, p2 + right, height, color, duration);
 			DrawLine2(p1 - right, p2 - right, height, color, duration);
@@ -392,7 +393,7 @@ namespace Core
 		public static void DrawCapsule(Vector3 p1, Vector3 p2, float radius, Color color, float duration = 0.0f)
 		{
 			Vector3 direction = p2 - p1;
-			float length = Core.Util.Normalize(ref direction);
+			float length = Util.Normalize(ref direction);
 			DrawCapsuleInternal(p1, direction, length, radius, color, duration);
 		}
 		public static void DrawCapsule(Vector3 root, Vector3 up, float height, float radius, Color color, float duration = 0.0f)
@@ -419,7 +420,7 @@ namespace Core
 		public static void DrawCylinder(Vector3 p1, Vector3 p2, float radius, Color color, float duration = 0.0f)
 		{
 			Vector3 direction = p2 - p1;
-			float length = Core.Util.Normalize(ref direction);
+			float length = Util.Normalize(ref direction);
 			DrawCylinder(p1, direction, length, radius, color, duration);
 		}
 		private static void DrawCylinderInternal(
@@ -436,11 +437,11 @@ namespace Core
 			p2 = p1 + length * direction;
 
 			float dot = Vector3.Dot(direction, Vector3.right);
-			Vector3 cross = dot < 1.0f - Core.Util.EPSILON && dot > -1.0f + Core.Util.EPSILON ?
+			Vector3 cross = dot < 1.0f - Util.EPSILON && dot > -1.0f + Util.EPSILON ?
 				Vector3.right :
 				Vector3.forward;
 			perpendicular = Vector3.Cross(direction, cross);
-			Core.Util.Normalize(ref perpendicular);
+			Util.Normalize(ref perpendicular);
 
 			DrawCircle(p1, direction, radius, color, duration);
 			DrawCircle(p2, direction, radius, color, duration);
@@ -481,105 +482,123 @@ namespace Core
 
 		public static void Log(string s1)
 		{
-			Debug.Log(Core.Str.Build(s1));
+			Debug.Log(Str.Build(s1));
 		}
 		public static void Log(string s1, string s2)
 		{
-			Debug.Log(Core.Str.Build(s1, s2));
+			Debug.Log(Str.Build(s1, s2));
 		}
 		public static void Log(string s1, string s2, string s3)
 		{
-			Debug.Log(Core.Str.Build(s1, s2, s3));
+			Debug.Log(Str.Build(s1, s2, s3));
 		}
 		public static void Log(string s1, string s2, string s3, string s4)
 		{
-			Debug.Log(Core.Str.Build(s1, s2, s3, s4));
+			Debug.Log(Str.Build(s1, s2, s3, s4));
 		}
 		public static void Log(string s1, string s2, string s3, string s4, string s5)
 		{
-			Debug.Log(Core.Str.Build(s1, s2, s3, s4, s5));
+			Debug.Log(Str.Build(s1, s2, s3, s4, s5));
 		}
 		public static void Log(params string[] s)
 		{
-			Debug.Log(Core.Str.Build(s));
+			Debug.Log(Str.Build(s));
 		}
 
 		public static void Warning(string s1)
 		{
-			Debug.LogWarning(Core.Str.Build(s1));
+			Debug.LogWarning(Str.Build(s1));
 		}
 		public static void Warning(string s1, string s2)
 		{
-			Debug.LogWarning(Core.Str.Build(s1, s2));
+			Debug.LogWarning(Str.Build(s1, s2));
 		}
 		public static void Warning(string s1, string s2, string s3)
 		{
-			Debug.LogWarning(Core.Str.Build(s1, s2, s3));
+			Debug.LogWarning(Str.Build(s1, s2, s3));
 		}
 		public static void Warning(string s1, string s2, string s3, string s4)
 		{
-			Debug.LogWarning(Core.Str.Build(s1, s2, s3, s4));
+			Debug.LogWarning(Str.Build(s1, s2, s3, s4));
 		}
 		public static void Warning(string s1, string s2, string s3, string s4, string s5)
 		{
-			Debug.LogWarning(Core.Str.Build(s1, s2, s3, s4, s5));
+			Debug.LogWarning(Str.Build(s1, s2, s3, s4, s5));
 		}
 		public static void Warning(params string[] s)
 		{
-			Debug.LogWarning(Core.Str.Build(s));
+			Debug.LogWarning(Str.Build(s));
 		}
 
 		public static void Error(string s1)
 		{
-			Debug.LogError(Core.Str.Build(s1));
+			Debug.LogError(Str.Build(s1));
 		}
 		public static void Error(string s1, string s2)
 		{
-			Debug.LogError(Core.Str.Build(s1, s2));
+			Debug.LogError(Str.Build(s1, s2));
 		}
 		public static void Error(string s1, string s2, string s3)
 		{
-			Debug.LogError(Core.Str.Build(s1, s2, s3));
+			Debug.LogError(Str.Build(s1, s2, s3));
 		}
 		public static void Error(string s1, string s2, string s3, string s4)
 		{
-			Debug.LogError(Core.Str.Build(s1, s2, s3, s4));
+			Debug.LogError(Str.Build(s1, s2, s3, s4));
 		}
 		public static void Error(string s1, string s2, string s3, string s4, string s5)
 		{
-			Debug.LogError(Core.Str.Build(s1, s2, s3, s4, s5));
+			Debug.LogError(Str.Build(s1, s2, s3, s4, s5));
 		}
 		public static void Error(params string[] s)
 		{
-			Debug.LogError(Core.Str.Build(s));
+			Debug.LogError(Str.Build(s));
 		}
 
 		public static void Log(DebugOption op, string s1)
 		{
-			if (op.IsSet()) Debug.Log(Core.Str.Build(s1));
+			if (op.IsSet())
+			{
+				Debug.Log(Str.Build(s1));
+			}
 		}
 		public static void Log(DebugOption op, string s1, string s2)
 		{
-			if (op.IsSet()) Debug.Log(Core.Str.Build(s1, s2));
+			if (op.IsSet())
+			{
+				Debug.Log(Str.Build(s1, s2));
+			}
 		}
 		public static void Log(DebugOption op, string s1, string s2, string s3)
 		{
-			if (op.IsSet()) Debug.Log(Core.Str.Build(s1, s2, s3));
+			if (op.IsSet())
+			{
+				Debug.Log(Str.Build(s1, s2, s3));
+			}
 		}
 		public static void Log(DebugOption op, string s1, string s2, string s3, string s4)
 		{
-			if (op.IsSet()) Debug.Log(Core.Str.Build(s1, s2, s3, s4));
+			if (op.IsSet())
+			{
+				Debug.Log(Str.Build(s1, s2, s3, s4));
+			}
 		}
 		public static void Log(DebugOption op, string s1, string s2, string s3, string s4, string s5)
 		{
-			if (op.IsSet()) Debug.Log(Core.Str.Build(s1, s2, s3, s4, s5));
+			if (op.IsSet())
+			{
+				Debug.Log(Str.Build(s1, s2, s3, s4, s5));
+			}
 		}
 		public static void Log(DebugOption op, params string[] s)
 		{
-			if (op.IsSet()) Debug.Log(Core.Str.Build(s));
+			if (op.IsSet())
+			{
+				Debug.Log(Str.Build(s));
+			}
 		}
 
-		private static StringBuilder s_ColorStringBuilder = new StringBuilder();
+		private static StringBuilder s_ColorStringBuilder = new();
 
 		public static void Log(Color c, params string[] strings)
 		{
@@ -624,7 +643,10 @@ namespace Core
 
 		public static void Log(DebugOption op, Color c, params string[] s)
 		{
-			if (op.IsSet()) Log(c, Core.Str.Build(s));
+			if (op.IsSet())
+			{
+				Log(c, Str.Build(s));
+			}
 		}
 
 		public static string VectorToString(Vector3 v)
@@ -638,13 +660,13 @@ namespace Core
 
 		public static void DevException(string formattedString)
 		{
-			if (Core.Util.IsRelease())
+			if (Util.IsRelease())
 			{
 				Debug.LogError(formattedString);
 			}
 			else
 			{
-				throw new System.InvalidOperationException(formattedString);
+				throw new InvalidOperationException(formattedString);
 			}
 		}
 
@@ -658,7 +680,7 @@ namespace Core
 
 		public static void DevException<T>(T exception) where T : Exception
 		{
-			if (Core.Util.IsRelease())
+			if (Util.IsRelease())
 			{
 				Debug.LogError(exception.Message);
 			}
@@ -668,73 +690,73 @@ namespace Core
 			}
 		}
 
-		[System.Obsolete("Use DevExceptionFormat")]
+		[Obsolete("Use DevExceptionFormat")]
 		public static void DevException(string formattedString, params object[] args)
 		{
-			if (Core.Util.IsRelease())
+			if (Util.IsRelease())
 			{
 				Debug.LogErrorFormat(formattedString, args);
 			}
 			else
 			{
-				throw new System.InvalidOperationException(string.Format(formattedString, args));
+				throw new InvalidOperationException(string.Format(formattedString, args));
 			}
 		}
 
 		public static void DevExceptionFormat(string formattedString, params object[] args)
 		{
-			if (Core.Util.IsRelease())
+			if (Util.IsRelease())
 			{
 				Debug.LogErrorFormat(formattedString, args);
 			}
 			else
 			{
-				throw new System.InvalidOperationException(string.Format(formattedString, args));
+				throw new InvalidOperationException(string.Format(formattedString, args));
 			}
 		}
 
-		[System.Obsolete("Use DevExceptionReturnObject")]
+		[Obsolete("Use DevExceptionReturnObject")]
 		public static T DevException<T>(T obj, string formattedString, params object[] args)
 		{
-			if (Core.Util.IsRelease())
+			if (Util.IsRelease())
 			{
 				Debug.LogErrorFormat(formattedString, args);
 				return obj;
 			}
 			else
 			{
-				throw new System.InvalidOperationException(string.Format(formattedString, args));
+				throw new InvalidOperationException(string.Format(formattedString, args));
 			}
 		}
 
 		public static T DevExceptionReturnObject<T>(T obj, string formattedString, params object[] args)
 		{
-			if (Core.Util.IsRelease())
+			if (Util.IsRelease())
 			{
 				Debug.LogErrorFormat(formattedString, args);
 				return obj;
 			}
 			else
 			{
-				throw new System.InvalidOperationException(string.Format(formattedString, args));
+				throw new InvalidOperationException(string.Format(formattedString, args));
 			}
 		}
 
 		public static T NullCheck<T>(T item) where T : class
 		{
-			if (Core.Util.IsRelease())
+			if (Util.IsRelease())
 			{
 				return item;
 			}
 			else
 			{
-				return item ?? throw new System.ArgumentNullException($"CoreDebugUtil.NullCheck() Item of type {typeof(T).Name} cannot be null");
+				return item ?? throw new ArgumentNullException($"CoreDebugUtil.NullCheck() Item of type {typeof(T).Name} cannot be null");
 			}
 		}
 
 		public static string TruncatedFloatToString(float f, int decimalPlaces)
 		{
-			return Core.Util.TruncateDecimalPlaces(f, decimalPlaces).ToString("N" + decimalPlaces);
+			return Util.TruncateDecimalPlaces(f, decimalPlaces).ToString("N" + decimalPlaces);
 		}
 
 		/// <summary>
@@ -797,7 +819,7 @@ namespace Core
 		/// </summary>
 		public static string MaskToStringShort<T>(int mask, string noneString = "None") where T : Enum
 		{
-			string[] names = System.Enum.GetNames(typeof(T));
+			string[] names = Enum.GetNames(typeof(T));
 			string maskString = null;
 			for (int i = 0; i < names.Length; i++)
 			{
@@ -828,7 +850,7 @@ namespace Core
 		/// </summary>
 		public static string MaskToStringLong<T>(int mask, string noneString = "None") where T : Enum
 		{
-			string[] names = System.Enum.GetNames(typeof(T));
+			string[] names = Enum.GetNames(typeof(T));
 			string s = string.Empty;
 			for (int i = 0; i < names.Length; i++)
 			{

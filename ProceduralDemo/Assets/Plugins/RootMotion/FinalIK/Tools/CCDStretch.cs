@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
 
-    /// <summary>
-    /// Automatic stretch and squash for CCDIK.
-    /// </summary>
-    public class CCDStretch : MonoBehaviour
+	/// <summary>
+	/// Automatic stretch and squash for CCDIK.
+	/// </summary>
+	public class CCDStretch : MonoBehaviour
     {
 
         public CCDIK ik;

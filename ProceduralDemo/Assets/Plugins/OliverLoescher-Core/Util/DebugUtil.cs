@@ -1,17 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
 	public static class Debug2
 	{
 		#region Logs
-		private static StringBuilder StringBuilder = new StringBuilder();
+		private static readonly StringBuilder s_StringBuilder = new();
 
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void DevException<T>(T pException) where T : Exception
@@ -105,67 +103,67 @@ namespace OliverLoescher.Util
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log<TKey, TValue>(string pMessage, Dictionary<TKey, TValue> pDictionary)
 		{
-			StringBuilder.Clear();
+			s_StringBuilder.Clear();
 			foreach (KeyValuePair<TKey, TValue> value in pDictionary)
 			{
-				StringBuilder.Append(value.Key);
-				StringBuilder.Append(": ");
-				StringBuilder.Append(value.Value);
-				StringBuilder.Append(", ");
+				s_StringBuilder.Append(value.Key);
+				s_StringBuilder.Append(": ");
+				s_StringBuilder.Append(value.Value);
+				s_StringBuilder.Append(", ");
 			}
-			StringBuilder.Remove(StringBuilder.Length - 2, 2);
-			UnityEngine.Debug.Log($"{pMessage} [{StringBuilder}]");
+			s_StringBuilder.Remove(s_StringBuilder.Length - 2, 2);
+			UnityEngine.Debug.Log($"{pMessage} [{s_StringBuilder}]");
 		}
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log<TValue>(string pMessage, IEnumerable<TValue> pValues)
 		{
-			StringBuilder.Clear();
-			StringBuilder.Append(pMessage);
-			StringBuilder.Append(" [");
+			s_StringBuilder.Clear();
+			s_StringBuilder.Append(pMessage);
+			s_StringBuilder.Append(" [");
 
 			foreach (TValue value in pValues)
 			{
-				StringBuilder.Append(value);
-				StringBuilder.Append(", ");
+				s_StringBuilder.Append(value);
+				s_StringBuilder.Append(", ");
 			}
-			StringBuilder.Remove(StringBuilder.Length - 2, 2);
+			s_StringBuilder.Remove(s_StringBuilder.Length - 2, 2);
 
-			StringBuilder.Append("]");
-			UnityEngine.Debug.Log(StringBuilder.ToString());
+			s_StringBuilder.Append("]");
+			UnityEngine.Debug.Log(s_StringBuilder.ToString());
 		}
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log<TValue>(string pMessage, TValue[,] pValues)
 		{
-			StringBuilder.Clear();
-			StringBuilder.Append(pMessage);
-			StringBuilder.Append(" { ");
+			s_StringBuilder.Clear();
+			s_StringBuilder.Append(pMessage);
+			s_StringBuilder.Append(" { ");
 
 			int xLength = pValues.GetLength(0);
 			int yLength = pValues.GetLength(1);
 			for (int x = 0; x < xLength; x++)
 			{
-				StringBuilder.Append("{ ");
+				s_StringBuilder.Append("{ ");
 				for (int y = 0; y < yLength; y++)
 				{
 					if (y == yLength - 1)
 					{
-						StringBuilder.Append($"{pValues[x, y]}" + "}");
+						s_StringBuilder.Append($"{pValues[x, y]}" + "}");
 					}
 					else
 					{
-						StringBuilder.Append($"{pValues[x, y]}, ");
+						s_StringBuilder.Append($"{pValues[x, y]}, ");
 					}
 				}
 				if (x < xLength - 1)
 				{
-					StringBuilder.Append(", ");
+					s_StringBuilder.Append(", ");
 				}
 			}
-			
-			StringBuilder.Append(" }");
-			LogBasic(StringBuilder.ToString());
+
+			s_StringBuilder.Append(" }");
+			LogBasic(s_StringBuilder.ToString());
 		}
 
 		private static string CreateLogMessage(string pMessage, string pMethodName, UnityEngine.Object pObject)
@@ -199,7 +197,7 @@ namespace OliverLoescher.Util
 					color = new Color(CharToFloat01(pString[2]), CharToFloat01(pString[1]), CharToFloat01(pString[0]));
 					break;
 				default:
-					color = new Color(CharToFloat01(pString[1]), CharToFloat01(pString[pString.Length - 2]), CharToFloat01(pString[2]));
+					color = new Color(CharToFloat01(pString[1]), CharToFloat01(pString[^2]), CharToFloat01(pString[2]));
 					break;
 			}
 			return ColorString(color, pString);
@@ -210,20 +208,20 @@ namespace OliverLoescher.Util
 #if UNITY_EDITOR
 		private static float CharToFloat01(char pChar)
 		{
-			return (((float)pChar - 32.0f) / 90.0f) % 1.0f;
+			return ((pChar - 32.0f) / 90.0f) % 1.0f;
 		}
 #endif
-		
+
 		public static string ColorString(Color pColor, string pString)
 		{
 #if UNITY_EDITOR
-			StringBuilder.Clear();
-			StringBuilder.Append("<color=#");
-			StringBuilder.Append(ColorUtility.ToHtmlStringRGBA(pColor));
-			StringBuilder.Append(">");
-			StringBuilder.Append(pString);
-			StringBuilder.Append("</color>");
-			return StringBuilder.ToString();
+			s_StringBuilder.Clear();
+			s_StringBuilder.Append("<color=#");
+			s_StringBuilder.Append(ColorUtility.ToHtmlStringRGBA(pColor));
+			s_StringBuilder.Append(">");
+			s_StringBuilder.Append(pString);
+			s_StringBuilder.Append("</color>");
+			return s_StringBuilder.ToString();
 #else
 			return pString;
 #endif
@@ -263,8 +261,8 @@ namespace OliverLoescher.Util
 				Gizmos.DrawWireSphere(pCenter, pRadius);
 				return;
 			}
-			Vector3 top = pCenter + (Vector3.up * pHeight * 0.5f);
-			Vector3 bottem = pCenter + (Vector3.down * pHeight * 0.5f);
+			Vector3 top = pCenter + (0.5f * pHeight * Vector3.up);
+			Vector3 bottem = pCenter + (0.5f * pHeight * Vector3.down);
 			GizmoCapsule(top, bottem, pRadius);
 		}
 		[Conditional("ENABLE_DEBUG_GIZMOS")]

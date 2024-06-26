@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Unimate/Core/Rotate")]
 public class UnimateRotation : UnimateTween<UnimateRotation, UnimateRotation.Player>

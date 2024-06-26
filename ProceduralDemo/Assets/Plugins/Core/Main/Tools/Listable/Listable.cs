@@ -64,7 +64,7 @@ namespace Core
 	public abstract class Listable<T> : ListableInternal<T>
 	{
 		[SerializeField]
-		protected List<T> m_List = new List<T>();
+		protected List<T> m_List = new();
 		protected override List<T> List => m_List;
 
 		public Listable(T defaultValue)
@@ -77,14 +77,14 @@ namespace Core
 	public abstract class ListableEmpty<TClass> : ListableInternal<TClass>
 	{
 		[SerializeField]
-		protected List<TClass> m_List = new List<TClass>();
+		protected List<TClass> m_List = new();
 		protected override List<TClass> List => m_List;
 	}
 
 	public abstract class ListableClassFlat<TClass> : ListableInternal<TClass> where TClass : new()
 	{
 		[SerializeField, Flatten(false, false, false)]
-		protected List<TClass> m_List = new List<TClass>();
+		protected List<TClass> m_List = new();
 		protected override List<TClass> List => m_List;
 
 		public ListableClassFlat()
@@ -98,7 +98,7 @@ namespace Core
 		}
 	}
 
-	public abstract class ListableUnityObject<TObj> : Listable<TObj> where TObj : UnityEngine.Object
+	public abstract class ListableUnityObject<TObj> : Listable<TObj> where TObj : Object
 	{
 		public ListableUnityObject() : base(null) { }
 	}

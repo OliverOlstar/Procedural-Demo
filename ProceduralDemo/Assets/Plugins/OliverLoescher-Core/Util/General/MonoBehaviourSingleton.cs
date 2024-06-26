@@ -1,12 +1,13 @@
 using System.Diagnostics;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
     public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviourSingleton<T>, new()
     {
-        private static T _Instance = null;
-        private static ISingleton _InstanceInterface = null;
+        private static T s_Instance = null;
+        private static ISingleton s_InstanceInterface = null;
+		
         public static T Instance
         {
             get
@@ -15,35 +16,32 @@ namespace OliverLoescher
 				TryCreate();
 
 				// Access
-				if (_InstanceInterface != null)
-                {
-                    _InstanceInterface.OnAccessed();
-                }
-                return _Instance;
+				s_InstanceInterface?.OnAccessed();
+                return s_Instance;
             }
         }
 
 		protected static void TryCreate()
 		{
-			if (!Util.Func.IsApplicationQuitting && _Instance == null)
+			if (!Util.Func.s_IsApplicationQuitting && s_Instance == null)
 			{
-				_Instance = new GameObject().AddComponent<T>();
-				_Instance.gameObject.name = _Instance.GetType().Name;
-				DontDestroyOnLoad(_Instance.gameObject);
-				_InstanceInterface = (_Instance is ISingleton i) ? i : null;
+				s_Instance = new GameObject().AddComponent<T>();
+				s_Instance.gameObject.name = s_Instance.GetType().Name;
+				DontDestroyOnLoad(s_Instance.gameObject);
+				s_InstanceInterface = (s_Instance is ISingleton i) ? i : null;
 			}
 		}
 
 		protected virtual void OnDestroy()
 		{
-			if (_Instance == this)
+			if (s_Instance == this)
 			{
-				_Instance = null;
-				_InstanceInterface = null;
+				s_Instance = null;
+				s_InstanceInterface = null;
 			}
 		}
 
-		private static GameObject LogContext => _Instance != null ? _Instance.gameObject : null;
+		private static GameObject LogContext => s_Instance?.gameObject;
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
         protected static void Log(string pMessage, string pMethodName) => Util.Debug2.Log(pMessage, pMethodName, LogContext);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]

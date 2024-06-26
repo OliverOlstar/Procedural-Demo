@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using RootMotion;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Custom inspector for the Aim Poser for visualizing pose range
@@ -36,12 +36,12 @@ namespace RootMotion.FinalIK {
 
 			if (colorDirections == null) {
 				colorDirections = new ColorDirection[6] {
-					new ColorDirection(Vector3.right, Vector3.right),
-					new ColorDirection(Vector3.up, Vector3.up),
-					new ColorDirection(Vector3.forward, Vector3.forward),
-					new ColorDirection(Vector3.left, new Vector3(0f, 1f, 1f)),
-					new ColorDirection(Vector3.down, new Vector3(1f, 0f, 1f)),
-					new ColorDirection(Vector3.back, new Vector3(1f, 1f, 0f))
+					new(Vector3.right, Vector3.right),
+					new(Vector3.up, Vector3.up),
+					new(Vector3.forward, Vector3.forward),
+					new(Vector3.left, new Vector3(0f, 1f, 1f)),
+					new(Vector3.down, new Vector3(1f, 0f, 1f)),
+					new(Vector3.back, new Vector3(1f, 1f, 0f))
 				};
 			}
 
@@ -71,8 +71,17 @@ namespace RootMotion.FinalIK {
 		}
 
 		private static void DrawPose(AimPoser.Pose pose, Vector3 position, Quaternion rotation, Color color) {
-			if (pose.pitch <= 0f || pose.yaw <= 0f) return;
-			if (pose.direction == Vector3.zero) return;
+			if (pose.pitch <= 0f || pose.yaw <= 0f)
+			{
+				return;
+			}
+
+
+			if (pose.direction == Vector3.zero)
+			{
+				return;
+			}
+
 
 			Handles.color = color;
 			GUI.color = color;
@@ -127,7 +136,11 @@ namespace RootMotion.FinalIK {
 			}
 
 			Vector3 d = direction;
-			if (isVertical) d = Vector3.forward;
+			if (isVertical)
+			{
+				d = Vector3.forward;
+			}
+
 
 			if (pose.pitch < 180f) {
 				DrawPolyLineOnSphere(position, toCornerUpperLeft, toCornerUpperRight, d, Vector3.up, color);

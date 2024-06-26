@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.Playables;
 
 namespace RootMotion
 {
-    /// <summary>
-    /// Baker for Humanoid animation.
-    /// </summary>
-    public class HumanoidBaker : Baker
+	/// <summary>
+	/// Baker for Humanoid animation.
+	/// </summary>
+	public class HumanoidBaker : Baker
     {
         /// <summary>
         /// Should the hand IK curves be added to the animation? Disable this if the original hand positions are not important when using the clip on another character via Humanoid retargeting.
@@ -35,7 +34,7 @@ namespace RootMotion
         private BakerHumanoidQT rightHandQT;
 
         private float[] muscles = new float[0];
-        private HumanPose pose = new HumanPose();
+        private HumanPose pose = new();
         private HumanPoseHandler handler;
         private Vector3 bodyPosition;
         private Quaternion bodyRotation = Quaternion.identity;
@@ -109,9 +108,12 @@ namespace RootMotion
 
         protected override void OnSetLoopFrame(float time)
         {
-            for (int i = 0; i < bakerMuscles.Length; i++) bakerMuscles[i].SetLoopFrame(time);
+            for (int i = 0; i < bakerMuscles.Length; i++)
+			{
+				bakerMuscles[i].SetLoopFrame(time);
+			}
 
-            rootQT.MoveLastKeyframes(time);
+			rootQT.MoveLastKeyframes(time);
             
             leftFootQT.SetLoopFrame(time);
             rightFootQT.SetLoopFrame(time);
@@ -121,12 +123,15 @@ namespace RootMotion
 
         protected override void OnSetCurves(ref AnimationClip clip)
         {
-            float length = bakerMuscles[0].curve.keys[bakerMuscles[0].curve.keys.Length - 1].time;
+            float length = bakerMuscles[0].curve.keys[^1].time;
             float lengthMlp = mode != Mode.Realtime ? clipLength / length : 1f;
 
-            for (int i = 0; i < bakerMuscles.Length; i++) bakerMuscles[i].SetCurves(ref clip, keyReductionError, lengthMlp);
+            for (int i = 0; i < bakerMuscles.Length; i++)
+			{
+				bakerMuscles[i].SetCurves(ref clip, keyReductionError, lengthMlp);
+			}
 
-            rootQT.SetCurves(ref clip, IKKeyReductionError, lengthMlp);
+			rootQT.SetCurves(ref clip, IKKeyReductionError, lengthMlp);
             leftFootQT.SetCurves(ref clip, IKKeyReductionError, lengthMlp);
             rightFootQT.SetCurves(ref clip, IKKeyReductionError, lengthMlp);
 
@@ -146,14 +151,20 @@ namespace RootMotion
             {
                 updateMuscles = false;
             }
-            if (mN >= muscleFrameRateDiv) mN = 0;
+            if (mN >= muscleFrameRateDiv)
+			{
+				mN = 0;
+			}
 
-            UpdateHumanPose();
+			UpdateHumanPose();
 
             if (updateMuscles)
             {
-                for (int i = 0; i < bakerMuscles.Length; i++) bakerMuscles[i].SetKeyframe(time, muscles);
-            }
+                for (int i = 0; i < bakerMuscles.Length; i++)
+				{
+					bakerMuscles[i].SetKeyframe(time, muscles);
+				}
+			}
 
             rootQT.SetKeyframes(time, bodyPosition, bodyRotation);
 

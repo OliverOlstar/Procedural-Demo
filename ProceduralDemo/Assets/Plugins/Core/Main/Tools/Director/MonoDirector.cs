@@ -6,25 +6,25 @@ namespace Core
 {
 	public static class MonoDirector
 	{
-		private static Dictionary<System.Type, HashSet<UnityEngine.Object>> s_Directors = new Dictionary<System.Type, HashSet<Object>>();
+		private static Dictionary<System.Type, HashSet<Object>> s_Directors = new();
 
-		public static void Register(UnityEngine.Object obj) => RegisterInternal(obj.GetType(), obj);
+		public static void Register(Object obj) => RegisterInternal(obj.GetType(), obj);
 
 		public static void RegisterAsType<T>(T obj)
 		{
-			if (obj is UnityEngine.Object unityObj)
+			if (obj is Object unityObj)
 			{
 				RegisterInternal(typeof(T), unityObj);
 				return;
 			}
-			Core.DebugUtil.DevException($"MonoDirector.Register() Cannot register object of type {obj.GetType().Name} as it does not inherrit from UnityEngine.Object");
+			DebugUtil.DevException($"MonoDirector.Register() Cannot register object of type {obj.GetType().Name} as it does not inherrit from UnityEngine.Object");
 		}
 
-		private static void RegisterInternal(System.Type key, UnityEngine.Object obj)
+		private static void RegisterInternal(System.Type key, Object obj)
 		{
-			if (!s_Directors.TryGetValue(key, out HashSet<UnityEngine.Object> set))
+			if (!s_Directors.TryGetValue(key, out HashSet<Object> set))
 			{
-				set = new HashSet<UnityEngine.Object>();
+				set = new HashSet<Object>();
 				s_Directors.Add(key, set);
 			}
 			if (!set.Contains(obj))
@@ -33,20 +33,20 @@ namespace Core
 			}
 		}
 
-		public static void Deregister(UnityEngine.Object obj) => DeregisterInternal(obj.GetType(), obj);
+		public static void Deregister(Object obj) => DeregisterInternal(obj.GetType(), obj);
 		public static void DeregisterAsType<T>(T obj)
 		{
-			if (obj is UnityEngine.Object unityObj)
+			if (obj is Object unityObj)
 			{
 				DeregisterInternal(typeof(T), unityObj);
 				return;
 			}
-			Core.DebugUtil.DevException($"MonoDirector.Deregister() Cannot register object of type {obj.GetType().Name} as it does not inherrit from UnityEngine.Object");
+			DebugUtil.DevException($"MonoDirector.Deregister() Cannot register object of type {obj.GetType().Name} as it does not inherrit from UnityEngine.Object");
 		}
-		private static void DeregisterInternal(System.Type key, UnityEngine.Object obj)
+		private static void DeregisterInternal(System.Type key, Object obj)
 		{
 
-			if (!s_Directors.TryGetValue(key, out HashSet<UnityEngine.Object> set))
+			if (!s_Directors.TryGetValue(key, out HashSet<Object> set))
 			{
 				return;
 			}
@@ -60,9 +60,9 @@ namespace Core
 		public static bool TryGet<T>(out T obj) where T : class
 		{
 			obj = null;
-			if (s_Directors.TryGetValue(typeof(T), out HashSet<UnityEngine.Object> set))
+			if (s_Directors.TryGetValue(typeof(T), out HashSet<Object> set))
 			{
-				foreach (UnityEngine.Object i in set)
+				foreach (Object i in set)
 				{
 					obj = i as T;
 					if (obj != null)
@@ -81,9 +81,9 @@ namespace Core
 
 		public static void GetAll<T>(List<T> list) where T : class
 		{
-			if (s_Directors.TryGetValue(typeof(T), out HashSet<UnityEngine.Object> set))
+			if (s_Directors.TryGetValue(typeof(T), out HashSet<Object> set))
 			{
-				foreach (UnityEngine.Object obj in set)
+				foreach (Object obj in set)
 				{
 					if (obj is T listObj)
 					{
@@ -93,11 +93,11 @@ namespace Core
 			}
 		}
 
-		public static void Get<T>(List<T> list) where T : UnityEngine.Object
+		public static void Get<T>(List<T> list) where T : Object
 		{
-			if (s_Directors.TryGetValue(typeof(T), out HashSet<UnityEngine.Object> set))
+			if (s_Directors.TryGetValue(typeof(T), out HashSet<Object> set))
 			{
-				foreach (UnityEngine.Object obj in set)
+				foreach (Object obj in set)
 				{
 					if (obj is T objOfType)
 					{
@@ -111,7 +111,7 @@ namespace Core
 		{
 			obj = null;
 			System.Type key = typeof(T);
-			foreach (KeyValuePair<System.Type, HashSet<UnityEngine.Object>> pair in s_Directors)
+			foreach (KeyValuePair<System.Type, HashSet<Object>> pair in s_Directors)
 			{
 				if (key.IsAssignableFrom(pair.Key))
 				{
@@ -133,11 +133,11 @@ namespace Core
 		public static void GetRecursive<T>(List<T> list)
 		{
 			System.Type key = typeof(T);
-			foreach (KeyValuePair<System.Type, HashSet<UnityEngine.Object>> pair in s_Directors)
+			foreach (KeyValuePair<System.Type, HashSet<Object>> pair in s_Directors)
 			{
 				if (key.IsAssignableFrom(pair.Key))
 				{
-					foreach (UnityEngine.Object obj in pair.Value)
+					foreach (Object obj in pair.Value)
 					{
 						if (obj is T objOfType)
 						{

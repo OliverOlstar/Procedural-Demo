@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
 
 namespace RootMotion
 {
-    public static class AnimationUtilityExtended
+	public static class AnimationUtilityExtended
     {
 
         /// <summary>

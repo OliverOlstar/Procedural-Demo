@@ -1,11 +1,7 @@
 
 using UnityEditor;
 using UnityEngine;
-using System.IO;
-using System;
-using System.Reflection;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Core
 {
@@ -30,7 +26,7 @@ namespace Core
 			float dist = float.MaxValue;
 			if (filters == null)
 			{
-				filters = new List<MeshFilter>(GameObject.FindObjectsOfType<MeshFilter>());
+				filters = new List<MeshFilter>(Object.FindObjectsOfType<MeshFilter>());
 			}
 			foreach (MeshFilter filter in filters)
 			{
@@ -46,7 +42,7 @@ namespace Core
 					continue;
 				}
 				Matrix4x4 worldToLocal = filter.transform.worldToLocalMatrix;
-				Ray localRay = new Ray(
+				Ray localRay = new(
 					worldToLocal.MultiplyPoint(worldRay.origin),
 					worldToLocal.MultiplyVector(worldRay.direction));
 				float boundsDist = float.MaxValue;
@@ -67,7 +63,7 @@ namespace Core
 					Vector3 v1 = p2 - p0;
 					Vector3 p = Vector3.Cross(localRay.direction, v1);
 					float det = Vector3.Dot(v0, p);
-					if (Core.Util.Approximately0(det))
+					if (Util.Approximately0(det))
 					{
 						continue;
 					}
@@ -75,20 +71,20 @@ namespace Core
 					float invDet = 1.0f / det;
 					Vector3 t = localRay.origin - p0;
 					float u = Vector3.Dot(t, p) * invDet;
-					if (u < 0.0f || u > 1.0f + Core.Util.LOW_PRECISION_EPSILON)
+					if (u < 0.0f || u > 1.0f + Util.LOW_PRECISION_EPSILON)
 					{
 						continue;
 					}
 
 					Vector3 q = Vector3.Cross(t, v0);
 					float v = Vector3.Dot(localRay.direction, q) * invDet;
-					if (v < 0.0f || u + v > 1.0f + Core.Util.LOW_PRECISION_EPSILON)
+					if (v < 0.0f || u + v > 1.0f + Util.LOW_PRECISION_EPSILON)
 					{
 						continue;
 					}
 
 					float w = Vector3.Dot(v1, q) * invDet;
-					if (w < Core.Util.LOW_PRECISION_EPSILON)
+					if (w < Util.LOW_PRECISION_EPSILON)
 					{
 						continue;
 					}
@@ -114,7 +110,7 @@ namespace Core
 			{
 				return;
 			}
-			Ray worldRay = new Ray(transform.position + 0.5f * Vector3.up, Vector3.down);
+			Ray worldRay = new(transform.position + 0.5f * Vector3.up, Vector3.down);
 			Vector3 normal = Vector3.up;
 			float dist = FindGround(worldRay, out normal, transform);
 			if (dist > 10.0f)
@@ -133,7 +129,7 @@ namespace Core
 			{
 				return;
 			}
-			Ray worldRay = new Ray(transform.position + 0.5f * Vector3.up, Vector3.down);
+			Ray worldRay = new(transform.position + 0.5f * Vector3.up, Vector3.down);
 			Vector3 normal = Vector3.up;
 			float dist = FindGround(worldRay, out normal, transform);
 			if (dist > 10.0f)
@@ -141,8 +137,7 @@ namespace Core
 				return;
 			}
 			Undo.RecordObject(transform, "Snap Rotation To Ground");
-			transform.rotation = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
-			transform.position = worldRay.origin + dist * worldRay.direction;
+			transform.SetPositionAndRotation(worldRay.origin + dist * worldRay.direction, Quaternion.FromToRotation(transform.up, normal) * transform.rotation);
 		}
 
 		[MenuItem("Core/World Util/Snap To Camera Look At %&h")] // ctrl + alt + h
@@ -154,7 +149,7 @@ namespace Core
 				return;
 			}
 			Transform cameraTransform = SceneView.lastActiveSceneView.camera.transform;
-			Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+			Ray ray = new(cameraTransform.position, cameraTransform.forward);
 			Vector3 normal = Vector3.up;
 			float dist = FindGround(ray, out normal, transform);
 			if (dist > 100.0f)

@@ -1,12 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
-    public static class Anim
+	public static class Anim
     {
 		public interface IAnimation
 		{
@@ -30,7 +29,7 @@ namespace OliverLoescher.Util
 
 		private static void Initalize()
 		{
-			if (Func.IsApplicationQuitting || s_IsInitalized)
+			if (Func.s_IsApplicationQuitting || s_IsInitalized)
 			{
 				return;
 			}

@@ -1,12 +1,13 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector for FABRIKRoot.
 	 * */
+
 	[CustomEditor(typeof(FABRIKRoot))]
 	public class FABRIKRootInspector : IKInspector {
 
@@ -24,7 +25,11 @@ namespace RootMotion.FinalIK {
 
 			// Warning box
 			string message = string.Empty;
-			if (!script.solver.IsValid(ref message)) AddWarningBox(message);
+			if (!script.solver.IsValid(ref message))
+			{
+				AddWarningBox(message);
+			}
+
 		}
 		
 		void OnSceneGUI() {

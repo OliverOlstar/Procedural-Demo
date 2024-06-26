@@ -1,11 +1,10 @@
-﻿using System.Collections;
+﻿using System.Diagnostics;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
-using UnityEditor;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	public class Weapon : MonoBehaviour
 	{
@@ -19,145 +18,137 @@ namespace OliverLoescher.Weapon
 			RandomAllOnce
 		}
 
-		[SerializeField, Required] 
-		private SOWeapon data = null;
-		public SOTeam team = null;
-		[ShowIf("@muzzlePoints.Length > 1"), SerializeField] 
-		protected MultiMuzzleType multiMuzzleType = MultiMuzzleType.RandomNotOneAfterItself;
-		public bool canShoot = true;
+		[SerializeField, Required]
+		private SOWeapon m_Data = null;
+		public SOTeam Team = null;
+		[ShowIf("@muzzlePoints.Length > 1"), SerializeField]
+		protected MultiMuzzleType m_MultiMuzzleType = MultiMuzzleType.RandomNotOneAfterItself;
+		public bool CanShoot = true;
 
 		[Header("References")]
-		[SerializeField] 
-		protected Transform[] muzzlePoints = new Transform[1];
-		[SerializeField] 
-		private ParticleSystem muzzleFlash = null;
-		[ShowIf("@muzzleFlash != null"), SerializeField] 
-		private Vector3 muzzleFlashRelOffset = new Vector3();
+		[SerializeField]
+		protected Transform[] m_MuzzlePoints = new Transform[1];
+		[SerializeField]
+		private ParticleSystem m_MuzzleFlash = null;
+		[ShowIf("@muzzleFlash != null"), SerializeField]
+		private Vector3 m_MuzzleFlashRelOffset = new();
 
 		[Space]
-		public GameObject sender = null;
-		[SerializeField] 
-		private Rigidbody recoilBody = null;
+		public GameObject Sender = null;
+		[SerializeField]
+		private Rigidbody m_RecoilBody = null;
 
 		[FoldoutGroup("Unity Events")] public UnityEvent OnShoot;
 		[FoldoutGroup("Unity Events")] public UnityEvent OnFailedShoot;
 
-		private SOWeaponShootStartBase shootStart = null;
-		private SOWeaponSpreadBase spread = null;
-		public bool isShooting { get; private set; } = false;
+		private SOWeaponShootStartBase m_ShootStart = null;
+		private SOWeaponSpreadBase m_Spread = null;
+		public bool IsShooting { get; private set; } = false;
 
-		private void Start() 
+		public SOWeapon Data => m_Data;
+
+		private void Start()
 		{
-			if (data == null)
+			if (m_Data == null)
 			{
 				return;
 			}
-
-			shootStart = Instantiate(data.shootStart).Init(Shoot);
-			spread = Instantiate(data.spread).Init();
-
+			m_ShootStart = Instantiate(m_Data.ShootStart).Init(Shoot);
+			m_Spread = Instantiate(m_Data.Spread).Init();
 			Init();
 		}
 
 		private void Reset()
 		{
-			sender = gameObject;
+			Sender = gameObject;
 		}
 
 		protected virtual void Init() { }
 
-		public SOWeapon Data => data;
 		public void SetData(SOWeapon pData)
 		{
-			data = pData;
+			m_Data = pData;
 			Start();
 		}
 
 		public void ShootStart()
 		{
-			shootStart.ShootStart();
+			m_ShootStart.ShootStart();
 		}
 
 		public void ShootEnd()
 		{
-			shootStart.ShootEnd();
+			m_ShootStart.ShootEnd();
 		}
 
 		private void Update()
 		{
-			if (shootStart == null || spread == null)
+			if (m_ShootStart == null || m_Spread == null)
 			{
 				return;
 			}
-			shootStart.OnUpdate(Time.deltaTime);
-			spread.OnUpdate(Time.deltaTime);
+			m_ShootStart.OnUpdate(Time.deltaTime);
+			m_Spread.OnUpdate(Time.deltaTime);
 		}
 
 		public void Shoot()
 		{
-			if (canShoot)
-			{
-				shootStart.OnShoot();
-
-				// Bullet
-				Transform muzzle = GetMuzzle();
-				SpawnShot(muzzle);
-
-				// Recoil
-				if (recoilBody != null && data.recoilForce != Vector3.zero)
-				{
-					recoilBody.AddForceAtPosition(muzzle.TransformDirection(data.recoilForce), muzzle.position, ForceMode.VelocityChange);
-				}
-
-				// Spread
-				spread.OnShoot();
-
-				// Particles
-				if (muzzleFlash != null)
-				{
-					if (muzzleFlash.transform.parent != muzzle)
-					{
-						muzzleFlash.transform.SetParent(muzzle);
-						muzzleFlash.transform.localPosition = muzzleFlashRelOffset;
-						muzzleFlash.transform.localRotation = Quaternion.identity;
-					}
-					muzzleFlash.Play();
-				}
-
-				// Audio
-				data.shotSound.Play(transform.position);
-
-				// Event
-				OnShoot?.Invoke();
-			}
-			else
+			if (!CanShoot)
 			{
 				OnShootFailed();
+				return;
 			}
+
+			m_ShootStart.OnShoot();
+
+			// Bullet
+			Transform muzzle = GetMuzzle();
+			SpawnShot(muzzle);
+
+			// Recoil
+			if (m_RecoilBody != null && m_Data.RecoilForce != Vector3.zero)
+			{
+				m_RecoilBody.AddForceAtPosition(muzzle.TransformDirection(m_Data.RecoilForce), muzzle.position, ForceMode.VelocityChange);
+			}
+
+			// Spread
+			m_Spread.OnShoot();
+
+			// Particles
+			if (m_MuzzleFlash != null)
+			{
+				if (m_MuzzleFlash.transform.parent != muzzle)
+				{
+					m_MuzzleFlash.transform.SetParent(muzzle);
+					m_MuzzleFlash.transform.SetLocalPositionAndRotation(m_MuzzleFlashRelOffset, Quaternion.identity);
+				}
+				m_MuzzleFlash.Play();
+			}
+
+			// Audio
+			m_Data.ShotSound.Play(transform.position);
+
+			// Event
+			OnShoot?.Invoke();
 		}
 
 		protected virtual void SpawnShot(Transform pMuzzle)
 		{
-			for (int i = 0; i < data.projectilesPerShot; i++)
+			for (int i = 0; i < m_Data.ProjectilesPerShot; i++)
 			{
-				if (data.bulletType == SOWeapon.BulletType.Raycast)
+				if (m_Data.MyBulletType == SOWeapon.BulletType.Raycast)
 				{
 					SpawnRaycast(pMuzzle.position, pMuzzle.forward);
+					return;
 				}
-				else
-				{
-					Vector3 dir = spread.ApplySpread(pMuzzle.forward);
-					SpawnProjectile(pMuzzle.position, dir);
-				}
+				Vector3 dir = m_Spread.ApplySpread(pMuzzle.forward);
+				SpawnProjectile(pMuzzle.position, dir);
 			}
 		}
 
 		protected virtual void OnShootFailed()
 		{
-			// Audio
-			data.failedShotSound.Play(transform.position);
-
-			// Event
+			m_Data.FailedShotSound.Play(transform.position);
 			OnFailedShoot?.Invoke();
 		}
 
@@ -165,14 +156,14 @@ namespace OliverLoescher.Weapon
 		{
 			// Spawn projectile
 			GameObject projectile;
-			projectile = ObjectPoolDictionary.Get(data.projectilePrefab);
+			projectile = ObjectPoolDictionary.Get(m_Data.ProjectilePrefab);
 			projectile.SetActive(true);
 
 			Projectile projectileScript = projectile.GetComponentInChildren<Projectile>();
-			projectileScript.Init(pPoint, pDirection, sender);
+			projectileScript.Init(pPoint, pDirection, Sender);
 
 			// Audio
-			data.shotSound.Play(transform.position); // TODO Move this incase bulletsPerShot > 1
+			m_Data.ShotSound.Play(transform.position); // TODO Move this incase bulletsPerShot > 1
 			OnShoot?.Invoke();
 
 			return projectileScript;
@@ -180,8 +171,8 @@ namespace OliverLoescher.Weapon
 
 		protected virtual void SpawnRaycast(Vector3 pPoint, Vector3 pForward)
 		{
-			Vector3 dir = spread.ApplySpread(pForward);
-			if (Physics.Raycast(pPoint, dir, out RaycastHit hit, data.range, data.layerMask, QueryTriggerInteraction.Ignore)) 
+			Vector3 dir = m_Spread.ApplySpread(pForward);
+			if (Physics.Raycast(pPoint, dir, out RaycastHit hit, m_Data.Range, m_Data.LayerMask, QueryTriggerInteraction.Ignore))
 			{
 				ApplyParticleFX(hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal), hit.collider);
 
@@ -197,95 +188,113 @@ namespace OliverLoescher.Weapon
 			}
 		}
 
-		public virtual void ApplyParticleFX(Vector3 position, Quaternion rotation, Collider attachTo) 
+		public virtual void ApplyParticleFX(Vector3 position, Quaternion rotation, Collider attachTo)
 		{
-			if (data.hitFXPrefab) 
+			if (!m_Data.HitFXPrefab)
 			{
-				GameObject impact = Instantiate(data.hitFXPrefab, position, rotation) as GameObject;
+				return;
 			}
+			Instantiate(m_Data.HitFXPrefab, position, rotation);
 		}
 
-		private int lastMuzzleIndex = 0;
-		private bool muzzlePingPongDirection = true;
-		private List<int> muzzleIndexList = new List<int>();
+		private int m_LastMuzzleIndex = 0;
+		private bool m_MuzzlePingPongDirection = true;
+		private readonly List<int> m_MuzzleIndexList = new();
 		protected Transform GetMuzzle()
 		{
-			switch (multiMuzzleType)
+			switch (m_MultiMuzzleType)
 			{
 				case MultiMuzzleType.Loop: // Loop ////////////////////////////////////////
-					lastMuzzleIndex++;
-					if (lastMuzzleIndex == muzzlePoints.Length)
-						lastMuzzleIndex = 0;
-					return muzzlePoints[lastMuzzleIndex];
-					
-				case MultiMuzzleType.PingPong: // PingPong ////////////////////////////////
-					if (muzzlePingPongDirection)
+					m_LastMuzzleIndex++;
+					if (m_LastMuzzleIndex == m_MuzzlePoints.Length)
 					{
-						lastMuzzleIndex++; // Forward
-						if (lastMuzzleIndex == muzzlePoints.Length - 1)
-							muzzlePingPongDirection = false;
+						m_LastMuzzleIndex = 0;
+					}
+
+					return m_MuzzlePoints[m_LastMuzzleIndex];
+
+				case MultiMuzzleType.PingPong: // PingPong ////////////////////////////////
+					if (m_MuzzlePingPongDirection)
+					{
+						m_LastMuzzleIndex++; // Forward
+						if (m_LastMuzzleIndex == m_MuzzlePoints.Length - 1)
+						{
+							m_MuzzlePingPongDirection = false;
+						}
 					}
 					else
 					{
-						lastMuzzleIndex--; // Back
-						if (lastMuzzleIndex == 0)
-							muzzlePingPongDirection = true;
+						m_LastMuzzleIndex--; // Back
+						if (m_LastMuzzleIndex == 0)
+						{
+							m_MuzzlePingPongDirection = true;
+						}
 					}
-					return muzzlePoints[lastMuzzleIndex];
+					return m_MuzzlePoints[m_LastMuzzleIndex];
 
 				case MultiMuzzleType.Random: // Random ////////////////////////////////////
-					return muzzlePoints[Random.Range(0, muzzlePoints.Length)];
+					return m_MuzzlePoints[Random.Range(0, m_MuzzlePoints.Length)];
 
 				case MultiMuzzleType.RandomNotOneAfterItself: // RandomNotOneAfterItself //
-					int i = Random.Range(0, muzzlePoints.Length);
-					if (i == lastMuzzleIndex)
+					int i = Random.Range(0, m_MuzzlePoints.Length);
+					if (i == m_LastMuzzleIndex)
 					{
 						// If is previous offset to new index
-						i += Random.Range(1, muzzlePoints.Length);
+						i += Random.Range(1, m_MuzzlePoints.Length);
 						// If past max, loop back around
-						if (i >= muzzlePoints.Length)
-							i -= muzzlePoints.Length;
+						if (i >= m_MuzzlePoints.Length)
+						{
+							i -= m_MuzzlePoints.Length;
+						}
 					}
-					lastMuzzleIndex = i;
-					return muzzlePoints[i];
+					m_LastMuzzleIndex = i;
+					return m_MuzzlePoints[i];
 
 				case MultiMuzzleType.RandomAllOnce: // RandomAllOnce //////////////////////
-					if (muzzleIndexList.Count == 0)
+					if (m_MuzzleIndexList.Count == 0)
 					{
 						// If out of indexes, refill
-						for (int z = 0; z < muzzlePoints.Length; z++)
-							muzzleIndexList.Add(z);
+						for (int z = 0; z < m_MuzzlePoints.Length; z++)
+						{
+							m_MuzzleIndexList.Add(z);
+						}
 					}
-					
+
 					// Get random index from list of unused indexes
-					int a = Random.Range(0, muzzleIndexList.Count);
-					int b = muzzleIndexList[a];
-					muzzleIndexList.RemoveAt(a);
-					return muzzlePoints[b];
+					int a = Random.Range(0, m_MuzzleIndexList.Count);
+					int b = m_MuzzleIndexList[a];
+					m_MuzzleIndexList.RemoveAt(a);
+					return m_MuzzlePoints[b];
 
 				default: // First Only ////////////////////////////////////////////////////
-					return muzzlePoints[0];
+					return m_MuzzlePoints[0];
 			}
 		}
 
-		private void OnDrawGizmos() 
+		private void OnDrawGizmos()
 		{
-	#if UNITY_EDITOR
-			if (data == null)
+#if UNITY_EDITOR
+			if (m_Data == null)
+			{
 				return;
+			}
 
-			foreach (Transform m in muzzlePoints)
+			foreach (Transform m in m_MuzzlePoints)
 			{
 				if (m == null)
+				{
 					continue;
-				(spread == null ? data.spread : spread).DrawGizmos(transform, m);
+				}
+				(m_Spread == null ? m_Data.Spread : m_Spread).DrawGizmos(transform, m);
 			}
-	#endif
+#endif
 		}
 
 		#region Helpers
-		protected void Log(string pMessage) => Debug.Log($"[{GetType().Name}] {pMessage}", this);
-		protected void LogError(string pMessage) => Debug.LogError($"[{GetType().Name}] {pMessage}", this);
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		protected void Log(string pMessage, string pMethodName) => Util.Debug2.Log(pMessage, pMethodName, this);
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		protected void LogError(string pMessage, string pMethodName) => Util.Debug2.LogError(pMessage, pMethodName, this);
 		#endregion
 	}
 }

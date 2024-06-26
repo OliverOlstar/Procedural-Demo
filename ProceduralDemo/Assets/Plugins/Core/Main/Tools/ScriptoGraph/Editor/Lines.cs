@@ -5,7 +5,7 @@ namespace GraphEditor
 {
 	public class Lines
 	{
-		public static readonly Vector2 ArrowSize = new Vector2(8f, -4f);
+		public static readonly Vector2 ArrowSize = new(8f, -4f);
 
 		public static void DrawLine(Vector2 p1, Vector2 p2)
 		{
@@ -51,7 +51,7 @@ namespace GraphEditor
 
 		public static Vector2 GetPointOnLine(Vector2 p1, Vector2 p2, float normalizedLength)
 		{
-			return p1 + ((p2 - p1).normalized * (p2 - p1).magnitude * normalizedLength);
+			return p1 + ((p2 - p1).magnitude * normalizedLength * (p2 - p1).normalized);
 		}
 	}
 }

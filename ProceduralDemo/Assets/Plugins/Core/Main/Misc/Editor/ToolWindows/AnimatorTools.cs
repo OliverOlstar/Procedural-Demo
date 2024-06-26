@@ -11,7 +11,7 @@ namespace Core
 		[MenuItem("Core/Animator/Tools")]
 		static void CreateWizard()
 		{
-			AnimatorTools window = EditorWindow.GetWindow<AnimatorTools>("Animator Tools");
+			AnimatorTools window = GetWindow<AnimatorTools>("Animator Tools");
 			window.Show();
 		}
 	 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon.Multiplayer
+namespace OCore.Weapon.Multiplayer
 {
     public class ProjectileMultiplayer : Projectile
     {

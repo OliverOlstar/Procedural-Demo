@@ -13,9 +13,9 @@ namespace Core
 		[MenuItem("Core/Search Scene By Layer")]
 		static void SearchByLayer()
 		{
-			Dictionary<int, List<GameObject>> objectsByLayer = new Dictionary<int, List<GameObject>>();
+			Dictionary<int, List<GameObject>> objectsByLayer = new();
 
-			foreach (GameObject gameObject in GameObject.FindObjectsOfType<GameObject>())
+			foreach (GameObject gameObject in Object.FindObjectsOfType<GameObject>())
 			{
 				if (!objectsByLayer.ContainsKey(gameObject.layer))
 				{
@@ -46,7 +46,7 @@ namespace Core
 			{
 				foreach (Transform transform in Selection.transforms)
 				{
-					string folder = EditorSceneManager.GetActiveScene().path;
+					string folder = UnityEngine.SceneManagement.SceneManager.GetActiveScene().path;
 					folder = folder.Remove(folder.LastIndexOf('.'));
 					folder += "/CombinedMeshes/" + transform.name + "/";
 					if (!Directory.Exists(folder))
@@ -109,7 +109,7 @@ namespace Core
 			TimeScaleManager tem = TimeScaleManager.Get();
 			if (tem == null)
 			{
-				GameObject obj = new GameObject("TimeScaleManager");
+				GameObject obj = new("TimeScaleManager");
 				tem = obj.AddComponent<TimeScaleManager>();
 			}
 			tem.EditorInc();
@@ -125,7 +125,7 @@ namespace Core
 			TimeScaleManager tem = TimeScaleManager.Get();
 			if (tem == null)
 			{
-				GameObject obj = new GameObject("TimeScaleManager");
+				GameObject obj = new("TimeScaleManager");
 				tem = obj.AddComponent<TimeScaleManager>();
 			}
 			tem.EditorDec();

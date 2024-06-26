@@ -1,36 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
 	public class SmoothLocalOffset : MonoBehaviour
 	{
-		public Transform myTransform = null;
-		public Vector3 offset = Vector3.zero;
-		private Vector3 initalOffset = Vector3.zero;
-		[SerializeField] private float dampening = 5.0f;
+		public Transform Transform = null;
+		public Vector3 Offset = Vector3.zero;
+		private Vector3 m_InitalOffset = Vector3.zero;
+		[SerializeField]
+		private float m_Dampening = 5.0f;
 
 		private void Reset()
 		{
-			myTransform = transform;
-			offset = myTransform.localPosition;
+			Transform = transform;
+			Offset = Transform.localPosition;
 		}
 
 		private void Start()
 		{
-			initalOffset = offset;
+			m_InitalOffset = Offset;
 		}
 
 		private void Update()
 		{
-			myTransform.localPosition = Vector3.Lerp(myTransform.localPosition, offset, dampening * Time.deltaTime);
+			Transform.localPosition = Vector3.Lerp(Transform.localPosition, Offset, m_Dampening * Time.deltaTime);
 		}
 
-		public void SetOffset(Vector3 pOffset) => offset = pOffset;
-		public void SetOffsetY(float pHeight) => offset = new Vector3(0.0f, pHeight, 0.0f);
-		public void ModifyOffsetY(float pHeight) => offset.y += pHeight;
-		public void ModifyInitialOffsetY(float pHeight) => offset.y = initalOffset.y + pHeight;
-		public void ResetOffset() => offset = initalOffset;
+		public void SetOffset(Vector3 pOffset) => Offset = pOffset;
+		public void SetOffsetY(float pHeight) => Offset = new Vector3(0.0f, pHeight, 0.0f);
+		public void ModifyOffsetY(float pHeight) => Offset.y += pHeight;
+		public void ModifyInitialOffsetY(float pHeight) => Offset.y = m_InitalOffset.y + pHeight;
+		public void ResetOffset() => Offset = m_InitalOffset;
 	}
 }

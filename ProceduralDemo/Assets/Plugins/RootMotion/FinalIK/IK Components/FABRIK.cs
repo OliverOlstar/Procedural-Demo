@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Forward and Backward Reaching %IK solver component.
@@ -37,7 +38,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The %FABRIK solver.
 		/// </summary>
-		public IKSolverFABRIK solver = new IKSolverFABRIK();
+		public IKSolverFABRIK solver = new();
 		
 		public override IKSolver GetIKSolver() {
 			return solver as IKSolver;

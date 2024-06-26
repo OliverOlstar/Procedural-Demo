@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
-using RootMotion.FinalIK;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Calculates bending direction and hand rotations for a FBBIK rig for VR hand controllers. 
@@ -24,7 +24,11 @@ namespace RootMotion.FinalIK {
 		private bool initiated;
 
 		void LateUpdate() {
-			if (ik == null) return;
+			if (ik == null)
+			{
+				return;
+			}
+
 
 			if (!initiated) {
 				ik.solver.OnPostUpdate += OnPostFBBIK;
@@ -47,9 +51,13 @@ namespace RootMotion.FinalIK {
 		}
 
 		void OnPostFBBIK() {
-			if (ik == null) return;
+			if (ik == null)
+			{
+				return;
+			}
 
 			// Rotate hand bones
+
 			if (ik.solver.leftHandEffector.target != null) {
 				ik.references.leftHand.rotation = ik.solver.leftHandEffector.target.rotation;
 			}
@@ -60,7 +68,11 @@ namespace RootMotion.FinalIK {
 		}
 
 		void OnDestroy() {
-			if (ik != null) ik.solver.OnPostUpdate -= OnPostFBBIK;
+			if (ik != null)
+			{
+				ik.solver.OnPostUpdate -= OnPostFBBIK;
+			}
+
 		}
 	}
 }

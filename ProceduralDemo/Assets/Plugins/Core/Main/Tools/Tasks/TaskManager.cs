@@ -17,7 +17,7 @@ namespace Core
 			{
 				if (s_Instance == null)
 				{
-					GameObject singleton = new GameObject("TaskManager");
+					GameObject singleton = new("TaskManager");
 					DontDestroyOnLoad(singleton);
 					s_Instance = singleton.AddComponent<TaskManager>();
 				}
@@ -39,7 +39,7 @@ namespace Core
 
 		public Task CreateTask(string category, IEnumerator coroutine)
 		{
-			Task task = new Task(category, coroutine);
+			Task task = new(category, coroutine);
 			HashSet<Task> tasks = null;
 			if (!m_Tasks.TryGetValue(category, out tasks))
 			{
@@ -86,7 +86,7 @@ namespace Core
 			do
 			{
 				yielding = false;
-				foreach (var task in tasks)
+				foreach (Task task in tasks)
 				{
 					if (task != null && !task.Complete)
 					{

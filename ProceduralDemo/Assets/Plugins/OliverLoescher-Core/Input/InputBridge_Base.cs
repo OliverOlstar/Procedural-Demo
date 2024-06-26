@@ -1,16 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace OliverLoescher.Input
+namespace OCore.Input
 {
-    public abstract class InputBridge_Base : MonoBehaviour
+	public abstract class InputBridge_Base : MonoBehaviour
 	{
+		[SerializeField]
+		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Early, Util.Mono.Priorities.Input);
+
 		public abstract InputActionMap Actions { get; }
 		public abstract IEnumerable<IInputModule> GetAllInputModules();
-		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Early, Util.Mono.Priorities.Input);
 
 		protected virtual void Awake()
 		{
@@ -18,7 +18,7 @@ namespace OliverLoescher.Input
 			{
 				module.Enable();
 			}
-			PauseSystem.onPause += ClearInputs;
+			PauseSystem.s_OnPause += ClearInputs;
 		}
 
 		protected virtual void OnDestroy()
@@ -27,19 +27,19 @@ namespace OliverLoescher.Input
 			{
 				module.Disable();
 			}
-			PauseSystem.onPause -= ClearInputs;
+			PauseSystem.s_OnPause -= ClearInputs;
 		}
 
 		protected virtual void OnEnable()
 		{
 			Actions.Enable();
-			updateable.Register(Tick);
+			m_Updateable.Register(Tick);
 		}
 
 		protected virtual void OnDisable()
 		{
 			Actions.Disable();
-			updateable.Deregister();
+			m_Updateable.Deregister();
 		}
 
 		public virtual void Tick(float pDeltaTime)
@@ -60,7 +60,7 @@ namespace OliverLoescher.Input
 
 		public virtual bool IsValid()
 		{
-			return PauseSystem.isPaused == false;
+			return !PauseSystem.IsPaused;
 		}
 	}
 }

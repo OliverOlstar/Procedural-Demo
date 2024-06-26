@@ -1,20 +1,13 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	[RequireComponent(typeof(Weapon))]
 	public class WeaponAmmo : MonoBehaviour
 	{
-		private Weapon weapon = null;
-
-		private int totalAmmo;
-		private int clipAmmo;
-		private Coroutine chargeRoutine = null;
-
 		[FoldoutGroup("Unity Events")]
 		public UnityEvent OnReload;
 		[FoldoutGroup("Unity Events")]
@@ -24,95 +17,87 @@ namespace OliverLoescher.Weapon
 		[FoldoutGroup("Unity Events")]
 		public UnityEvent OnOutOfAmmo;
 
-		private void Start() 
-		{
-			weapon = GetComponent<Weapon>();
-			weapon.OnShoot.AddListener(OnShoot);
+		private Weapon m_Weapon = null;
+		private int m_TotalAmmo;
+		private int m_ClipAmmo;
+		private Coroutine m_ChargeRoutine = null;
 
-			clipAmmo = weapon.Data.clipAmmo;
-			totalAmmo = weapon.Data.totalAmmo - clipAmmo;
+		private void Start()
+		{
+			m_Weapon = GetComponent<Weapon>();
+			m_Weapon.OnShoot.AddListener(OnShoot);
+
+			m_ClipAmmo = m_Weapon.Data.ClipAmmo;
+			m_TotalAmmo = m_Weapon.Data.TotalAmmo - m_ClipAmmo;
 		}
 
 		public void OnShoot()
 		{
-			if (weapon.Data.ammoType == SOWeapon.AmmoType.Null)
-				return;
-
-			// Ammo
-			clipAmmo = Mathf.Max(0, clipAmmo - 1);
-			if (clipAmmo == 0)
+			if (m_Weapon.Data.MyAmmoType == SOWeapon.AmmoType.Null)
 			{
-				weapon.canShoot = false;
+				return;
+			}
 
-				// Audio
-				weapon.Data.outOfAmmoSound.Play(transform.position);
-
+			m_ClipAmmo = Mathf.Max(0, m_ClipAmmo - 1); // Ammo
+			if (m_ClipAmmo == 0)
+			{
+				m_Weapon.CanShoot = false;
+				m_Weapon.Data.OutOfAmmoSound.Play(transform.position); // Audio
 				OnStartOverHeat.Invoke();
 			}
 
-			if (weapon.Data.ammoType == SOWeapon.AmmoType.Limited && totalAmmo <= 0)
+			if (m_Weapon.Data.MyAmmoType == SOWeapon.AmmoType.Limited && m_TotalAmmo <= 0)
 			{
-				// If totally out of ammo
-				if (clipAmmo <= 0)
+				if (m_ClipAmmo <= 0) // If totally out of ammo
 				{
-					// If out of all ammo
-					OnOutOfAmmo.Invoke();
+					OnOutOfAmmo.Invoke(); // If out of all ammo
 				}
 			}
 			else
 			{
-				// Recharge
-				if (chargeRoutine != null) StopCoroutine(chargeRoutine);
-				chargeRoutine = StartCoroutine(AmmoRoutine());
+				if (m_ChargeRoutine != null)
+				{
+					StopCoroutine(m_ChargeRoutine);
+				}
+				m_ChargeRoutine = StartCoroutine(AmmoRoutine()); // Recharge
 			}
 		}
 
 		private IEnumerator AmmoRoutine()
 		{
-			yield return new WaitForSeconds(Mathf.Max(0, weapon.Data.reloadDelaySeconds - weapon.Data.reloadIntervalSeconds));
+			yield return new WaitForSeconds(Mathf.Max(0, m_Weapon.Data.ReloadDelaySeconds - m_Weapon.Data.ReloadIntervalSeconds));
 
-			while (clipAmmo < weapon.Data.clipAmmo && (totalAmmo > 0 || weapon.Data.ammoType == SOWeapon.AmmoType.Unlimited))
+			while (m_ClipAmmo < m_Weapon.Data.ClipAmmo && (m_TotalAmmo > 0 || m_Weapon.Data.MyAmmoType == SOWeapon.AmmoType.Unlimited))
 			{
-				yield return new WaitForSeconds(weapon.Data.reloadIntervalSeconds);
+				yield return new WaitForSeconds(m_Weapon.Data.ReloadIntervalSeconds);
 
-				// Clip Ammo
-				clipAmmo++;
-
-				// Total Ammo
-				if (weapon.Data.ammoType == SOWeapon.AmmoType.Limited)
+				m_ClipAmmo++; // Clip Ammo
+				if (m_Weapon.Data.MyAmmoType == SOWeapon.AmmoType.Limited)
 				{
-					totalAmmo--;
+					m_TotalAmmo--; // Total Ammo
 				}
-
-				// Audio
-				weapon.Data.reloadSound.Play(transform.position);
-
+				m_Weapon.Data.ReloadSound.Play(transform.position); // Audio
 				OnReload.Invoke();
 			}
 
-			if (weapon.canShoot == false)
+			if (!m_Weapon.CanShoot)
 			{
-				weapon.canShoot = true;
-
-				// Audio
-				weapon.Data.onReloadedSound.Play(transform.position);
-
-				// Events
-				OnEndOverHeat.Invoke();
+				m_Weapon.CanShoot = true;
+				m_Weapon.Data.OnReloadedSound.Play(transform.position); // Audio
+				OnEndOverHeat.Invoke(); // Events
 			}
 		}
 
 		public void ModifyAmmo(int pValue)
 		{
-			// Modify Ammo
-			totalAmmo += pValue;
-
-			// Check for recharge
-			if (totalAmmo > 0 && clipAmmo < weapon.Data.clipAmmo)
+			m_TotalAmmo += pValue; // Modify Ammo
+			if (m_TotalAmmo > 0 && m_ClipAmmo < m_Weapon.Data.ClipAmmo) // Check for recharge
 			{
-				if (chargeRoutine != null)
-					StopCoroutine(chargeRoutine);
-				chargeRoutine = StartCoroutine(AmmoRoutine());
+				if (m_ChargeRoutine != null)
+				{
+					StopCoroutine(m_ChargeRoutine);
+				}
+				m_ChargeRoutine = StartCoroutine(AmmoRoutine());
 			}
 		}
 	}

@@ -33,7 +33,7 @@ namespace StylizedWater2
         private Mesh mesh;
         [SerializeField]
         [HideInInspector]
-        private List<WaterObject> objects = new List<WaterObject>();
+        private List<WaterObject> objects = new();
         
         [NonSerialized]
         private float tileSize;
@@ -56,8 +56,11 @@ namespace StylizedWater2
         
         private void Start()
         {
-            if (autoAssignCamera) followTarget = Camera.main ? Camera.main.transform : followTarget;
-        }
+            if (autoAssignCamera)
+			{
+				followTarget = Camera.main ? Camera.main.transform : followTarget;
+			}
+		}
         
         private void OnEnable()
         {
@@ -83,9 +86,12 @@ namespace StylizedWater2
 
         void Update()
         {
-            if (Application.isPlaying) actualFollowTarget = followTarget;
+            if (Application.isPlaying)
+			{
+				actualFollowTarget = followTarget;
+			}
 
-            if (actualFollowTarget)
+			if (actualFollowTarget)
             {
                 targetPosition = actualFollowTarget.transform.position;
 
@@ -100,15 +106,21 @@ namespace StylizedWater2
             RecreateMesh();
 
             bool requireRecreate = (m_rowsColumns != rowsColumns) || objects.Count < (rowsColumns * rowsColumns);
-            if (requireRecreate) m_rowsColumns = rowsColumns;
+            if (requireRecreate)
+			{
+				m_rowsColumns = rowsColumns;
+			}
 
-            //Only destroy/recreate objects if grid subdivision has changed
-            if (requireRecreate && objects.Count > 0)
+			//Only destroy/recreate objects if grid subdivision has changed
+			if (requireRecreate && objects.Count > 0)
             {
                 foreach (WaterObject obj in objects)
                 {
-                    if (obj) DestroyImmediate(obj.gameObject);
-                }
+                    if (obj)
+					{
+						DestroyImmediate(obj.gameObject);
+					}
+				}
                 objects.Clear();
             }
 
@@ -181,8 +193,11 @@ namespace StylizedWater2
 
                 foreach (WaterObject waterObject in objects)
                 {
-                    if(waterObject.meshFilter.sharedMesh) Gizmos.DrawWireMesh(waterObject.meshFilter.sharedMesh, waterObject.transform.position);
-                }
+                    if(waterObject.meshFilter.sharedMesh)
+					{
+						Gizmos.DrawWireMesh(waterObject.meshFilter.sharedMesh, waterObject.transform.position);
+					}
+				}
             }
 
             if (DisplayGrid)

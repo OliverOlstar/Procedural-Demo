@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
-using RootMotion;
 using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Contains a LimbIK solver and some additional logic to handle the finger.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class Finger {
 
-		[System.Serializable]
+		[Serializable]
 		public enum DOF {
 			One,
 			Three
@@ -161,8 +160,15 @@ namespace RootMotion.FinalIK {
 
 		// Fix bones to their initial local position and rotation
 		public void FixTransforms() {
-			if (!initiated) return;
-            if (weight <= 0f) return;
+			if (!initiated)
+			{
+				return;
+			}
+
+			if (weight <= 0f)
+			{
+				return;
+			}
 
 			solver.FixTransforms();
 
@@ -174,7 +180,10 @@ namespace RootMotion.FinalIK {
 
 		// Stores the default localPosition/Rotation of the finger bones used by FixTransforms()
 		public void StoreDefaultLocalState() {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
 			solver.StoreDefaultLocalState();
 
@@ -186,10 +195,16 @@ namespace RootMotion.FinalIK {
 
 		// Update the LimbIK solver and rotate the optional 3rd bone
 		public void Update(float masterWeight) {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
 			float w = weight * masterWeight;
-			if (w <= 0f) return;
+			if (w <= 0f)
+			{
+				return;
+			}
 
 			solver.target = target;
 			if (target != null) {
@@ -254,7 +269,10 @@ namespace RootMotion.FinalIK {
 		/// </summary>
 		public bool IsValid(ref string errorMessage) {
 			foreach (Finger finger in fingers) {
-				if (!finger.IsValid(ref errorMessage)) return false;
+				if (!finger.IsValid(ref errorMessage))
+				{
+					return false;
+				}
 			}
 			return true;
 		}
@@ -271,7 +289,7 @@ namespace RootMotion.FinalIK {
 				AddChildrenRecursive(transform.GetChild(i), ref potentialFinger);
 
 				if (potentialFinger.Length == 3 || potentialFinger.Length == 4) {
-					Finger finger = new Finger();
+					Finger finger = new();
 					finger.bone1 = potentialFinger[0];
 					finger.bone2 = potentialFinger[1];
 					if (potentialFinger.Length == 3) {
@@ -284,7 +302,7 @@ namespace RootMotion.FinalIK {
 					finger.weight = 1f;
 
 					Array.Resize(ref fingers, fingers.Length + 1);
-					fingers[fingers.Length - 1] = finger;
+					fingers[^1] = finger;
 				}
 			}
 		}
@@ -293,7 +311,7 @@ namespace RootMotion.FinalIK {
 		/// Adds a finger in run-time.
 		/// </summary>
 		public void AddFinger(Transform bone1, Transform bone2, Transform bone3, Transform tip, Transform target = null) {
-			Finger finger = new Finger();
+			Finger finger = new();
 			finger.bone1 = bone1;
 			finger.bone2 = bone2;
 			finger.bone3 = bone3;
@@ -301,11 +319,14 @@ namespace RootMotion.FinalIK {
 			finger.target = target;
 
 			Array.Resize(ref fingers, fingers.Length + 1);
-			fingers[fingers.Length - 1] = finger;
+			fingers[^1] = finger;
 
 			initiated = false;
 			finger.Initiate(transform, fingers.Length - 1);
-			if (fingers[fingers.Length - 1].initiated) initiated = true;
+			if (fingers[^1].initiated)
+			{
+				initiated = true;
+			}
 		}
 
 		/// <summary>
@@ -338,9 +359,12 @@ namespace RootMotion.FinalIK {
 		// Adds child Transforms of the 'parent' to the 'array' recursively only if each Transform has a single child.
 		private void AddChildrenRecursive(Transform parent, ref Transform[] array) {
 			Array.Resize(ref array, array.Length + 1);
-			array[array.Length - 1] = parent;
+			array[^1] = parent;
 
-			if (parent.childCount != 1) return;
+			if (parent.childCount != 1)
+			{
+				return;
+			}
 
 			AddChildrenRecursive(parent.GetChild(0), ref array);
 		}
@@ -350,7 +374,10 @@ namespace RootMotion.FinalIK {
 
 			for (int i = 0; i < fingers.Length; i++) {
 				fingers[i].Initiate(transform, i);
-				if (!fingers[i].initiated) initiated = false;
+				if (!fingers[i].initiated)
+				{
+					initiated = false;
+				}
 			}
 		}
 
@@ -361,7 +388,10 @@ namespace RootMotion.FinalIK {
 		}
 
 		public void FixFingerTransforms() {
-            if (weight <= 0f) return;
+            if (weight <= 0f)
+			{
+				return;
+			}
 
 			foreach (Finger finger in fingers) {
 				finger.FixTransforms();
@@ -379,7 +409,10 @@ namespace RootMotion.FinalIK {
 		}
 
 		protected override void FixTransforms() {
-            if (weight <= 0f) return;
+            if (weight <= 0f)
+			{
+				return;
+			}
 
 			FixFingerTransforms();
 		}

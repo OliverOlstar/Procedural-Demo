@@ -1,33 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
-    public struct PlayerPrefsString
-    {
-		private readonly string key;
-		private string value;
+	public struct PlayerPrefsString
+	{
+		private readonly string m_Key;
+		private string m_Value;
 
 		public PlayerPrefsString(string pKey, string pDefaultValue = null)
 		{
-			key = pKey;
-			value = PlayerPrefs.GetString(key, pDefaultValue);
+			m_Key = pKey;
+			m_Value = PlayerPrefs.GetString(m_Key, pDefaultValue);
 		}
 
-		public string Get()
+		public readonly string Get()
 		{
-			return value;
+			return m_Value;
 		}
 
 		public void Set(string pValue)
 		{
-			if (value == pValue)
+			if (m_Value == pValue)
 			{
 				return;
 			}
-			value = pValue;
-			PlayerPrefs.SetString(key, value);
+			m_Value = pValue;
+			PlayerPrefs.SetString(m_Key, m_Value);
 		}
 	}
 }

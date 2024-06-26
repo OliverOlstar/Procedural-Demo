@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace ScriptoGraph
+﻿namespace ScriptoGraph
 {
 	[System.AttributeUsage(System.AttributeTargets.Class)]
 	public class HideChildrenAttribute : System.Attribute

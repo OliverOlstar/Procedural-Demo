@@ -9,7 +9,7 @@ namespace Core
 		protected Transform m_Transform = null;
 		public Transform Transform => m_Transform;
 
-		protected List<IPoolBehaviour> m_Interfaces = new List<IPoolBehaviour>();
+		protected List<IPoolBehaviour> m_Interfaces = new();
 		private List<IPoolUpdate> m_Updates = null;
 		public bool RequiresUpdate() { return m_Updates != null && m_Updates.Count > 0; }
 		private List<IPoolLateUpdate> m_LateUpdates = null;
@@ -27,7 +27,7 @@ namespace Core
 			Quaternion rotation,
 			Transform parent,
 			bool autoLifetime,
-			UnityEngine.Object owner)
+			Object owner)
 		{
 			GameObject obj = null;
 			if (prefab.transform is RectTransform)
@@ -44,7 +44,7 @@ namespace Core
 
 			// Passing 'true' in for include inactive, trying to help out by finding disabled interfaces
 			// that might want to turn on an object... but maybe this will just cause bugs
-			obj.GetComponentsInChildren<IPoolBehaviour>(true, m_Interfaces);
+			obj.GetComponentsInChildren(true, m_Interfaces);
 
 			// Call play once all interfaces have been collected
 			int count = m_Interfaces.Count;
@@ -141,15 +141,14 @@ namespace Core
 			Vector3 position,
 			Quaternion rotation,
 			Transform parent,
-			bool autoLifetime, 
-			UnityEngine.Object owner)
+			bool autoLifetime,
+			Object owner)
 		{
 			m_Active = true;
 			m_TryingToStop = autoLifetime;
 			// It seems for rect transform we need to assign a parent and then set the position
 			m_Transform.SetParent(parent, m_Transform as RectTransform == null);
-			m_Transform.position = position;
-			m_Transform.rotation = rotation;
+			m_Transform.SetPositionAndRotation(position, rotation);
 			m_Transform.gameObject.SetActive(true);
 			int count = m_Interfaces.Count;
 			if (count > 0)

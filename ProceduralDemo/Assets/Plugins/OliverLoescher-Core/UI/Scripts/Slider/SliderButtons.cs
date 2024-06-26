@@ -1,45 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace OliverLoescher.UI
+namespace OCore.UI
 {
 	[RequireComponent(typeof(Slider))]
     public class SliderButtons : MonoBehaviour
     {
-		private Slider slider = null;
-
 		[SerializeField, Min(Util.Math.NEARZERO)]
-		private float increaseDelta = 0.1f;
+		private float m_IncreaseDelta = 0.1f;
 		[SerializeField, Min(Util.Math.NEARZERO)]
-		private float decreaseDelta = 0.1f;
+		private float m_DecreaseDelta = 0.1f;
 
 		[SerializeField]
-		private Button buttonIncrease = null;
+		private Button m_ButtonIncrease = null;
 		[SerializeField]
-		private Button buttonDecrease = null;
+		private Button m_ButtonDecrease = null;
+
+		private Slider m_Slider = null;
 
 		private void Awake()
 		{
-			buttonIncrease.onClick.AddListener(OnIncreaseClicked);
-			buttonDecrease.onClick.AddListener(OnDecreaseClicked);
-			slider = GetComponent<Slider>();
+			m_ButtonIncrease.onClick.AddListener(OnIncreaseClicked);
+			m_ButtonDecrease.onClick.AddListener(OnDecreaseClicked);
+			m_Slider = GetComponent<Slider>();
 		}
 
 		private void OnDestroy()
 		{
-			buttonIncrease.onClick.RemoveListener(OnIncreaseClicked);
-			buttonDecrease.onClick.RemoveListener(OnDecreaseClicked);
+			m_ButtonIncrease.onClick.RemoveListener(OnIncreaseClicked);
+			m_ButtonDecrease.onClick.RemoveListener(OnDecreaseClicked);
 		}
 
-		protected virtual void OnIncreaseClicked() => slider.value += increaseDelta;
-		protected virtual void OnDecreaseClicked() => slider.value -= decreaseDelta;
+		protected virtual void OnIncreaseClicked() => m_Slider.value += m_IncreaseDelta;
+		protected virtual void OnDecreaseClicked() => m_Slider.value -= m_DecreaseDelta;
 
 		public void SetDelta(float pIncrease, float pDecrease)
 		{
-			increaseDelta = Mathf.Max(0.0f, pIncrease);
-			decreaseDelta = Mathf.Max(0.0f, pDecrease);
+			m_IncreaseDelta = Mathf.Max(0.0f, pIncrease);
+			m_DecreaseDelta = Mathf.Max(0.0f, pDecrease);
 		}
 	}
 }

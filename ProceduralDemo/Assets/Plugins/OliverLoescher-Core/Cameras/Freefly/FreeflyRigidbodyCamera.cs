@@ -1,27 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Camera
+namespace OCore.Camera
 {
-    public class FreeflyRigidbodyCamera : FreeflyCamera
-    {
-        [SerializeField] private Rigidbody moveRigidbody = null;
+	public class FreeflyRigidbodyCamera : FreeflyCamera
+	{
+		[SerializeField]
+		private Rigidbody m_MoveRigidbody = null;
 
-        private void Start() 
-        {
-            moveTransform = null;
-        }
+		private void Start()
+		{
+			m_MoveTransform = null;
+		}
 
-        private void OnEnable() 
-        {
-            moveRigidbody.velocity = Vector3.zero;
-        }
+		private void OnEnable()
+		{
+			m_MoveRigidbody.velocity = Vector3.zero;
+		}
 
-        protected override void DoMove(Vector2 pMovement, float pUp, float pMult)
-        {
-            Vector3 move = (pMovement.y * transform.forward) + (pMovement.x * transform.right) + (pUp * transform.up);
-            moveRigidbody.velocity = move.normalized * pMult;
-        }
-    }
+		protected override void DoMove(Vector2 pMovement, float pUp, float pMult)
+		{
+			Vector3 move = (pMovement.y * transform.forward) + (pMovement.x * transform.right) + (pUp * transform.up);
+			m_MoveRigidbody.velocity = move.normalized * pMult;
+		}
+	}
 }

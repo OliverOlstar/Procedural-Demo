@@ -1,6 +1,6 @@
 ﻿using System;
 
-[System.Serializable]
+[Serializable]
 public class ScenePicker
 {
    public string m_SceneName = String.Empty;

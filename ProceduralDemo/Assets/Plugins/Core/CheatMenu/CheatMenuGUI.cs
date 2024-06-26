@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace Core.CheatMenu
 
 		public static bool Button(string name, GUIStyle style, params GUILayoutOption[] options)
 		{
-			GUIContent content = new GUIContent(name);
+			GUIContent content = new(name);
 			Rect r = GUILayoutUtility.GetRect(content, style, options);
 			return Button(r, name, style);
 		}
@@ -41,13 +40,13 @@ namespace Core.CheatMenu
 			pressed |= GUI.Button(position, name, style == null ? DefaultButtonStyle : style);
 			if (selected)
 			{
-				Vector2 size = new Vector2(15, 20);
-				Rect rhs = new Rect(
+				Vector2 size = new(15, 20);
+				Rect rhs = new(
 					position.xMax - 0.5f * size.x,
 					position.center.y - 0.5f * size.y,
 					size.x,
 					size.y);
-				Rect lhs = new Rect(
+				Rect lhs = new(
 					position.xMin - 0.5f * size.x,
 					position.center.y - 0.5f * size.y,
 					size.x,
@@ -184,7 +183,7 @@ namespace Core.CheatMenu
 			arg = (TEnum)System.Enum.Parse(typeof(TEnum), current);
 		}
 
-		private static List<string> s_Controls = new List<string>();
+		private static List<string> s_Controls = new();
 		public static void ResetControls()
 		{
 			if (s_SelectedControlID != null && !s_Controls.Contains(s_SelectedControlID))

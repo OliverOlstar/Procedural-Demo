@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Spread/Square")]
 	public class SOWeaponSpreadSquare : SOWeaponSpreadExpandBase
 	{
-		public Vector2 spreadVector = new Vector2(0.2f, 0.2f);
-		public Vector2 spreadVectorMax = new Vector2(0.5f, 0.5f);
+		[SerializeField]
+		private Vector2 m_SpreadVector = new(0.2f, 0.2f);
+		[SerializeField]
+		private Vector2 m_SpreadVectorMax = new(0.5f, 0.5f);
 
 		public override Vector3 ApplySpread(Vector3 pDirection)
 		{
-			return Quaternion.Euler(Util.Random2.Range(spreadVector.y), Util.Random2.Range(spreadVector.x), 0) * pDirection;
+			return Quaternion.Euler(Util.Random2.Range(m_SpreadVector.y), Util.Random2.Range(m_SpreadVector.x), 0) * pDirection;
 		}
 
 #if UNITY_EDITOR
@@ -23,15 +23,15 @@ namespace OliverLoescher.Weapon
 			Vector3 localForward = pTransform.InverseTransformVector(pMuzzle.forward);
 
 			Handles.color = Color.cyan;
-			Handles.DrawWireCube(localForward * 1.0f, new Vector3(spreadVector.x * 0.04f, spreadVector.y * 0.04f, 0.0f));
+			Handles.DrawWireCube(localForward * 1.0f, new Vector3(m_SpreadVector.x * 0.04f, m_SpreadVector.y * 0.04f, 0.0f));
 
 			Handles.color = Color.blue;
-			Handles.DrawWireCube(localForward * 1.0f, new Vector3(spreadVectorMax.x * 0.04f, spreadVectorMax.y * 0.04f, 0.0f));
+			Handles.DrawWireCube(localForward * 1.0f, new Vector3(m_SpreadVectorMax.x * 0.04f, m_SpreadVectorMax.y * 0.04f, 0.0f));
 
 			if (Application.isPlaying)
 			{
 				Handles.color = Color.green;
-				Vector2 spread = Vector2.Lerp(spreadVector, spreadVectorMax, spread01);
+				Vector2 spread = Vector2.Lerp(m_SpreadVector, m_SpreadVectorMax, m_Spread01);
 				Handles.DrawWireCube(localForward * 1.0f, new Vector3(spread.x * 0.04f, spread.y * 0.04f, 0.0f));
 			}
 		}

@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Full body biped IK effector types.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public enum FullBodyBipedEffector {
 		Body,
 		LeftShoulder,
@@ -23,7 +24,7 @@ namespace RootMotion.FinalIK {
 	/// <summary>
 	/// Full body biped IK chain types.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public enum FullBodyBipedChain {
 		LeftArm,
 		RightArm,
@@ -34,7 +35,7 @@ namespace RootMotion.FinalIK {
 	/// <summary>
 	/// FBIK solver specialized to biped characters.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class IKSolverFullBodyBiped : IKSolverFullBody {
 		
 		#region Main Interface
@@ -270,8 +271,12 @@ namespace RootMotion.FinalIK {
 		}
 		
 		public override bool IsValid(ref string message) {
-			if (!base.IsValid(ref message)) return false;
-			
+			if (!base.IsValid(ref message))
+			{
+				return false;
+			}
+
+
 			if (rootNode == null) {
 				message = "Root Node bone is null. FBBIK will not initiate.";
 				return false;
@@ -301,11 +306,21 @@ namespace RootMotion.FinalIK {
 		public void SetToReferences(BipedReferences references, Transform rootNode = null) {
 			root = references.root;
 
-			if (rootNode == null) rootNode = DetectRootNodeBone(references);
+			if (rootNode == null)
+			{
+				rootNode = DetectRootNodeBone(references);
+			}
+
+
 			this.rootNode = rootNode;
 			
 			// Root Node
-			if (chain == null || chain.Length != 5) chain = new FBIKChain[5];
+			if (chain == null || chain.Length != 5)
+			{
+				chain = new FBIKChain[5];
+			}
+
+
 			for (int i = 0; i < chain.Length; i++) {
 				if (chain[i] == null) {
 					chain[i] = new FBIKChain();
@@ -329,10 +344,14 @@ namespace RootMotion.FinalIK {
 			chain[4].SetNodes(references.rightThigh, references.rightCalf, references.rightFoot);
 			
 			// Effectors
-			if (effectors.Length != 9) effectors = new IKEffector[9] {
-				new IKEffector(), new IKEffector(), new IKEffector(), new IKEffector(), new IKEffector(), new IKEffector(), new IKEffector(), new IKEffector(), new IKEffector()
+			if (effectors.Length != 9)
+			{
+				effectors = new IKEffector[9] {
+				new(), new(), new(), new(), new(), new(), new(), new(), new()
 			};
-			
+			}
+
+
 			effectors[0].bone = rootNode;
 			effectors[0].childBones = new Transform[2] { references.leftThigh, references.rightThigh };
 			
@@ -363,10 +382,10 @@ namespace RootMotion.FinalIK {
 			
 			// Child Constraints
 			chain[0].childConstraints = new FBIKChain.ChildConstraint[4] {
-				new FBIKChain.ChildConstraint(references.leftUpperArm, references.rightThigh, 0f, 1f),
-				new FBIKChain.ChildConstraint(references.rightUpperArm, references.leftThigh, 0f, 1f),
-				new FBIKChain.ChildConstraint(references.leftUpperArm, references.rightUpperArm),
-				new FBIKChain.ChildConstraint(references.leftThigh, references.rightThigh)
+				new(references.leftUpperArm, references.rightThigh, 0f, 1f),
+				new(references.rightUpperArm, references.leftThigh, 0f, 1f),
+				new(references.leftUpperArm, references.rightUpperArm),
+				new(references.leftThigh, references.rightThigh)
 				
 			};
 			
@@ -391,15 +410,23 @@ namespace RootMotion.FinalIK {
 				for (int i = 0; i < boneMappings.Length; i++) {
 					boneMappings[i] = new IKMappingBone();
 				}
-				if (boneMappingsCount == 1) boneMappings[0].maintainRotationWeight = 0f;
+				if (boneMappingsCount == 1)
+				{
+					boneMappings[0].maintainRotationWeight = 0f;
+				}
+
 			}
 			
-			if (boneMappings.Length > 0) boneMappings[0].bone = references.head;
-			
+			if (boneMappings.Length > 0)
+			{
+				boneMappings[0].bone = references.head;
+			}
+
 			// IKMappingLimb
+
 			if (limbMappings.Length != 4) {
 				limbMappings = new IKMappingLimb[4] {
-					new IKMappingLimb(), new IKMappingLimb(), new IKMappingLimb(), new IKMappingLimb()
+					new(), new(), new(), new()
 				};
 				
 				limbMappings[2].maintainRotationWeight = 1f;
@@ -411,25 +438,46 @@ namespace RootMotion.FinalIK {
 			limbMappings[2].SetBones(references.leftThigh, references.leftCalf, references.leftFoot);
 			limbMappings[3].SetBones(references.rightThigh, references.rightCalf, references.rightFoot);
 
-			if (Application.isPlaying) Initiate(references.root);
+			if (Application.isPlaying)
+			{
+				Initiate(references.root);
+			}
+
 		}
 
 		/*
 		 * Tries to guess which bone should be the root node
 		 * */
 		public static Transform DetectRootNodeBone(BipedReferences references) {
-			if (!references.isFilled) return null;
-			if (references.spine.Length < 1) return null;
+			if (!references.isFilled)
+			{
+				return null;
+			}
+
+
+			if (references.spine.Length < 1)
+			{
+				return null;
+			}
+
 
 			int spineLength = references.spine.Length;
-			if (spineLength == 1) return references.spine[0];
-			
+			if (spineLength == 1)
+			{
+				return references.spine[0];
+			}
+
+
 			Vector3 hip = Vector3.Lerp(references.leftThigh.position, references.rightThigh.position, 0.5f);
 			Vector3 neck = Vector3.Lerp(references.leftUpperArm.position, references.rightUpperArm.position, 0.5f);
 			Vector3 toNeck = neck - hip;
 			float toNeckMag = toNeck.magnitude;
 			
-			if (references.spine.Length < 2) return references.spine[0];
+			if (references.spine.Length < 2)
+			{
+				return references.spine[0];
+			}
+
 
 			int rootNodeBone = 0;
 
@@ -440,7 +488,11 @@ namespace RootMotion.FinalIK {
 				float dot = Vector3.Dot(projection.normalized, toNeck.normalized);
 				if (dot > 0) {
 					float mag = projection.magnitude / toNeckMag;
-					if (mag < 0.5f) rootNodeBone = i;
+					if (mag < 0.5f)
+					{
+						rootNodeBone = i;
+					}
+
 				}
 			}
 
@@ -478,25 +530,56 @@ namespace RootMotion.FinalIK {
 		}
 
 		private static Transform GetLeftClavicle(BipedReferences references) {
-			if (references.leftUpperArm == null) return null;
-			if (!Contains(references.spine, references.leftUpperArm.parent)) return references.leftUpperArm.parent;
+			if (references.leftUpperArm == null)
+			{
+				return null;
+			}
+
+
+			if (!Contains(references.spine, references.leftUpperArm.parent))
+			{
+				return references.leftUpperArm.parent;
+			}
+
+
 			return null;
 		}
 		
 		private static Transform GetRightClavicle(BipedReferences references) {
-			if (references.rightUpperArm == null) return null;
-			if (!Contains(references.spine, references.rightUpperArm.parent)) return references.rightUpperArm.parent;
+			if (references.rightUpperArm == null)
+			{
+				return null;
+			}
+
+
+			if (!Contains(references.spine, references.rightUpperArm.parent))
+			{
+				return references.rightUpperArm.parent;
+			}
+
+
 			return null;
 		}
 		
 		private static bool Contains(Transform[] array, Transform transform) {
-			foreach (Transform t in array) if (t == transform) return true;
+			foreach (Transform t in array)
+			{
+				if (t == transform)
+				{
+					return true;
+				}
+			}
+
+
 			return false;
 		}
 
 		protected override void ReadPose() {
 			// Set effectors to their targets
-			for (int i = 0; i < effectors.Length; i++) effectors[i].SetToTarget();
+			for (int i = 0; i < effectors.Length; i++)
+			{
+				effectors[i].SetToTarget();
+			}
 
 			// Pulling the body with the hands
 			PullBody();
@@ -513,9 +596,13 @@ namespace RootMotion.FinalIK {
 		 * Pulling the body with the hands
 		 * */
 		private void PullBody() {
-			if (iterations < 1) return;
+			if (iterations < 1)
+			{
+				return;
+			}
 
 			// Getting the body positionOffset
+
 			if (pullBodyVertical != 0f || pullBodyHorizontal != 0f) {
 				Vector3 offset = GetBodyOffset();
 
@@ -543,7 +630,12 @@ namespace RootMotion.FinalIK {
 			// Find delta of effector distance and arm length
 			float dirMag = direction.magnitude;
 
-			if (dirMag < armLength) return Vector3.zero;
+			if (dirMag < armLength)
+			{
+				return Vector3.zero;
+			}
+
+
 			float x = dirMag - armLength;
 
 			return (direction / dirMag) * x;

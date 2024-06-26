@@ -31,7 +31,7 @@ public class UnimateAnimatorTrigger : Unimate<UnimateAnimatorTrigger, UnimateAni
 
 	public class Player : UnimaPlayer<UnimateAnimatorTrigger>
 	{
-		private List<Animator> m_Components = new List<Animator>();
+		private List<Animator> m_Components = new();
 		private int m_StateHash = 0;
 
 		protected override void OnInitialize()

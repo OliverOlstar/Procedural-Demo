@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion.FinalIK
 {
 
-    public class VRIKRootController : MonoBehaviour
+	public class VRIKRootController : MonoBehaviour
     {
 
         public Vector3 pelvisTargetRight { get; private set; }
@@ -31,8 +30,11 @@ namespace RootMotion.FinalIK
             pelvisTarget = ik.solver.spine.pelvisTarget;
             leftFootTarget = ik.solver.leftLeg.target;
             rightFootTarget = ik.solver.rightLeg.target;
-            if (pelvisTarget != null) pelvisTargetRight = Quaternion.Inverse(pelvisTarget.rotation) * ik.references.root.right;
-        }
+            if (pelvisTarget != null)
+			{
+				pelvisTargetRight = Quaternion.Inverse(pelvisTarget.rotation) * ik.references.root.right;
+			}
+		}
 
         public void Calibrate(VRIKCalibrator.CalibrationData data)
         {
@@ -52,9 +54,12 @@ namespace RootMotion.FinalIK
 
         void OnPreUpdate()
         {
-            if (!enabled) return;
+            if (!enabled)
+			{
+				return;
+			}
 
-            if (pelvisTarget != null)
+			if (pelvisTarget != null)
             {
                 ik.references.root.position = new Vector3(pelvisTarget.position.x, ik.references.root.position.y, pelvisTarget.position.z);
 
@@ -62,9 +67,8 @@ namespace RootMotion.FinalIK
                 f.y = 0f;
                 ik.references.root.rotation = Quaternion.LookRotation(f);
 
-                ik.references.pelvis.position = Vector3.Lerp(ik.references.pelvis.position, pelvisTarget.position, ik.solver.spine.pelvisPositionWeight);
-                ik.references.pelvis.rotation = Quaternion.Slerp(ik.references.pelvis.rotation, pelvisTarget.rotation, ik.solver.spine.pelvisRotationWeight);
-            }
+                ik.references.pelvis.SetPositionAndRotation(Vector3.Lerp(ik.references.pelvis.position, pelvisTarget.position, ik.solver.spine.pelvisPositionWeight), Quaternion.Slerp(ik.references.pelvis.rotation, pelvisTarget.rotation, ik.solver.spine.pelvisRotationWeight));
+			}
             else if (leftFootTarget != null && rightFootTarget != null)
             {
                 ik.references.root.position = Vector3.Lerp(leftFootTarget.position, rightFootTarget.position, 0.5f);
@@ -73,8 +77,11 @@ namespace RootMotion.FinalIK
 
         void OnDestroy()
         {
-            if (ik != null) ik.solver.OnPreUpdate -= OnPreUpdate;
-        }
+            if (ik != null)
+			{
+				ik.solver.OnPreUpdate -= OnPreUpdate;
+			}
+		}
 
     }
 }

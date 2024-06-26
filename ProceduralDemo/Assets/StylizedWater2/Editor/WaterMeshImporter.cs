@@ -7,7 +7,6 @@ using UnityEditor.AssetImporters;
 #else
 using UnityEditor.Experimental.AssetImporters;
 #endif
-using System;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
@@ -15,12 +14,12 @@ using Object = UnityEngine.Object;
 
 namespace StylizedWater2
 {
-    [ScriptedImporter(3, FILE_EXTENSION)]
+	[ScriptedImporter(3, FILE_EXTENSION)]
     public class WaterMeshImporter : ScriptedImporter
     {
         private const string FILE_EXTENSION = "watermesh";
         
-        [SerializeField] public WaterMesh waterMesh = new WaterMesh();
+        [SerializeField] public WaterMesh waterMesh = new();
 
         public override void OnImportAsset(AssetImportContext context)
         {
@@ -39,11 +38,14 @@ namespace StylizedWater2
 
             if (target is Mesh)
             {
-                var path = AssetDatabase.GetAssetPath(instanceID);
+				string path = AssetDatabase.GetAssetPath(instanceID);
                 
-                if (Path.GetExtension(path) != "." + FILE_EXTENSION) return false;
+                if (Path.GetExtension(path) != "." + FILE_EXTENSION)
+				{
+					return false;
+				}
 
-                Selection.activeObject = target;
+				Selection.activeObject = target;
                 return true;
             }
             
@@ -209,7 +211,7 @@ namespace StylizedWater2
                     if (SceneView.lastActiveSceneView)
                     {
                         //Position in view
-                        Vector3 position = SceneView.lastActiveSceneView.camera.transform.position + (SceneView.lastActiveSceneView.camera.transform.forward * importer.waterMesh.scale * 0.5f);
+                        Vector3 position = SceneView.lastActiveSceneView.camera.transform.position + (0.5f * importer.waterMesh.scale * SceneView.lastActiveSceneView.camera.transform.forward);
 
                         Graphics.DrawMeshNow(importer.waterMesh.mesh, position, Quaternion.identity);
                     }

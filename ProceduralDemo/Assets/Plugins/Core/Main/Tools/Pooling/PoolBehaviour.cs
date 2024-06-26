@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core
 {
@@ -22,7 +20,7 @@ namespace Core
 
 		bool KeepAlive();
 
-		void OnPlay(UnityEngine.Object owner);
+		void OnPlay(Object owner);
 
 		void OnStop(bool kill);
 	}

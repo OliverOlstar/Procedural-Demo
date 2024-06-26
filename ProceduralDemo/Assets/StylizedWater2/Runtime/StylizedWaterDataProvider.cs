@@ -1,13 +1,9 @@
-﻿using System;
-using UnityEngine;
-using StylizedWater2;
-#if UNITY_EDITOR
-using UnityEditor;
+﻿#if UNITY_EDITOR
 #endif
 
 namespace NWH.DWP2.WaterData
 {
-    #if NWH_DWP2
+#if NWH_DWP2
     public class StylizedWaterDataProvider : WaterDataProvider
     {
         [Tooltip("This reference is required to grab the wave distance and height values")]

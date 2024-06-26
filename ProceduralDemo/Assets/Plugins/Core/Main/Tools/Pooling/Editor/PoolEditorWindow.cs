@@ -17,23 +17,23 @@ namespace Core
 			window.Show();
 		}
 
-		private List<PoolDirectorBase> m_Directors = new List<PoolDirectorBase>();
-		private List<PoolInstance> m_Instances = new List<PoolInstance>();
-		private HashSet<int> m_FoldOuts = new HashSet<int>();
+		private List<PoolDirectorBase> m_Directors = new();
+		private List<PoolInstance> m_Instances = new();
+		private HashSet<int> m_FoldOuts = new();
 		private System.Type m_SelectedType = default;
 
 		[MenuItem("Window/Debug/Pool Debugger Write To CSV")]
 		public static void WriteSnapshotToCSV()
 		{
-			List<PoolDirectorBase> directors = new List<PoolDirectorBase>();
-			Director.GetAll<PoolDirectorBase>(directors);
+			List<PoolDirectorBase> directors = new();
+			Director.GetAll(directors);
 			if (directors.Count == 0)
 			{
 				return;
 			}
 
 			string path = EditorUtility.SaveFilePanel("Save Snapshot File", Application.dataPath, "PoolDebugSnapshot", "csv");
-			using (StreamWriter writer = new StreamWriter(path))
+			using (StreamWriter writer = new(path))
 			{
 
 				writer.WriteLine("Director,Asset,Count");
@@ -42,7 +42,7 @@ namespace Core
 					string directorName = director.GetType().Name;
 					foreach (int id in director.GetIDs())
 					{
-						List<PoolInstance> instances = new List<PoolInstance>();
+						List<PoolInstance> instances = new();
 						director.GetDebugItems(id, out string name, instances);
 						writer.WriteLine(directorName + "," + name + "," + instances.Count);
 					}
@@ -58,7 +58,7 @@ namespace Core
 		private void OnGUI()
 		{
 			m_Directors.Clear();
-			Director.GetAll<PoolDirectorBase>(m_Directors);
+			Director.GetAll(m_Directors);
 			if (m_Directors.Count == 0)
 			{
 				return;

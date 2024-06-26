@@ -10,7 +10,6 @@ using UnityEditor.Experimental.AssetImporters;
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using UnityEditor;
 using UnityEditorInternal;
@@ -20,7 +19,7 @@ using Object = UnityEngine.Object;
 
 namespace StylizedWater2
 {
-    [ScriptedImporterAttribute(AssetInfo.SHADER_GENERATOR_VERSION_MAJOR + AssetInfo.SHADER_GENERATOR_MINOR + AssetInfo.SHADER_GENERATOR_PATCH, TARGET_FILE_EXTENSION, 2)]
+	[ScriptedImporter(AssetInfo.SHADER_GENERATOR_VERSION_MAJOR + AssetInfo.SHADER_GENERATOR_MINOR + AssetInfo.SHADER_GENERATOR_PATCH, TARGET_FILE_EXTENSION, 2)]
     public class WaterShaderImporter : ScriptedImporter
     {
         private const string TARGET_FILE_EXTENSION = "watershader";
@@ -39,7 +38,7 @@ namespace StylizedWater2
         /// Registering these as dependencies is required to trigger the shader to recompile when these files are changed
         /// </summary>
         //[NonSerialized] //Want to keep these serialized. Will differ per-project, which also causes the file to appear as changed for every project when updating the asset (this triggers a re-import)
-        public List<string> dependencies = new List<string>();
+        public List<string> dependencies = new();
 
         private bool HasExternalTemplate()
         {
@@ -57,8 +56,11 @@ namespace StylizedWater2
 
         private void OnValidate()
         {
-            if(settings.shaderName == string.Empty) settings.shaderName = $"{Application.productName} ({DateTime.Now.Ticks})";
-        }
+            if(settings.shaderName == string.Empty)
+			{
+				settings.shaderName = $"{Application.productName} ({DateTime.Now.Ticks})";
+			}
+		}
 
         public override void OnImportAsset(AssetImportContext context)
         {
@@ -94,9 +96,12 @@ namespace StylizedWater2
             ShaderUtil.RegisterShader(shaderAsset);
             
             Texture2D thumbnail = Resources.Load<Texture2D>(ICON_NAME);
-            if(!thumbnail) thumbnail = EditorGUIUtility.IconContent("ShaderImporter Icon").image as Texture2D;
-            
-            context.AddObjectToAsset("MainAsset", shaderAsset, thumbnail);
+            if(!thumbnail)
+			{
+				thumbnail = EditorGUIUtility.IconContent("ShaderImporter Icon").image as Texture2D;
+			}
+
+			context.AddObjectToAsset("MainAsset", shaderAsset, thumbnail);
             context.SetMainObject(shaderAsset);
             
             //Do not attempt to create a tessellation variant for the underwater post-effect shaders
@@ -113,7 +118,7 @@ namespace StylizedWater2
             }
             
             //Set up dependency, so that changes to the template triggers shaders to regenerate
-            if (HasExternalTemplate() && AssetDatabase.TryGetGUIDAndLocalFileIdentifier(template, out var guid, out long _))
+            if (HasExternalTemplate() && AssetDatabase.TryGetGUIDAndLocalFileIdentifier(template, out string guid, out long _))
             {
                 //Note: this strictly only works when adding the file path!
                 //context.DependsOnArtifact(guid);
@@ -135,26 +140,29 @@ namespace StylizedWater2
 
         public void ClearCache(bool recompile = false)
         {
-            var objs = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+			Object[] objs = AssetDatabase.LoadAllAssetsAtPath(assetPath);
             
-            foreach (var obj in objs)
+            foreach (Object obj in objs)
             {
                 if (obj is Shader)
                 {
                     ShaderUtil.ClearShaderMessages((Shader)obj);
                     ShaderUtil.ClearCachedData((Shader)obj);
                     
-                    if(recompile) AssetDatabase.ImportAsset(assetPath);
-                    
-                    #if SWS_DEV
+                    if(recompile)
+					{
+						AssetDatabase.ImportAsset(assetPath);
+					}
+
+#if SWS_DEV
                     Debug.Log($"Cleared cache for {obj.name}");
-                    #endif
-                }
+#endif
+				}
             }
         }
         public void RegisterDependency(string dependencyAssetPath)
         {
-            if (dependencyAssetPath.StartsWith("Packages/") == false)
+            if (!dependencyAssetPath.StartsWith("Packages/"))
             {
                 string guid = AssetDatabase.AssetPathToGUID(dependencyAssetPath);
 
@@ -167,8 +175,11 @@ namespace StylizedWater2
             }
 
             //Tessellation variant pass may run, causing the same dependencies to be registered twice, hence check first
-            if(dependencies.Contains(dependencyAssetPath) == false) dependencies.Add(dependencyAssetPath);
-        }
+            if(!dependencies.Contains(dependencyAssetPath))
+			{
+				dependencies.Add(dependencyAssetPath);
+			}
+		}
         
         //Handles correct behaviour when double-clicking a .watershader asset. Should open in the IDE
         [UnityEditor.Callbacks.OnOpenAsset]
@@ -178,11 +189,14 @@ namespace StylizedWater2
 
             if (target is Shader)
             {
-                var path = AssetDatabase.GetAssetPath(instanceID);
+				string path = AssetDatabase.GetAssetPath(instanceID);
                 
-                if (Path.GetExtension(path) != "." + TARGET_FILE_EXTENSION) return false;
+                if (Path.GetExtension(path) != "." + TARGET_FILE_EXTENSION)
+				{
+					return false;
+				}
 
-                string externalScriptEditor = ScriptEditorUtility.GetExternalScriptEditor();
+				string externalScriptEditor = ScriptEditorUtility.GetExternalScriptEditor();
                 if (externalScriptEditor != "internal")
                 {
                     InternalEditorUtility.OpenFileAtLineExternal(path, 0);
@@ -233,23 +247,28 @@ namespace StylizedWater2
             //Register imported water shaders, so they work with Shader.Find() and show up in the shader selection menu
             private static void RegisterShaders(string[] paths)
             {
-                foreach (var path in paths)
+                foreach (string path in paths)
                 {
-                    if (!path.EndsWith(WaterShaderImporter.TARGET_FILE_EXTENSION, StringComparison.InvariantCultureIgnoreCase))
-                        continue;
+                    if (!path.EndsWith(TARGET_FILE_EXTENSION, StringComparison.InvariantCultureIgnoreCase))
+					{
+						continue;
+					}
 
-                    var mainObj = AssetDatabase.LoadMainAssetAtPath(path);
+					Object mainObj = AssetDatabase.LoadMainAssetAtPath(path);
                     if (mainObj is Shader)
                     {
-                        if (mainObj.name == string.Empty) return;
-                        
-                        //ShaderUtil.RegisterShader((Shader)mainObj);
-                        
-                        #if SWS_DEV
-                        //Debug.Log($"Registered water shader \"{mainObj.name}\" on import", mainObj);
-                        #endif
+                        if (mainObj.name == string.Empty)
+						{
+							return;
+						}
 
-                        return;
+						//ShaderUtil.RegisterShader((Shader)mainObj);
+
+#if SWS_DEV
+                        //Debug.Log($"Registered water shader \"{mainObj.name}\" on import", mainObj);
+#endif
+
+						return;
                     }
                 }
             }
@@ -257,7 +276,7 @@ namespace StylizedWater2
 
         public static string[] FindAllAssets()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(Application.dataPath);
+            DirectoryInfo directoryInfo = new(Application.dataPath);
             
             FileInfo[] fileInfos = directoryInfo.GetFiles("*." + TARGET_FILE_EXTENSION, SearchOption.AllDirectories);
             
@@ -281,7 +300,7 @@ namespace StylizedWater2
         public static void ReimportAll()
         {
             string[] filePaths = FindAllAssets();
-            foreach (var filePath in filePaths)
+            foreach (string filePath in filePaths)
             {
                 #if SWS_DEV
                 Debug.Log($"Reimporting: {filePath}");
@@ -311,7 +330,7 @@ namespace StylizedWater2
             [Tooltip("Add support for native light cookies. Disabled by default to allow for cookies to act as caustics projectors that ignore the water surface")]
             public bool lightCookies = false;
             
-            public List<Directive> customIncludeDirectives = new List<Directive>();
+            public List<Directive> customIncludeDirectives = new();
         }
     }
 }

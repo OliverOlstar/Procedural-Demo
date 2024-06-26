@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpringDamperTest : MonoBehaviour
@@ -16,6 +14,6 @@ public class SpringDamperTest : MonoBehaviour
 
 	public void Update()
 	{
-		transform.position = OliverLoescher.Util.Func.SpringDamper(transform.position, Target.position, ref Velocity, Spring, Damper, Time.deltaTime);
+		transform.position = OCore.Util.Func.SpringDamper(transform.position, Target.position, ref Velocity, Spring, Damper, Time.deltaTime);
 	}
 }

@@ -1,32 +1,30 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Start/Charge")]
 	public class SOWeaponShootStartCharge : SOWeaponShootStartBase
 	{
 		[SerializeField]
-		private float chargeSeconds = 0;
+		private float m_ChargeSeconds = 0;
 
-		private Coroutine coroutine = null;
+		private Coroutine m_Coroutine = null;
 
 		public override void ShootStart()
 		{
-			Util.Mono.Stop(ref coroutine);
-			coroutine = Util.Mono.Start(ShootDelayed());
+			Util.Mono.Stop(ref m_Coroutine);
+			m_Coroutine = Util.Mono.Start(ShootDelayed());
 		}
 		public override void ShootEnd()
 		{
-			Util.Mono.Stop(ref coroutine);
+			Util.Mono.Stop(ref m_Coroutine);
 		}
 
 		public IEnumerator ShootDelayed()
 		{
-			yield return new WaitForSeconds(chargeSeconds);
-			shootType.ShootStart();
+			yield return new WaitForSeconds(m_ChargeSeconds);
+			ShootType.ShootStart();
 		}
 	}
 }

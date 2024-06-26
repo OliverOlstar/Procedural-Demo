@@ -43,7 +43,7 @@ public class UnimateGraphicMaterialPropertyArray : UnimateTween<UnimateGraphicMa
 			    return "Curve keys should be in the range 0 to 1";
 		    }
         }
-		List<Graphic> graphics = new List<Graphic>();
+		List<Graphic> graphics = new();
 		if (m_Recursive)
 		{
 			gameObject.GetComponentsInChildren(graphics);
@@ -75,7 +75,7 @@ public class UnimateGraphicMaterialPropertyArray : UnimateTween<UnimateGraphicMa
 
 	public class Player : UnimaTweenPlayer<UnimateGraphicMaterialPropertyArray>
 	{
-		private List<Graphic> m_AllGraphics = new List<Graphic>();
+		private List<Graphic> m_AllGraphics = new();
 		private List<Graphic> m_Graphics = null;
 		private float[,] m_InitialValues = null;
 		private int[] m_PropertyID = null;

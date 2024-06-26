@@ -1,62 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using OliverLoescher.Util;
+using OCore.Util;
 
-namespace OliverLoescher 
+namespace OCore
 {
-    public class ThirdPersonCamera : MonoBehaviour
+	public class ThirdPersonCamera : MonoBehaviour
     {
         [SerializeField] 
-		private InputBridge_Camera input = null;
+		private InputBridge_Camera m_Input = null;
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
+		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
 
 		[Header("Follow")]
-        public Transform followTransform = null;
+        public Transform FollowTransform = null;
         [SerializeField]
-		private Vector3 offset = new Vector3(0.0f, 0.5f, 0.0f);
-        public Transform cameraTransform = null; // Should be child
+		private Vector3 m_Offset = new(0.0f, 0.5f, 0.0f);
+        public Transform CameraTransform = null; // Should be child
         [SerializeField]
-		private Vector3 childOffset = new Vector3(0.0f, 2.0f, -5.0f);
+		private Vector3 m_ChildOffset = new(0.0f, 2.0f, -5.0f);
 		[SerializeField]
-		private float ySmoothTime = 0.2f;
-		private float yVelocity = 0.0f;
+		private float m_YSmoothTime = 0.2f;
+		private float m_YVelocity = 0.0f;
         
         [Header("Look")]
         [SerializeField]
-		private Transform lookTransform = null;
+		private Transform m_LookTransform = null;
         [SerializeField, MinMaxSlider(-90, 90, true)] 
-		private Vector2 lookYClamp = new Vector2(-40, 50);
+		private Vector2 m_LookYClamp = new(-40, 50);
         [SerializeField]
-		private float sensitivityDelta = 1.0f;
+		private float m_SensitivityDelta = 1.0f;
         [SerializeField]
-		private float sensitivityUpdate = 1.0f;
-        private Vector2 lookInput = new Vector2();
+		private float m_SensitivityUpdate = 1.0f;
+		
+        private Vector2 m_LookInput = new();
 
         [Header("Zoom")]
         [SerializeField]
-		private float zoomSpeed = 1.0f;
+		private float m_ZoomSpeed = 1.0f;
         [SerializeField]
-		private float zoomSmoothTime = 0.1f;
+		private float m_ZoomSmoothTime = 0.1f;
         [SerializeField]
-		private Vector2 zoomDistanceClamp = new Vector2(1.0f, 5.0f);
-		private Vector3 ZoomVelocity = Vector3.zero;
-        private float currZoom = 0.5f;
+		private Vector2 m_ZoomDistanceClamp = new(1.0f, 5.0f);
+		private Vector3 m_ZoomVelocity = Vector3.zero;
+
+        private float m_CurrZoom = 0.5f;
 
         [Header("Collision")]
         [SerializeField] 
-		private LayerMask collisionLayers = new LayerMask();
+		private LayerMask m_CollisionLayers = new();
         [SerializeField] 
-		private float collisionRadius = 0.2f;
+		private float m_CollisionRadius = 0.2f;
 
 		private void Reset()
         {
-            lookTransform = transform;
+            m_LookTransform = transform;
             if (transform.childCount > 0)
             {
-                cameraTransform = transform.GetChild(0);
+                CameraTransform = transform.GetChild(0);
             }
         }
 
@@ -64,31 +64,31 @@ namespace OliverLoescher
         {
             DoFollow();
 
-            currZoom = childOffset.magnitude;
-            cameraTransform.localPosition = childOffset;
+            m_CurrZoom = m_ChildOffset.magnitude;
+            CameraTransform.localPosition = m_ChildOffset;
 
-            if (input != null)
+            if (m_Input != null)
 			{
-				input.Look.OnChanged.AddListener(OnLook);
-				input.LookDelta.OnChanged.AddListener(OnLookDelta);
-				input.Zoom.onChanged.AddListener(OnZoom);
+				m_Input.Look.OnChanged.AddListener(OnLook);
+				m_Input.LookDelta.OnChanged.AddListener(OnLookDelta);
+				m_Input.Zoom.onChanged.AddListener(OnZoom);
 			}
 
-			updateable.Register(Tick);
+			m_Updateable.Register(Tick);
 		}
 
 		private void OnDestroy()
 		{
-			updateable.Deregister();
+			m_Updateable.Deregister();
 		}
 
 		private void Tick(float pDeltaTime) 
         {
             DoFollow();
             
-            if (lookInput != Vector2.zero)
+            if (m_LookInput != Vector2.zero)
             {
-                RotateCamera(lookInput * sensitivityUpdate * pDeltaTime);
+                RotateCamera(pDeltaTime * m_SensitivityUpdate * m_LookInput);
             }
 
             DoZoomUpdate(pDeltaTime);
@@ -96,59 +96,63 @@ namespace OliverLoescher
         }
 
         private void DoFollow()
-        {
-            if (followTransform != null)
-            {
-				Vector3 position = followTransform.position + offset;
-				if (ySmoothTime > Math.NEARZERO)
-				{
-					position.y = Mathf.SmoothDamp(transform.position.y, position.y, ref yVelocity, ySmoothTime);
-				}
-				transform.position = position;
-            }
-        }
+		{
+			if (FollowTransform == null)
+			{
+				return;
+			}
+			Vector3 position = FollowTransform.position + m_Offset;
+			if (m_YSmoothTime > Math.NEARZERO)
+			{
+				position.y = Mathf.SmoothDamp(transform.position.y, position.y, ref m_YVelocity, m_YSmoothTime);
+			}
+			transform.position = position;
+		}
 
-        private void RotateCamera(Vector2 pInput)
+		private void RotateCamera(Vector2 pInput)
         {
-            if (lookTransform == null)
+            if (m_LookTransform == null)
 			{
                 return;
 			}
-            Vector3 euler = lookTransform.eulerAngles;
-            euler.x = Mathf.Clamp(Util.Func.SafeAngle(euler.x - pInput.y), lookYClamp.x, lookYClamp.y);
+            Vector3 euler = m_LookTransform.eulerAngles;
+            euler.x = Mathf.Clamp(Func.SafeAngle(euler.x - pInput.y), m_LookYClamp.x, m_LookYClamp.y);
             euler.y = euler.y + pInput.x;
             euler.z = 0.0f;
-            lookTransform.rotation = Quaternion.Euler(euler);
+            m_LookTransform.rotation = Quaternion.Euler(euler);
         }
 
         private void DoZoom(float pInput)
         {
-            currZoom += pInput * zoomSpeed;
-            currZoom.Clamp(zoomDistanceClamp);
+            m_CurrZoom += pInput * m_ZoomSpeed;
+            m_CurrZoom.Clamp(m_ZoomDistanceClamp);
         }
 
         private void DoZoomUpdate(in float pDeltaTime)
         {
-            cameraTransform.localPosition = Vector3.SmoothDamp(cameraTransform.localPosition, childOffset.normalized * currZoom, ref ZoomVelocity, zoomSmoothTime, float.PositiveInfinity, deltaTime: pDeltaTime);
+            CameraTransform.localPosition = Vector3.SmoothDamp(CameraTransform.localPosition, m_ChildOffset.normalized * m_CurrZoom, ref m_ZoomVelocity, 
+				m_ZoomSmoothTime, float.PositiveInfinity, deltaTime: pDeltaTime);
         }
 
         private void DoCollision()
-        {
-            if (Physics.Raycast(transform.position, transform.TransformDirection(childOffset.normalized), out RaycastHit hit, cameraTransform.localPosition.magnitude + collisionRadius, collisionLayers))
-            {
-                cameraTransform.localPosition = childOffset.normalized * (hit.distance - collisionRadius);
-            }
-        }
+		{
+			if (!Physics.Raycast(transform.position, transform.TransformDirection(m_ChildOffset.normalized), out RaycastHit hit, 
+				CameraTransform.localPosition.magnitude + m_CollisionRadius, m_CollisionLayers))
+			{
+				return;
+			}
+			CameraTransform.localPosition = m_ChildOffset.normalized * (hit.distance - m_CollisionRadius);
+		}
 
-#region Input
-        public void OnLook(Vector2 pInput)
+		#region Input
+		public void OnLook(Vector2 pInput)
         {
-            lookInput = pInput;
+            m_LookInput = pInput;
         }
 
         public void OnLookDelta(Vector2 pInput)
         {
-            RotateCamera(pInput * sensitivityDelta);
+            RotateCamera(pInput * m_SensitivityDelta);
         }
 
         public void OnZoom(float pInput)
@@ -157,23 +161,24 @@ namespace OliverLoescher
         }
 #endregion
 
-        private void OnDrawGizmosSelected() 
-        {
-            if (Application.isPlaying == false)
-            {
-                if (cameraTransform == null)
-                    return;
-                DoFollow();
-                cameraTransform.localPosition = childOffset;
-            }
-        }
+        private void OnDrawGizmosSelected()
+		{
+			if (Application.isPlaying || CameraTransform == null)
+			{
+				return;
+			}
+			DoFollow();
+			CameraTransform.localPosition = m_ChildOffset;
+		}
 
-        private void OnDrawGizmos()
+		private void OnDrawGizmos()
         {
-            if (cameraTransform == null)
-                return;
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, transform.position + transform.TransformDirection(childOffset) * (cameraTransform.localPosition.magnitude + collisionRadius));
+            if (CameraTransform == null)
+			{
+				return;
+			}
+			Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, transform.position + transform.TransformDirection(m_ChildOffset) * (CameraTransform.localPosition.magnitude + m_CollisionRadius));
         }
     }
 }

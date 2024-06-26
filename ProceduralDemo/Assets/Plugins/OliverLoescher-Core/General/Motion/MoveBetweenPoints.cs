@@ -1,9 +1,8 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
-using OliverLoescher.Util;
-using UnityEngine.Serialization;
+using OCore.Util;
 
-namespace OliverLoescher
+namespace OCore
 {
 	public class MoveBetweenPoints : MonoBehaviour
 	{

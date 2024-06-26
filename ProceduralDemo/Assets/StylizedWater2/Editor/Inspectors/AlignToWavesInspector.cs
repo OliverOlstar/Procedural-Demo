@@ -2,9 +2,6 @@
 //Staggart Creations (http://staggart.xyz)
 //Copyright protected under Unity Asset Store EULA
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 #if UNITY_2021_2_OR_NEWER
@@ -15,7 +12,7 @@ using PrefabStageUtility = UnityEditor.Experimental.SceneManagement.PrefabStageU
 
 namespace StylizedWater2
 {
-    [CanEditMultipleObjects]
+	[CanEditMultipleObjects]
     [CustomEditor(typeof(AlignToWaves))]
     public class AlignToWavesInspector : Editor
     {
@@ -111,11 +108,14 @@ namespace StylizedWater2
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.PrefixLabel("Water level source");
-                waterLevelSource.intValue = GUILayout.Toolbar(waterLevelSource.intValue, new GUIContent[] { new GUIContent("Fixed Value"), new GUIContent("Water Object") });
+                waterLevelSource.intValue = GUILayout.Toolbar(waterLevelSource.intValue, new GUIContent[] { new("Fixed Value"), new("Water Object") });
             }
-            if (waterLevelSource.intValue == (int)AlignToWaves.WaterLevelSource.FixedValue) EditorGUILayout.PropertyField(waterLevel);
+            if (waterLevelSource.intValue == (int)AlignToWaves.WaterLevelSource.FixedValue)
+			{
+				EditorGUILayout.PropertyField(waterLevel);
+			}
 
-            EditorGUILayout.Space();
+			EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(heightOffset);
             EditorGUILayout.PropertyField(rollAmount);
@@ -176,9 +176,11 @@ namespace StylizedWater2
 
             EditorGUILayout.PropertyField(childTransform);
             if (childTransform.objectReferenceValue == null && samples.arraySize > 0)
-                UI.DrawNotification("Assign a transform to rotate/scale the sample positions with");
+			{
+				UI.DrawNotification("Assign a transform to rotate/scale the sample positions with");
+			}
 
-            if (EditorGUI.EndChangeCheck())
+			if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
 
@@ -192,9 +194,12 @@ namespace StylizedWater2
         {
             if (script.waterObject && script.waterObject.material)
             {
-                if (script.waterObject.material != script.waterObject.meshRenderer.sharedMaterial) script.waterObject.material = script.waterObject.meshRenderer.sharedMaterial;
-                
-                wavesEnabled = WaveParameters.WavesEnabled(script.waterObject.material);
+                if (script.waterObject.material != script.waterObject.meshRenderer.sharedMaterial)
+				{
+					script.waterObject.material = script.waterObject.meshRenderer.sharedMaterial;
+				}
+
+				wavesEnabled = WaveParameters.WavesEnabled(script.waterObject.material);
                 isRiver = script.waterObject.material.IsKeywordEnabled("_RIVER");
             }
         }
@@ -205,9 +210,12 @@ namespace StylizedWater2
 
         private void OnSceneGUI()
         {
-            if (!script) return;
-            
-            AlignToWaves.Disable = PrefabStageUtility.GetCurrentPrefabStage() != null || editSamples;
+            if (!script)
+			{
+				return;
+			}
+
+			AlignToWaves.Disable = PrefabStageUtility.GetCurrentPrefabStage() != null || editSamples;
             
             if (editSamples)
             {
@@ -248,9 +256,12 @@ namespace StylizedWater2
                 selectedSampleIndex = -1;
                 Tools.hidden = false;
                 
-                if (script.samples == null) return;
+                if (script.samples == null)
+				{
+					return;
+				}
 
-                Handles.color = new Color(1,1,1, 0.25f);
+				Handles.color = new Color(1,1,1, 0.25f);
                 for (int i = 0; i < script.samples.Count; i++)
                 {
                     sampleWorldPos = script.ConvertToWorldSpace(script.samples[i]);

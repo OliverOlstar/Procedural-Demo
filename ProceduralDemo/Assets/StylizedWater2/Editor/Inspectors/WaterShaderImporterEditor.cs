@@ -50,7 +50,7 @@ namespace StylizedWater2
             underwaterRenderingInstalled = StylizedWaterEditor.UnderwaterRenderingInstalled();
             dynamicEffectsInstalled = StylizedWaterEditor.DynamicEffectsInstalled();
             firstIntegration = ShaderConfigurator.Fog.GetFirstInstalled();
-            curvedWorldInstalled = StylizedWaterEditor.CurvedWorldInstalled(out var _);
+            curvedWorldInstalled = StylizedWaterEditor.CurvedWorldInstalled(out string _);
 
             importer = (WaterShaderImporter)target;
 
@@ -103,7 +103,7 @@ namespace StylizedWater2
                 {
                     if (GUILayout.Button(new GUIContent("  Show Generated Code", EditorGUIUtility.IconContent("align_horizontally_left_active").image), EditorStyles.miniButtonLeft, GUILayout.Height(28f)))
                     {
-                        GenericMenu menu = new GenericMenu();
+                        GenericMenu menu = new();
 
                         menu.AddItem(new GUIContent("With tessellation"), false, () => OpenGeneratedCode(true));
                         menu.AddItem(new GUIContent("Without tessellation"), false, () => OpenGeneratedCode(false));
@@ -126,10 +126,13 @@ namespace StylizedWater2
 
             EditorGUILayout.PropertyField(template);
 
-            if (template.objectReferenceValue == null) EditorGUILayout.HelpBox("• Template is assumed to be in the contents of the file itself", MessageType.None);
-            //EditorGUILayout.LabelField(importer.GetTemplatePath(), EditorStyles.miniLabel);
+            if (template.objectReferenceValue == null)
+			{
+				EditorGUILayout.HelpBox("• Template is assumed to be in the contents of the file itself", MessageType.None);
+			}
+			//EditorGUILayout.LabelField(importer.GetTemplatePath(), EditorStyles.miniLabel);
 
-            EditorGUILayout.Space();
+			EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("Settings", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(shaderName);
@@ -190,9 +193,12 @@ namespace StylizedWater2
                 {
                     EditorGUILayout.PropertyField(fogIntegration);
                 }
-                if (curvedWorldInstalled) EditorGUILayout.HelpBox("Curved World integration must be activated through Window->Amazing Assets->Curved Word (Activator tab)", MessageType.Info);
-                
-                EditorGUILayout.Space();
+                if (curvedWorldInstalled)
+				{
+					EditorGUILayout.HelpBox("Curved World integration must be activated through Window->Amazing Assets->Curved Word (Activator tab)", MessageType.Info);
+				}
+
+				EditorGUILayout.Space();
 
                 EditorGUILayout.LabelField("Functionality support", EditorStyles.boldLabel);
 
@@ -279,7 +285,7 @@ namespace StylizedWater2
                 {
                     foreach (string dependency in importer.dependencies)
                     {
-                        var rect = EditorGUILayout.BeginHorizontal(EditorStyles.miniLabel);
+						Rect rect = EditorGUILayout.BeginHorizontal(EditorStyles.miniLabel);
 
                         if (rect.Contains(Event.current.mousePosition))
                         {

@@ -1,5 +1,5 @@
 
-namespace OliverLoescher
+namespace OCore
 {
 	/// <summary>
 	/// Interface to give additional functions for classes inhieriting from either Singleton or MonoBehaviourSingleton

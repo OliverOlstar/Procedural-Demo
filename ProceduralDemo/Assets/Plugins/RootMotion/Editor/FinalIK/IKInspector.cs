@@ -1,12 +1,13 @@
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Base abstract class for IK component inspectors.
 	 * */
+
 	public abstract class IKInspector : Editor {
 		
 		protected abstract void AddInspector();
@@ -21,14 +22,22 @@ namespace RootMotion.FinalIK {
 		private MonoScript monoScript;
 
 		void OnEnable() {
-			if (serializedObject == null) return;
+			if (serializedObject == null)
+			{
+				return;
+			}
 
 			// Changing the script execution order
+
 			if (!Application.isPlaying) {
 				int executionOrder = 0;
 				monoScript = MonoScript.FromMonoBehaviour(GetMonoBehaviour(out executionOrder));
 				int currentExecutionOrder = MonoImporter.GetExecutionOrder(monoScript);
-				if (currentExecutionOrder != executionOrder) MonoImporter.SetExecutionOrder(monoScript, executionOrder);
+				if (currentExecutionOrder != executionOrder)
+				{
+					MonoImporter.SetExecutionOrder(monoScript, executionOrder);
+				}
+
 			}
 
 			solver = serializedObject.FindProperty("solver");
@@ -49,7 +58,11 @@ namespace RootMotion.FinalIK {
 		#region Inspector
 		
 		public override void OnInspectorGUI() {
-			if (serializedObject == null) return;
+			if (serializedObject == null)
+			{
+				return;
+			}
+
 
 			serializedObject.Update();
 			

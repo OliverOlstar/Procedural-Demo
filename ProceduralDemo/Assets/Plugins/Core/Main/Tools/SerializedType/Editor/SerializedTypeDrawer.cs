@@ -39,8 +39,8 @@ public class SerializedTypeDrawer : PropertyDrawer
 
 	private Rect[] SplitRect(Rect rect, float percent)
 	{
-		Rect left = new Rect(rect.x, rect.y, rect.width * percent, rect.height);
-		Rect right = new Rect(left.width, rect.y, rect.width - left.width, rect.height);
+		Rect left = new(rect.x, rect.y, rect.width * percent, rect.height);
+		Rect right = new(left.width, rect.y, rect.width - left.width, rect.height);
 		return new Rect[] { left, right };
 	}
 
@@ -69,10 +69,10 @@ public class SerializedTypeDrawer : PropertyDrawer
 		{
 			OnOptionSelected(selected, typeProperty);
 		};
-		GenericMenu dropDownMenu = new GenericMenu();
+		GenericMenu dropDownMenu = new();
 		dropDownMenu.AddItem(new GUIContent(NONE), NONE == currentTypeName, callback, NONE);
 		dropDownMenu.AddSeparator(string.Empty);
-		foreach (var kvp in m_MatchingTypes)
+		foreach (KeyValuePair<string, Type> kvp in m_MatchingTypes)
 		{
 			dropDownMenu.AddItem(new GUIContent(kvp.Key), kvp.Key == currentTypeName, callback, kvp.Key);
 		}

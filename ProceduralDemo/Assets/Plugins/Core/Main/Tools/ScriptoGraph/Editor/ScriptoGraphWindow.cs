@@ -6,7 +6,7 @@ using GraphEditor;
 
 public class ScriptoGraphWindow : EditorWindow
 {
-	private static bool IsObjectValid(UnityEngine.Object obj)
+	private static bool IsObjectValid(Object obj)
 	{
 		switch (obj)
 		{
@@ -19,13 +19,13 @@ public class ScriptoGraphWindow : EditorWindow
 		}
 	}
 
-	private static bool TryOpenWindow(UnityEngine.Object obj)
+	private static bool TryOpenWindow(Object obj)
 	{
 		if (!IsObjectValid(obj))
 		{
 			return false;
 		}
-		ScriptoGraphWindow window = EditorWindow.GetWindow<ScriptoGraphWindow>("Script-O-Graph");
+		ScriptoGraphWindow window = GetWindow<ScriptoGraphWindow>("Script-O-Graph");
 		window.Initialize(obj);
 		window.Show();
 		return true;
@@ -43,7 +43,7 @@ public class ScriptoGraphWindow : EditorWindow
 	[UnityEditor.Callbacks.OnOpenAsset(100)] // Smaller numbers seem to be higher priority, pick a low priority so we don't override other custom functionality
 	public static bool OnOpenAsset(int instanceID, int line)
 	{
-		UnityEngine.Object obj = EditorUtility.InstanceIDToObject(instanceID);
+		Object obj = EditorUtility.InstanceIDToObject(instanceID);
 		return TryOpenWindow(obj);
 	}
 
@@ -64,9 +64,9 @@ public class ScriptoGraphWindow : EditorWindow
 	private static readonly Color BG_COLOR = new Color32(25, 25, 25, 255);
 	private static readonly Color TYPE_TEXT_COLOR = new Color32(164, 164, 164, 255);
 
-	private HashSet<UnityEngine.Object> m_Objects = new HashSet<Object>();
+	private HashSet<Object> m_Objects = new();
 	private Vector2 m_Offset = Vector2.zero;
-	private UnityEngine.Object m_Obj = null;
+	private Object m_Obj = null;
 	private EditorWindowInput m_Input = null;
 
 	ScriptoGraphWindow()
@@ -77,11 +77,11 @@ public class ScriptoGraphWindow : EditorWindow
 		m_Input.SubscribeKeyUp(KeyCode.LeftAlt, OnAltUp);
 	}
 
-	public void Initialize(UnityEngine.Object obj)
+	public void Initialize(Object obj)
 	{
 		if (obj is GameObject go && go.TryGetComponent(out ScriptoGraph.IScriptoGraphBehaviour behaviour))
 		{
-			obj = behaviour as UnityEngine.Object;
+			obj = behaviour as Object;
 		}
 		m_Obj = obj;
 		m_Offset = Vector2.zero;
@@ -206,7 +206,7 @@ public class ScriptoGraphWindow : EditorWindow
 		//Debug.LogWarning("- FindReferences " + property.propertyPath + " " + property.depth);
 	}
 
-	private float Build(UnityEngine.Object obj, string id, float x, float y, bool? recursiveMinimize)
+	private float Build(Object obj, string id, float x, float y, bool? recursiveMinimize)
 	{
 		if (obj is GameObject go && go.TryGetComponent(out ScriptoGraph.IScriptoGraphBehaviour sgb))
 		{
@@ -219,7 +219,7 @@ public class ScriptoGraphWindow : EditorWindow
 		{
 			m_Objects.Add(obj);
 		}
-		SerializedObject serObj = new SerializedObject(obj);
+		SerializedObject serObj = new(obj);
 		SerializedProperty property = serObj.GetIterator();
 		property.NextVisible(true); // Skip the first visible property as this is always the script reference
 		MonoScript mono = property.propertyType == SerializedPropertyType.ObjectReference ? property.objectReferenceValue as MonoScript : null;
@@ -235,13 +235,13 @@ public class ScriptoGraphWindow : EditorWindow
 			SetMinimized(id, recursiveMinimize.Value);
 		}
 		bool min = GetMinimized(id);
-		GUIContent headerContent = new GUIContent(obj.name + (loop ? " (Loop)" : ""));
-		GUIStyle headerStyle = new GUIStyle(GUI.skin.label);
+		GUIContent headerContent = new(obj.name + (loop ? " (Loop)" : ""));
+		GUIStyle headerStyle = new(GUI.skin.label);
 		//headerStyle.fontStyle = FontStyle.Bold;
 		float minHeaderWidth = headerStyle.CalcSize(headerContent).x + INDENT + UberPickerGUI.POINTER_BUTTON_WIDTH;
-		Rect headerPos = new Rect(x, y, min ? minHeaderWidth : m_Width, m_Height);
+		Rect headerPos = new(x, y, min ? minHeaderWidth : m_Width, m_Height);
 		bool selected = false;
-		foreach (UnityEngine.Object selObj in Selection.objects)
+		foreach (Object selObj in Selection.objects)
 		{
 			if (selObj == obj)
 			{
@@ -250,12 +250,12 @@ public class ScriptoGraphWindow : EditorWindow
 			}
 		}
 
-		GUIContent tabContent = new GUIContent(obj.GetType().Name);
-		GUIStyle tabStyle = new GUIStyle(GUI.skin.label);
+		GUIContent tabContent = new(obj.GetType().Name);
+		GUIStyle tabStyle = new(GUI.skin.label);
 		tabStyle.fontSize = 10;
 		tabStyle.normal.textColor = TYPE_TEXT_COLOR;
 		tabStyle.alignment = TextAnchor.MiddleCenter;
-		Rect tabPos = new Rect(headerPos.x, headerPos.y - TAB_HEIGHT, tabStyle.CalcSize(tabContent).x + 4.0f, TAB_HEIGHT);
+		Rect tabPos = new(headerPos.x, headerPos.y - TAB_HEIGHT, tabStyle.CalcSize(tabContent).x + 4.0f, TAB_HEIGHT);
 		EditorGUI.DrawRect(tabPos, selected ? HEADER_SELECTED_COLOR : HEADER_COLOR);
 
 		if (GUI.Button(tabPos, tabContent, tabStyle) && mono != null)
@@ -309,7 +309,7 @@ public class ScriptoGraphWindow : EditorWindow
 			EditorGUI.DrawRect(bgRect, PANEL_COLOR);
 		}
 
-		List<System.Tuple<Vector2, UnityEngine.Object, string>> refList = new List<System.Tuple<Vector2, Object, string>>();
+		List<System.Tuple<Vector2, Object, string>> refList = new();
 		if (hasProperites)
 		{
 			do
@@ -334,7 +334,7 @@ public class ScriptoGraphWindow : EditorWindow
 						EditorGUI.DrawRect(highlightRect, PANEL_HIGHLIGHT_COLOR);
 
 					}
-					Rect window = new Rect(0.0f, 0.0f, this.position.width, this.position.height);
+					Rect window = new(0.0f, 0.0f, this.position.width, this.position.height);
 					if (window.Overlaps(pos)) // For performance only draw controls that are visible in the window
 					{
 						Rect indentPos = pos;
@@ -356,8 +356,8 @@ public class ScriptoGraphWindow : EditorWindow
 			float h = Build(refItem.Item2, refItem.Item3, x, childY, recursiveMinimize);
 
 			Vector2 p1 = refItem.Item1 + pos.width * Vector2.right + 0.5f * EditorGUIUtility.singleLineHeight * Vector2.up;
-			Vector2 p2 = new Vector2(p1.x + m_HorizSpace, childY + 0.5f * EditorGUIUtility.singleLineHeight);
-			GraphEditor.Lines.DrawLine(p1, p2, HEADER_COLOR);
+			Vector2 p2 = new(p1.x + m_HorizSpace, childY + 0.5f * EditorGUIUtility.singleLineHeight);
+			Lines.DrawLine(p1, p2, HEADER_COLOR);
 
 			childY += h; // Mathf.Max(childHeight + h, (refItem.Item1.y - y));
 		}

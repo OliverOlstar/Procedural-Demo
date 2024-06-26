@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion
 {
 
-    /// <summary>
-    /// The base abstract Singleton class.
-    /// </summary>
-    public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+	/// <summary>
+	/// The base abstract Singleton class.
+	/// </summary>
+	public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
 
         private static T sInstance = null;
@@ -27,9 +26,12 @@ namespace RootMotion
 
         protected virtual void Awake()
         {
-            if (sInstance != null) Debug.LogError(name + "error: already initialized", this);
+            if (sInstance != null)
+			{
+				Debug.LogError(name + "error: already initialized", this);
+			}
 
-            sInstance = (T)this;
+			sInstance = (T)this;
         }
     }
 }

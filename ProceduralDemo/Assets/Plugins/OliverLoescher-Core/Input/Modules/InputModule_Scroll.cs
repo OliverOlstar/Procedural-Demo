@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
 using System;
 
-namespace OliverLoescher.Input
+namespace OCore.Input
 {
-	[System.Serializable]
+	[Serializable]
     public class InputModule_Scroll : InputModule_Base
 	{
 		[Space, SerializeField, BoxGroup]

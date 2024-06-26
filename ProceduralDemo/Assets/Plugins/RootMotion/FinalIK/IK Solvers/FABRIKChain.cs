@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-	namespace RootMotion.FinalIK {
-		
+namespace RootMotion.FinalIK
+{
+
+
 	/// <summary>
 	/// Branch of FABRIK components in the FABRIKRoot hierarchy.
 	/// </summary>
@@ -39,7 +40,11 @@ using System.Collections;
 				return false;
 			}
 			
-			if (!ik.solver.IsValid(ref message)) return false;
+			if (!ik.solver.IsValid(ref message))
+			{
+				return false;
+			}
+
 
 			return true;
 		}
@@ -58,9 +63,13 @@ using System.Collections;
 		 * */
 		public void Stage1(FABRIKChain[] chain) {
 			// Solving children first
-			for (int i = 0; i < children.Length; i++) chain[children[i]].Stage1(chain);
-			
+			for (int i = 0; i < children.Length; i++)
+			{
+				chain[children[i]].Stage1(chain);
+			}
+
 			// The last chains
+
 			if (children.Length == 0) {
 				ik.solver.SolveForward(ik.solver.GetIKPosition());
 				return;
@@ -78,7 +87,7 @@ using System.Collections;
 			
 			// Solve child chains
 			for (int i = 0; i < children.Length; i++) {
-				chain[children[i]].Stage2(ik.solver.bones[ik.solver.bones.Length - 1].transform.position, chain);
+				chain[children[i]].Stage2(ik.solver.bones[^1].transform.position, chain);
 			}
 		}
 
@@ -87,18 +96,33 @@ using System.Collections;
 			Vector3 position = ik.solver.GetIKPosition();
 			
 			// The chain is pinned, ignore the children
-			if (pin >= 1f) return position;
-			
+			if (pin >= 1f)
+			{
+				return position;
+			}
+
 			// Get the sum of the pull values of all the children
 			float pullSum = 0f;
-			for (int i = 0; i < children.Length; i++) pullSum += chain[children[i]].pull;
-			
+			for (int i = 0; i < children.Length; i++)
+			{
+				pullSum += chain[children[i]].pull;
+			}
+
 			// All pull values are zero
-			if (pullSum <= 0f) return position;
-			
-			if (pullSum < 1f) pullSum = 1f;
-			
+
+			if (pullSum <= 0f)
+			{
+				return position;
+			}
+
+
+			if (pullSum < 1f)
+			{
+				pullSum = 1f;
+			}
+
 			// Calculating the centroid
+
 			Vector3 centroid = position;
 			
 			for (int i = 0; i < children.Length; i++) {
@@ -113,9 +137,13 @@ using System.Collections;
 			}
 			
 			// No pinning
-			if (pin <= 0f) return centroid;
-			
+			if (pin <= 0f)
+			{
+				return centroid;
+			}
+
 			// Pinning
+
 			return centroid + (position - centroid) * pin; 
 		}
 	}

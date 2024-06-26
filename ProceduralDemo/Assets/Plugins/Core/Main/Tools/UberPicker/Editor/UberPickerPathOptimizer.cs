@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public static class UberPickerPathOptimizer
 {
@@ -13,7 +11,7 @@ public static class UberPickerPathOptimizer
 		out List<int> levels)
 	{
 		// Create tree
-		TreeNode root = new TreeNode(title, string.Empty, null);
+		TreeNode root = new(title, string.Empty, null);
 		foreach (string item in input)
 		{ 
 			root.TryAddElement(item, seperators);
@@ -35,7 +33,7 @@ public static class UberPickerPathOptimizer
 		public string Path = string.Empty; // If string.Empty, this is group & not an item
 
 		public TreeNode Parent = null;
-		public List<TreeNode> Children = new List<TreeNode>();
+		public List<TreeNode> Children = new();
 
 		public TreeNode(string name, string path, TreeNode parent)
 		{

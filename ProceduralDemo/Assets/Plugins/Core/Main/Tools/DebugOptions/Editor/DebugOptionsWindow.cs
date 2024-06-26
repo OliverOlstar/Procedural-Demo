@@ -8,11 +8,11 @@ namespace Core
 		[MenuItem("Window/Debug/Options")]
 		static void CreateWizard()
 		{
-			DebugOptionsWindow window = EditorWindow.GetWindow<DebugOptionsWindow>("Debug Options");
+			DebugOptionsWindow window = GetWindow<DebugOptionsWindow>("Debug Options");
 			window.Show();
 		}
 
-		private DebugCommandGUI m_CommandGUI = new DebugCommandGUI();
+		private DebugCommandGUI m_CommandGUI = new();
 
 		private Vector2 m_ScrollPos = Vector2.zero;
 

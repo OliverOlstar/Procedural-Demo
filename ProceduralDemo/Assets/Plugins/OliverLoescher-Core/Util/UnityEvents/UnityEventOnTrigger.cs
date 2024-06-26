@@ -1,22 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider))]
 public class UnityEventOnTrigger : MonoBehaviour
 {
-	[SerializeField] private LayerMask allowedLayers = new LayerMask();
-	[SerializeField] private string[] allowedTags = new string[0];
+	[SerializeField]
+	private LayerMask m_AllowedLayers = new();
+	[SerializeField]
+	private string[] m_AllowedTags = new string[0];
 
 	[Header("Events")]
-	public UnityEvent onTriggerEnter;
+	public UnityEvent OnTriggerEnterEvent;
 
-	private void OnTriggerEnter(Collider other) 
+	private void OnTriggerEnter(Collider other)
 	{
 		if (IsValid(other))
 		{
-			onTriggerEnter.Invoke();
+			OnTriggerEnterEvent.Invoke();
 		}
 	}
 
@@ -29,15 +29,15 @@ public class UnityEventOnTrigger : MonoBehaviour
 		}
 
 		// Layers
-		if ((allowedLayers | (1 << other.gameObject.layer)) != 0)
+		if ((m_AllowedLayers | (1 << other.gameObject.layer)) != 0)
 		{
 			return true;
 		}
 
 		// Tags
-		foreach (string tag in allowedTags)
+		foreach (string tag in m_AllowedTags)
 		{
-			if (other.tag == tag)
+			if (other.CompareTag(tag))
 			{
 				return true;
 			}

@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// %IK system for standard biped characters that is designed to replicate and enhance the behaviour of the Unity's built-in character %IK setup.
@@ -39,11 +40,11 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// References to character bones.
 		/// </summary>
-		public BipedReferences references = new BipedReferences();
+		public BipedReferences references = new();
 		/// <summary>
 		/// The %IK solvers.
 		/// </summary>
-		public BipedIKSolvers solvers = new BipedIKSolvers();
+		public BipedIKSolvers solvers = new();
 		
 		/// <summary>
 		/// Gets the %IK position weight.
@@ -263,7 +264,11 @@ namespace RootMotion.FinalIK {
 		protected override void FixTransforms() {
             solvers.pelvis.FixTransforms();
             solvers.lookAt.FixTransforms();
-			for (int i = 0; i < solvers.limbs.Length; i++) solvers.limbs[i].FixTransforms();
+			for (int i = 0; i < solvers.limbs.Length; i++)
+			{
+				solvers.limbs[i].FixTransforms();
+			}
+
 		}
 
 		/*
@@ -278,12 +283,20 @@ namespace RootMotion.FinalIK {
 			solvers.AssignReferences(references);
 			
 			// Initiating solvers
-			if (solvers.spine.bones.Length > 1) solvers.spine.Initiate(transform);
+			if (solvers.spine.bones.Length > 1)
+			{
+				solvers.spine.Initiate(transform);
+			}
+
 			solvers.lookAt.Initiate(transform);
 			solvers.aim.Initiate(transform);
-			foreach (IKSolverLimb limb in solvers.limbs) limb.Initiate(transform);
-			
+			foreach (IKSolverLimb limb in solvers.limbs)
+			{
+				limb.Initiate(transform);
+			}
+
 			// Initiating constraints
+
 			solvers.pelvis.Initiate(references.pelvis);
 		}
 
@@ -301,10 +314,18 @@ namespace RootMotion.FinalIK {
 			solvers.pelvis.Update();
 			
 			// Updating %IK solvers
-			if (solvers.spine.bones.Length > 1) solvers.spine.Update();
+			if (solvers.spine.bones.Length > 1)
+			{
+				solvers.spine.Update();
+			}
+
 			solvers.aim.Update();
 			solvers.lookAt.Update();
-			for (int i = 0; i < solvers.limbs.Length; i++) solvers.limbs[i].Update();
+			for (int i = 0; i < solvers.limbs.Length; i++)
+			{
+				solvers.limbs[i].Update();
+			}
+
 		}
 
 		/// <summary>

@@ -1,60 +1,59 @@
-using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
 	public class FollowTarget : MonoBehaviour
 	{
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Default, Util.Mono.Priorities.Camera);
+		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Default, Util.Mono.Priorities.Camera);
 
 		[Header("Position")]
-		public Transform posTarget = null;
-		public Vector3 posOffset = new Vector3();
-		[Min(0)] public float posDampening = 0.0f;
+		public Transform PosTarget = null;
+		public Vector3 PosOffset = new();
+		[Min(0)]
+		public float PosDampening = 0.0f;
 
 		[Header("Rotation")]
-		public Transform rotTarget = null;
-		public Vector3 rotOffset = new Vector3();
-		[Min(0)] public float rotDampening = 0.0f;
+		public Transform RotTarget = null;
+		public Vector3 RotOffset = new();
+		[Min(0)]
+		public float RotDampening = 0.0f;
 
 		private void Start()
 		{
-			updateable.Register(Tick);
+			m_Updateable.Register(Tick);
 		}
 
 		private void OnDestroy()
 		{
-			updateable.Deregister();
+			m_Updateable.Deregister();
 		}
 
 		private void Tick(float pDeltaTime) 
 		{
-			if (posTarget != null)
+			if (PosTarget != null)
 			{
-				Vector3 pos = posTarget.position + posOffset;
-				if (posDampening == 0.0f)
+				Vector3 pos = PosTarget.position + PosOffset;
+				if (PosDampening == 0.0f)
 				{
 					transform.position = pos;
 				}
 				else
 				{
-					transform.position = Vector3.Lerp(transform.position, pos, pDeltaTime * posDampening);
+					transform.position = Vector3.Lerp(transform.position, pos, pDeltaTime * PosDampening);
 				}
 			}
 			
-			if (rotTarget != null)
+			if (RotTarget != null)
 			{
-				Quaternion rot = rotTarget.rotation * Quaternion.Euler(posOffset);
-				if (rotDampening == 0.0f)
+				Quaternion rot = RotTarget.rotation * Quaternion.Euler(PosOffset);
+				if (RotDampening == 0.0f)
 				{
 					transform.rotation = rot;
 				}
 				else
 				{
-					transform.rotation = Quaternion.Lerp(transform.rotation, rot, pDeltaTime * rotDampening);
+					transform.rotation = Quaternion.Lerp(transform.rotation, rot, pDeltaTime * RotDampening);
 				}
 			}
 		}
@@ -66,13 +65,13 @@ namespace OliverLoescher
 				return;
 			}
 
-			if (posTarget != null)
+			if (PosTarget != null)
 			{
-				transform.position = posTarget.position + posOffset;
+				transform.position = PosTarget.position + PosOffset;
 			}
-			if (rotTarget != null)
+			if (RotTarget != null)
 			{
-				transform.rotation = rotTarget.rotation * Quaternion.Euler(posOffset);
+				transform.rotation = RotTarget.rotation * Quaternion.Euler(PosOffset);
 			}
 		}
 	}

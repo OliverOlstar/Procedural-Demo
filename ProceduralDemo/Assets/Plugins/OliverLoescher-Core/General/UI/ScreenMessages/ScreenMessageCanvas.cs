@@ -1,17 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
-    public class ScreenMessageCanvas : MonoBehaviour
+	public class ScreenMessageCanvas : MonoBehaviour
     {
         [SerializeField]
-        private ScreenMessageWidget largeMessage = null;
+        private ScreenMessageWidget m_LargeMessage = null;
         [SerializeField]
-        private ScreenMessageWidget smallMessage = null;
+        private ScreenMessageWidget m_SmallMessage = null;
 
-        public ScreenMessageWidget LargeMessage => largeMessage;
-        public ScreenMessageWidget SmallMessage => smallMessage;
+        public ScreenMessageWidget LargeMessage => m_LargeMessage;
+        public ScreenMessageWidget SmallMessage => m_SmallMessage;
     }
 }

@@ -1,47 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace OliverLoescher
+namespace OCore
 {
-   // [RequiredComponent(typeof(Health))]
-    public class HUDDamageFlash : MonoBehaviour
-    {
-        [SerializeField] private Image image = null;
-        private Color initalColor;
+	public class HUDDamageFlash : MonoBehaviour
+	{
+		[SerializeField]
+		private Image m_Image = null;
+		[SerializeField, Range(Util.Math.NEARZERO, 1.0f)]
+		private float m_FlashSeconds = 0.1f;
 
-        [SerializeField] [Range(Util.Math.NEARZERO, 1.0f)] private float flashSeconds = 0.1f;
+		private Color m_InitalColor;
+		private Health m_Health;
 
-        private Health health;
+		private void Start()
+		{
+			m_InitalColor = m_Image.color;
+			m_Image.gameObject.SetActive(false);
 
-        private void Start()
-        {
-            initalColor = image.color;
-            image.gameObject.SetActive(false);
+			m_Health = GetComponent<Health>();
 
-            health = GetComponent<Health>();
+			m_Health.OnValueLoweredEvent.AddListener(OnDamaged);
+			m_Health.OnValueRaisedEvent.AddListener(OnHealed);
+		}
 
-            health.onValueLowered.AddListener(OnDamaged);
-            health.onValueRaised.AddListener(OnHealed);
-        }
-        
-        public void OnDamaged(float pValue, float pChange) { SetColor(Color.Lerp(health.damageColor, health.deathColor, 1 - ((float)health.Get() / (float)health.GetMax())), flashSeconds); }
-        public void OnHealed(float pValue, float pChange) { SetColor(health.healColor, flashSeconds); }
+		public void OnDamaged(float pValue, float pChange)
+		{
+			SetColor(Color.Lerp(m_Health.m_DamageColor, m_Health.m_DeathColor, 1 - (m_Health.Value / m_Health.MaxValue)), m_FlashSeconds);
+		}
 
-        public void SetColor(Color pColor, float pSeconds)
-        {
-            image.color = pColor;
-            image.gameObject.SetActive(true);
+		public void OnHealed(float pValue, float pChange)
+		{
+			SetColor(m_Health.m_HealColor, m_FlashSeconds);
+		}
 
-            CancelInvoke();
-            Invoke(nameof(ResetColor), pSeconds);
-        }
+		public void SetColor(Color pColor, float pSeconds)
+		{
+			m_Image.color = pColor;
+			m_Image.gameObject.SetActive(true);
 
-        private void ResetColor()
-        {
-            image.color = initalColor;
-            image.gameObject.SetActive(false);
-        }
-    }
+			CancelInvoke();
+			Invoke(nameof(ResetColor), pSeconds);
+		}
+
+		private void ResetColor()
+		{
+			m_Image.color = m_InitalColor;
+			m_Image.gameObject.SetActive(false);
+		}
+	}
 }

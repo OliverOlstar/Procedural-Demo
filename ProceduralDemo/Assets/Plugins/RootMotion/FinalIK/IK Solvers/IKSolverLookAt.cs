@@ -1,8 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
 	/// <summary>
 	/// Rotates a hierarchy of bones to face a target.
 	/// </summary>
@@ -22,7 +22,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The head bone.
 		/// </summary>
-		public LookAtBone head = new LookAtBone();
+		public LookAtBone head = new();
 		/// <summary>
 		/// The eye bones.
 		/// </summary>
@@ -65,7 +65,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Weight distribution between the spine bones.
 		/// </summary>
-		public AnimationCurve spineWeightCurve = new AnimationCurve(new Keyframe[2] { new Keyframe(0f, 0.3f), new Keyframe(1f, 1f) });
+		public AnimationCurve spineWeightCurve = new(new Keyframe[2] { new(0f, 0.3f), new(1f, 1f) });
 
 		/// <summary>
 		/// Offset for the spine target in world space..
@@ -133,9 +133,20 @@ namespace RootMotion.FinalIK {
 		}
 
 		public override void StoreDefaultLocalState() {
-			for (int i = 0; i < spine.Length; i++) spine[i].StoreDefaultLocalState();
-			for (int i = 0; i < eyes.Length; i++) eyes[i].StoreDefaultLocalState();
-			if (head != null && head.transform != null) head.StoreDefaultLocalState();
+			for (int i = 0; i < spine.Length; i++)
+			{
+				spine[i].StoreDefaultLocalState();
+			}
+
+			for (int i = 0; i < eyes.Length; i++)
+			{
+				eyes[i].StoreDefaultLocalState();
+			}
+
+			if (head != null && head.transform != null)
+			{
+				head.StoreDefaultLocalState();
+			}
 		}
 
         // Flag for Fix Transforms.
@@ -145,14 +156,32 @@ namespace RootMotion.FinalIK {
         }
 
         public override void FixTransforms() {
-			if (!initiated) return;
-			if (IKPositionWeight <= 0f && !isDirty) return;
+			if (!initiated)
+			{
+				return;
+			}
 
-			for (int i = 0; i < spine.Length; i++) spine[i].FixTransform();
-			for (int i = 0; i < eyes.Length; i++) eyes[i].FixTransform();
-			if (head != null && head.transform != null) head.FixTransform();
+			if (IKPositionWeight <= 0f && !isDirty)
+			{
+				return;
+			}
 
-            isDirty = false;
+			for (int i = 0; i < spine.Length; i++)
+			{
+				spine[i].FixTransform();
+			}
+
+			for (int i = 0; i < eyes.Length; i++)
+			{
+				eyes[i].FixTransform();
+			}
+
+			if (head != null && head.transform != null)
+			{
+				head.FixTransform();
+			}
+
+			isDirty = false;
 		}
 		
 		public override bool IsValid (ref string message) {
@@ -187,25 +216,50 @@ namespace RootMotion.FinalIK {
 			return true;
 		}
 		
-		public override IKSolver.Point[] GetPoints() {
-			IKSolver.Point[] allPoints = new IKSolver.Point[spine.Length + eyes.Length + (head.transform != null? 1: 0)];
-			for (int i = 0; i < spine.Length; i++) allPoints[i] = spine[i] as IKSolver.Point;
+		public override Point[] GetPoints() {
+			Point[] allPoints = new Point[spine.Length + eyes.Length + (head.transform != null? 1: 0)];
+			for (int i = 0; i < spine.Length; i++)
+			{
+				allPoints[i] = spine[i] as Point;
+			}
 
-            int eye = 0;
+			int eye = 0;
             for (int i = spine.Length; i < spine.Length + eyes.Length; i++)
             {
-                allPoints[i] = eyes[eye] as IKSolver.Point;
+                allPoints[i] = eyes[eye] as Point;
                 eye++;
             }
 			
-			if (head.transform != null) allPoints[allPoints.Length - 1] = head as IKSolver.Point;
+			if (head.transform != null)
+			{
+				allPoints[^1] = head as Point;
+			}
+
 			return allPoints;
 		}
 		
-		public override IKSolver.Point GetPoint(Transform transform) {
-			foreach (IKSolverLookAt.LookAtBone b in spine) if (b.transform == transform) return b as IKSolver.Point;
-			foreach (IKSolverLookAt.LookAtBone b in eyes) if (b.transform == transform) return b as IKSolver.Point;
-			if (head.transform == transform) return head as IKSolver.Point;
+		public override Point GetPoint(Transform transform) {
+			foreach (LookAtBone b in spine)
+			{
+				if (b.transform == transform)
+				{
+					return b as Point;
+				}
+			}
+
+			foreach (LookAtBone b in eyes)
+			{
+				if (b.transform == transform)
+				{
+					return b as Point;
+				}
+			}
+
+			if (head.transform == transform)
+			{
+				return head as Point;
+			}
+
 			return null;
 		}
 		
@@ -213,7 +267,8 @@ namespace RootMotion.FinalIK {
 		/// Look At bone class.
 		/// </summary>
 		[System.Serializable]
-		public class LookAtBone: IKSolver.Bone {
+		public class LookAtBone: Bone
+		{
 
             #region Public methods
 
@@ -232,8 +287,11 @@ namespace RootMotion.FinalIK {
 			 * Initiates the bone, precalculates values.
 			 * */
 			public void Initiate(Transform root) {
-				if (transform == null) return;
-				
+				if (transform == null)
+				{
+					return;
+				}
+
 				axis = Quaternion.Inverse(transform.rotation) * root.forward;
 			}
 			
@@ -288,26 +346,64 @@ namespace RootMotion.FinalIK {
         protected override void OnInitiate() {
 			// Set IKPosition to default value
 			if (firstInitiation || !Application.isPlaying) {
-				if (spine.Length > 0) IKPosition = spine[spine.Length - 1].transform.position + root.forward * 3f;
-				else if (head.transform != null) IKPosition = head.transform.position + root.forward * 3f;
-				else if (eyes.Length > 0 && eyes[0].transform != null) IKPosition = eyes[0].transform.position + root.forward * 3f;
+				if (spine.Length > 0)
+				{
+					IKPosition = spine[^1].transform.position + root.forward * 3f;
+				}
+				else if (head.transform != null)
+				{
+					IKPosition = head.transform.position + root.forward * 3f;
+				}
+				else if (eyes.Length > 0 && eyes[0].transform != null)
+				{
+					IKPosition = eyes[0].transform.position + root.forward * 3f;
+				}
 			}
 			
 			// Initiating the bones
-			foreach (LookAtBone s in spine) s.Initiate(root);
-			if (head != null) head.Initiate(root);
-			foreach (LookAtBone eye in eyes) eye.Initiate(root);
-			
-			if (spineForwards == null || spineForwards.Length != spine.Length) spineForwards = new Vector3[spine.Length];
-			if (headForwards == null) headForwards = new Vector3[1];
-			if (eyeForward == null) eyeForward = new Vector3[1];
+			foreach (LookAtBone s in spine)
+			{
+				s.Initiate(root);
+			}
+
+			if (head != null)
+			{
+				head.Initiate(root);
+			}
+
+			foreach (LookAtBone eye in eyes)
+			{
+				eye.Initiate(root);
+			}
+
+			if (spineForwards == null || spineForwards.Length != spine.Length)
+			{
+				spineForwards = new Vector3[spine.Length];
+			}
+
+			if (headForwards == null)
+			{
+				headForwards = new Vector3[1];
+			}
+
+			if (eyeForward == null)
+			{
+				eyeForward = new Vector3[1];
+			}
 		}
 		
 		protected override void OnUpdate() {
-			if (IKPositionWeight <= 0) return;
+			if (IKPositionWeight <= 0)
+			{
+				return;
+			}
+
 			IKPositionWeight = Mathf.Clamp(IKPositionWeight, 0f, 1f);
 
-			if (target != null) IKPosition = target.position;
+			if (target != null)
+			{
+				IKPosition = target.position;
+			}
 
 			// Solving the hierarchies
 			SolveSpine();
@@ -317,10 +413,24 @@ namespace RootMotion.FinalIK {
 
         protected bool spineIsValid {
 			get {
-				if (spine == null) return false;
-				if (spine.Length == 0) return true;
+				if (spine == null)
+				{
+					return false;
+				}
 
-				for (int i = 0; i < spine.Length; i++) if (spine[i] == null || spine[i].transform == null) return false;
+				if (spine.Length == 0)
+				{
+					return true;
+				}
+
+				for (int i = 0; i < spine.Length; i++)
+				{
+					if (spine[i] == null || spine[i].transform == null)
+					{
+						return false;
+					}
+				}
+
 				return true;
 			}
 		}
@@ -329,12 +439,19 @@ namespace RootMotion.FinalIK {
 
         // Solving the spine hierarchy
         protected void SolveSpine() {
-			if (bodyWeight <= 0) return;
-			if (spineIsEmpty) return;
-			
+			if (bodyWeight <= 0)
+			{
+				return;
+			}
+
+			if (spineIsEmpty)
+			{
+				return;
+			}
+
 			// Get the look at vectors for each bone
 			//Vector3 targetForward = Vector3.Lerp(spine[0].forward, (IKPosition - spine[spine.Length - 1].transform.position).normalized, bodyWeight * IKPositionWeight).normalized;
-			Vector3 targetForward = (IKPosition + spineTargetOffset - spine[spine.Length - 1].transform.position).normalized;
+			Vector3 targetForward = (IKPosition + spineTargetOffset - spine[^1].transform.position).normalized;
 
 			GetForwards(ref spineForwards, spine[0].forward, targetForward, spine.Length, clampWeight);
 			
@@ -346,7 +463,11 @@ namespace RootMotion.FinalIK {
 
         protected bool headIsValid {
 			get {
-				if (head == null) return false;
+				if (head == null)
+				{
+					return false;
+				}
+
 				return true;
 			}
 		}
@@ -355,11 +476,18 @@ namespace RootMotion.FinalIK {
 
         // Solving the head rotation
         protected void SolveHead() {
-			if (headWeight <= 0) return;
-			if (headIsEmpty) return;
-			
+			if (headWeight <= 0)
+			{
+				return;
+			}
+
+			if (headIsEmpty)
+			{
+				return;
+			}
+
 			// Get the look at vector for the head
-			Vector3 baseForward = spine.Length > 0 && spine[spine.Length - 1].transform != null? spine[spine.Length - 1].forward: head.forward;
+			Vector3 baseForward = spine.Length > 0 && spine[^1].transform != null? spine[^1].forward: head.forward;
 
 			Vector3 targetForward = Vector3.Lerp(baseForward, (IKPosition - head.transform.position).normalized, headWeight * IKPositionWeight).normalized;
 			GetForwards(ref headForwards, baseForward, targetForward, 1, clampWeightHead);
@@ -370,10 +498,24 @@ namespace RootMotion.FinalIK {
 
         protected bool eyesIsValid {
 			get {
-				if (eyes == null) return false;
-				if (eyes.Length == 0) return true;
+				if (eyes == null)
+				{
+					return false;
+				}
 
-				for (int i = 0; i < eyes.Length; i++) if (eyes[i] == null || eyes[i].transform == null) return false;
+				if (eyes.Length == 0)
+				{
+					return true;
+				}
+
+				for (int i = 0; i < eyes.Length; i++)
+				{
+					if (eyes[i] == null || eyes[i].transform == null)
+					{
+						return false;
+					}
+				}
+
 				return true;
 			}
 		}
@@ -382,17 +524,27 @@ namespace RootMotion.FinalIK {
 
         // Solving the eye rotations
         protected void SolveEyes() {
-			if (eyesWeight <= 0) return;
-			if (eyesIsEmpty) return;
-			
+			if (eyesWeight <= 0)
+			{
+				return;
+			}
+
+			if (eyesIsEmpty)
+			{
+				return;
+			}
+
 			for (int i = 0; i < eyes.Length; i++) {
                 // Get the look at vector for the eye
-                Quaternion baseRotation = head.transform != null ? head.transform.rotation : spine.Length > 0? spine[spine.Length - 1].transform.rotation: root.rotation;
-                Vector3 baseAxis = head.transform != null ? head.axis : spine.Length > 0 ? spine[spine.Length - 1].axis : root.forward;
+                Quaternion baseRotation = head.transform != null ? head.transform.rotation : spine.Length > 0? spine[^1].transform.rotation: root.rotation;
+                Vector3 baseAxis = head.transform != null ? head.axis : spine.Length > 0 ? spine[^1].axis : root.forward;
 
-                if (eyes[i].baseForwardOffsetEuler != Vector3.zero) baseRotation *= Quaternion.Euler(eyes[i].baseForwardOffsetEuler);
+                if (eyes[i].baseForwardOffsetEuler != Vector3.zero)
+				{
+					baseRotation *= Quaternion.Euler(eyes[i].baseForwardOffsetEuler);
+				}
 
-                Vector3 baseForward = baseRotation * baseAxis;
+				Vector3 baseForward = baseRotation * baseAxis;
 
                 GetForwards(ref eyeForward, baseForward, (IKPosition - eyes[i].transform.position).normalized, 1, clampWeightEyes);
 				
@@ -408,7 +560,11 @@ namespace RootMotion.FinalIK {
         protected Vector3[] GetForwards(ref Vector3[] forwards, Vector3 baseForward, Vector3 targetForward, int bones, float clamp) {
 			// If clamp >= 1 make all the forwards match the base
 			if (clamp >= 1 || IKPositionWeight <= 0) {
-				for (int i = 0; i < forwards.Length; i++) forwards[i] = baseForward;
+				for (int i = 0; i < forwards.Length; i++)
+				{
+					forwards[i] = baseForward;
+				}
+
 				return forwards;
 			}
 			
@@ -451,11 +607,20 @@ namespace RootMotion.FinalIK {
 				return;
 			}
 			
-			if (bones.Length != array.Length) bones = new LookAtBone[array.Length];
-			
+			if (bones.Length != array.Length)
+			{
+				bones = new LookAtBone[array.Length];
+			}
+
 			for (int i = 0; i < array.Length; i++) {
-				if (bones[i] == null) bones[i] = new LookAtBone(array[i]);
-				else bones[i].transform = array[i];
+				if (bones[i] == null)
+				{
+					bones[i] = new LookAtBone(array[i]);
+				}
+				else
+				{
+					bones[i].transform = array[i];
+				}
 			}
 		}
 	}

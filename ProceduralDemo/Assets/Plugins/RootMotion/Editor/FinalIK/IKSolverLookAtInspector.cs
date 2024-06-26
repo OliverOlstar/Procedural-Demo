@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using System;
 
-	namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector and scene view tools for IKSolverLookAt
 	 * */
+
 	public class IKSolverLookAtInspector: IKSolverInspector {
 
 		#region Public methods
@@ -48,10 +48,19 @@ using System;
 		 * */
 		public static void AddScene(IKSolverLookAt solver, Color color, bool modifiable) {
 			// Protect from null reference errors
-			if (Application.isPlaying && !solver.initiated) return;
-			if (!Application.isPlaying && !solver.IsValid()) return;
+			if (Application.isPlaying && !solver.initiated)
+			{
+				return;
+			}
+
+
+			if (!Application.isPlaying && !solver.IsValid())
+			{
+				return;
+			}
 
 			// Display the Spine
+
 			if (solver.spine.Length > 0) {
 				Handles.color = color;
 				GUI.color = color;
@@ -59,14 +68,19 @@ using System;
 				for (int i = 0; i < solver.spine.Length; i++) {
 					IKSolverLookAt.LookAtBone bone = solver.spine[i];
 					
-					if (i < solver.spine.Length - 1) Handles.DrawLine(bone.transform.position, solver.spine[i + 1].transform.position);
-					Inspector.SphereCap(0, bone.transform.position, Quaternion.identity, GetHandleSize(bone.transform.position));
+					if (i < solver.spine.Length - 1)
+					{
+						Handles.DrawLine(bone.transform.position, solver.spine[i + 1].transform.position);
+					}
+
+
+					SphereCap(0, bone.transform.position, Quaternion.identity, GetHandleSize(bone.transform.position));
 				}
 				
 				// Draw a transparent line from last bone to IKPosition
 				if (Application.isPlaying) {
 					Handles.color = new Color(color.r, color.g, color.b, color.a * solver.IKPositionWeight * solver.bodyWeight);
-					Handles.DrawLine(solver.spine[solver.spine.Length - 1].transform.position, solver.IKPosition);
+					Handles.DrawLine(solver.spine[^1].transform.position, solver.IKPosition);
 				}
 			}
 			
@@ -88,10 +102,14 @@ using System;
 			// Selecting joint and manipulating IKPosition
 			if (Application.isPlaying && solver.IKPositionWeight > 0) {
 				if (modifiable) {
-					Inspector.SphereCap(0, solver.IKPosition, Quaternion.identity, GetHandleSize(solver.IKPosition));
+					SphereCap(0, solver.IKPosition, Quaternion.identity, GetHandleSize(solver.IKPosition));
 						
 					// Manipulating position
-					if (solver.target == null) solver.IKPosition = Handles.PositionHandle(solver.IKPosition, Quaternion.identity);
+					if (solver.target == null)
+					{
+						solver.IKPosition = Handles.PositionHandle(solver.IKPosition, Quaternion.identity);
+					}
+
 				}
 			}
 			
@@ -108,8 +126,8 @@ using System;
 		private static void DrawLookAtBoneInScene(IKSolverLookAt.LookAtBone bone, Vector3 IKPosition, Color color, float lineWeight) {
 			Handles.color = color;
 			GUI.color = color;
-					
-			Inspector.SphereCap(0, bone.transform.position, Quaternion.identity, GetHandleSize(bone.transform.position));
+
+			SphereCap(0, bone.transform.position, Quaternion.identity, GetHandleSize(bone.transform.position));
 			
 			// Draw a transparent line from last bone to IKPosition
 			if (Application.isPlaying && lineWeight > 0) {

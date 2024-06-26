@@ -1,13 +1,13 @@
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
-using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector for Biped IK.
 	 * */
+
 	[CustomEditor(typeof(BipedIK))]
 	public class BipedIKInspector : Editor {
 		
@@ -20,7 +20,10 @@ namespace RootMotion.FinalIK {
 		private SerializedContent fixTransforms;
 
 		public void OnEnable() {
-			if (serializedObject == null) return;
+			if (serializedObject == null)
+			{
+				return;
+			}
 
 			// Store the MonoScript for changing script execution order
 			if (!Application.isPlaying) {
@@ -28,7 +31,11 @@ namespace RootMotion.FinalIK {
 
 				// Changing the script execution order to make sure BipedIK always executes after any other script except FullBodyBipedIK
 				int executionOrder = MonoImporter.GetExecutionOrder(monoScript);
-				if (executionOrder != 9998) MonoImporter.SetExecutionOrder(monoScript, 9998);
+				if (executionOrder != 9998)
+				{
+					MonoImporter.SetExecutionOrder(monoScript, 9998);
+				}
+
 			}
 
 			references = serializedObject.FindProperty("references");
@@ -43,14 +50,20 @@ namespace RootMotion.FinalIK {
 					
 					references.isExpanded = true;
 					solvers.isExpanded = false;
-					for (int i = 0; i < solversProps.Length; i++) solversProps[i].isExpanded = false;
-					
+					for (int i = 0; i < solversProps.Length; i++)
+					{
+						solversProps[i].isExpanded = false;
+					}
+
 					// Setting default values and initiating
 					script.InitiateBipedIK();
 					script.SetToDefaults();
 					EditorUtility.SetDirty(script);
-				} else script.InitiateBipedIK();
-				
+				} else
+				{
+					script.InitiateBipedIK();
+				}
+
 				Warning.logged = false;
 
 				string message = string.Empty;
@@ -105,9 +118,13 @@ namespace RootMotion.FinalIK {
 		}
 		
 		void OnSceneGUI() {
-			if (!script.enabled) return;
+			if (!script.enabled)
+			{
+				return;
+			}
 
 			// Draw the scene view helpers for the solvers
+
 			BipedIKSolversInspector.AddScene(script.solvers, ref selectedSolver);
 		}
 	}

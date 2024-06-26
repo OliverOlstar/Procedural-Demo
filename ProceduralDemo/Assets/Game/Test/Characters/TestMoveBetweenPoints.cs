@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using OliverLoescher.Util;
+using OCore.Util;
 using UnityEngine;
 
 public class TestMoveBetweenPoints : MonoBehaviour, IPACharacter

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-	namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// %Constraint used for fixing bend direction of 3-segment node chains in a node based %IK solver. 
@@ -49,19 +49,35 @@ using System.Collections;
 		/// </summary>
 		public bool IsValid(IKSolverFullBody solver, Warning.Logger logger) {
 			if (bone1 == null || bone2 == null || bone3 == null) {
-				if (logger != null) logger("Bend Constraint contains a null reference.");
+				if (logger != null)
+				{
+					logger("Bend Constraint contains a null reference.");
+				}
+
 				return false;
 			}
 			if (solver.GetPoint(bone1) == null) {
-				if (logger != null) logger("Bend Constraint is referencing to a bone '" + bone1.name + "' that does not excist in the Node Chain.");
+				if (logger != null)
+				{
+					logger("Bend Constraint is referencing to a bone '" + bone1.name + "' that does not excist in the Node Chain.");
+				}
+
 				return false;
 			}
 			if (solver.GetPoint(bone2) == null) {
-				if (logger != null) logger("Bend Constraint is referencing to a bone '" + bone2.name + "' that does not excist in the Node Chain.");
+				if (logger != null)
+				{
+					logger("Bend Constraint is referencing to a bone '" + bone2.name + "' that does not excist in the Node Chain.");
+				}
+
 				return false;
 			}
 			if (solver.GetPoint(bone3) == null) {
-				if (logger != null) logger("Bend Constraint is referencing to a bone '" + bone3.name + "' that does not excist in the Node Chain.");
+				if (logger != null)
+				{
+					logger("Bend Constraint is referencing to a bone '" + bone3.name + "' that does not excist in the Node Chain.");
+				}
+
 				return false;
 			}
 			return true;
@@ -70,7 +86,7 @@ using System.Collections;
 		#endregion Main Interface
 
 		public Vector3 defaultLocalDirection, defaultChildDirection;
-        [System.NonSerializedAttribute] public float clampF = 0.505f;
+        [System.NonSerialized] public float clampF = 0.505f;
         
         //private IKSolver.Node node1, node2, node3;
         private int chainIndex1;
@@ -124,10 +140,21 @@ using System.Collections;
 		 * Make the limb bend towards the specified local directions of the bones
 		 * */
 		public void SetLimbOrientation(Vector3 upper, Vector3 lower, Vector3 last) {
-			if (upper == Vector3.zero) Debug.LogError("Attempting to set limb orientation to Vector3.zero axis");
-			if (lower == Vector3.zero) Debug.LogError("Attempting to set limb orientation to Vector3.zero axis");
-			if (last == Vector3.zero) Debug.LogError("Attempting to set limb orientation to Vector3.zero axis");
-			
+			if (upper == Vector3.zero)
+			{
+				Debug.LogError("Attempting to set limb orientation to Vector3.zero axis");
+			}
+
+			if (lower == Vector3.zero)
+			{
+				Debug.LogError("Attempting to set limb orientation to Vector3.zero axis");
+			}
+
+			if (last == Vector3.zero)
+			{
+				Debug.LogError("Attempting to set limb orientation to Vector3.zero axis");
+			}
+
 			// Default bend direction relative to the first node
 			defaultLocalDirection = upper.normalized;
 			defaultChildDirection = last.normalized;
@@ -139,7 +166,10 @@ using System.Collections;
 		 * Limits the bending joint of the limb to 90 degrees from the default 90 degrees of bend direction
 		 * */
 		public void LimitBend(float solverWeight, float positionWeight) {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
 			Vector3 normalDirection = bone1.rotation * -defaultLocalDirection;
 			
@@ -167,24 +197,36 @@ using System.Collections;
 				bone2.rotation = Quaternion.Lerp(bone2.rotation, q * bone2.rotation, positionWeight * solverWeight);
 			}
 
-			if (changed || positionWeight > 0f) bone3.rotation = bone3Rotation;
+			if (changed || positionWeight > 0f)
+			{
+				bone3.rotation = bone3Rotation;
+			}
 		}
 
 		/*
 		 * Computes the direction from the first node to the second node
 		 * */
 		public Vector3 GetDir(IKSolverFullBody solver) {
-			if (!initiated) return Vector3.zero;
+			if (!initiated)
+			{
+				return Vector3.zero;
+			}
 
 			float w = weight * solver.IKPositionWeight;
 
 			// Apply the bend goal
 			if (bendGoal != null) {
 				Vector3 b = bendGoal.position - solver.GetNode(chainIndex1, nodeIndex1).solverPosition;
-				if (b != Vector3.zero) direction = b;
+				if (b != Vector3.zero)
+				{
+					direction = b;
+				}
 			}
 
-			if (w >= 1f) return direction.normalized;
+			if (w >= 1f)
+			{
+				return direction.normalized;
+			}
 
 			Vector3 solverDirection = solver.GetNode(chainIndex3, nodeIndex3).solverPosition - solver.GetNode(chainIndex1, nodeIndex1).solverPosition;
 
@@ -207,7 +249,11 @@ using System.Collections;
 				dir = toOrtho * rotationOffset * dir;
 			}
 
-			if (w <= 0f) return dir;
+			if (w <= 0f)
+			{
+				return dir;
+			}
+
 			return Vector3.Lerp(dir, direction.normalized, w); 
 		}
 

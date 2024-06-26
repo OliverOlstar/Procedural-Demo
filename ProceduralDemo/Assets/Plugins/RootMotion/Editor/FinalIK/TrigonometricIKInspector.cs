@@ -1,12 +1,13 @@
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector for TrigonometricIK.
 	 * */
+
 	[CustomEditor(typeof(TrigonometricIK))]
 	public class TrigonometricIKInspector : IKInspector {
 		
@@ -18,7 +19,11 @@ namespace RootMotion.FinalIK {
 		}
 		
 		protected override void OnApplyModifiedProperties() {
-			if (!Application.isPlaying) script.solver.Initiate(script.transform);
+			if (!Application.isPlaying)
+			{
+				script.solver.Initiate(script.transform);
+			}
+
 		}
 		
 		protected override void AddInspector() {
@@ -27,7 +32,11 @@ namespace RootMotion.FinalIK {
 
 			// Warning box
 			string message = string.Empty;
-			if (!script.solver.IsValid(ref message)) AddWarningBox(message);
+			if (!script.solver.IsValid(ref message))
+			{
+				AddWarningBox(message);
+			}
+
 		}
 		
 		void OnSceneGUI() {

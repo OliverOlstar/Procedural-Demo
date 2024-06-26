@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using OliverLoescher.Input;
+using OCore.Input;
 using UnityEngine.InputSystem;
 using InputSystem = InputSystem_Game;
 

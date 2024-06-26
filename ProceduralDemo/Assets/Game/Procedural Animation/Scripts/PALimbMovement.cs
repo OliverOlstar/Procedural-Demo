@@ -1,27 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using OliverLoescher.Util;
-using OliverLoescher.Cue;
+using OCore.Util;
+using OCore.Cue;
 
 namespace PA
 {
-    public class PALimbMovement
+	public class PALimbMovement
     {
-		public Vector3 Position
-		{
-			get => m_Limb.Position;
-			set => m_Limb.Position = value;
-		}
-
-		private Vector3 StepOffset;
-
-		public Vector3 TargetPosition() => m_Limb.OriginalPositionWorld();
+		private Vector3 m_StepOffset;
 
 		private readonly PARoot m_Root;
 		private readonly PALimb m_Limb;
 		private readonly SOLimbMovement m_Data;
 		private Anim.IAnimation m_Animation;
+
+		public Vector3 Position
+		{
+			get => m_Limb.Position;
+			set => m_Limb.Position = value;
+		}
+		public Vector3 TargetPosition() => m_Limb.OriginalPositionWorld();
 
 		public PALimbMovement(SOLimbMovement pData, PARoot pRoot, PALimb pLimb)
 		{
@@ -33,7 +30,7 @@ namespace PA
 
 		public void StartMove()
 		{
-			StepOffset = Position;
+			m_StepOffset = Position;
 			m_Animation = Anim.Play2D(m_Data.EaseStep, m_Data.EaseHeight, Random2.Range(m_Data.StepSeconds), StepTick, StepComplete);
 		}
 		public void StopMove()
@@ -49,7 +46,7 @@ namespace PA
 		{
 			Vector3 endStepPoint = CalculateStepPoint();
 			Vector3 up = m_Root.Up * Math.LerpUnclamped(0, m_Data.UpHeight, 0, pProgress.y);
-			Vector3 horizontal = Vector3.LerpUnclamped(StepOffset, endStepPoint, pProgress.x);
+			Vector3 horizontal = Vector3.LerpUnclamped(m_StepOffset, endStepPoint, pProgress.x);
 			Position = horizontal + up;
 		}
 		private void StepComplete(Vector2 _)

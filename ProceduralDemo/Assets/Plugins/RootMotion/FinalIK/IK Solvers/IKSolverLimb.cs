@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Extends IKSolverTrigonometric to add automatic bend and rotation modes.
@@ -41,8 +42,12 @@ namespace RootMotion.FinalIK {
 		/// So you would call %MaintainRotation() in LateUpdate() after animation and before updating the Spine %IK solver that would change the foot's rotation.
 		/// </summary>
 		public void MaintainRotation() {
-			if (!initiated) return;
-			
+			if (!initiated)
+			{
+				return;
+			}
+
+
 			maintainRotation = bone3.transform.rotation;
 			maintainRotationFor1Frame = true;
 		}
@@ -51,8 +56,12 @@ namespace RootMotion.FinalIK {
 		/// If Auto Bend is on "Animation', %MaintainBend() can be used to set the bend axis relative to the first bone's rotation.
 		/// </summary>
 		public void MaintainBend() {
-			if (!initiated) return;
-			
+			if (!initiated)
+			{
+				return;
+			}
+
+
 			animationNormal = bone1.GetBendNormalFromCurrentRotation();
 			
 			maintainBendFor1Frame = true;
@@ -82,13 +91,22 @@ namespace RootMotion.FinalIK {
 				parentDefaultRotation = Quaternion.Inverse(defaultRootRotation) * bone1.transform.parent.rotation;
 			}
 			
-			if (bone3.rotationLimit != null) bone3.rotationLimit.Disable();
+			if (bone3.rotationLimit != null)
+			{
+				bone3.rotationLimit.Disable();
+			}
+
+
 			bone3DefaultRotation = bone3.transform.rotation;
 			
 			// Set bend plane to current (cant use the public SetBendPlaneToCurrent() method here because the solver has not initiated yet)
 			Vector3 normal = Vector3.Cross(bone2.transform.position - bone1.transform.position, bone3.transform.position - bone2.transform.position);
-			if (normal != Vector3.zero) bendNormal = normal;
-			
+			if (normal != Vector3.zero)
+			{
+				bendNormal = normal;
+			}
+
+
 			animationNormal = bendNormal;
 			
 			StoreAxisDirections(ref axisDirectionsLeft);
@@ -123,9 +141,13 @@ namespace RootMotion.FinalIK {
 		 * */
 		protected override void OnPostSolveVirtual() {
 			// Revert bendNormal to what it was before solving
-			if (IKPositionWeight > 0) bendNormal = _bendNormal;
-			
+			if (IKPositionWeight > 0)
+			{
+				bendNormal = _bendNormal;
+			}
+
 			// Auto rotation modes
+
 			if (maintainRotationWeight * IKPositionWeight > 0) {
 				bone3.transform.rotation = Quaternion.Slerp(bone3.transform.rotation, bone3RotationBeforeSolve, maintainRotationWeight * IKPositionWeight);
 			}
@@ -160,7 +182,12 @@ namespace RootMotion.FinalIK {
 		private AxisDirection[] axisDirectionsRight = new AxisDirection[4];
 		private AxisDirection[] axisDirections {
 			get {
-				if (goal == AvatarIKGoal.LeftHand) return axisDirectionsLeft;
+				if (goal == AvatarIKGoal.LeftHand)
+				{
+					return axisDirectionsLeft;
+				}
+
+
 				return axisDirectionsRight;
 			}
 		}
@@ -181,20 +208,30 @@ namespace RootMotion.FinalIK {
 		 * */
 		private Vector3 GetModifiedBendNormal() {
 			float weight = bendModifierWeight;
-			if (weight <= 0) return bendNormal;
-			
-			switch(bendModifier) {
+			if (weight <= 0)
+			{
+				return bendNormal;
+			}
+
+			switch (bendModifier) {
 			// Animation Bend Mode attempts to maintain the bend axis as it is in the animation
 			case BendModifier.Animation:
-				if (!maintainBendFor1Frame) MaintainBend();
-				maintainBendFor1Frame = false;
+				if (!maintainBendFor1Frame)
+					{
+						MaintainBend();
+					}
+
+					maintainBendFor1Frame = false;
 				return Vector3.Lerp(bendNormal, animationNormal, weight);
 				
 			// Bending relative to the parent of the first bone
 			case BendModifier.Parent:
-				if (bone1.transform.parent == null) return bendNormal;
-				
-				Quaternion parentRotation = bone1.transform.parent.rotation * Quaternion.Inverse(parentDefaultRotation);
+				if (bone1.transform.parent == null)
+					{
+						return bendNormal;
+					}
+
+					Quaternion parentRotation = bone1.transform.parent.rotation * Quaternion.Inverse(parentDefaultRotation);
 				return Quaternion.Slerp(Quaternion.identity, parentRotation * Quaternion.Inverse(defaultRootRotation), weight) * bendNormal;
 				
 			// Bending relative to IKRotation
@@ -204,12 +241,19 @@ namespace RootMotion.FinalIK {
 
 			// Anatomic Arm
 			case BendModifier.Arm:
-				if (bone1.transform.parent == null) return bendNormal;
-				
-				// Disabling this for legs
-				if (goal == AvatarIKGoal.LeftFoot || goal == AvatarIKGoal.RightFoot) {
-					if (!Warning.logged) LogWarning("Trying to use the 'Arm' bend modifier on a leg.");
-					return bendNormal;
+				if (bone1.transform.parent == null)
+					{
+						return bendNormal;
+					}
+
+					// Disabling this for legs
+					if (goal == AvatarIKGoal.LeftFoot || goal == AvatarIKGoal.RightFoot) {
+					if (!Warning.logged)
+						{
+							LogWarning("Trying to use the 'Arm' bend modifier on a leg.");
+						}
+
+						return bendNormal;
 				}
 				
 				Vector3 direction = (IKPosition - bone1.transform.position).normalized;
@@ -218,10 +262,13 @@ namespace RootMotion.FinalIK {
 				direction = Quaternion.Inverse(bone1.transform.parent.rotation * Quaternion.Inverse(parentDefaultRotation)) * direction;
 				
 				// Inverting direction for left hand
-				if (goal == AvatarIKGoal.LeftHand) direction.x = -direction.x;
-				
-				// Calculating dot products for all AxisDirections
-				for (int i = 1; i < axisDirections.Length; i++) {
+				if (goal == AvatarIKGoal.LeftHand)
+					{
+						direction.x = -direction.x;
+					}
+
+					// Calculating dot products for all AxisDirections
+					for (int i = 1; i < axisDirections.Length; i++) {
 					axisDirections[i].dot = Mathf.Clamp(Vector3.Dot(axisDirections[i].direction, direction), 0f, 1f);
 					axisDirections[i].dot = Interp.Float(axisDirections[i].dot, InterpolationMode.InOutQuintic);
 				}
@@ -230,10 +277,13 @@ namespace RootMotion.FinalIK {
 				Vector3 sum = axisDirections[0].axis;
 				
 				//for (int i = 1; i < axisDirections.Length; i++) sum = Vector3.Lerp(sum, axisDirections[i].axis, axisDirections[i].dot);
-				for (int i = 1; i < axisDirections.Length; i++) sum = Vector3.Slerp(sum, axisDirections[i].axis, axisDirections[i].dot);
-				
-				// Inverting sum for left hand
-				if (goal == AvatarIKGoal.LeftHand) {
+				for (int i = 1; i < axisDirections.Length; i++)
+					{
+						sum = Vector3.Slerp(sum, axisDirections[i].axis, axisDirections[i].dot);
+					}
+
+					// Inverting sum for left hand
+					if (goal == AvatarIKGoal.LeftHand) {
 					sum.x = -sum.x;
 					sum = -sum;
 				}
@@ -241,22 +291,37 @@ namespace RootMotion.FinalIK {
 				// Converting sum back to parent space
 				Vector3 armBendNormal = bone1.transform.parent.rotation * Quaternion.Inverse(parentDefaultRotation) * sum;
 				
-				if (weight >= 1) return armBendNormal;
-				return Vector3.Lerp(bendNormal, armBendNormal, weight);
+				if (weight >= 1)
+					{
+						return armBendNormal;
+					}
+
+					return Vector3.Lerp(bendNormal, armBendNormal, weight);
 			
 			// Bending towards the bend goal Transform
 			case BendModifier.Goal:
 				if (bendGoal == null) {
-					if (!Warning.logged) LogWarning("Trying to use the 'Goal' Bend Modifier, but the Bend Goal is unassigned.");
-					return bendNormal;
+					if (!Warning.logged)
+						{
+							LogWarning("Trying to use the 'Goal' Bend Modifier, but the Bend Goal is unassigned.");
+						}
+
+						return bendNormal;
 				}
 
 				Vector3 normal = Vector3.Cross(bendGoal.position - bone1.transform.position, IKPosition - bone1.transform.position);
 
-				if (normal == Vector3.zero) return bendNormal;
+				if (normal == Vector3.zero)
+					{
+						return bendNormal;
+					}
 
-				if (weight >= 1f) return normal;
-				return Vector3.Lerp(bendNormal, normal, weight);
+					if (weight >= 1f)
+					{
+						return normal;
+					}
+
+					return Vector3.Lerp(bendNormal, normal, weight);
 			default: return bendNormal;
 			}
 		}

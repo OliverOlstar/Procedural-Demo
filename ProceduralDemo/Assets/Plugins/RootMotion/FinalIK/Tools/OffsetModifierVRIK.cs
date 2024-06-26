@@ -25,7 +25,10 @@ namespace RootMotion.FinalIK {
 		}
 		
 		private IEnumerator Initiate() {
-			while (ik == null) yield return null;
+			while (ik == null)
+			{
+				yield return null;
+			}
 
 			// You can use just LateUpdate, but note that it doesn't work when you have animatePhysics turned on for the character.
 			ik.solver.OnPreUpdate += ModifyOffset;
@@ -34,10 +37,26 @@ namespace RootMotion.FinalIK {
 
 		// The main function that checks for all conditions and calls OnModifyOffset if they are met
 		private void ModifyOffset() {
-			if (!enabled) return;
-			if (weight <= 0f) return;
-			if (deltaTime <= 0f) return;
-			if (ik == null) return;
+			if (!enabled)
+			{
+				return;
+			}
+
+			if (weight <= 0f)
+			{
+				return;
+			}
+
+			if (deltaTime <= 0f)
+			{
+				return;
+			}
+
+			if (ik == null)
+			{
+				return;
+			}
+
 			weight = Mathf.Clamp(weight, 0f, 1f);
 
 			OnModifyOffset();
@@ -47,7 +66,10 @@ namespace RootMotion.FinalIK {
 
 		// Remove the delegate when destroyed
 		protected virtual void OnDestroy() {
-			if (ik != null) ik.solver.OnPreUpdate -= ModifyOffset;
+			if (ik != null)
+			{
+				ik.solver.OnPreUpdate -= ModifyOffset;
+			}
 		}
 	}
 

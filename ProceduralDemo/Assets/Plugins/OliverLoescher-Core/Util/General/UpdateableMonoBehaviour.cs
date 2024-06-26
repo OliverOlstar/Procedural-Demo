@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
 	public abstract class UpdateableMonoBehaviour : MonoBehaviour
 	{
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Default, Util.Mono.Priorities.Default);
+		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Default, Util.Mono.Priorities.Default);
 
 		protected virtual void Start() => SetUpdateEnabled(true);
 		// protected virtual void OnDestroy() => SetUpdateEnabled(false);
@@ -20,11 +18,11 @@ namespace OliverLoescher
 		{
 			if (pEnabled)
 			{
-				updateable.Register(Tick);
+				m_Updateable.Register(Tick);
 			}
 			else
 			{
-				updateable.Deregister();
+				m_Updateable.Deregister();
 			}
 		}
 	}

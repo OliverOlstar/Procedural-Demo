@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
-using RootMotion;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
 	/// <summary>
 	/// Hybrid %IK solver designed for mapping a character to a VR headset and 2 hand controllers 
 	/// </summary>
 	public partial class IKSolverVR: IKSolver {
 
-		[System.Serializable]
+		[Serializable]
 		public enum PositionOffset {
 			Pelvis,
 			Chest,
@@ -23,14 +22,14 @@ namespace RootMotion.FinalIK {
 			RightHeel
 		}
 
-		[System.Serializable]
+		[Serializable]
 		public enum RotationOffset {
 			Pelvis,
 			Chest,
 			Head,
 		}
 
-		[System.Serializable]
+		[Serializable]
 		public class VirtualBone {
 
 			public Vector3 readPosition;
@@ -55,10 +54,16 @@ namespace RootMotion.FinalIK {
 			}
 
 			public static void SwingRotation(VirtualBone[] bones, int index, Vector3 swingTarget, float weight = 1f) {
-				if (weight <= 0f) return;
-					
+				if (weight <= 0f)
+				{
+					return;
+				}
+
 				Quaternion r = Quaternion.FromToRotation(bones[index].solverRotation * bones[index].axis, swingTarget - bones[index].solverPosition);
-				if (weight < 1f) r = Quaternion.Lerp(Quaternion.identity, r, weight);
+				if (weight < 1f)
+				{
+					r = Quaternion.Lerp(Quaternion.identity, r, weight);
+				}
 
 				for (int i = index; i < bones.Length; i++) {
 					bones[i].solverRotation = r * bones[i].solverRotation;
@@ -129,7 +134,10 @@ namespace RootMotion.FinalIK {
             /// Solve the bone chain virtually using both solverPositions and SolverRotations. This will work the same as IKSolverTrigonometric.Solve.
             /// </summary>
             public static void SolveTrigonometric(VirtualBone[] bones, int first, int second, int third, Vector3 targetPosition, Vector3 bendNormal, float weight) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
 
 				// Direction of the limb in solver
 				targetPosition = Vector3.Lerp(bones[third].solverPosition, targetPosition, weight);
@@ -138,7 +146,11 @@ namespace RootMotion.FinalIK {
 				
 				// Distance between the first and the last transform solver positions
 				float sqrMag = dir.sqrMagnitude;
-				if (sqrMag == 0f) return;
+				if (sqrMag == 0f)
+				{
+					return;
+				}
+
 				float length = Mathf.Sqrt(sqrMag);
 				
 				float sqrMag1 = (bones[second].solverPosition - bones[first].solverPosition).sqrMagnitude;
@@ -152,12 +164,18 @@ namespace RootMotion.FinalIK {
 				
 				// Position the second transform
 				Quaternion q1 = Quaternion.FromToRotation(bones[second].solverPosition - bones[first].solverPosition, toBendPoint);
-				if (weight < 1f) q1 = Quaternion.Lerp(Quaternion.identity, q1, weight);
+				if (weight < 1f)
+				{
+					q1 = Quaternion.Lerp(Quaternion.identity, q1, weight);
+				}
 
 				RotateAroundPoint(bones, first, bones[first].solverPosition, q1);
 
 				Quaternion q2 = Quaternion.FromToRotation(bones[third].solverPosition - bones[second].solverPosition, targetPosition - bones[second].solverPosition);
-				if (weight < 1f) q2 = Quaternion.Lerp(Quaternion.identity, q2, weight);
+				if (weight < 1f)
+				{
+					q2 = Quaternion.Lerp(Quaternion.identity, q2, weight);
+				}
 
 				RotateAroundPoint(bones, second, bones[second].solverPosition, q2);
 			}
@@ -167,14 +185,21 @@ namespace RootMotion.FinalIK {
 				float x = ((directionMag * directionMag) + (sqrMag1 - sqrMag2)) / 2f / directionMag;
 				float y = (float)Math.Sqrt(Mathf.Clamp(sqrMag1 - x * x, 0, Mathf.Infinity));
 				
-				if (direction == Vector3.zero) return Vector3.zero;
+				if (direction == Vector3.zero)
+				{
+					return Vector3.zero;
+				}
+
 				return Quaternion.LookRotation(direction, bendDirection) * new Vector3(0f, y, x);
 			}
 
 			// TODO Move to IKSolverFABRIK
 			// Solves a simple FABRIK pass for a bone hierarchy, not using rotation limits or singularity breaking here
 			public static void SolveFABRIK(VirtualBone[] bones, Vector3 startPosition, Vector3 targetPosition, float weight, float minNormalizedTargetDistance, int iterations, float length, Vector3 startOffset) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
 
 				if (minNormalizedTargetDistance > 0f) {
 					Vector3 targetDirection = targetPosition - startPosition;
@@ -186,7 +211,7 @@ namespace RootMotion.FinalIK {
 				// Iterating the solver
 				for (int iteration = 0; iteration < iterations; iteration ++) {
 					// Stage 1
-					bones[bones.Length - 1].solverPosition = Vector3.Lerp(bones[bones.Length - 1].solverPosition, targetPosition, weight);
+					bones[^1].solverPosition = Vector3.Lerp(bones[^1].solverPosition, targetPosition, weight);
 					
 					for (int i = bones.Length - 2; i > -1; i--) {
 						// Finding joint positions
@@ -195,8 +220,11 @@ namespace RootMotion.FinalIK {
 					
 					// Stage 2
                     if (iteration == 0) {
-                        foreach (VirtualBone bone in bones) bone.solverPosition += startOffset;
-                    }
+                        foreach (VirtualBone bone in bones)
+						{
+							bone.solverPosition += startOffset;
+						}
+					}
                     
 					bones[0].solverPosition = startPosition;
 						
@@ -206,7 +234,7 @@ namespace RootMotion.FinalIK {
 				}
 				
 				for (int i = 0; i < bones.Length - 1; i++) {
-					VirtualBone.SwingRotation(bones, i, bones[i + 1].solverPosition);
+					SwingRotation(bones, i, bones[i + 1].solverPosition);
 				}
 			}
 
@@ -216,12 +244,15 @@ namespace RootMotion.FinalIK {
 			}
 
 			public static void SolveCCD(VirtualBone[] bones, Vector3 targetPosition, float weight, int iterations) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
 
 				// Iterating the solver
 				for (int iteration = 0; iteration < iterations; iteration ++) {
 					for (int i = bones.Length - 2; i > -1; i--) {
-						Vector3 toLastBone = bones[bones.Length - 1].solverPosition - bones[i].solverPosition;
+						Vector3 toLastBone = bones[^1].solverPosition - bones[i].solverPosition;
 						Vector3 toTarget = targetPosition - bones[i].solverPosition;
 
 
@@ -229,9 +260,9 @@ namespace RootMotion.FinalIK {
 
 						if (weight >= 1) {
 							//bones[i].transform.rotation = targetRotation;
-							VirtualBone.RotateBy(bones, i, rotation);
+							RotateBy(bones, i, rotation);
 						} else {
-							VirtualBone.RotateBy(bones, i, Quaternion.Lerp(Quaternion.identity, rotation, weight));
+							RotateBy(bones, i, Quaternion.Lerp(Quaternion.identity, rotation, weight));
 						}
 					}
 				}

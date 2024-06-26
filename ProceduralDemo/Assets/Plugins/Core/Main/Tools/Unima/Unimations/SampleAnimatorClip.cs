@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
@@ -17,7 +15,7 @@ namespace Core
 
 		private void Awake()
 		{
-			m_Animator = Core.Util.GetOrAddComponent<Animator>(gameObject);
+			m_Animator = Util.GetOrAddComponent<Animator>(gameObject);
 			if (m_Animator.runtimeAnimatorController != null)
 			{
 				Debug.LogWarning($"SampleAnimatorClip.Awake() Unima is stomping AnimatorController {m_Animator.runtimeAnimatorController.name} attached to {name} Animator, " +

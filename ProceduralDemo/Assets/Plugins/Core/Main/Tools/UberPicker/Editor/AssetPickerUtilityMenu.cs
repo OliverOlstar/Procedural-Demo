@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,7 +7,7 @@ public static class AssetPickerUtilityMenu
 	{
 		public Vector2 Position;
 		public System.Type Type;
-		public UnityEngine.Object Object;
+		public Object Object;
 		public System.Action<SerializedProperty, string> OnSelected;
 		public SerializedProperty Property;
 	}
@@ -27,8 +25,8 @@ public static class AssetPickerUtilityMenu
 		}
 
 		attachToRect.width -= UberPickerGUI.POINTER_BUTTON_WIDTH;
-		Rect r = new Rect(attachToRect.x + attachToRect.width, attachToRect.y, UberPickerGUI.HAMBURGER_BUTTON_WIDTH, EditorGUIUtility.singleLineHeight);
-		GUIStyle hamburgerLabel = new GUIStyle(GUI.skin.label);
+		Rect r = new(attachToRect.x + attachToRect.width, attachToRect.y, UberPickerGUI.HAMBURGER_BUTTON_WIDTH, EditorGUIUtility.singleLineHeight);
+		GUIStyle hamburgerLabel = new(GUI.skin.label);
 		GUI.Label(r, UberPickerGUI.HAMBURGER_UNICODE, UberPickerGUI.HAMBURGER_STYLE);
 
 		Event e = Event.current;
@@ -36,14 +34,14 @@ public static class AssetPickerUtilityMenu
 			e.button == 0 &&
 			r.Contains(e.mousePosition))
 		{
-			GenericMenu menu = new GenericMenu();
+			GenericMenu menu = new();
 			Vector2 p = GUIUtility.GUIToScreenPoint(e.mousePosition);
 			if (!string.IsNullOrEmpty(selectedPath))
 			{
-				UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath(selectedPath, objectType);
+				Object obj = AssetDatabase.LoadAssetAtPath(selectedPath, objectType);
 				if (obj != null)
 				{
-					Context context = new Context
+					Context context = new()
 					{
 						Type = objectType,
 						Object = obj,
@@ -57,7 +55,7 @@ public static class AssetPickerUtilityMenu
 			}
 			foreach (System.Type type in Core.TypeUtility.GetMatchingTypes(objectType, IsTypeMatching))
 			{
-				Context context = new Context
+				Context context = new()
 				{
 					Type = type,
 					Property = property,
@@ -71,7 +69,7 @@ public static class AssetPickerUtilityMenu
 	}
 
 	/// <summary>Accessing Core.SOCacheName.name causes exceptions, utility function to avoid that</summary>
-	public static string GetObjectName(UnityEngine.Object obj) => obj is Core.SOCacheName cachedName ? cachedName.Name : obj.name;
+	public static string GetObjectName(Object obj) => obj is Core.SOCacheName cachedName ? cachedName.Name : obj.name;
 
 	private static bool IsTypeMatching(System.Type type, System.Type baseType)
 	{
@@ -91,8 +89,8 @@ public static class AssetPickerUtilityMenu
 	public static void OnDuplicate(object obj)
 	{
 		Context context = obj as Context;
-		UnityEngine.Object objectToDuplicate = context.Object;
-		UnityEngine.Object createdObject = UnityEngine.Object.Instantiate(objectToDuplicate);
+		Object objectToDuplicate = context.Object;
+		Object createdObject = Object.Instantiate(objectToDuplicate);
 		string createdObjectPath = GetCreatedObjectPath(createdObject, exampleObjectHint: objectToDuplicate);
 		HandleCreatedObjectInternal(createdObject, createdObjectPath, context);
 	}
@@ -100,14 +98,14 @@ public static class AssetPickerUtilityMenu
 	public static void OnCreate(object obj)
 	{
 		Context context = obj as Context;
-		UnityEngine.Object createdObject = ScriptableObject.CreateInstance(context.Type);
+		Object createdObject = ScriptableObject.CreateInstance(context.Type);
 		string createdObjectPath = GetCreatedObjectPath(createdObject, objectTypeHint: context.Type);
 		HandleCreatedObjectInternal(createdObject, createdObjectPath, context);
 	}
 
 	public static string GetCreatedObjectPath(
-		UnityEngine.Object createdObject,
-		UnityEngine.Object exampleObjectHint = null,
+		Object createdObject,
+		Object exampleObjectHint = null,
 		System.Type objectTypeHint = null)
 	{
 		// Use hints to try to find an example path
@@ -154,14 +152,14 @@ public static class AssetPickerUtilityMenu
 		return createdObjectPath;
 	}
 
-	public static void HandleCreatedObject(UnityEngine.Object createdObject, string createdObjectPath)
+	public static void HandleCreatedObject(Object createdObject, string createdObjectPath)
 	{
 		createdObjectPath = AssetDatabase.GenerateUniqueAssetPath(createdObjectPath);
 		AssetDatabase.CreateAsset(createdObject, createdObjectPath);
 		EditorGUIUtility.PingObject(createdObject);
 	}
 
-	private static void HandleCreatedObjectInternal(UnityEngine.Object createdObject, string createdObjectPath, Context context)
+	private static void HandleCreatedObjectInternal(Object createdObject, string createdObjectPath, Context context)
 	{
 		HandleCreatedObject(createdObject, createdObjectPath);
 		AssetPickerRenameWindow.Open(createdObject, context.Type, context.Position);

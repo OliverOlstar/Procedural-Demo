@@ -1,46 +1,48 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace OliverLoescher.UI
+namespace OCore.UI
 {
 	[RequireComponent(typeof(Button))]
 	public class ButtonText : MonoBehaviour
 	{
-		[SerializeField] private TMP_Text text = null;
-		private Button button;
+		[SerializeField]
+		private TMP_Text m_Text = null;
+		private Button m_Button;
 
-		[SerializeField] private string[] strings = new string[1];
-		private int index = 0;
+		[SerializeField]
+		private string[] m_Strings = new string[1];
+		private int m_Index = 0;
 
 		private void Awake()
 		{
-			button = GetComponent<Button>();
-			button.onClick.AddListener(OnClick);
+			m_Button = GetComponent<Button>();
+			m_Button.onClick.AddListener(OnClick);
 		}
 
 		public void Reset()
 		{
-			if (text != null && strings.Length > 0)
+			if (m_Text == null || m_Strings.Length == 0)
 			{
-				text.text = strings[strings.Length - 1];
+				return;
 			}
+			m_Text.text = m_Strings[^1];
 		}
 
 		private void OnDestroy()
 		{
-			button.onClick.RemoveListener(OnClick);
+			m_Button.onClick.RemoveListener(OnClick);
 		}
 
 		public void OnClick()
 		{
-			index++;
-			if (index == strings.Length)
-				index = 0;
-
-			text.text = strings[index];
+			m_Index++;
+			if (m_Index == m_Strings.Length)
+			{
+				m_Index = 0;
+			}
+			m_Text.text = m_Strings[m_Index];
 		}
 	}
 }

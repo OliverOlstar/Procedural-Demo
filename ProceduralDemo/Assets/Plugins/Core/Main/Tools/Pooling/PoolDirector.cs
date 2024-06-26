@@ -65,11 +65,11 @@ namespace Core
 		public static bool Exists() { return Director.Exists<TSingleton>(); }
 		public static TSingleton Instance => Director.GetOrCreate<TSingleton>();
 
-		private Dictionary<int, PoolList<TInstance>> m_Instances = new Dictionary<int, PoolList<TInstance>>();
-		private Dictionary<int, string> m_DebugPrefabNames = new Dictionary<int, string>();
-		private PoolList<TInstance> m_UpdateInstances = new PoolList<TInstance>(100);
-		private PoolList<TInstance> m_LateUpdateInstances = new PoolList<TInstance>(100);
-		private PoolList<PoolLifetime> m_Lifetimes = new PoolList<PoolLifetime>(30);
+		private Dictionary<int, PoolList<TInstance>> m_Instances = new();
+		private Dictionary<int, string> m_DebugPrefabNames = new();
+		private PoolList<TInstance> m_UpdateInstances = new(100);
+		private PoolList<TInstance> m_LateUpdateInstances = new(100);
+		private PoolList<PoolLifetime> m_Lifetimes = new(30);
 		Transform m_Transform = null;
 
 		public PoolDirector() { }
@@ -132,7 +132,7 @@ namespace Core
 			Transform locator,
 			bool child,
 			bool autoLifetime,
-			UnityEngine.Object owner = null)
+			Object owner = null)
 		{
 			return Spawn(prefab, locator.position, locator.rotation, child ? locator : null, autoLifetime, owner);
 		}
@@ -143,7 +143,7 @@ namespace Core
 			Vector3 offsetPosition,
 			Quaternion offsetOrientation,
 			bool autoLifetime,
-			UnityEngine.Object owner = null)
+			Object owner = null)
 		{
 			if (parent == null)
 			{
@@ -169,7 +169,7 @@ namespace Core
 			Quaternion rotation,
 			Transform parent,
 			bool autoLifetime,
-			UnityEngine.Object owner = null)
+			Object owner = null)
 		{
 			if (prefab == null)
 			{

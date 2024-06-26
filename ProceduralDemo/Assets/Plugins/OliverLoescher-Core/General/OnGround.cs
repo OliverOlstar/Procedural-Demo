@@ -3,32 +3,35 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System;
 
-namespace OliverLoescher
+namespace OCore
 {
 	public class OnGround : MonoBehaviour
 	{
-		[System.Serializable]
+		[Serializable]
 		private class Linecast
 		{
-			[SerializeField] private Vector3 startPosition = new Vector3();
-			[SerializeField] private float distance = 1.0f;
+			[SerializeField]
+			private Vector3 m_StartPosition = new();
+			[SerializeField]
+			private float m_Distance = 1.0f;
 
-			[HideInInspector] public RaycastHit hitInfo = new RaycastHit();
+			[HideInInspector]
+			public RaycastHit HitInfo = new();
 
 			public bool Check(Transform pTransform, LayerMask pLayerMask)
 			{
-				Vector3 start = pTransform.TransformPoint(startPosition);
-				Vector3 end = start - (pTransform.up * distance);
-				return Physics.Linecast(start, end, out hitInfo, pLayerMask);
+				Vector3 start = pTransform.TransformPoint(m_StartPosition);
+				Vector3 end = start - (pTransform.up * m_Distance);
+				return Physics.Linecast(start, end, out HitInfo, pLayerMask);
 			}
 
 			public void OnDrawGizmos(Transform pTransform, LayerMask pLayerMask, Func<RaycastHit, bool> pIsValid = null)
 			{
-				Vector3 start = pTransform.TransformPoint(startPosition);
-				Vector3 end = start - (pTransform.up * distance);
+				Vector3 start = pTransform.TransformPoint(m_StartPosition);
+				Vector3 end = start - (pTransform.up * m_Distance);
 				if (Check(pTransform, pLayerMask))
 				{
-					Gizmos.color = (pIsValid != null && pIsValid.Invoke(hitInfo)) ? Color.green : Color.yellow;
+					Gizmos.color = (pIsValid != null && pIsValid.Invoke(HitInfo)) ? Color.green : Color.yellow;
 				}
 				else
 				{
@@ -38,51 +41,55 @@ namespace OliverLoescher
 			}
 		}
 
-		[System.Serializable]
+		[Serializable]
 		private class Spherecast
 		{
-			[SerializeField] private Vector3 startPosition = new Vector3();
-			[SerializeField] private float distance = 1.0f;
-			[SerializeField] private float radius = 0.5f;
+			[SerializeField]
+			private Vector3 m_StartPosition = new();
+			[SerializeField]
+			private float m_Distance = 1.0f;
+			[SerializeField]
+			private float m_Radius = 0.5f;
 
-			[HideInInspector] public RaycastHit hitInfo = new RaycastHit();
+			[HideInInspector]
+			public RaycastHit HitInfo = new();
 
 			public bool Check(Transform pTransform, LayerMask pLayerMask)
 			{
-				Vector3 start = pTransform.TransformPoint(startPosition);
-				return Physics.SphereCast(start, radius, -pTransform.up, out hitInfo, distance, pLayerMask);
+				Vector3 start = pTransform.TransformPoint(m_StartPosition);
+				return Physics.SphereCast(start, m_Radius, -pTransform.up, out HitInfo, m_Distance, pLayerMask);
 			}
 
 			public void OnDrawGizmos(Transform pTransform, LayerMask pLayerMask, Func<RaycastHit, bool> pIsValid = null)
 			{
-				Vector3 start = pTransform.TransformPoint(startPosition);
-				Vector3 end = start - (pTransform.up * distance);
-				Gizmos.DrawWireSphere(start, radius);
+				Vector3 start = pTransform.TransformPoint(m_StartPosition);
+				Vector3 end = start - (pTransform.up * m_Distance);
+				Gizmos.DrawWireSphere(start, m_Radius);
 				if (Check(pTransform, pLayerMask))
 				{
-					Gizmos.color = (pIsValid != null && pIsValid.Invoke(hitInfo)) ? Color.green : Color.yellow;
+					Gizmos.color = (pIsValid != null && pIsValid.Invoke(HitInfo)) ? Color.green : Color.yellow;
 				}
 				else
 				{
 					Gizmos.color = Color.red;
 				}
-				Gizmos.DrawWireSphere(end, radius);
+				Gizmos.DrawWireSphere(end, m_Radius);
 				Gizmos.DrawLine(start, end);
 			}
 		}
 
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new(Util.Mono.Type.Fixed, Util.Mono.Priorities.OnGround);
+		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Fixed, Util.Mono.Priorities.OnGround);
 		[SerializeField]
-		private Transform myTransform;
+		private Transform m_Transform;
 		[SerializeField]
-		private Linecast[] lines = new Linecast[0];
+		private Linecast[] m_Lines = new Linecast[0];
 		[SerializeField]
-		private Spherecast[] spheres = new Spherecast[1];
+		private Spherecast[] m_Spheres = new Spherecast[1];
 		[SerializeField]
-		private LayerMask layerMask = new();
+		private LayerMask m_LayerMask = new();
 		[SerializeField]
-		private float slopeLimit = 45;
+		private float m_SlopeLimit = 45;
 		[SerializeField]
 		private bool m_FollowGround = false;
 
@@ -98,19 +105,20 @@ namespace OliverLoescher
 
 		private void Start()
 		{
-			if (myTransform == null)
+			if (m_Transform == null)
 			{
-				myTransform = transform;
+				m_Transform = transform;
 			}
-			if (!myTransform.TryGetComponent(out m_Rigidbody))
-				myTransform.TryGetComponent(out m_Controller);
-
-			updateable.Register(Tick);
+			if (!m_Transform.TryGetComponent(out m_Rigidbody))
+			{
+				m_Transform.TryGetComponent(out m_Controller);
+			}
+			m_Updateable.Register(Tick);
 		}
-		
+
 		private void OnDestroy()
 		{
-			updateable.Deregister();
+			m_Updateable.Deregister();
 			m_Follower.OnDestroy();
 		}
 
@@ -130,23 +138,28 @@ namespace OliverLoescher
 			}
 
 			Transform groundTransform = GetFirstGroundTransform();
-			if (m_Follower.IsStarted && m_Follower.ParentTransform != groundTransform)
+			if (!m_Follower.IsStarted || m_Follower.ParentTransform == groundTransform)
 			{
-				m_Follower.ChangeParent(groundTransform);
+				return;
 			}
+			m_Follower.ChangeParent(groundTransform);
 		}
 
 		private bool CastToGrounded()
 		{
-			foreach (Linecast line in lines)
+			foreach (Linecast line in m_Lines)
 			{
-				if (line.Check(myTransform, layerMask))
+				if (line.Check(m_Transform, m_LayerMask))
+				{
 					return true;
+				}
 			}
-			foreach (Spherecast sphere in spheres)
+			foreach (Spherecast sphere in m_Spheres)
 			{
-				if (sphere.Check(myTransform, layerMask))
+				if (sphere.Check(m_Transform, m_LayerMask))
+				{
 					return true;
+				}
 			}
 			return false;
 		}
@@ -159,52 +172,56 @@ namespace OliverLoescher
 
 		private bool IsGroundValidInternal(Vector3 pNormal)
 		{
-			return Vector3.Angle(Vector3.up, pNormal) < slopeLimit;
+			return Vector3.Angle(Vector3.up, pNormal) < m_SlopeLimit;
 		}
 
 		public Vector3 GetAverageNormal()
 		{
 			Vector3 total = Vector3.zero;
-			foreach (Linecast line in lines)
+			foreach (Linecast line in m_Lines)
 			{
-				total += line.hitInfo.normal;
+				total += line.HitInfo.normal;
 			}
-			foreach (Spherecast sphere in spheres)
+			foreach (Spherecast sphere in m_Spheres)
 			{
-				total += sphere.hitInfo.normal;
+				total += sphere.HitInfo.normal;
 			}
 			if (total.sqrMagnitude < 1.0f) // If no normal was added
 			{
 				return Vector3.up;
 			}
-			return total / (lines.Length + spheres.Length);
+			return total / (m_Lines.Length + m_Spheres.Length);
 		}
 
 		public Vector3 GetAveragePoint()
 		{
 			Vector3 total = Vector3.zero;
-			foreach (Linecast line in lines)
+			foreach (Linecast line in m_Lines)
 			{
-				total += line.hitInfo.point;
+				total += line.HitInfo.point;
 			}
-			foreach (Spherecast sphere in spheres)
+			foreach (Spherecast sphere in m_Spheres)
 			{
-				total += sphere.hitInfo.point;
+				total += sphere.HitInfo.point;
 			}
-			return total / (lines.Length + spheres.Length);
+			return total / (m_Lines.Length + m_Spheres.Length);
 		}
 
 		public Transform GetFirstGroundTransform()
 		{
-			foreach (Linecast line in lines)
+			foreach (Linecast line in m_Lines)
 			{
-				if (line.hitInfo.collider != null)
-					return line.hitInfo.transform;
+				if (line.HitInfo.collider != null)
+				{
+					return line.HitInfo.transform;
+				}
 			}
-			foreach (Spherecast sphere in spheres)
+			foreach (Spherecast sphere in m_Spheres)
 			{
-				if (sphere.hitInfo.collider != null)
-					return sphere.hitInfo.transform;
+				if (sphere.HitInfo.collider != null)
+				{
+					return sphere.HitInfo.transform;
+				}
 			}
 			return null;
 		}
@@ -217,45 +234,48 @@ namespace OliverLoescher
 
 		private void SetFollowTarget(Transform pTarget)
 		{
-			if (m_FollowGround)
+			if (!m_FollowGround)
 			{
-				if (m_Rigidbody)
-				{
-					m_Follower.Start(pTarget, m_Rigidbody, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
-				}
-				else if (m_Controller)
-				{
-					m_Follower.Start(pTarget, m_Controller, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
-				}
-				else
-				{
-					m_Follower.Start(pTarget, myTransform, GetAveragePoint(), null, false, updateable.Type, updateable.Priority, this);
-				}
+				return;
+			}
+
+			if (m_Rigidbody)
+			{
+				m_Follower.Start(pTarget, m_Rigidbody, GetAveragePoint(), null, false, m_Updateable.Type, m_Updateable.Priority, this);
+			}
+			else if (m_Controller)
+			{
+				m_Follower.Start(pTarget, m_Controller, GetAveragePoint(), null, false, m_Updateable.Type, m_Updateable.Priority, this);
+			}
+			else
+			{
+				m_Follower.Start(pTarget, m_Transform, GetAveragePoint(), null, false, m_Updateable.Type, m_Updateable.Priority, this);
 			}
 		}
 
 		private void OnExit()
 		{
 			OnExitEvent?.Invoke();
-			if (m_FollowGround)
+			if (!m_FollowGround)
 			{
-				m_Follower.Stop();
+				return;
 			}
+			m_Follower.Stop();
 		}
 
 		private void OnDrawGizmos()
 		{
-			if (myTransform == null)
+			if (m_Transform == null)
 			{
-				myTransform = transform;
+				m_Transform = transform;
 			}
-			foreach (Linecast line in lines)
+			foreach (Linecast line in m_Lines)
 			{
-				line.OnDrawGizmos(myTransform, layerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
+				line.OnDrawGizmos(m_Transform, m_LayerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
 			}
-			foreach (Spherecast sphere in spheres)
+			foreach (Spherecast sphere in m_Spheres)
 			{
-				sphere.OnDrawGizmos(myTransform, layerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
+				sphere.OnDrawGizmos(m_Transform, m_LayerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
 			}
 			m_Follower.OnDrawGizmos();
 		}

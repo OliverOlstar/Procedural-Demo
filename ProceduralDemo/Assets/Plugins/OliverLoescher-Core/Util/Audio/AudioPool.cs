@@ -1,75 +1,73 @@
-using OliverLoescher.Util;
-using System.Collections;
+using OCore.Util;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
-    public class AudioPool : MonoBehaviourSingleton<AudioPool>
+	public class AudioPool : MonoBehaviourSingleton<AudioPool>
     {
-		private List<AudioSource> Sources = new List<AudioSource>();
+		private static int s_NameIndex = -1;
 
-		private static int NameIndex = -1;
-		private int LastIndex = -1;
-
-		private Transform ActiveSourcesTransform;
-		private Transform ReleasedSourcesTransform;
+		private readonly List<AudioSource> m_Sources = new();
+		private int m_LastIndex = -1;
+		private Transform m_ActiveSourcesTransform;
+		private Transform m_ReleasedSourcesTransform;
 
 		private void Start()
 		{
-			ActiveSourcesTransform = new GameObject("Active").transform;
-			ActiveSourcesTransform.SetParent(transform);
-			ReleasedSourcesTransform = new GameObject("Released").transform;
-			ReleasedSourcesTransform.SetParent(transform);
+			m_ActiveSourcesTransform = new GameObject("Active").transform;
+			m_ActiveSourcesTransform.SetParent(transform);
+			m_ReleasedSourcesTransform = new GameObject("Released").transform;
+			m_ReleasedSourcesTransform.SetParent(transform);
 		}
 
 		public static AudioSource ClaimSource()
 		{
 			AudioPool pool = Instance;
 			int index = pool.GetFreeSourceIndex();
-			AudioSource source = pool.Sources[index];
-			pool.Sources.RemoveAt(index);
-			source.transform.SetParent(pool.ReleasedSourcesTransform);
+			AudioSource source = pool.m_Sources[index];
+			pool.m_Sources.RemoveAt(index);
+			source.transform.SetParent(pool.m_ReleasedSourcesTransform);
 			return source;
 		}
 		
 		public static void ReturnSource(AudioSource pSource)
 		{
 			AudioPool pool = Instance;
-			pool.Sources.Add(pSource);
-			pSource.transform.SetParent(pool.ActiveSourcesTransform);
+			pool.m_Sources.Add(pSource);
+			pSource.transform.SetParent(pool.m_ActiveSourcesTransform);
 		}
 
 		public AudioSource GetFreeSource()
 		{
 			int index = GetFreeSourceIndex();
-			return Sources[index];
+			return m_Sources[index];
 		}
 		
 		private int GetFreeSourceIndex()
 		{
-			LastIndex++;
-			if (LastIndex >= Sources.Count)
+			m_LastIndex++;
+			if (m_LastIndex >= m_Sources.Count)
 			{
-				LastIndex = 0;
+				m_LastIndex = 0;
 			}
 
-			int index = Func.IndexOf(Sources, LastIndex, (AudioSource pSource) => !pSource.isPlaying);
+			int index = Func.IndexOf(m_Sources, m_LastIndex, (AudioSource pSource) => !pSource.isPlaying);
 			if (index >= 0)
 			{
-				LastIndex = index;
+				m_LastIndex = index;
 				return index; // Found
 			}
 
 			AudioSource source = CreateNewSource(); // New
-			Sources.Add(source);
-			return Sources.Count - 1;
+			m_Sources.Add(source);
+			return m_Sources.Count - 1;
 		}
 
 		private AudioSource CreateNewSource()
 		{
-			GameObject gameObject = new GameObject($"Pooled AudioSource ({NameIndex++})");
-			gameObject.transform.SetParent(ActiveSourcesTransform);
+			GameObject gameObject = new($"Pooled AudioSource ({s_NameIndex++})");
+			gameObject.transform.SetParent(m_ActiveSourcesTransform);
 			AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
 			return audioSource;
 		}

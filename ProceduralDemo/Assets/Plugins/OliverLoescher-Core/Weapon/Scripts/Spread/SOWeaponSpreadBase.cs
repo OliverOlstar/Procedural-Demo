@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	public abstract class SOWeaponSpreadBase : ScriptableObject
 	{

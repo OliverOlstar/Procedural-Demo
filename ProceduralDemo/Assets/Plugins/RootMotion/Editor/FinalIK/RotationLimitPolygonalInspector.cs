@@ -1,16 +1,15 @@
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 using System;
 using System.Reflection;
 
 namespace RootMotion.FinalIK
 {
 
-    /*
+	/*
 	 * Custom inspector for RotationLimitPolygonal
 	 * */
-    [CustomEditor(typeof(RotationLimitPolygonal))]
+	[CustomEditor(typeof(RotationLimitPolygonal))]
     [CanEditMultipleObjects]
     public class RotationLimitPolygonalInspector : RotationLimitInspector
     {
@@ -54,8 +53,11 @@ namespace RootMotion.FinalIK
 
             DrawDefaultInspector();
 
-            if (GUI.changed) EditorUtility.SetDirty(script);
-        }
+            if (GUI.changed)
+			{
+				EditorUtility.SetDirty(script);
+			}
+		}
 
         #endregion Inspector
 
@@ -66,17 +68,28 @@ namespace RootMotion.FinalIK
             GUI.changed = false;
 
             // Set defaultLocalRotation so that the initial local rotation will be the zero point for the rotation limit
-            if (!Application.isPlaying && !script.defaultLocalRotationOverride) script.defaultLocalRotation = script.transform.localRotation;
-            if (script.axis == Vector3.zero) return;
+            if (!Application.isPlaying && !script.defaultLocalRotationOverride)
+			{
+				script.defaultLocalRotation = script.transform.localRotation;
+			}
 
-            // Quick Editing Tools
-            Handles.BeginGUI();
+			if (script.axis == Vector3.zero)
+			{
+				return;
+			}
+
+			// Quick Editing Tools
+			Handles.BeginGUI();
             GUILayout.BeginArea(new Rect(10, 10, 550, 140), "Rotation Limit Polygonal", "Window");
 
             // Cloning values from another RotationLimitPolygonal
             EditorGUILayout.BeginHorizontal();
-            if (Inspector.Button("Clone From", "Make this rotation limit identical to another", script, GUILayout.Width(220))) CloneLimit();
-            clone = (RotationLimitPolygonal)EditorGUILayout.ObjectField("", clone, typeof(RotationLimitPolygonal), true);
+            if (Inspector.Button("Clone From", "Make this rotation limit identical to another", script, GUILayout.Width(220)))
+			{
+				CloneLimit();
+			}
+
+			clone = (RotationLimitPolygonal)EditorGUILayout.ObjectField("", clone, typeof(RotationLimitPolygonal), true);
             EditorGUILayout.EndHorizontal();
 
             // Symmetry
@@ -84,26 +97,57 @@ namespace RootMotion.FinalIK
 
             // Flipping
             EditorGUILayout.BeginHorizontal();
-            if (Inspector.Button("Flip X", "Flip points along local X axis", script, GUILayout.Width(100))) FlipLimit(0);
-            if (Inspector.Button("Flip Y", "Flip points along local Y axis", script, GUILayout.Width(100))) FlipLimit(1);
-            if (Inspector.Button("Flip Z", "Flip points along local Z axis", script, GUILayout.Width(100))) FlipLimit(2);
-            GUILayout.Label("Flip everything along axis");
+            if (Inspector.Button("Flip X", "Flip points along local X axis", script, GUILayout.Width(100)))
+			{
+				FlipLimit(0);
+			}
+
+			if (Inspector.Button("Flip Y", "Flip points along local Y axis", script, GUILayout.Width(100)))
+			{
+				FlipLimit(1);
+			}
+
+			if (Inspector.Button("Flip Z", "Flip points along local Z axis", script, GUILayout.Width(100)))
+			{
+				FlipLimit(2);
+			}
+
+			GUILayout.Label("Flip everything along axis");
             EditorGUILayout.EndHorizontal();
 
             // Rotating
             EditorGUILayout.BeginHorizontal();
-            if (Inspector.Button("Rotate X", "Rotate points along X axis by Degrees", script, GUILayout.Width(100))) RotatePoints(degrees, Vector3.right);
-            if (Inspector.Button("Rotate Y", "Rotate points along Y axis by Degrees", script, GUILayout.Width(100))) RotatePoints(degrees, Vector3.up);
-            if (Inspector.Button("Rotate Z", "Rotate points along Z axis by Degrees", script, GUILayout.Width(100))) RotatePoints(degrees, Vector3.forward);
+            if (Inspector.Button("Rotate X", "Rotate points along X axis by Degrees", script, GUILayout.Width(100)))
+			{
+				RotatePoints(degrees, Vector3.right);
+			}
 
-            degrees = EditorGUILayout.FloatField("Degrees", degrees, GUILayout.Width(200));
+			if (Inspector.Button("Rotate Y", "Rotate points along Y axis by Degrees", script, GUILayout.Width(100)))
+			{
+				RotatePoints(degrees, Vector3.up);
+			}
+
+			if (Inspector.Button("Rotate Z", "Rotate points along Z axis by Degrees", script, GUILayout.Width(100)))
+			{
+				RotatePoints(degrees, Vector3.forward);
+			}
+
+			degrees = EditorGUILayout.FloatField("Degrees", degrees, GUILayout.Width(200));
             EditorGUILayout.EndHorizontal();
 
             // Smooth/Optimize
             EditorGUILayout.BeginHorizontal();
-            if (Inspector.Button("Smooth", "Double the points", script)) Smooth();
-            if (Inspector.Button("Optimize", "Delete every second point", script)) Optimize();
-            EditorGUILayout.EndHorizontal();
+            if (Inspector.Button("Smooth", "Double the points", script))
+			{
+				Smooth();
+			}
+
+			if (Inspector.Button("Optimize", "Delete every second point", script))
+			{
+				Optimize();
+			}
+
+			EditorGUILayout.EndHorizontal();
 
             GUILayout.EndArea();
             Handles.EndGUI();
@@ -154,8 +198,11 @@ namespace RootMotion.FinalIK
                             // Using the deletePoint index here because we dont want to delete points from the array that we are iterating
                             deletePoint = i;
                         }
-                        else if (!Warning.logged) script.LogWarning("Polygonal Rotation Limit should have at least 3 limit points");
-                    }
+                        else if (!Warning.logged)
+						{
+							script.LogWarning("Polygonal Rotation Limit should have at least 3 limit points");
+						}
+					}
                     if (Inspector.Button("Add Point", "Add a new point next to this one", script))
                     {
                         addPoint = i;
@@ -181,8 +228,12 @@ namespace RootMotion.FinalIK
                     Vector3 newPoint = InverseDirection(pointWorld - script.transform.position);
                     if (newPoint != script.points[i].point)
                     {
-                        if (!Application.isPlaying) Undo.RecordObject(script, "Move Limit Point");
-                        script.points[i].point = newPoint;
+                        if (!Application.isPlaying)
+						{
+							Undo.RecordObject(script, "Move Limit Point");
+						}
+
+						script.points[i].point = newPoint;
                     }
 
                     // Symmetry
@@ -211,10 +262,16 @@ namespace RootMotion.FinalIK
 
                 Handles.color = color;
 
-                if (i < script.P.Length - 1) Handles.DrawLine(script.transform.position + Direction(script.P[i]), script.transform.position + Direction(script.P[i + 1]));
-                else Handles.DrawLine(script.transform.position + Direction(script.P[i]), script.transform.position + Direction(script.P[0]));
+                if (i < script.P.Length - 1)
+				{
+					Handles.DrawLine(script.transform.position + Direction(script.P[i]), script.transform.position + Direction(script.P[i + 1]));
+				}
+				else
+				{
+					Handles.DrawLine(script.transform.position + Direction(script.P[i]), script.transform.position + Direction(script.P[0]));
+				}
 
-                Handles.color = Color.white;
+				Handles.color = Color.white;
             }
 
             // Deleting points
@@ -232,8 +289,11 @@ namespace RootMotion.FinalIK
                 addPoint = -1;
             }
 
-            if (GUI.changed) EditorUtility.SetDirty(script);
-        }
+            if (GUI.changed)
+			{
+				EditorUtility.SetDirty(script);
+			}
+		}
 
         private Color GetColor(int i)
         {
@@ -260,8 +320,11 @@ namespace RootMotion.FinalIK
         {
             for (int i = 1; i < script.points.Length; i++)
             {
-                if (script.points.Length > 3) DeletePoint(i);
-            }
+                if (script.points.Length > 3)
+				{
+					DeletePoint(i);
+				}
+			}
         }
 
         /*
@@ -271,15 +334,23 @@ namespace RootMotion.FinalIK
         {
             script.axis[axis] = -script.axis[axis];
 
-            foreach (RotationLimitPolygonal.LimitPoint limitPoint in script.points) limitPoint.point[axis] = -limitPoint.point[axis];
-            Array.Reverse(script.points);
+            foreach (RotationLimitPolygonal.LimitPoint limitPoint in script.points)
+			{
+				limitPoint.point[axis] = -limitPoint.point[axis];
+			}
+
+			Array.Reverse(script.points);
             script.BuildReachCones();
         }
 
         private void RotatePoints(float degrees, Vector3 axis)
         {
-            foreach (RotationLimitPolygonal.LimitPoint limitPoint in script.points) limitPoint.point = Quaternion.AngleAxis(degrees, axis) * limitPoint.point;
-            script.BuildReachCones();
+            foreach (RotationLimitPolygonal.LimitPoint limitPoint in script.points)
+			{
+				limitPoint.point = Quaternion.AngleAxis(degrees, axis) * limitPoint.point;
+			}
+
+			script.BuildReachCones();
         }
 
         /*
@@ -287,8 +358,12 @@ namespace RootMotion.FinalIK
 		 * */
         private Vector3 Direction(Vector3 v)
         {
-            if (script.transform.parent == null) return script.defaultLocalRotation * v;
-            return script.transform.parent.rotation * (script.defaultLocalRotation * v);
+            if (script.transform.parent == null)
+			{
+				return script.defaultLocalRotation * v;
+			}
+
+			return script.transform.parent.rotation * (script.defaultLocalRotation * v);
         }
 
         /*
@@ -296,8 +371,12 @@ namespace RootMotion.FinalIK
 		 * */
         private Vector3 InverseDirection(Vector3 v)
         {
-            if (script.transform.parent == null) return Quaternion.Inverse(script.defaultLocalRotation) * v;
-            return Quaternion.Inverse(script.defaultLocalRotation) * Quaternion.Inverse(script.transform.parent.rotation) * v;
+            if (script.transform.parent == null)
+			{
+				return Quaternion.Inverse(script.defaultLocalRotation) * v;
+			}
+
+			return Quaternion.Inverse(script.defaultLocalRotation) * Quaternion.Inverse(script.transform.parent.rotation) * v;
         }
 
         /*
@@ -312,7 +391,7 @@ namespace RootMotion.FinalIK
                 if (i != p)
                 {
                     Array.Resize(ref newPoints, newPoints.Length + 1);
-                    newPoints[newPoints.Length - 1] = script.points[i];
+                    newPoints[^1] = script.points[i];
                 }
             }
 
@@ -327,19 +406,31 @@ namespace RootMotion.FinalIK
         {
             RotationLimitPolygonal.LimitPoint[] newPoints = new RotationLimitPolygonal.LimitPoint[script.points.Length + 1];
 
-            for (int i = 0; i < p + 1; i++) newPoints[i] = script.points[i];
+            for (int i = 0; i < p + 1; i++)
+			{
+				newPoints[i] = script.points[i];
+			}
 
-            newPoints[p + 1] = new RotationLimitPolygonal.LimitPoint();
+			newPoints[p + 1] = new RotationLimitPolygonal.LimitPoint();
 
             Vector3 nextPoint = Vector3.forward;
-            if (p < script.points.Length - 1) nextPoint = script.points[p + 1].point;
-            else nextPoint = script.points[0].point;
+            if (p < script.points.Length - 1)
+			{
+				nextPoint = script.points[p + 1].point;
+			}
+			else
+			{
+				nextPoint = script.points[0].point;
+			}
 
-            newPoints[p + 1].point = Vector3.Lerp(script.points[p].point, nextPoint, 0.5f);
+			newPoints[p + 1].point = Vector3.Lerp(script.points[p].point, nextPoint, 0.5f);
 
-            for (int i = p + 2; i < newPoints.Length; i++) newPoints[i] = script.points[i - 1];
+            for (int i = p + 2; i < newPoints.Length; i++)
+			{
+				newPoints[i] = script.points[i - 1];
+			}
 
-            script.points = newPoints;
+			script.points = newPoints;
             script.BuildReachCones();
         }
 
@@ -348,8 +439,12 @@ namespace RootMotion.FinalIK
 		 * */
         private void CloneLimit()
         {
-            if (clone == null) return;
-            if (clone == script)
+            if (clone == null)
+			{
+				return;
+			}
+
+			if (clone == script)
             {
                 script.LogWarning("Can't clone from self.");
                 return;
@@ -401,9 +496,12 @@ namespace RootMotion.FinalIK
 
             foreach (RotationLimitPolygonal.LimitPoint limitPoint in script.points)
             {
-                if (limitPoint.point == v) return limitPoint;
+                if (limitPoint.point == v)
+				{
+					return limitPoint;
+				}
 
-                float d = Vector3.Distance(limitPoint.point, v);
+				float d = Vector3.Distance(limitPoint.point, v);
                 if (d < closestDistace)
                 {
                     closestPoint = limitPoint;

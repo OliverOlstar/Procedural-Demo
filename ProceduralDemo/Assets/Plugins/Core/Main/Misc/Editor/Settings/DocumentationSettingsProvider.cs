@@ -44,7 +44,7 @@ public class DocumentationSettingsProvider
 	[SettingsProvider]
 	private static SettingsProvider Get()
 	{
-		DocumentationSettingsProvider provider = new DocumentationSettingsProvider();
+		DocumentationSettingsProvider provider = new();
 		return new SettingsProvider(SETTINGS_PATH, SettingsScope.Project)
 		{
 			label = "Documentation",

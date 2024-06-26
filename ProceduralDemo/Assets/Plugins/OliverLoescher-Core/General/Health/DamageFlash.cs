@@ -1,65 +1,64 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Sirenix.OdinInspector;
-using OliverLoescher;
 
-namespace OliverLoescher
+namespace OCore
 {
-    [RequireComponent(typeof(Health))]
-    public class DamageFlash : MonoBehaviour
-    {
-        private Health health = null;
+	[RequireComponent(typeof(Health))]
+	public class DamageFlash : MonoBehaviour
+	{
+		private Health m_Health = null;
 
-        [SerializeField] [DisableInPlayMode] private Renderer[] renderers;
-        private Color[] initalColors;
+		[SerializeField, DisableInPlayMode]
+		private Renderer[] m_Renderers;
+		private Color[] m_InitalColors;
 
-        [Header("Time")]
-        [SerializeField] [Range(Util.Math.NEARZERO, 1.0f)] private float flashSeconds = 0.1f;
-        [SerializeField] [Range(Util.Math.NEARZERO, 5.0f)] private float flashDeathSeconds = 0.1f;
+		[Header("Time")]
+		[SerializeField, Range(Util.Math.NEARZERO, 1.0f)]
+		private float flashSeconds = 0.1f;
+		[SerializeField, Range(Util.Math.NEARZERO, 5.0f)]
+		private float flashDeathSeconds = 0.1f;
 
-        private void Start()
-        {
-            health = GetComponent<Health>();
+		private void Start()
+		{
+			m_Health = GetComponent<Health>();
 
-            health.onValueLowered.AddListener(OnDamaged);
-            health.onValueRaised.AddListener(OnHealed);
-            health.onValueOut.AddListener(OnDeath);
+			m_Health.OnValueLoweredEvent.AddListener(OnDamaged);
+			m_Health.OnValueRaisedEvent.AddListener(OnHealed);
+			m_Health.OnValueOutEvent.AddListener(OnDeath);
 
-            initalColors = new Color[renderers.Length];
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                if (renderers[i].material.HasProperty("_Color"))
-                {
-                    initalColors[i] = renderers[i].material.color;
-                }
-            }
-        }
-        
-        public void OnDamaged(float pValue, float pChange) { SetColor(health.damageColor, flashSeconds); }
-        public void OnHealed(float pValue, float pChange) { SetColor(health.healColor, flashSeconds); }
-        public void OnDeath() { SetColor(health.deathColor, flashDeathSeconds); }
+			m_InitalColors = new Color[m_Renderers.Length];
+			for (int i = 0; i < m_Renderers.Length; i++)
+			{
+				if (m_Renderers[i].material.HasProperty("_Color"))
+				{
+					m_InitalColors[i] = m_Renderers[i].material.color;
+				}
+			}
+		}
 
-        public void SetColor(Color pColor, float pSeconds)
-        {
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                if (renderers[i].material.HasProperty("_Color"))
-                {
-                    renderers[i].material.color = pColor;
-                }
-            }
+		public void OnDamaged(float pValue, float pChange) { SetColor(m_Health.m_DamageColor, flashSeconds); }
+		public void OnHealed(float pValue, float pChange) { SetColor(m_Health.m_HealColor, flashSeconds); }
+		public void OnDeath() { SetColor(m_Health.m_DeathColor, flashDeathSeconds); }
 
-            CancelInvoke();
-            Invoke(nameof(ResetColor), pSeconds);
-        }
+		public void SetColor(Color pColor, float pSeconds)
+		{
+			for (int i = 0; i < m_Renderers.Length; i++)
+			{
+				if (m_Renderers[i].material.HasProperty("_Color"))
+				{
+					m_Renderers[i].material.color = pColor;
+				}
+			}
+			CancelInvoke();
+			Invoke(nameof(ResetColor), pSeconds);
+		}
 
-        private void ResetColor()
-        {
-            for (int i = 0; i < renderers.Length; i++)
-            {
-                renderers[i].material.color = initalColors[i];
-            }
-        }
-    }
+		private void ResetColor()
+		{
+			for (int i = 0; i < m_Renderers.Length; i++)
+			{
+				m_Renderers[i].material.color = m_InitalColors[i];
+			}
+		}
+	}
 }

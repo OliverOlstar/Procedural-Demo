@@ -1,74 +1,74 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher
+namespace OCore
 {
-    public class DamageReciever : MonoBehaviour, IDamageable
-    {
-        [SerializeField] private IDamageable parent = null;
+	public class DamageReciever : MonoBehaviour, IDamageable
+	{
+		[SerializeField]
+		private IDamageable m_Parent = null;
 
-        [DisableInPlayMode] [SerializeField] private GameObject parentObject = null;
-        [SerializeField] private float damageMultiplier = 1.0f;
+		[DisableInPlayMode, SerializeField]
+		private GameObject m_ParentObject = null;
+		[SerializeField]
+		private float m_DamageMultiplier = 1.0f;
 
-        private void Awake() 
-        {
-            if (parentObject == null)
-            {
-                parent = transform.parent.GetComponentInParent<IDamageable>();
-
-                if (parent == null)
-                {
-                    Debug.LogError("[DamageReciever] Couldn't find IDamagable through GetComponentInParent, destroying self", gameObject);
-                    Destroy(this);
-                }
-            }
-            else
-            {
-                parent = parentObject.GetComponent<IDamageable>();
-
-                if (parent == null)
-                {
-                    Debug.LogError("[DamageReciever] Couldn't find IDamagable on parentObject, destroying self", gameObject);
-                    Destroy(this);
-                }
-            }
-        }
-
-        void IDamageable.Damage(float pValue, GameObject pAttacker, Vector3 pPoint, Vector3 pDirection, Color pColor)
-        {
-            parent.Damage(DamageMultipler(pValue), pAttacker, pPoint, pDirection, pColor);
-        }
-        void IDamageable.Damage(float pValue, GameObject pAttacker, Vector3 pPoint, Vector3 pDirection)
-        {
-            parent.Damage(DamageMultipler(pValue), pAttacker, pPoint, pDirection);
-        }
-        private float DamageMultipler(float pValue) => pValue * damageMultiplier;
-
-        GameObject IDamageable.GetGameObject()
-        {
-            if (parent == null)
-            {
-                return gameObject;
-            }
-            return parent.GetGameObject();
-        }
-        IDamageable IDamageable.GetParentDamageable()
-        {
-            if (parent == null)
-            {
-                return this;
-            }
-            return parent.GetParentDamageable();
-        }
-        SOTeam IDamageable.GetTeam()
+		private void Awake()
 		{
-            if (parent == null)
-            {
-                return null;
-            }
-            return parent.GetTeam();
-        }
-    }
+			if (m_ParentObject == null)
+			{
+				m_Parent = transform.parent.GetComponentInParent<IDamageable>();
+
+				if (m_Parent == null)
+				{
+					Debug.LogError("[DamageReciever] Couldn't find IDamagable through GetComponentInParent, destroying self", gameObject);
+					Destroy(this);
+				}
+			}
+			else
+			{
+
+				if (!m_ParentObject.TryGetComponent<IDamageable>(out m_Parent))
+				{
+					Debug.LogError("[DamageReciever] Couldn't find IDamagable on parentObject, destroying self", gameObject);
+					Destroy(this);
+				}
+			}
+		}
+
+		void IDamageable.Damage(float pValue, GameObject pAttacker, Vector3 pPoint, Vector3 pDirection, Color pColor)
+		{
+			m_Parent.Damage(DamageMultipler(pValue), pAttacker, pPoint, pDirection, pColor);
+		}
+		void IDamageable.Damage(float pValue, GameObject pAttacker, Vector3 pPoint, Vector3 pDirection)
+		{
+			m_Parent.Damage(DamageMultipler(pValue), pAttacker, pPoint, pDirection);
+		}
+		private float DamageMultipler(float pValue) => pValue * m_DamageMultiplier;
+
+		GameObject IDamageable.GetGameObject()
+		{
+			if (m_Parent == null)
+			{
+				return gameObject;
+			}
+			return m_Parent.GetGameObject();
+		}
+		IDamageable IDamageable.GetParentDamageable()
+		{
+			if (m_Parent == null)
+			{
+				return this;
+			}
+			return m_Parent.GetParentDamageable();
+		}
+		SOTeam IDamageable.GetTeam()
+		{
+			if (m_Parent == null)
+			{
+				return null;
+			}
+			return m_Parent.GetTeam();
+		}
+	}
 }

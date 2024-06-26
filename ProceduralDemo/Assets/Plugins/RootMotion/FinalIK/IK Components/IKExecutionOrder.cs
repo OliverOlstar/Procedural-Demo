@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Manages the execution order of IK components.
@@ -24,19 +25,32 @@ namespace RootMotion.FinalIK {
 
 		private bool animatePhysics {
 			get {
-				if (animator == null) return false;
+				if (animator == null)
+				{
+					return false;
+				}
+
+
 				return animator.updateMode == AnimatorUpdateMode.AnimatePhysics;
 			}
 		}
 
 		// Disable the IK components
 		void Start() {
-			for (int i = 0; i < IKComponents.Length; i++) IKComponents[i].enabled = false;
+			for (int i = 0; i < IKComponents.Length; i++)
+			{
+				IKComponents[i].enabled = false;
+			}
+
 		}
 
 		// Fix Transforms in Normal update mode
 		void Update() {
-			if (animatePhysics) return;
+			if (animatePhysics)
+			{
+				return;
+			}
+
 
 			FixTransforms ();
 		}
@@ -45,7 +59,11 @@ namespace RootMotion.FinalIK {
 		void FixedUpdate() {
 			fixedFrame = true;
 
-			if (animatePhysics) FixTransforms ();
+			if (animatePhysics)
+			{
+				FixTransforms ();
+			}
+
 		}
 
 		// Update the IK components in a specific order
@@ -61,7 +79,11 @@ namespace RootMotion.FinalIK {
 
 		private void FixTransforms() {
 			for (int i = 0; i < IKComponents.Length; i++) {
-				if (IKComponents[i].fixTransforms) IKComponents[i].GetIKSolver().FixTransforms();
+				if (IKComponents[i].fixTransforms)
+				{
+					IKComponents[i].GetIKSolver().FixTransforms();
+				}
+
 			}
 		}
 	}

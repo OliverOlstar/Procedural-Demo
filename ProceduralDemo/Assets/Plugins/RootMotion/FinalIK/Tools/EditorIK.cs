@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion.FinalIK
 {
-    /// <summary>
-    /// Updates any Final IK component in Editor mode
-    /// </summary>
-    [ExecuteInEditMode]
+	/// <summary>
+	/// Updates any Final IK component in Editor mode
+	/// </summary>
+	[ExecuteInEditMode]
     public class EditorIK : MonoBehaviour
     {
         [Tooltip("If slot assigned, will update Animator before IK.")] public Animator animator;
@@ -18,30 +17,68 @@ namespace RootMotion.FinalIK
 
         private void OnEnable()
         {
-            if (Application.isPlaying) return;
-            if (ik == null) ik = GetComponent<IK>();
-            if (ik == null)
+            if (Application.isPlaying)
+			{
+				return;
+			}
+
+			if (ik == null)
+			{
+				ik = GetComponent<IK>();
+			}
+
+			if (ik == null)
             {
                 Debug.LogError("EditorIK needs to have an IK component on the same GameObject.", transform);
                 return;
             }
-            if (bones.Length == 0) bones = ik.transform.GetComponentsInChildren<Transform>();
-        }
+            if (bones.Length == 0)
+			{
+				bones = ik.transform.GetComponentsInChildren<Transform>();
+			}
+		}
 
         private void OnDisable()
         {
-            if (Application.isPlaying) return;
-            if (defaultPose != null && defaultPose.poseStored) defaultPose.Restore(bones);
-            if (ik != null) ik.GetIKSolver().executedInEditor = false;
-        }
+            if (Application.isPlaying)
+			{
+				return;
+			}
+
+			if (defaultPose != null && defaultPose.poseStored)
+			{
+				defaultPose.Restore(bones);
+			}
+
+			if (ik != null)
+			{
+				ik.GetIKSolver().executedInEditor = false;
+			}
+		}
 
         private void OnDestroy()
         {
-            if (Application.isPlaying) return;
-            if (ik == null) return;
-            if (bones.Length == 0) bones = ik.transform.GetComponentsInChildren<Transform>();
-            if (defaultPose != null && defaultPose.poseStored && bones.Length != 0) defaultPose.Restore(bones);
-            ik.GetIKSolver().executedInEditor = false;
+            if (Application.isPlaying)
+			{
+				return;
+			}
+
+			if (ik == null)
+			{
+				return;
+			}
+
+			if (bones.Length == 0)
+			{
+				bones = ik.transform.GetComponentsInChildren<Transform>();
+			}
+
+			if (defaultPose != null && defaultPose.poseStored && bones.Length != 0)
+			{
+				defaultPose.Restore(bones);
+			}
+
+			ik.GetIKSolver().executedInEditor = false;
         }
 
         public void StoreDefaultPose()
@@ -52,12 +89,27 @@ namespace RootMotion.FinalIK
 
         public bool Initiate()
         {
-            if (defaultPose == null) return false;
-            if (!defaultPose.poseStored) return false;
-            if (bones.Length == 0) return false;
+            if (defaultPose == null)
+			{
+				return false;
+			}
 
-            if (ik == null) ik = GetComponent<IK>();
-            if (ik == null)
+			if (!defaultPose.poseStored)
+			{
+				return false;
+			}
+
+			if (bones.Length == 0)
+			{
+				return false;
+			}
+
+			if (ik == null)
+			{
+				ik = GetComponent<IK>();
+			}
+
+			if (ik == null)
             {
                 Debug.LogError("EditorIK can not find an IK component.", transform);
                 return false;
@@ -73,23 +125,60 @@ namespace RootMotion.FinalIK
 
         public void Update()
         {
-            if (Application.isPlaying) return;
-            if (ik == null) return;
-            if (!ik.enabled) return;
-            if (!ik.GetIKSolver().executedInEditor) return;
-            if (bones.Length == 0) bones = ik.transform.GetComponentsInChildren<Transform>();
-            if (bones.Length == 0) return;
+            if (Application.isPlaying)
+			{
+				return;
+			}
 
-            if (!defaultPose.Restore(bones)) return;
+			if (ik == null)
+			{
+				return;
+			}
 
-            ik.GetIKSolver().executedInEditor = false;
-            if (!ik.GetIKSolver().initiated) ik.GetIKSolver().Initiate(ik.transform);
-            if (!ik.GetIKSolver().initiated) return;
-            ik.GetIKSolver().executedInEditor = true;
+			if (!ik.enabled)
+			{
+				return;
+			}
 
-            if (animator != null && animator.runtimeAnimatorController != null) animator.Update(Time.deltaTime);
+			if (!ik.GetIKSolver().executedInEditor)
+			{
+				return;
+			}
 
-            ik.GetIKSolver().Update();
+			if (bones.Length == 0)
+			{
+				bones = ik.transform.GetComponentsInChildren<Transform>();
+			}
+
+			if (bones.Length == 0)
+			{
+				return;
+			}
+
+			if (!defaultPose.Restore(bones))
+			{
+				return;
+			}
+
+			ik.GetIKSolver().executedInEditor = false;
+            if (!ik.GetIKSolver().initiated)
+			{
+				ik.GetIKSolver().Initiate(ik.transform);
+			}
+
+			if (!ik.GetIKSolver().initiated)
+			{
+				return;
+			}
+
+			ik.GetIKSolver().executedInEditor = true;
+
+            if (animator != null && animator.runtimeAnimatorController != null)
+			{
+				animator.Update(Time.deltaTime);
+			}
+
+			ik.GetIKSolver().Update();
         }
     }
 }

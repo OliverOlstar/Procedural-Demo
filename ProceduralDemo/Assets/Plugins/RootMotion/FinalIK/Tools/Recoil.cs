@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion.FinalIK
 {
 
-    /// <summary>
-    /// Procedural recoil using FBBIK.
-    /// </summary>
-    public class Recoil : OffsetModifier
+	/// <summary>
+	/// Procedural recoil using FBBIK.
+	/// </summary>
+	public class Recoil : OffsetModifier
     {
 
         [System.Serializable]
@@ -40,9 +39,12 @@ namespace RootMotion.FinalIK
             // Start recoil
             public void Start()
             {
-                if (additivity <= 0f) return;
+                if (additivity <= 0f)
+				{
+					return;
+				}
 
-                additiveOffset = Vector3.ClampMagnitude(lastOffset * additivity, maxAdditiveOffsetMag);
+				additiveOffset = Vector3.ClampMagnitude(lastOffset * additivity, maxAdditiveOffsetMag);
             }
 
             // Apply offset to FBBIK effectors
@@ -140,35 +142,51 @@ namespace RootMotion.FinalIK
         /// </summary>
         public void Fire(float magnitude)
         {
-            float rnd = magnitude * UnityEngine.Random.value * magnitudeRandom;
+            float rnd = magnitude * Random.value * magnitudeRandom;
             magnitudeMlp = magnitude + rnd;
 
-            randomRotation = Quaternion.Euler(rotationRandom * UnityEngine.Random.value);
+            randomRotation = Quaternion.Euler(rotationRandom * Random.value);
 
             foreach (RecoilOffset offset in offsets)
             {
                 offset.Start();
             }
 
-            if (Time.time < endTime) blendWeight = 0f;
-            else blendWeight = 1f;
+            if (Time.time < endTime)
+			{
+				blendWeight = 0f;
+			}
+			else
+			{
+				blendWeight = 1f;
+			}
 
-            Keyframe[] keys = recoilWeight.keys;
-            length = keys[keys.Length - 1].time;
+			Keyframe[] keys = recoilWeight.keys;
+            length = keys[^1].time;
             endTime = Time.time + length;
         }
 
         protected override void OnModifyOffset()
         {
-            if (aimIK != null) aimIKAxis = aimIK.solver.axis;
+            if (aimIK != null)
+			{
+				aimIKAxis = aimIK.solver.axis;
+			}
 
-            if (!initiated && ik != null)
+			if (!initiated && ik != null)
             {
                 initiated = true;
-                if (headIK != null) headIK.enabled = false;
-                ik.solver.OnPostUpdate += AfterFBBIK;
-                if (aimIK != null) aimIK.solver.OnPostUpdate += AfterAimIK;
-            }
+                if (headIK != null)
+				{
+					headIK.enabled = false;
+				}
+
+				ik.solver.OnPostUpdate += AfterFBBIK;
+                if (aimIK != null)
+				{
+					aimIK.solver.OnPostUpdate += AfterAimIK;
+				}
+			}
 
             if (Time.time >= endTime)
             {
@@ -177,11 +195,17 @@ namespace RootMotion.FinalIK
             }
 
             blendTime = Mathf.Max(blendTime, 0f);
-            if (blendTime > 0f) blendWeight = Mathf.Min(blendWeight + Time.deltaTime * (1f / blendTime), 1f);
-            else blendWeight = 1f;
+            if (blendTime > 0f)
+			{
+				blendWeight = Mathf.Min(blendWeight + Time.deltaTime * (1f / blendTime), 1f);
+			}
+			else
+			{
+				blendWeight = 1f;
+			}
 
-            // Current weight of offset
-            float wTarget = recoilWeight.Evaluate(length - (endTime - Time.time)) * magnitudeMlp;
+			// Current weight of offset
+			float wTarget = recoilWeight.Evaluate(length - (endTime - Time.time)) * magnitudeMlp;
             w = Mathf.Lerp(w, wTarget, blendWeight);
 
             // Find the rotation space of the recoil
@@ -217,8 +241,11 @@ namespace RootMotion.FinalIK
                 secondaryHandEffector.positionOffset += secondaryHandPosition - (secondaryHand.position + secondaryHandEffector.positionOffset);
             }
 
-            if (aimIK != null && aimIKSolvedLast) aimIK.solver.axis = Quaternion.Inverse(ik.references.root.rotation) * Quaternion.Inverse(rotationOffset) * aimIKAxis;
-        }
+            if (aimIK != null && aimIKSolvedLast)
+			{
+				aimIK.solver.axis = Quaternion.Inverse(ik.references.root.rotation) * Quaternion.Inverse(rotationOffset) * aimIKAxis;
+			}
+		}
 
         private void AfterFBBIK()
         {
@@ -226,25 +253,42 @@ namespace RootMotion.FinalIK
             {
                 // Rotate the hand bones
                 primaryHand.rotation = handRotation;
-                if (twoHanded) secondaryHand.rotation = primaryHand.rotation * secondaryHandRelativeRotation;
-            }
+                if (twoHanded)
+				{
+					secondaryHand.rotation = primaryHand.rotation * secondaryHandRelativeRotation;
+				}
+			}
 
-            if (!aimIKSolvedLast && headIK != null) headIK.solver.Update();
-        }
+            if (!aimIKSolvedLast && headIK != null)
+			{
+				headIK.solver.Update();
+			}
+		}
 
         private void AfterAimIK()
         {
-            if (aimIKSolvedLast) aimIK.solver.axis = aimIKAxis;
-            if (aimIKSolvedLast && headIK != null) headIK.solver.Update();
-        }
+            if (aimIKSolvedLast)
+			{
+				aimIK.solver.axis = aimIKAxis;
+			}
+
+			if (aimIKSolvedLast && headIK != null)
+			{
+				headIK.solver.Update();
+			}
+		}
 
         // Shortcuts
         private IKEffector primaryHandEffector
         {
             get
             {
-                if (handedness == Handedness.Right) return ik.solver.rightHandEffector;
-                return ik.solver.leftHandEffector;
+                if (handedness == Handedness.Right)
+				{
+					return ik.solver.rightHandEffector;
+				}
+
+				return ik.solver.leftHandEffector;
             }
         }
 
@@ -252,8 +296,12 @@ namespace RootMotion.FinalIK
         {
             get
             {
-                if (handedness == Handedness.Right) return ik.solver.leftHandEffector;
-                return ik.solver.rightHandEffector;
+                if (handedness == Handedness.Right)
+				{
+					return ik.solver.leftHandEffector;
+				}
+
+				return ik.solver.rightHandEffector;
             }
         }
 
@@ -279,8 +327,11 @@ namespace RootMotion.FinalIK
             if (ik != null && initiated)
             {
                 ik.solver.OnPostUpdate -= AfterFBBIK;
-                if (aimIK != null) aimIK.solver.OnPostUpdate -= AfterAimIK;
-            }
+                if (aimIK != null)
+				{
+					aimIK.solver.OnPostUpdate -= AfterAimIK;
+				}
+			}
         }
 
     }

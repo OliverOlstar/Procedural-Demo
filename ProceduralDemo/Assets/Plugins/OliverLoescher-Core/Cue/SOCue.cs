@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Cue
+namespace OCore.Cue
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Cue")]
 	public class SOCue : ScriptableObject
@@ -10,11 +10,11 @@ namespace OliverLoescher.Cue
 		// TODO Add Duration & Motion
 
 		[SerializeField]
-		private CueAudio[] Audio = new CueAudio[0];
+		private CueAudio[] m_Audio = new CueAudio[0];
 		[SerializeField]
-		private CueParticle[] Particle = new CueParticle[0];
+		private CueParticle[] m_Particle = new CueParticle[0];
 		[SerializeField]
-		private CueCameraShake[] CameraShake = new CueCameraShake[0];
+		private CueCameraShake[] m_CameraShake = new CueCameraShake[0];
 
 		public static void Play(SOCue pCue, in CueContext pContext)
 		{
@@ -22,15 +22,15 @@ namespace OliverLoescher.Cue
 			{
 				return;
 			}
-			foreach (CueModule module in pCue.Audio)
+			foreach (CueModule module in pCue.m_Audio)
 			{
 				module.Play(pContext, pCue);
 			}
-			foreach (CueModule module in pCue.Particle)
+			foreach (CueModule module in pCue.m_Particle)
 			{
 				module.Play(pContext, pCue);
 			}
-			foreach (CueModule module in pCue.CameraShake)
+			foreach (CueModule module in pCue.m_CameraShake)
 			{
 				module.Play(pContext, pCue);
 			}

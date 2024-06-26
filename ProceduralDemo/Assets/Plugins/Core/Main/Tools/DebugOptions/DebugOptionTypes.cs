@@ -145,7 +145,7 @@ namespace Core
 				string arg = GetArgInternal().Item1;
 				if (argPresets.Length > 0 && !string.IsNullOrEmpty(arg) && !m_ArgPresets.Contains(arg))
 				{
-					m_ArgPresetsAndCurrent[m_ArgPresetsAndCurrent.Length - 1] = arg;
+					m_ArgPresetsAndCurrent[^1] = arg;
 					argPresets = m_ArgPresetsAndCurrent;
 				}
 				currentIndex = GetCurrentArgIndex();

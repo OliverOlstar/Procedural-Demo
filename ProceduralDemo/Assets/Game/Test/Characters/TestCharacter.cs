@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using OliverLoescher;
-using OliverLoescher.Util;
+using OCore;
+using OCore.Util;
 using UnityEngine;
 
 public class TestCharacter : UpdateableMonoBehaviour

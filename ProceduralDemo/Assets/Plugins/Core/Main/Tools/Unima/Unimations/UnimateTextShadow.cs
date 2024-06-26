@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +7,7 @@ public class UnimateTextShadow : Unimate<UnimateTextShadow, UnimateTextShadow.Pl
 	[SerializeField]
 	private bool m_EnableComponentOnPlay = false;
 
-	private List<Shadow> m_Shadows = new List<Shadow>();
+	private List<Shadow> m_Shadows = new();
 
 	protected override string OnEditorValidate(GameObject gameObject)
 	{
@@ -33,12 +32,11 @@ public class UnimateTextShadow : Unimate<UnimateTextShadow, UnimateTextShadow.Pl
 		protected override void OnInitialize()
 		{
 			Animation.m_Shadows.Clear();
-			var texts = GameObject.GetComponentsInChildren<Text>();
+			Text[] texts = GameObject.GetComponentsInChildren<Text>();
 			
 			for (int i = 0; i < texts.Length; ++i)
 			{
-				Shadow shadow = texts[i].GetComponent<Shadow>();
-				if (shadow != null)
+				if (texts[i].TryGetComponent<Shadow>(out Shadow shadow))
 				{
 					Animation.m_Shadows.Add(shadow);
 				}

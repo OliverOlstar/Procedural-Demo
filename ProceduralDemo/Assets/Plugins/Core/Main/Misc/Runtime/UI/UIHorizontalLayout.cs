@@ -42,15 +42,14 @@ namespace Core
 				m_Offset = m_Padding;
 				m_TotalWidth = m_Padding * 2.0f;
 
-				List<RectTransform> childRectTransforms = new List<RectTransform>();
+				List<RectTransform> childRectTransforms = new();
 				foreach (Transform child in transform)
 				{
 					if (!child.gameObject.activeSelf && m_IgnoreDisabled)
 					{
 						continue;
 					}
-					RectTransform childRectTransform = child.GetComponent<RectTransform>();
-					if (childRectTransform != null)
+					if (child.TryGetComponent<RectTransform>(out RectTransform childRectTransform))
 					{
 						childRectTransforms.Add(childRectTransform);
 						m_TotalWidth += childRectTransform.rect.width + m_Spacing;

@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ModelLocator
 {
 	public class ModelLocatorBehaviour : MonoBehaviour
 	{
-		private Dictionary<string, Transform> m_Bones = new Dictionary<string, Transform>();
+		private Dictionary<string, Transform> m_Bones = new();
 		public IEnumerable<Transform> Bones => m_Bones.Values;
 
 		public virtual Transform RootTransform => transform;

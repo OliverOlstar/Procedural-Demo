@@ -1,12 +1,10 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using Sirenix.OdinInspector;
 using System;
 
-namespace OliverLoescher.Input
+namespace OCore.Input
 {
-	[System.Serializable]
+	[Serializable]
     public class InputModule_ToggledInput<T> : IInputModule where T : InputModule_Base, new()
 	{
 		[SerializeField]

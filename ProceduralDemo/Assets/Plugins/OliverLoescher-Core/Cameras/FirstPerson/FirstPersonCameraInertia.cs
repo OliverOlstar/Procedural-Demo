@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Camera
+namespace OCore.Camera
 {
-    public class FirstPersonCameraInertia : MonoBehaviour
+	public class FirstPersonCameraInertia : MonoBehaviour
     {
-        [SerializeField] private CinemachineVirtualCamera myCamera = null;
-        [SerializeField] private Rigidbody rigid = null;
+        [SerializeField]
+private CinemachineVirtualCamera myCamera = null;
+        [SerializeField]
+private Rigidbody rigid = null;
         private Vector3 lastVelocity;
         private Vector3 lastPosition;
 
@@ -25,8 +25,8 @@ namespace OliverLoescher.Camera
         private float springY = 0;
 
         [Header("FOV")]
-        [SerializeField, MinMaxSlider(0, 180, true)] private Vector2 fovMinMax = new Vector2(70.0f, 110.0f);
-        [SerializeField, MinMaxSlider(0, 20, true)] private Vector2 fovVelocity = new Vector2(0.0f, 10.0f);
+        [SerializeField, MinMaxSlider(0, 180, true)] private Vector2 fovMinMax = new(70.0f, 110.0f);
+        [SerializeField, MinMaxSlider(0, 20, true)] private Vector2 fovVelocity = new(0.0f, 10.0f);
         [SerializeField, Min(0)] private float fovDampening = 10.0f;
 
         private void Start()

@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Posing the children of a Transform to match the children of another Transform
@@ -9,9 +10,16 @@ namespace RootMotion.FinalIK {
 	public class HandPoser : Poser {
 
 		public override void AutoMapping() {
-			if (poseRoot == null) poseChildren = new Transform[0];
-			else poseChildren = (Transform[])poseRoot.GetComponentsInChildren<Transform>();
-			
+			if (poseRoot == null)
+			{
+				poseChildren = new Transform[0];
+			}
+			else
+			{
+				poseChildren = (Transform[])poseRoot.GetComponentsInChildren<Transform>();
+			}
+
+
 			_poseRoot = poseRoot;
 		}
 
@@ -30,15 +38,31 @@ namespace RootMotion.FinalIK {
 		}
 
 		protected override void UpdatePoser() {
-			if (weight <= 0f) return;
-			if (localPositionWeight <= 0f && localRotationWeight <= 0f) return;
-			
+			if (weight <= 0f)
+			{
+				return;
+			}
+
+
+			if (localPositionWeight <= 0f && localRotationWeight <= 0f)
+			{
+				return;
+			}
+
 			// Get the children, if we don't have them already
-			if (_poseRoot != poseRoot) AutoMapping();
-			
-			if (poseRoot == null) return;
-			
+
+			if (_poseRoot != poseRoot)
+			{
+				AutoMapping();
+			}
+
+			if (poseRoot == null)
+			{
+				return;
+			}
+
 			// Something went wrong
+
 			if (children.Length != poseChildren.Length) {
 				Warning.Log("Number of children does not match with the pose", transform);
 				return;

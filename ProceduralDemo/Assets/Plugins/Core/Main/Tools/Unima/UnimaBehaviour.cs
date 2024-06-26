@@ -15,7 +15,7 @@ public class UnimaBehaviour : MonoBehaviour, IUnimaControllerSource
 	public TriggerType Trigger => m_Trigger;
 
 	[SerializeField]
-	private UnimaController m_Controller = new UnimaController();
+	private UnimaController m_Controller = new();
 	public UnimaController Controller => m_Controller;
 
 	public bool CanHaveTrigger() => m_Controller.CanPlay();

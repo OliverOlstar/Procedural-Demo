@@ -14339,14 +14339,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1237685ed29b63e4d95f755fd42eff3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateable:
-    type: 1
-    priority: -2000
+  m_Updateable:
+    m_Type: 1
+    m_Priority: -2000
   moveInput:
-    input: {x: 0, y: 0}
-    scalar: {x: 1, y: 1}
-    normalize: 0
-    invertY: 0
+    m_Input: {x: 0, y: 0}
+    m_Scalar: {x: 1, y: 1}
+    m_Normalize: 0
+    m_InvertY: 0
     OnChanged:
       m_PersistentCalls:
         m_Calls: []
@@ -14882,29 +14882,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bdf7a83cca099845bc99858ee71c815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateable:
-    type: 1
-    priority: -2000
-  lookInput:
-    input: {x: 0, y: 0}
-    scalar: {x: 1, y: 1}
-    normalize: 0
-    invertY: 0
+  m_Updateable:
+    m_Type: 1
+    m_Priority: -2000
+  m_LookInput:
+    m_Input: {x: 0, y: 0}
+    m_Scalar: {x: 1, y: 1}
+    m_Normalize: 0
+    m_InvertY: 0
     OnChanged:
       m_PersistentCalls:
         m_Calls: []
     OnUpdate:
       m_PersistentCalls:
         m_Calls: []
-  lookDeltaInput:
-    input: {x: 0, y: 0}
-    scalar: {x: 1, y: 1}
-    normalize: 0
-    invertY: 0
+  m_LookDeltaInput:
+    m_Input: {x: 0, y: 0}
+    m_Scalar: {x: 1, y: 1}
+    m_Normalize: 0
+    m_InvertY: 0
     OnChanged:
       m_PersistentCalls:
         m_Calls: []
-  zoomInput:
+  m_ZoomInput:
     m_Input: 0
     onChanged:
       m_PersistentCalls:
@@ -14921,26 +14921,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8033003a4f3fe014788ee8d7edfe72d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 1813848489}
-  updateable:
-    type: 2
-    priority: 1000
-  followTransform: {fileID: 2004640775}
-  offset: {x: 0, y: 1, z: 0}
-  cameraTransform: {fileID: 97841468}
-  childOffset: {x: 0, y: 1, z: -10}
-  ySmoothTime: 0.4
-  lookTransform: {fileID: 1813848488}
-  lookYClamp: {x: -45, y: 70}
-  sensitivityDelta: 0.2
-  sensitivityUpdate: 1
-  zoomSpeed: 0
-  zoomSmoothTime: 0.08
-  zoomDistanceClamp: {x: 8, y: 25}
-  collisionLayers:
+  m_Input: {fileID: 1813848489}
+  m_Updateable:
+    m_Type: 2
+    m_Priority: 1000
+  FollowTransform: {fileID: 0}
+  m_Offset: {x: 0, y: 0.5, z: 0}
+  CameraTransform: {fileID: 0}
+  m_ChildOffset: {x: 0, y: 2, z: -5}
+  m_YSmoothTime: 0.2
+  m_LookTransform: {fileID: 0}
+  m_LookYClamp: {x: -40, y: 50}
+  m_SensitivityDelta: 1
+  m_SensitivityUpdate: 1
+  m_ZoomSpeed: 1
+  m_ZoomSmoothTime: 0.1
+  m_ZoomDistanceClamp: {x: 1, y: 5}
+  m_CollisionLayers:
     serializedVersion: 2
-    m_Bits: 8
-  collisionRadius: 0.5
+    m_Bits: 0
+  m_CollisionRadius: 0.2
 --- !u!1 &1824154462
 GameObject:
   m_ObjectHideFlags: 0
@@ -16002,8 +16002,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Updateable:
-    type: 0
-    priority: 400
+    m_Type: 1
+    m_Priority: 400
   m_Controller: {fileID: 2004640779}
   m_Grounded: {fileID: 2004640778}
   m_Input: {fileID: 1618059303}
@@ -16091,19 +16091,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e15d19c7d1e8fb40a796f867c0fd05f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateable:
-    type: 0
-    priority: 425
-  myTransform: {fileID: 2004640775}
-  lines: []
-  spheres:
-  - startPosition: {x: 0, y: 1, z: 0}
-    distance: 0.8
-    radius: 0.45
-  layerMask:
+  m_Updateable:
+    m_Type: 3
+    m_Priority: 425
+  m_Transform: {fileID: 0}
+  m_Lines: []
+  m_Spheres:
+  - m_StartPosition: {x: 0, y: 0, z: 0}
+    m_Distance: 1
+    m_Radius: 0.5
+  m_LayerMask:
     serializedVersion: 2
-    m_Bits: 4194313
-  slopeLimit: 45
+    m_Bits: 0
+  m_SlopeLimit: 45
   m_FollowGround: 1
   OnEnterEvent:
     m_PersistentCalls:

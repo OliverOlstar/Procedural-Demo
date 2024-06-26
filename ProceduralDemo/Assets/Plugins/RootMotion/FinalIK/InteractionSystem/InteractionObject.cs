@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.Events;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Object than the InteractionSystem can interact with.
@@ -96,7 +96,7 @@ namespace RootMotion.FinalIK {
 			[Tooltip("The messages sent on this event using GameObject.SendMessage().")]
 			public Message[] messages;
 
-			[TooltipAttribute("The UnityEvent to invoke on this event.")]
+			[Tooltip("The UnityEvent to invoke on this event.")]
 			/// <summary>
 			/// The UnityEvent to invoke on this event.
 			/// </summary>
@@ -105,8 +105,15 @@ namespace RootMotion.FinalIK {
 			// Activates this event
 			public void Activate(Transform t) {
 				unityEvent.Invoke();
-				foreach (AnimatorEvent e in animations) e.Activate(pickUp);
-				foreach (Message m in messages) m.Send(t);
+				foreach (AnimatorEvent e in animations)
+				{
+					e.Activate(pickUp);
+				}
+
+				foreach (Message m in messages)
+				{
+					m.Send(t);
+				}
 			}
 		}
 
@@ -131,8 +138,15 @@ namespace RootMotion.FinalIK {
 
 			// Sends the message to the recipient
 			public void Send(Transform t) {
-				if (recipient == null) return;
-				if (function == string.Empty || function == empty) return;
+				if (recipient == null)
+				{
+					return;
+				}
+
+				if (function == string.Empty || function == empty)
+				{
+					return;
+				}
 
 				recipient.SendMessage(function, t, SendMessageOptions.RequireReceiver);
 			}
@@ -181,26 +195,48 @@ namespace RootMotion.FinalIK {
 			public void Activate(bool pickUp) {
 				if (animator != null) {
 					// disable root motion because it may become a child of another Animator. Workaround for a Unity bug with an error message: "Transform.rotation on 'gameobject name' is no longer valid..."
-					if (pickUp) animator.applyRootMotion = false;
+					if (pickUp)
+					{
+						animator.applyRootMotion = false;
+					}
+
 					Activate(animator);
 				}
-				if (animation != null) Activate(animation);
+				if (animation != null)
+				{
+					Activate(animation);
+				}
 			}
 
 			// Activate a Mecanim animation
 			private void Activate(Animator animator) {
-				if (animationState == empty) return;
-				
-				if (resetNormalizedTime) animator.CrossFade(animationState, crossfadeTime, layer, 0f);
-				else animator.CrossFade(animationState, crossfadeTime, layer);
+				if (animationState == empty)
+				{
+					return;
+				}
+
+				if (resetNormalizedTime)
+				{
+					animator.CrossFade(animationState, crossfadeTime, layer, 0f);
+				}
+				else
+				{
+					animator.CrossFade(animationState, crossfadeTime, layer);
+				}
 			}
 			
 			// Activate a Legacy animation
 			private void Activate(Animation animation) {
-				if (animationState == empty) return;
-				
-				if (resetNormalizedTime) animation[animationState].normalizedTime = 0f;
-				
+				if (animationState == empty)
+				{
+					return;
+				}
+
+				if (resetNormalizedTime)
+				{
+					animation[animationState].normalizedTime = 0f;
+				}
+
 				animation[animationState].layer = layer;
 				
 				animation.CrossFade(animationState, crossfadeTime);
@@ -339,7 +375,11 @@ namespace RootMotion.FinalIK {
 		/// </summary>
 		public Transform lookAtTarget {
 			get {
-				if (otherLookAtTarget != null) return otherLookAtTarget;
+				if (otherLookAtTarget != null)
+				{
+					return otherLookAtTarget;
+				}
+
 				return transform;
 			}
 		}
@@ -350,14 +390,20 @@ namespace RootMotion.FinalIK {
 		public InteractionTarget GetTarget(FullBodyBipedEffector effectorType, InteractionSystem interactionSystem) {
 			if (string.IsNullOrEmpty(interactionSystem.tag)) {
 				foreach (InteractionTarget target in targets) {
-					if (target.effectorType == effectorType) return target;
+					if (target.effectorType == effectorType)
+					{
+						return target;
+					}
 				}
 
 				return null;
 			}
 
 			foreach (InteractionTarget target in targets) {
-				if (target.effectorType == effectorType && target.CompareTag(interactionSystem.tag)) return target;
+				if (target.effectorType == effectorType && target.CompareTag(interactionSystem.tag))
+				{
+					return target;
+				}
 			}
 			
 			return null;
@@ -368,10 +414,16 @@ namespace RootMotion.FinalIK {
 		// Returns true if the specified WeightCurve.Type is used by this InteractionObject
 		public bool CurveUsed(WeightCurve.Type type) {
 			foreach (WeightCurve curve in weightCurves) {
-				if (curve.type == type) return true;
+				if (curve.type == type)
+				{
+					return true;
+				}
 			}
 			foreach (Multiplier multiplier in multipliers) {
-				if (multiplier.result == type) return true;
+				if (multiplier.result == type)
+				{
+					return true;
+				}
 			}
 			return false;
 		}
@@ -383,10 +435,16 @@ namespace RootMotion.FinalIK {
 
 		// Returns the InteractionTarget of effector type and tag
 		public Transform GetTarget(FullBodyBipedEffector effectorType, string tag) {
-			if (tag == string.Empty || tag == "") return GetTarget(effectorType);
-			
+			if (tag == string.Empty || tag == "")
+			{
+				return GetTarget(effectorType);
+			}
+
 			for (int i = 0; i < targets.Length; i++) {
-				if (targets[i].effectorType == effectorType && targets[i].CompareTag(tag)) return targets[i].transform;
+				if (targets[i].effectorType == effectorType && targets[i].CompareTag(tag))
+				{
+					return targets[i].transform;
+				}
 			}
 
 			return transform;
@@ -403,9 +461,20 @@ namespace RootMotion.FinalIK {
 			for (int i = 0; i < weightCurves.Length; i++) {
 				if (isPaused)
                 {
-					if (weightCurves[i].type == WeightCurve.Type.PositionOffsetX) continue;
-					if (weightCurves[i].type == WeightCurve.Type.PositionOffsetY) continue;
-					if (weightCurves[i].type == WeightCurve.Type.PositionOffsetZ) continue;
+					if (weightCurves[i].type == WeightCurve.Type.PositionOffsetX)
+					{
+						continue;
+					}
+
+					if (weightCurves[i].type == WeightCurve.Type.PositionOffsetY)
+					{
+						continue;
+					}
+
+					if (weightCurves[i].type == WeightCurve.Type.PositionOffsetZ)
+					{
+						continue;
+					}
 				}
 
 				float mlp = target == null? 1f: target.GetValue(weightCurves[i].type);
@@ -416,13 +485,27 @@ namespace RootMotion.FinalIK {
 			for (int i = 0; i < multipliers.Length; i++) {
 				if (isPaused)
 				{
-					if (multipliers[i].result == WeightCurve.Type.PositionOffsetX) continue;
-					if (multipliers[i].result == WeightCurve.Type.PositionOffsetY) continue;
-					if (multipliers[i].result == WeightCurve.Type.PositionOffsetZ) continue;
+					if (multipliers[i].result == WeightCurve.Type.PositionOffsetX)
+					{
+						continue;
+					}
+
+					if (multipliers[i].result == WeightCurve.Type.PositionOffsetY)
+					{
+						continue;
+					}
+
+					if (multipliers[i].result == WeightCurve.Type.PositionOffsetZ)
+					{
+						continue;
+					}
 				}
 
 				if (multipliers[i].curve == multipliers[i].result) {
-					if (!Warning.logged) Warning.Log("InteractionObject Multiplier 'Curve' " + multipliers[i].curve.ToString() + "and 'Result' are the same.", transform);
+					if (!Warning.logged)
+					{
+						Warning.Log("InteractionObject Multiplier 'Curve' " + multipliers[i].curve.ToString() + "and 'Result' are the same.", transform);
+					}
 				}
 
 				int curveIndex = GetWeightCurveIndex(multipliers[i].curve);
@@ -432,7 +515,10 @@ namespace RootMotion.FinalIK {
 
 					Apply(solver, effector, multipliers[i].result, multipliers[i].GetValue(weightCurves[curveIndex], timer), weight * mlp);
 				} else {
-					if (!Warning.logged) Warning.Log("InteractionObject Multiplier curve " + multipliers[i].curve.ToString() + "does not exist.", transform);
+					if (!Warning.logged)
+					{
+						Warning.Log("InteractionObject Multiplier curve " + multipliers[i].curve.ToString() + "does not exist.", transform);
+					}
 				}
 			}
 		}
@@ -465,7 +551,11 @@ namespace RootMotion.FinalIK {
 		// Get the root Transform of the targets
 		public Transform targetsRoot {
 			get {
-				if (otherTargetsRoot != null) return otherTargetsRoot;
+				if (otherTargetsRoot != null)
+				{
+					return otherTargetsRoot;
+				}
+
 				return transform;
 			}
 		}
@@ -524,7 +614,10 @@ namespace RootMotion.FinalIK {
 		// Gets the interaction target Transform
 		private Transform GetTarget(FullBodyBipedEffector effectorType) {
 			for (int i = 0; i < targets.Length; i++) {
-				if (targets[i].effectorType == effectorType) return targets[i].transform;
+				if (targets[i].effectorType == effectorType)
+				{
+					return targets[i].transform;
+				}
 			}
 			return transform;
 		}
@@ -532,7 +625,10 @@ namespace RootMotion.FinalIK {
 		// Get the index of a weight curve of type
 		private int GetWeightCurveIndex(WeightCurve.Type weightCurveType) {
 			for (int i = 0; i < weightCurves.Length; i++) {
-				if (weightCurves[i].type == weightCurveType) return i;
+				if (weightCurves[i].type == weightCurveType)
+				{
+					return i;
+				}
 			}
 			return -1;
 		}
@@ -540,7 +636,10 @@ namespace RootMotion.FinalIK {
 		// Get the index of a multiplayer of type
 		private int GetMultiplierIndex(WeightCurve.Type weightCurveType) {
 			for (int i = 0; i < multipliers.Length; i++) {
-				if (multipliers[i].result == weightCurveType) return i;
+				if (multipliers[i].result == weightCurveType)
+				{
+					return i;
+				}
 			}
 			return -1;
 		}

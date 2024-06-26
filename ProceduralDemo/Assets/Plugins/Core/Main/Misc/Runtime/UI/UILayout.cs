@@ -37,7 +37,7 @@ namespace Core
 			RectTransform m_RectTransform = null;
 			float m_Offset = 0.0f;
 			float m_SummedAlignmentDimension = 0.0f;
-			List<RectTransform> m_ChildRectTransforms = new List<RectTransform>(50);
+			List<RectTransform> m_ChildRectTransforms = new(50);
 
 			public static void ForceLayoutUpdate(GameObject gameObject)
 			{
@@ -45,8 +45,7 @@ namespace Core
 				{
 					return;
 				}
-				UILayout layout = gameObject.GetComponent<UILayout>();
-				if (layout != null)
+				if (gameObject.TryGetComponent<UILayout>(out UILayout layout))
 				{
 					layout.ApplyLayout();
 				}
@@ -263,7 +262,7 @@ namespace Core
 				}
 				else if (m_Alignment == Alignment.Horizontal_Ends || m_Alignment == Alignment.Vertical_Ends)
 				{
-					if (Core.Util.Approximately(floatChildCount, 1.0f))
+					if (Util.Approximately(floatChildCount, 1.0f))
 					{
 						float anchorMidValue = 0.5f;
 						float positionValue = 0.0f;
@@ -302,8 +301,7 @@ namespace Core
 					{
 						continue;
 					}
-					RectTransform childRectTransform = child.GetComponent<RectTransform>();
-					if (childRectTransform != null)
+					if (child.TryGetComponent<RectTransform>(out RectTransform childRectTransform))
 					{
 						m_ChildRectTransforms.Add(childRectTransform);
 						m_SummedAlignmentDimension += GetRectAlignmentDimension(childRectTransform);

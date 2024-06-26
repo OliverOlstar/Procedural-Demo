@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// A wrapper for making IKSolverVRArm work with other IK components.
@@ -16,15 +16,15 @@ namespace RootMotion.FinalIK {
 		/// </summary>
 		public Quaternion IKRotation = Quaternion.identity;
 
-		public IKSolver.Point chest = new IKSolver.Point();
-		public IKSolver.Point shoulder = new IKSolver.Point();
-		public IKSolver.Point upperArm = new IKSolver.Point();
-		public IKSolver.Point forearm = new IKSolver.Point();
-		public IKSolver.Point hand = new IKSolver.Point();
+		public Point chest = new();
+		public Point shoulder = new();
+		public Point upperArm = new();
+		public Point forearm = new();
+		public Point hand = new();
 
 		public bool isLeft;
 		
-		public IKSolverVR.Arm arm = new IKSolverVR.Arm();
+		public IKSolverVR.Arm arm = new();
 
 		private Vector3[] positions = new Vector3[6];
 		private Quaternion[] rotations = new Quaternion[6];
@@ -69,16 +69,36 @@ namespace RootMotion.FinalIK {
 			return initiated;
 		}
 
-		public override IKSolver.Point[] GetPoints() {
-			return new IKSolver.Point[5] { (IKSolver.Point)chest, (IKSolver.Point)shoulder, (IKSolver.Point)upperArm, (IKSolver.Point)forearm, (IKSolver.Point)hand };
+		public override Point[] GetPoints() {
+			return new Point[5] { (Point)chest, (Point)shoulder, (Point)upperArm, (Point)forearm, (Point)hand };
 		}
 		
-		public override IKSolver.Point GetPoint(Transform transform) {
-			if (chest.transform == transform) return (IKSolver.Point)chest;
-			if (shoulder.transform == transform) return (IKSolver.Point)shoulder;
-			if (upperArm.transform == transform) return (IKSolver.Point)upperArm;
-			if (forearm.transform == transform) return (IKSolver.Point)forearm;
-			if (hand.transform == transform) return (IKSolver.Point)hand;
+		public override Point GetPoint(Transform transform) {
+			if (chest.transform == transform)
+			{
+				return (Point)chest;
+			}
+
+			if (shoulder.transform == transform)
+			{
+				return (Point)shoulder;
+			}
+
+			if (upperArm.transform == transform)
+			{
+				return (Point)upperArm;
+			}
+
+			if (forearm.transform == transform)
+			{
+				return (Point)forearm;
+			}
+
+			if (hand.transform == transform)
+			{
+				return (Point)hand;
+			}
+
 			return null;
 		}
 		
@@ -90,7 +110,10 @@ namespace RootMotion.FinalIK {
 		}
 		
 		public override void FixTransforms() {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
 			shoulder.FixTransform();
 			upperArm.FixTransform();

@@ -1,27 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterRagdoll : MonoBehaviour
 {
-	public Transform[] transforms = null;
+	public Transform[] m_Transforms = null;
 
 	private void Reset()
 	{
-		transforms = transform.GetComponentsInChildren<Transform>();
+		m_Transforms = transform.GetComponentsInChildren<Transform>();
 	}
 
 	public void MatchPosition(CharacterRagdoll toRagdoll)
 	{
-		if (toRagdoll.transforms.Length != transforms.Length)
+		if (toRagdoll.m_Transforms.Length != m_Transforms.Length)
 		{
 			Debug.LogError($"[{nameof(CharacterRagdoll)}] SwitchTo() was passed a {nameof(CharacterRagdoll)} that can not be matched");
 			return;
 		}
-		for (int i = 0; i < transforms.Length; i++)
+		for (int i = 0; i < m_Transforms.Length; i++)
 		{
-			transforms[i].transform.position = toRagdoll.transforms[i].transform.position;
-			transforms[i].transform.rotation = toRagdoll.transforms[i].transform.rotation;
+			m_Transforms[i].transform.SetPositionAndRotation(toRagdoll.m_Transforms[i].transform.position, toRagdoll.m_Transforms[i].transform.rotation);
 			//transforms[i].transform.localScale = toRagdoll.transforms[i].transform.localScale;
 		}
 	}

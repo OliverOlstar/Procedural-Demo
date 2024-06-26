@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,10 +10,10 @@ namespace Core
 	}
 
 	[System.Serializable]
-	public class SOSet<T> : SOSetBase where T : Core.SOCacheName
+	public class SOSet<T> : SOSetBase where T : SOCacheName
 	{
 		[SerializeField]
-		private List<T> m_Set = new List<T>();
+		private List<T> m_Set = new();
 
 		private HashSet<int> m_Hash = null;
 
@@ -42,7 +41,7 @@ namespace Core
 			}
 		}
 
-		public Core.StructEnumerable.List<T> Get
+		public StructEnumerable.List<T> Get
 		{
 			get
 			{

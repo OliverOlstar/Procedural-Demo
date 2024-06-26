@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MatchRelPosition : MonoBehaviour
 {
-	public Transform target = null;
+	public Transform Target = null;
 
 	void LateUpdate()
 	{
-		if (target != null)
-			transform.localPosition = target.localPosition;
+		if (Target != null)
+		{
+			transform.localPosition = Target.localPosition;
+		}
 	}
 }

@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 public class UnicodeEditorWindow : EditorWindow
@@ -8,7 +6,7 @@ public class UnicodeEditorWindow : EditorWindow
 	[MenuItem("Core/Unicode")]
 	public static UnicodeEditorWindow Get()
 	{
-		UnicodeEditorWindow window = EditorWindow.GetWindow<UnicodeEditorWindow>("Unicode");
+		UnicodeEditorWindow window = GetWindow<UnicodeEditorWindow>("Unicode");
 		window.Show();
 		return window;
 	}
@@ -36,7 +34,7 @@ public class UnicodeEditorWindow : EditorWindow
 		}
 		EditorGUILayout.EndHorizontal();
 
-		GUIStyle style = new GUIStyle(GUI.skin.label);
+		GUIStyle style = new(GUI.skin.label);
 		style.fontSize = 20;
 		m_ScrollPos = EditorGUILayout.BeginScrollView(m_ScrollPos);
 

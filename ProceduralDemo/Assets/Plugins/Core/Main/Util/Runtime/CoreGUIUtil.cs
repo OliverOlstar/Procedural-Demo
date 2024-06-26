@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Core
@@ -159,19 +156,19 @@ namespace Core
 		public class UsableHorizontal
 		{
 			public static GUILayout.HorizontalScope Use(params GUILayoutOption[] options)
-				=> new GUILayout.HorizontalScope(options);
+				=> new(options);
 			public static GUILayout.HorizontalScope Use(GUIStyle style, params GUILayoutOption[] options)
-				=> new GUILayout.HorizontalScope(style, options);
+				=> new(style, options);
 			public static GUILayout.HorizontalScope Use(string text, GUIStyle style, params GUILayoutOption[] options)
-				=> new GUILayout.HorizontalScope(text, style, options);
+				=> new(text, style, options);
 			public static GUILayout.HorizontalScope Use(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
-				=> new GUILayout.HorizontalScope(content, style, options);
+				=> new(content, style, options);
 			public static GUILayout.HorizontalScope Use(Color color, params GUILayoutOption[] options)
 				=> Use(GUI.skin.label, color, options);
 			public static GUILayout.HorizontalScope Use(GUIStyle style, Color color, params GUILayoutOption[] options)
 			{
 				GUI.color = color;
-				GUILayout.HorizontalScope scope = new GUILayout.HorizontalScope(style, options);
+				GUILayout.HorizontalScope scope = new(style, options);
 				GUI.color = Color.white;
 				return scope;
 			}
@@ -180,7 +177,7 @@ namespace Core
 			public static GUILayout.HorizontalScope Use(GUIContent content, GUIStyle style, Color color, params GUILayoutOption[] options)
 			{
 				GUI.color = color;
-				GUILayout.HorizontalScope scope = new GUILayout.HorizontalScope(content, style, options);
+				GUILayout.HorizontalScope scope = new(content, style, options);
 				GUI.color = Color.white;
 				return scope;
 			}
@@ -189,19 +186,19 @@ namespace Core
 		public class UsableVertical 
 		{
 			public static GUILayout.VerticalScope Use(params GUILayoutOption[] options)
-				=> new GUILayout.VerticalScope(options);
+				=> new(options);
 			public static GUILayout.VerticalScope Use(GUIStyle style, params GUILayoutOption[] options)
-				=> new GUILayout.VerticalScope(style, options);
+				=> new(style, options);
 			public static GUILayout.VerticalScope Use(string text, GUIStyle style, params GUILayoutOption[] options)
-				=> new GUILayout.VerticalScope(text, style, options);
+				=> new(text, style, options);
 			public static GUILayout.VerticalScope Use(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
-				=> new GUILayout.VerticalScope(content, style, options);
+				=> new(content, style, options);
 			public static GUILayout.VerticalScope Use(Color color, params GUILayoutOption[] options)
 				=> Use(GUI.skin.label, color, options);
 			public static GUILayout.VerticalScope Use(GUIStyle style, Color color, params GUILayoutOption[] options)
 			{
 				GUI.color = color;
-				GUILayout.VerticalScope scope = new GUILayout.VerticalScope(style, options);
+				GUILayout.VerticalScope scope = new(style, options);
 				GUI.color = Color.white;
 				return scope;
 			}
@@ -210,7 +207,7 @@ namespace Core
 			public static GUILayout.VerticalScope Use(GUIContent content, GUIStyle style, Color color, params GUILayoutOption[] options)
 			{
 				GUI.color = color;
-				GUILayout.VerticalScope scope = new GUILayout.VerticalScope(content, style, options);
+				GUILayout.VerticalScope scope = new(content, style, options);
 				GUI.color = Color.white;
 				return scope;
 			}
@@ -270,7 +267,7 @@ namespace Core
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle horizontalScrollbar, GUIStyle verticalScrollbar, GUIStyle background, Color color, params GUILayoutOption[] options)
 			{
 				GUI.color = color;
-				GUILayout.ScrollViewScope scope = new GUILayout.ScrollViewScope(scrollPosition, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, background, options);
+				GUILayout.ScrollViewScope scope = new(scrollPosition, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, background, options);
 				scrollPosition = scope.scrollPosition;
 				GUI.color = Color.white;
 				if (content != null)
@@ -284,13 +281,13 @@ namespace Core
 		public class UsableArea 
 		{
 			public static GUILayout.AreaScope Use(Rect screenRect)
-				=> new GUILayout.AreaScope(screenRect);
+				=> new(screenRect);
 			public static GUILayout.AreaScope Use(Rect screenRect, GUIStyle style)
-				=> new GUILayout.AreaScope(screenRect, new GUIContent(), style);
+				=> new(screenRect, new GUIContent(), style);
 			public static GUILayout.AreaScope Use(Rect screenRect, string text, GUIStyle style)
-				=> new GUILayout.AreaScope(screenRect, text, style);
+				=> new(screenRect, text, style);
 			public static GUILayout.AreaScope Use(Rect screenRect, GUIContent content, GUIStyle style)
-				=> new GUILayout.AreaScope(screenRect, content, style);
+				=> new(screenRect, content, style);
 			public static GUILayout.AreaScope Use(Rect screenRect, Color color)
 				=> Use(screenRect, new GUIContent(), GUI.skin.scrollView, color);
 			public static GUILayout.AreaScope Use(Rect screenRect, GUIStyle style, Color color)
@@ -300,7 +297,7 @@ namespace Core
 			public static GUILayout.AreaScope Use(Rect screenRect, GUIContent content, GUIStyle style, Color color)
 			{
 				GUI.color = color;
-				GUILayout.AreaScope scope = new GUILayout.AreaScope(screenRect, content, style);
+				GUILayout.AreaScope scope = new(screenRect, content, style);
 				GUI.color = Color.white;
 				return scope;
 			}

@@ -1,8 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
 	/// <summary>
 	/// Grounding for LimbIK, CCD and/or FABRIK solvers.
 	/// </summary>
@@ -28,7 +28,7 @@ namespace RootMotion.FinalIK {
 		/// The %Grounding solver for the forelegs.
 		/// </summary>
 		[Tooltip("The Grounding solver for the forelegs.")]
-		public Grounding forelegSolver = new Grounding();
+		public Grounding forelegSolver = new();
 		/// <summary>
 		/// The weight of rotating the character root to the ground angle (range: 0 - 1).
 		/// </summary>
@@ -109,7 +109,7 @@ namespace RootMotion.FinalIK {
                 legs[i].GetIKSolver().IKPosition = feet[i].transform.position;
                 if (legs[i] is LimbIK)
                 {
-                    var leg = legs[i] as LimbIK;
+					LimbIK leg = legs[i] as LimbIK;
                     leg.solver.IKRotation = solver.legs[i].transform.rotation;
                 }
             }
@@ -151,25 +151,52 @@ namespace RootMotion.FinalIK {
 		
 		// Can we initiate the Grounding?
 		private bool IsReadyToInitiate() {
-			if (pelvis == null) return false;
-			if (lastSpineBone == null) return false;
-			
-			if (legs.Length == 0) return false;
-			if (forelegs.Length == 0) return false;
-			
-			if (characterRoot == null) return false;
-			
-			if (!IsReadyToInitiateLegs(legs)) return false;
-			if (!IsReadyToInitiateLegs(forelegs)) return false;
-			
+			if (pelvis == null)
+			{
+				return false;
+			}
+
+			if (lastSpineBone == null)
+			{
+				return false;
+			}
+
+			if (legs.Length == 0)
+			{
+				return false;
+			}
+
+			if (forelegs.Length == 0)
+			{
+				return false;
+			}
+
+			if (characterRoot == null)
+			{
+				return false;
+			}
+
+			if (!IsReadyToInitiateLegs(legs))
+			{
+				return false;
+			}
+
+			if (!IsReadyToInitiateLegs(forelegs))
+			{
+				return false;
+			}
+
 			return true;
 		}
 		
 		// Are the leg IK components valid for initiation?
 		private bool IsReadyToInitiateLegs(IK[] ikComponents) {
 			foreach (IK leg in ikComponents) {
-				if (leg == null) return false;
-				
+				if (leg == null)
+				{
+					return false;
+				}
+
 				if (leg is FullBodyBipedIK) {
 					LogWarning("GrounderIK does not support FullBodyBipedIK, use CCDIK, FABRIK, LimbIK or TrigonometricIK instead. If you want to use FullBodyBipedIK, use the GrounderFBBIK component.");
 					return false;
@@ -191,23 +218,39 @@ namespace RootMotion.FinalIK {
 		
 		// Weigh out the IK solvers properly when the component is disabled
 		void OnDisable() {
-			if (!initiated) return;
-			
+			if (!initiated)
+			{
+				return;
+			}
+
 			for (int i = 0; i < feet.Length; i++) {
-				if (feet[i].solver != null) feet[i].solver.IKPositionWeight = 0f;
+				if (feet[i].solver != null)
+				{
+					feet[i].solver.IKPositionWeight = 0f;
+				}
 			}
 		}
 		
 		// Initiate once we have all the required components
 		void Update() {
 			weight = Mathf.Clamp(weight, 0f, 1f);
-			if (weight <= 0f) return;
-			
+			if (weight <= 0f)
+			{
+				return;
+			}
+
 			solved = false;
 			
-			if (initiated) return;
-			if (!IsReadyToInitiate()) return;
-			
+			if (initiated)
+			{
+				return;
+			}
+
+			if (!IsReadyToInitiate())
+			{
+				return;
+			}
+
 			Initiate();
 		}
 		
@@ -223,8 +266,11 @@ namespace RootMotion.FinalIK {
 			// Store the default localPosition and localRotation of the pelvis
 			animatedPelvisLocalPosition = pelvis.localPosition;
 			animatedPelvisLocalRotation = pelvis.localRotation;
-			if (head != null) animatedHeadLocalRotation = head.localRotation;
-			
+			if (head != null)
+			{
+				animatedHeadLocalRotation = head.localRotation;
+			}
+
 			forefeetRoot = new GameObject().transform;
 			forefeetRoot.parent = transform;
 			forefeetRoot.name = "Forefeet Root";
@@ -233,8 +279,15 @@ namespace RootMotion.FinalIK {
 			solver.Initiate(transform, footBones);
 			forelegSolver.Initiate(forefeetRoot, forefootBones);
 			
-			for (int i = 0; i < footBones.Length; i++) feet[i].leg = solver.legs[i];
-			for (int i = 0; i < forefootBones.Length; i++) feet[i + legs.Length].leg = forelegSolver.legs[i];
+			for (int i = 0; i < footBones.Length; i++)
+			{
+				feet[i].leg = solver.legs[i];
+			}
+
+			for (int i = 0; i < forefootBones.Length; i++)
+			{
+				feet[i + legs.Length].leg = forelegSolver.legs[i];
+			}
 
 			characterRootRigidbody = characterRoot.GetComponent<Rigidbody>();
 
@@ -248,7 +301,7 @@ namespace RootMotion.FinalIK {
 			for (int i = 0; i < ikComponents.Length; i++) {
 				IKSolver.Point[] points = ikComponents[i].GetIKSolver().GetPoints();
 				
-				f[i + indexOffset] = new Foot(ikComponents[i].GetIKSolver(), points[points.Length - 1].transform);
+				f[i + indexOffset] = new Foot(ikComponents[i].GetIKSolver(), points[^1].transform);
 				bones[i] = f[i + indexOffset].transform;
 				
 				// Add to the update delegates of each ik solver
@@ -260,7 +313,10 @@ namespace RootMotion.FinalIK {
 		}
 		
 		void LateUpdate () {
-			if (weight <= 0f) return;
+			if (weight <= 0f)
+			{
+				return;
+			}
 
 			// Clamping values
 			rootRotationWeight = Mathf.Clamp(rootRotationWeight, 0f, 1f);
@@ -277,8 +333,15 @@ namespace RootMotion.FinalIK {
 
 		// Rotate the character along with the terrain
 		private void RootRotation() {
-			if (rootRotationWeight <= 0f) return;
-			if (rootRotationSpeed <= 0f) return;
+			if (rootRotationWeight <= 0f)
+			{
+				return;
+			}
+
+			if (rootRotationSpeed <= 0f)
+			{
+				return;
+			}
 
 			solver.rotateSolver = true;
 			forelegSolver.rotateSolver = true;
@@ -310,11 +373,17 @@ namespace RootMotion.FinalIK {
 		
 		// Called before updating the first IK solver
 		private void OnSolverUpdate() {
-			if (!enabled) return;
-			
+			if (!enabled)
+			{
+				return;
+			}
+
 			if (weight <= 0f) {
-				if (lastWeight <= 0f) return;
-				
+				if (lastWeight <= 0f)
+				{
+					return;
+				}
+
 				// Weigh out the limb solvers properly
 				OnDisable();
 			}
@@ -322,27 +391,57 @@ namespace RootMotion.FinalIK {
 			lastWeight = weight;
 			
 			// If another IK has already solved in this frame, do nothing
-			if (solved) return;
+			if (solved)
+			{
+				return;
+			}
 
-			if (OnPreGrounder != null) OnPreGrounder();
-			
+			if (OnPreGrounder != null)
+			{
+				OnPreGrounder();
+			}
+
 			// If the bone transforms have not changed since last solved state, consider them unanimated
-			if (pelvis.localPosition != solvedPelvisLocalPosition) animatedPelvisLocalPosition = pelvis.localPosition;
-			else pelvis.localPosition = animatedPelvisLocalPosition;
-			
-			if (pelvis.localRotation != solvedPelvisLocalRotation) animatedPelvisLocalRotation = pelvis.localRotation;
-			else pelvis.localRotation = animatedPelvisLocalRotation;
-			
+			if (pelvis.localPosition != solvedPelvisLocalPosition)
+			{
+				animatedPelvisLocalPosition = pelvis.localPosition;
+			}
+			else
+			{
+				pelvis.localPosition = animatedPelvisLocalPosition;
+			}
+
+			if (pelvis.localRotation != solvedPelvisLocalRotation)
+			{
+				animatedPelvisLocalRotation = pelvis.localRotation;
+			}
+			else
+			{
+				pelvis.localRotation = animatedPelvisLocalRotation;
+			}
+
 			if (head != null) {
-				if (head.localRotation != solvedHeadLocalRotation) animatedHeadLocalRotation = head.localRotation;
-				else head.localRotation = animatedHeadLocalRotation;
+				if (head.localRotation != solvedHeadLocalRotation)
+				{
+					animatedHeadLocalRotation = head.localRotation;
+				}
+				else
+				{
+					head.localRotation = animatedHeadLocalRotation;
+				}
 			}
 			
-			for (int i = 0; i < feet.Length; i++) feet[i].rotation = feet[i].transform.rotation;
-			
+			for (int i = 0; i < feet.Length; i++)
+			{
+				feet[i].rotation = feet[i].transform.rotation;
+			}
+
 			// Store the head rotation so it could be maintained later
-			if (head != null) headRotation = head.rotation;
-			
+			if (head != null)
+			{
+				headRotation = head.rotation;
+			}
+
 			// Position the forefeet root to the center of forefeet
 			UpdateForefeetRoot();
 			
@@ -367,12 +466,18 @@ namespace RootMotion.FinalIK {
 			pelvis.rotation = Quaternion.Slerp(Quaternion.identity, f, weight) * pelvis.rotation;
 			
 			// Update the IKPositions and IKPositonWeights of the legs
-			for (int i = 0; i < feet.Length; i++) SetFootIK(feet[i], (i < 2? maxLegOffset: maxForeLegOffset));
-			
+			for (int i = 0; i < feet.Length; i++)
+			{
+				SetFootIK(feet[i], (i < 2? maxLegOffset: maxForeLegOffset));
+			}
+
 			solved = true;
 			solvedFeet = 0;
 
-			if (OnPostGrounder != null) OnPostGrounder();
+			if (OnPostGrounder != null)
+			{
+				OnPostGrounder();
+			}
 		}
 		
 		// Position the forefeet root to the center of forefeet
@@ -406,26 +511,45 @@ namespace RootMotion.FinalIK {
 		
 		// Rotating the feet after IK has finished
 		private void OnPostSolverUpdate() {
-			if (weight <= 0f) return;
-			if (!enabled) return;
-			
+			if (weight <= 0f)
+			{
+				return;
+			}
+
+			if (!enabled)
+			{
+				return;
+			}
+
 			// Only do this after the last IK solver has finished
 			solvedFeet ++;
-			if (solvedFeet < feet.Length) return;
-			
+			if (solvedFeet < feet.Length)
+			{
+				return;
+			}
+
 			for (int i = 0; i < feet.Length; i++) {
 				feet[i].transform.rotation = Quaternion.Slerp(Quaternion.identity, feet[i].leg.rotationOffset, weight) * feet[i].rotation;
 			}
 			
-			if (head != null) head.rotation = Quaternion.Lerp(head.rotation, headRotation, maintainHeadRotationWeight * weight);
-			
+			if (head != null)
+			{
+				head.rotation = Quaternion.Lerp(head.rotation, headRotation, maintainHeadRotationWeight * weight);
+			}
+
 			// Store the solved transform's of the bones so we know if they are not animated
 			solvedPelvisLocalPosition = pelvis.localPosition;
 			solvedPelvisLocalRotation = pelvis.localRotation;
-			if (head != null) solvedHeadLocalRotation = head.localRotation;
+			if (head != null)
+			{
+				solvedHeadLocalRotation = head.localRotation;
+			}
 
-            if (OnPostIK != null) OnPostIK();
-        }
+			if (OnPostIK != null)
+			{
+				OnPostIK();
+			}
+		}
 		
 		// Cleaning up the delegates
 		void OnDestroy() {

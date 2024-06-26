@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-    /// <summary>
-    /// Relaxes the twist rotation if the Transform relative to its parent and a child Transforms, using the Transform's initial rotation as the most relaxed pose.
-    /// </summary>
-    [System.Serializable]
+	/// <summary>
+	/// Relaxes the twist rotation if the Transform relative to its parent and a child Transforms, using the Transform's initial rotation as the most relaxed pose.
+	/// </summary>
+	[System.Serializable]
     public class TwistSolver
     {
         [Tooltip("The transform that this solver operates on.")]
@@ -54,21 +52,27 @@ namespace RootMotion.FinalIK
         /// </summary>
         public void Initiate()
         {
-            if (inititated) return;
+            if (inititated)
+			{
+				return;
+			}
 
-            if (transform == null)
+			if (transform == null)
             {
                 Debug.LogError("TwistRelaxer solver has unassigned Transform. TwistRelaxer.cs was restructured for FIK v2.0 to support multiple relaxers on the same body part and TwistRelaxer components need to be set up again, sorry for the inconvenience!", transform);
                 return;
             }
 
-            if (parent == null) parent = transform.parent;
+            if (parent == null)
+			{
+				parent = transform.parent;
+			}
 
-            if (children.Length == 0)
+			if (children.Length == 0)
             {
                 if (transform.childCount == 0)
                 {
-                    var children = parent.GetComponentsInChildren<Transform>();
+					Transform[] children = parent.GetComponentsInChildren<Transform>();
                     for (int i = 1; i < children.Length; i++)
                     {
                         if (children[i] != transform)
@@ -131,10 +135,17 @@ namespace RootMotion.FinalIK
         /// </summary>
         public void Relax()
         {
-            if (!inititated) return;
-            if (weight <= 0f) return; // Nothing to do here
+            if (!inititated)
+			{
+				return;
+			}
 
-            Quaternion rotation = transform.rotation;
+			if (weight <= 0f)
+			{
+				return; // Nothing to do here
+			}
+
+			Quaternion rotation = transform.rotation;
             Quaternion twistOffset = Quaternion.AngleAxis(twistAngleOffset, rotation * twistAxis);
             rotation = twistOffset * rotation;
 

@@ -23,7 +23,7 @@ namespace Core
 			private bool m_Nested = false;
 
 			private Dictionary<string, string> m_Names = null;
-			private Dictionary<string, UnityEngine.Object> m_Assets = null;
+			private Dictionary<string, Object> m_Assets = null;
 
 			public Cache(System.Type searchType, bool canBeNested = true)
 			{
@@ -88,8 +88,8 @@ namespace Core
 					foreach (string path in m_Paths)
 					{
 						// If some of the assets of this type are nested we need to do something more complicated
-						UnityEngine.Object[] assets = AssetDatabase.LoadAllAssetsAtPath(path);
-						foreach (UnityEngine.Object asset in assets)
+						Object[] assets = AssetDatabase.LoadAllAssetsAtPath(path);
+						foreach (Object asset in assets)
 						{
 							if (asset == null)
 							{
@@ -141,7 +141,7 @@ namespace Core
 				return m_Names.TryGetValue(name, out path);
 			}
 
-			public bool TryLoad(string name, out UnityEngine.Object asset)
+			public bool TryLoad(string name, out Object asset)
 			{
 				Init();
 				if (!TryGet(name, out string path))
@@ -163,12 +163,12 @@ namespace Core
 				return asset != null;
 			}
 
-			public void LoadAll<T>(List<T> assets) where T : UnityEngine.Object
+			public void LoadAll<T>(List<T> assets) where T : Object
 			{
 				Init();
 				foreach (string name in m_Names.Keys)
 				{
-					if (TryLoad(name, out UnityEngine.Object obj) && obj is T asset)
+					if (TryLoad(name, out Object obj) && obj is T asset)
 					{
 						assets.Add(asset);
 					}
@@ -191,11 +191,11 @@ namespace Core
 			}
 		}
 
-		private static Dictionary<System.Type, Cache> s_SearchResults = new Dictionary<System.Type, Cache>();
+		private static Dictionary<System.Type, Cache> s_SearchResults = new();
 
 		private static Cache FindInternal(System.Type assetType, bool canBeNested = true)
 		{
-			if (!assetType.IsSubclassOf(typeof(UnityEngine.Object)))
+			if (!assetType.IsSubclassOf(typeof(Object)))
 			{
 				Debug.LogWarning("Core.AssetDatabaseUtil.FindInternal() " + assetType.Name + " should be a subclass of UnityEngine.Object");
 			}
@@ -238,35 +238,35 @@ namespace Core
 			return assetTypes.Any(t=> FindInternal(t).TryGet(assetName, out _));
 		}
 
-		public static bool Exists<T>(string assetName) where T : UnityEngine.Object
+		public static bool Exists<T>(string assetName) where T : Object
 		{
 			return FindInternal(typeof(T)).TryGet(assetName, out _);
 		}
 
-		public static T Load<T>(string assetName) where T : UnityEngine.Object
+		public static T Load<T>(string assetName) where T : Object
 		{
-			FindInternal(typeof(T)).TryLoad(assetName, out UnityEngine.Object asset);
+			FindInternal(typeof(T)).TryLoad(assetName, out Object asset);
 			return asset as T;
 		}
-		public static T LoadAtPath<T>(string path) where T : UnityEngine.Object
+		public static T LoadAtPath<T>(string path) where T : Object
 		{
 			return Load<T>(Path.GetFileNameWithoutExtension(path));
 		}
-		public static void LoadAll<T>(List<T> assets) where T : UnityEngine.Object
+		public static void LoadAll<T>(List<T> assets) where T : Object
 		{
-			FindInternal(typeof(T)).LoadAll<T>(assets);
+			FindInternal(typeof(T)).LoadAll(assets);
 		}
-		public static void LoadAll(System.Type type, List<UnityEngine.Object> assets)
+		public static void LoadAll(System.Type type, List<Object> assets)
 		{
-			FindInternal(type).LoadAll<UnityEngine.Object>(assets);
+			FindInternal(type).LoadAll(assets);
 		}
 
-		public static UnityEngine.Object Load(string assetName, System.Type assetType)
+		public static Object Load(string assetName, System.Type assetType)
 		{
-			FindInternal(assetType).TryLoad(assetName, out UnityEngine.Object asset);
+			FindInternal(assetType).TryLoad(assetName, out Object asset);
 			return asset;
 		}
-		public static UnityEngine.Object LoadAtPath(string path, System.Type assetType)
+		public static Object LoadAtPath(string path, System.Type assetType)
 		{
 			return Load(Path.GetFileNameWithoutExtension(path), assetType);
 		}

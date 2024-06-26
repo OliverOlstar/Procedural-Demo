@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
@@ -38,7 +37,7 @@ public class CameraAnimationSequence : ScriptableObject
 	public float Duration
 	{ get
 		{
-			return m_Keyframes[m_Keyframes.Count -1].GetFrameValue();
+			return m_Keyframes[^1].GetFrameValue();
 		}
 	}
 

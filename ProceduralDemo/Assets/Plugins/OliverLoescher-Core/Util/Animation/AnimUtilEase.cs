@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
-    public class AnimUtilEase : Anim.IAnimationInternal
+	public class AnimUtilEase : Anim.IAnimationInternal
     {
-        Easing.EaseParams Ease;
-		private readonly Anim.TickEvent OnTick;
-		private readonly Anim.TickEvent OnComplete;
+		private Easing.EaseParams m_Ease;
+		private readonly Anim.TickEvent m_OnTick;
+		private readonly Anim.TickEvent m_OnComplete;
 		
-		private readonly float InverseSeconds;
-		private float Progress01;
+		private readonly float m_InverseSeconds;
+		private float m_Progress01;
 		
-		public bool IsComplete => Progress01 >= 1.0f;
+		public bool IsComplete => m_Progress01 >= 1.0f;
 
 		public AnimUtilEase(Easing.EaseParams pEase, float pSeconds, Anim.TickEvent pOnTick, Anim.TickEvent pOnComplete, float pDelay = 0.0f)
 		{
@@ -22,12 +18,12 @@ namespace OliverLoescher.Util
 				Debug2.DevException("pOnTick should never be null", "", typeof(AnimUtilEase));
 			}
 
-			Ease = pEase;
-			OnTick = pOnTick;
-			OnComplete = pOnComplete ?? pOnTick;
+			m_Ease = pEase;
+			m_OnTick = pOnTick;
+			m_OnComplete = pOnComplete ?? pOnTick;
 			
-			InverseSeconds = 1.0f / pSeconds;
-			Progress01 = -pDelay * InverseSeconds;
+			m_InverseSeconds = 1.0f / pSeconds;
+			m_Progress01 = -pDelay * m_InverseSeconds;
 		}
 
 		bool Anim.IAnimationInternal.Tick(float pDeltaTime)
@@ -36,26 +32,27 @@ namespace OliverLoescher.Util
 			{
 				return true;
 			}
-			Progress01 += pDeltaTime * InverseSeconds;
+			m_Progress01 += pDeltaTime * m_InverseSeconds;
 			if (IsComplete)
 			{
-				OnComplete.Invoke(1.0f);
+				m_OnComplete.Invoke(1.0f);
 				return true;
 			}
-			if (Progress01 >= 0.0f)
+			if (m_Progress01 >= 0.0f)
 			{
-				OnTick.Invoke(Ease.Ease(Progress01));
+				m_OnTick.Invoke(m_Ease.Ease(m_Progress01));
 			}
 			return false;
 		}
 
 		public void Cancel()
 		{
-			if (!IsComplete)
+			if (IsComplete)
 			{
-				Progress01 = 1.0f;
-				OnComplete.Invoke(1.0f);
+				return;
 			}
+			m_Progress01 = 1.0f;
+			m_OnComplete.Invoke(1.0f);
 		}
-    }
+	}
 }

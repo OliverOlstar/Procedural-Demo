@@ -1,7 +1,7 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Foot placement system.
@@ -159,22 +159,35 @@ namespace RootMotion.FinalIK {
         /// Raycasts or sphereCasts to find the root ground point. Distance of the Ray/Sphere cast is maxDistanceMlp x maxStep. Use this instead of rootHit if the Grounder is weighed out/disabled and not updated.
         /// </summary>
         public RaycastHit GetRootHit(float maxDistanceMlp = 10f) {
-			RaycastHit h = new RaycastHit();
+			RaycastHit h = new();
 			Vector3 _up = up;
 			
 			Vector3 legsCenter = Vector3.zero;
-			foreach (Leg leg in legs) legsCenter += leg.transform.position;
+			foreach (Leg leg in legs)
+			{
+				legsCenter += leg.transform.position;
+			}
+
 			legsCenter /= (float)legs.Length;
 			
-			h.point = legsCenter - _up * maxStep * 10f;
+			h.point = legsCenter - 10f * maxStep * _up;
 			float distMlp = maxDistanceMlp + 1;
 			h.distance = maxStep * distMlp;
 			
-			if (maxStep <= 0f) return h;
-			
-			if (quality != Quality.Best) Raycast(legsCenter + _up * maxStep, -_up, out h, maxStep * distMlp, layers, QueryTriggerInteraction.Ignore);
-			else SphereCast(legsCenter + _up * maxStep, rootSphereCastRadius, -up, out h, maxStep * distMlp, layers, QueryTriggerInteraction.Ignore);
-			
+			if (maxStep <= 0f)
+			{
+				return h;
+			}
+
+			if (quality != Quality.Best)
+			{
+				Raycast(legsCenter + _up * maxStep, -_up, out h, maxStep * distMlp, layers, QueryTriggerInteraction.Ignore);
+			}
+			else
+			{
+				SphereCast(legsCenter + _up * maxStep, rootSphereCastRadius, -up, out h, maxStep * distMlp, layers, QueryTriggerInteraction.Ignore);
+			}
+
 			return h;
 		}
 
@@ -212,13 +225,30 @@ namespace RootMotion.FinalIK {
 			rootHit = new RaycastHit();
 
 			// Constructing Legs
-			if (legs == null) legs = new Leg[feet.Length];
-			if (legs.Length != feet.Length) legs = new Leg[feet.Length];
-			for (int i = 0; i < feet.Length; i++) if (legs[i] == null) legs[i] = new Leg();
-			
+			if (legs == null)
+			{
+				legs = new Leg[feet.Length];
+			}
+
+			if (legs.Length != feet.Length)
+			{
+				legs = new Leg[feet.Length];
+			}
+
+			for (int i = 0; i < feet.Length; i++)
+			{
+				if (legs[i] == null)
+				{
+					legs[i] = new Leg();
+				}
+			}
+
 			// Constructing pelvis
-			if (pelvis == null) pelvis = new Pelvis();
-			
+			if (pelvis == null)
+			{
+				pelvis = new Pelvis();
+			}
+
 			string errorMessage = string.Empty;
 			if (!IsValid(ref errorMessage)) {
 				Warning.Log(errorMessage, root, false);
@@ -227,7 +257,11 @@ namespace RootMotion.FinalIK {
 			
 			// Initiate solvers only if application is playing
 			if (Application.isPlaying) {
-				for (int i = 0; i < feet.Length; i++) legs[i].Initiate(this, feet[i]);
+				for (int i = 0; i < feet.Length; i++)
+				{
+					legs[i].Initiate(this, feet[i]);
+				}
+
 				pelvis.Initiate(this);
 				
 				initiated = true;
@@ -238,9 +272,15 @@ namespace RootMotion.FinalIK {
 		/// Updates the Grounding.
 		/// </summary>
 		public void Update() {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
-			if (layers == 0) LogWarning("Grounding layers are set to nothing. Please add a ground layer.");
+			if (layers == 0)
+			{
+				LogWarning("Grounding layers are set to nothing. Please add a ground layer.");
+			}
 
 			maxStep = Mathf.Clamp(maxStep, 0f, maxStep);
 			footRadius = Mathf.Clamp(footRadius, 0.0001f, maxStep);
@@ -261,10 +301,20 @@ namespace RootMotion.FinalIK {
 			foreach (Leg leg in legs) {
 				leg.Process();
 
-				if (leg.IKOffset > lowestOffset) lowestOffset = leg.IKOffset;
-				if (leg.IKOffset < highestOffset) highestOffset = leg.IKOffset;
+				if (leg.IKOffset > lowestOffset)
+				{
+					lowestOffset = leg.IKOffset;
+				}
 
-				if (leg.isGrounded) isGrounded = true;
+				if (leg.IKOffset < highestOffset)
+				{
+					highestOffset = leg.IKOffset;
+				}
+
+				if (leg.isGrounded)
+				{
+					isGrounded = true;
+				}
 			}
 
             // Precess pelvis
@@ -275,9 +325,12 @@ namespace RootMotion.FinalIK {
 
 		// Calculate the normal of the plane defined by leg positions, so we know how to rotate the body
 		public Vector3 GetLegsPlaneNormal() {
-			if (!initiated) return Vector3.up;
+			if (!initiated)
+			{
+				return Vector3.up;
+			}
 
-            Vector3 _up = up;
+			Vector3 _up = up;
             Vector3 normal = _up;
 
 			// Go through all the legs, rotate the normal by its offset
@@ -302,9 +355,16 @@ namespace RootMotion.FinalIK {
 
 		// Set everything to 0
 		public void Reset() {
-			if (!Application.isPlaying) return;
+			if (!Application.isPlaying)
+			{
+				return;
+			}
+
 			pelvis.Reset();
-			foreach (Leg leg in legs) leg.Reset();
+			foreach (Leg leg in legs)
+			{
+				leg.Reset();
+			}
 		}
 
 		#endregion Main Interface
@@ -349,8 +409,16 @@ namespace RootMotion.FinalIK {
 		// Determines whether to use root rotation as solver rotation
 		private bool useRootRotation {
 			get {
-				if (!rotateSolver) return false;
-				if (root.up == Vector3.up) return false;
+				if (!rotateSolver)
+				{
+					return false;
+				}
+
+				if (root.up == Vector3.up)
+				{
+					return false;
+				}
+
 				return true;
 			}
 		}

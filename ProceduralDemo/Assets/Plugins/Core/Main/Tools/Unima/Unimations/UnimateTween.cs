@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class UnimateTween<TAnimation, TPlayer> : Unimate<TAnimation, TPlayer>, IUnimateTween
+﻿public abstract class UnimateTween<TAnimation, TPlayer> : Unimate<TAnimation, TPlayer>, IUnimateTween
 	where TAnimation : UnimateBase
 	where TPlayer : UnimaPlayer<TAnimation>, new()
 {

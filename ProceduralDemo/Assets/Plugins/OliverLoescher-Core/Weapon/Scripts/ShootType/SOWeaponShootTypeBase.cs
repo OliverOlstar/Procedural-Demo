@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	public abstract class SOWeaponShootTypeBase : ScriptableObject
 	{
-		protected Action shoot = null;
 		[HideInInspector]
-		public float nextCanShootTime { get; protected set; } = 0.0f;
+		public float NextCanShootTime { get; protected set; } = 0.0f;
+		
+		protected Action m_Shoot = null;
 
 		public abstract void ShootStart();
 		public abstract void ShootEnd();
@@ -18,7 +17,7 @@ namespace OliverLoescher.Weapon
 
 		public virtual SOWeaponShootTypeBase Init(Action pShoot)
 		{
-			shoot = pShoot;
+			m_Shoot = pShoot;
 			return this;
 		}
 	}

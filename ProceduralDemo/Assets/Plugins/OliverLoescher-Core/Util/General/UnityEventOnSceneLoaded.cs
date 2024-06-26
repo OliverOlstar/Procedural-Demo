@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
@@ -9,22 +7,24 @@ public class UnityEventOnSceneLoaded : MonoBehaviour
 	[System.Serializable]
 	public struct SceneEvent
 	{
-		[Min(0)] public int buildIndex;
+		[Min(0)]
+		public int BuildIndex;
 		public UnityEvent OnEvent;
 	}
 
-	[SerializeField] private SceneEvent[] events = new SceneEvent[0];
+	[SerializeField]
+	private SceneEvent[] m_Events = new SceneEvent[0];
 
-	private void Awake() 
+	private void Awake()
 	{
 		SceneManager.sceneLoaded += OnSceneLoaded;
 	}
 
 	public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		foreach (SceneEvent e in events)
+		foreach (SceneEvent e in m_Events)
 		{
-			if (scene.buildIndex == e.buildIndex)
+			if (scene.buildIndex == e.BuildIndex)
 			{
 				e.OnEvent.Invoke();
 			}

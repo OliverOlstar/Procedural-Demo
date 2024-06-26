@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 
-namespace OliverLoescher.Input
+namespace OCore.Input
 {
-    public abstract class InputModule_Base : IInputModule
+	public abstract class InputModule_Base : IInputModule
 	{
 		protected Func<bool> m_IsValid = null;
 		protected InputAction m_InputAction = null;

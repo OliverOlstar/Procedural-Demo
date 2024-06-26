@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using UnityEngine;
 
 public class UberPickerPathCache : Core.PropertyDrawerCache<UberPickerPathCache>
 {
@@ -22,8 +20,8 @@ public class UberPickerPathCache : Core.PropertyDrawerCache<UberPickerPathCache>
 		List<string> pathList = pathSource.GetPaths();
 		if (pathList.Count <= MAX_ITEMS_IN_DROPDOWN || attribute.ForceFlatten)
 		{
-			List<string> nameList = new List<string>(pathList.Count + 1);
-			List<int> levelList = new List<int>(pathList.Count + 1);
+			List<string> nameList = new(pathList.Count + 1);
+			List<int> levelList = new(pathList.Count + 1);
 			// Elements
 			foreach (string path in pathList)
 			{

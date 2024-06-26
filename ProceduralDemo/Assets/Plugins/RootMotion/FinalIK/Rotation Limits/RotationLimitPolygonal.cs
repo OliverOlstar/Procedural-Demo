@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Using a spherical polygon to limit the range of rotation on universal and ball-and-socket joints. A reach cone is specified as a spherical polygon 
@@ -72,9 +73,13 @@ namespace RootMotion.FinalIK {
 		 * Limits the rotation in the local space of this instance's Transform.
 		 * */
 		protected override Quaternion LimitRotation(Quaternion rotation) {
-			if (reachCones.Length == 0) Start();
+			if (reachCones.Length == 0)
+			{
+				Start();
+			}
 
 			// Subtracting off-limits swing
+
 			Quaternion swing = LimitSwing(rotation);
 
 			// Apply twist limits
@@ -137,17 +142,33 @@ namespace RootMotion.FinalIK {
 		[HideInInspector] public ReachCone[] reachCones = new ReachCone[0];
 		
 		void Start() {
-			if (points.Length < 3) ResetToDefault();
-			
+			if (points.Length < 3)
+			{
+				ResetToDefault();
+			}
+
 			// Check if Limit Points are valid
+
 			for (int i = 0; i < reachCones.Length; i++) {
 				if (!reachCones[i].isValid) {
 					if (smoothIterations <= 0) {
 						int nextPoint = 0;
-						if (i < reachCones.Length - 1) nextPoint = i + 1;
-						else nextPoint = 0;
+						if (i < reachCones.Length - 1)
+						{
+							nextPoint = i + 1;
+						}
+						else
+						{
+							nextPoint = 0;
+						}
+
+
 						LogWarning("Reach Cone {point " + i + ", point " + nextPoint + ", Origin} has negative volume. Make sure Axis vector is in the reachable area and the polygon is convex.");
-					} else LogWarning("One of the Reach Cones in the polygon has negative volume. Make sure Axis vector is in the reachable area and the polygon is convex.");
+					} else
+					{
+						LogWarning("One of the Reach Cones in the polygon has negative volume. Make sure Axis vector is in the reachable area and the polygon is convex.");
+					}
+
 				}
 			}
 			
@@ -161,8 +182,12 @@ namespace RootMotion.FinalIK {
 		 * */
 		public void ResetToDefault() {
 			points = new LimitPoint[4];
-			for (int i = 0; i < points.Length; i++) points[i] = new LimitPoint();
-			
+			for (int i = 0; i < points.Length; i++)
+			{
+				points[i] = new LimitPoint();
+			}
+
+
 			Quaternion swing1Rotation = Quaternion.AngleAxis(45, Vector3.right);
 			Quaternion swing2Rotation = Quaternion.AngleAxis(45, Vector3.up);
 			
@@ -182,19 +207,31 @@ namespace RootMotion.FinalIK {
 			
 			// Make another array for the points so that they could be smoothed without changing the initial points
 			P = new Vector3[points.Length];
-			for (int i = 0; i < points.Length; i++) P[i] = points[i].point.normalized;
-			
-			for (int i = 0; i < smoothIterations; i++) P = SmoothPoints();
-			
+			for (int i = 0; i < points.Length; i++)
+			{
+				P[i] = points[i].point.normalized;
+			}
+
+
+			for (int i = 0; i < smoothIterations; i++)
+			{
+				P = SmoothPoints();
+			}
+
 			// Calculating the reach cones
+
 			reachCones = new ReachCone[P.Length]; 
 			for (int i = 0; i < reachCones.Length - 1; i++) {
 				reachCones[i] = new ReachCone(Vector3.zero, axis.normalized, P[i], P[i + 1]);
 			}
 			
-			reachCones[P.Length - 1] = new ReachCone(Vector3.zero, axis.normalized, P[P.Length - 1], P[0]);
+			reachCones[P.Length - 1] = new ReachCone(Vector3.zero, axis.normalized, P[^1], P[0]);
 			
-			for (int i = 0; i < reachCones.Length; i++) reachCones[i].Calculate();
+			for (int i = 0; i < reachCones.Length; i++)
+			{
+				reachCones[i].Calculate();
+			}
+
 		}
 		
 		/*
@@ -207,8 +244,11 @@ namespace RootMotion.FinalIK {
 			float scalar = GetScalar(P.Length); // Get the constant used for interpolation
 			
 			// Project all the existing points on a plane that is tangent to the unit sphere at the Axis point
-			for (int i = 0; i < Q.Length; i+= 2) Q[i] = PointToTangentPlane(P[i / 2], 1);
-			
+			for (int i = 0; i < Q.Length; i+= 2)
+			{
+				Q[i] = PointToTangentPlane(P[i / 2], 1);
+			}
+
 			// Interpolate the new points
 			for (int i = 1; i < Q.Length; i+= 2) {
 				Vector3 minus2 = Vector3.zero;
@@ -219,16 +259,22 @@ namespace RootMotion.FinalIK {
 					minus2 = Q[i - 2];
 					plus2 = Q[i + 1];
 				} else if (i == 1) {
-					minus2 = Q[Q.Length - 2];
+					minus2 = Q[^2];
 					plus2 = Q[i + 1];
 				} else if (i == Q.Length - 1) {
 					minus2 = Q[i - 2];
 					plus2 = Q[0];
 				}
 				
-				if (i < Q.Length - 1) plus1 = Q[i + 1];
-				else plus1 = Q[0];
-				
+				if (i < Q.Length - 1)
+				{
+					plus1 = Q[i + 1];
+				}
+				else
+				{
+					plus1 = Q[0];
+				}
+
 				int t = Q.Length / points.Length;
 				
 				// Interpolation
@@ -236,8 +282,12 @@ namespace RootMotion.FinalIK {
 			}
 
 			// Project the points from tangent plane to the sphere
-			for (int i = 0; i < Q.Length; i++) Q[i] = TangentPointToSphere(Q[i], 1);
-			
+			for (int i = 0; i < Q.Length; i++)
+			{
+				Q[i] = TangentPointToSphere(Q[i], 1);
+			}
+
+
 			return Q;
 		}
 		
@@ -246,11 +296,36 @@ namespace RootMotion.FinalIK {
 		 * */
 		private float GetScalar(int k) {
 			// Values k (number of points) == 3, 4 and 6 are calculated by analytical geometry, values 5 and 7 were estimated by interpolation
-			if (k <= 3) return .1667f;
-			if (k == 4) return .1036f;
-			if (k == 5) return .0850f;
-			if (k == 6) return .0773f;
-			if (k == 7) return .0700f;
+			if (k <= 3)
+			{
+				return .1667f;
+			}
+
+
+			if (k == 4)
+			{
+				return .1036f;
+			}
+
+
+			if (k == 5)
+			{
+				return .0850f;
+			}
+
+
+			if (k == 6)
+			{
+				return .0773f;
+			}
+
+
+			if (k == 7)
+			{
+				return .0700f;
+			}
+
+
 			return .0625f; // Cubic spline fit
 		}
 		
@@ -280,23 +355,36 @@ namespace RootMotion.FinalIK {
 		 * Applies Swing limit to the rotation
 		 * */
 		private Quaternion LimitSwing(Quaternion rotation) {		
-			if (rotation == Quaternion.identity) return rotation; // Assuming initial rotation is in the reachable area
-			
+			if (rotation == Quaternion.identity)
+			{
+				return rotation; // Assuming initial rotation is in the reachable area
+			}
+
+
 			Vector3 L = rotation * axis; // Test this vector against the reach cones
 			
 			int r = GetReachCone(L); // Get the reach cone to test against (can be only 1)
 			
 			// Just in case we are running our application with invalid reach cones
 			if (r == -1) {
-				if (!Warning.logged) LogWarning("RotationLimitPolygonal reach cones are invalid.");
+				if (!Warning.logged)
+				{
+					LogWarning("RotationLimitPolygonal reach cones are invalid.");
+				}
+
+
 				return rotation; 
 			}
 			
 			// Dot product of cone normal and rotated axis
 			float v = Vector3.Dot(reachCones[r].B, L);
-			if (v > 0) return rotation; // Rotation is reachable
-			
+			if (v > 0)
+			{
+				return rotation; // Rotation is reachable
+			}
+
 			// Find normal for a plane defined by origin, axis, and rotated axis
+
 			Vector3 rotationNormal = Vector3.Cross(axis, L);
 			
 			// Find the line where this plane intersects with the reach cone plane
@@ -319,10 +407,21 @@ namespace RootMotion.FinalIK {
 			for (int i = 0; i < reachCones.Length; i++) {
 				p = p1;
 				
-				if (i < reachCones.Length - 1) p1 = Vector3.Dot(reachCones[i + 1].S, L);
-				else p1 = Vector3.Dot(reachCones[0].S, L);
-				
-				if (p >= 0 && p1 < 0) return i;
+				if (i < reachCones.Length - 1)
+				{
+					p1 = Vector3.Dot(reachCones[i + 1].S, L);
+				}
+				else
+				{
+					p1 = Vector3.Dot(reachCones[0].S, L);
+				}
+
+
+				if (p >= 0 && p1 < 0)
+				{
+					return i;
+				}
+
 			}
 			
 			return -1;

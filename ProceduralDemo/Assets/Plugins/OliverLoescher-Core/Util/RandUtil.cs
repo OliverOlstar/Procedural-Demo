@@ -1,20 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
 	public static class Random2
 	{
-		public static float Range(Vector2 pRange) => UnityEngine.Random.Range(pRange.x, pRange.y);
-		public static int Range(Vector2Int pRange) => UnityEngine.Random.Range(pRange.x, pRange.y);
-		public static float Range(float pRange) => UnityEngine.Random.Range(-pRange, pRange);
-		public static int Range(int pRange) => UnityEngine.Random.Range(-pRange, pRange);
+		public static float Range(Vector2 pRange) => Random.Range(pRange.x, pRange.y);
+		public static int Range(Vector2Int pRange) => Random.Range(pRange.x, pRange.y);
+		public static float Range(float pRange) => Random.Range(-pRange, pRange);
+		public static int Range(int pRange) => Random.Range(-pRange, pRange);
 
 		public static Vector2 GetRandomPointInEllipse(float ellipse_width, float ellipse_height)
 		{
-			float t = 2 * Mathf.PI * UnityEngine.Random.value;
-			float u = UnityEngine.Random.value + UnityEngine.Random.value;
+			float t = 2 * Mathf.PI * Random.value;
+			float u = Random.value + Random.value;
 			float r;
 			if (u > 1)
 			{

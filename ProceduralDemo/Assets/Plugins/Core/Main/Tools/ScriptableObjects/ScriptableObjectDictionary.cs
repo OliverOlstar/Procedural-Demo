@@ -51,7 +51,7 @@ namespace Core
 				}
 				if (dict.ContainsKey(key))
 				{
-					Core.DebugUtil.DevException($"ScriptableObjectAutoDictionary.Init() Duplicate key {key.name}");
+					DebugUtil.DevException($"ScriptableObjectAutoDictionary.Init() Duplicate key {key.name}");
 					continue;
 				}
 				dict.Add(key, serializedList[i].value);

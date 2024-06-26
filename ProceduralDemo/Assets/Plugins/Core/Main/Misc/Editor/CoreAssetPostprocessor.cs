@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using UnityEditor;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using UnityEditor;
 
 namespace Core
 {

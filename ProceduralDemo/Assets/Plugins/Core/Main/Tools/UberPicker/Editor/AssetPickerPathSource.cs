@@ -39,7 +39,7 @@ public class AssetPickerPathSource : IAssetPickerPathSource
 
 	List<string> IAssetPickerPathSource.GetPaths()
 	{
-		List<string> paths = new List<string>();
+		List<string> paths = new();
 		foreach (System.Type type in m_TypesToLoad)
 		{
 			paths.AddRange(Core.AssetDatabaseUtil.Find(type, m_CanBeNested));

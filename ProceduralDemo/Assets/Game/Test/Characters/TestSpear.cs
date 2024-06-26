@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using OliverLoescher.Util;
-using OliverLoescher.Cue;
-using OliverLoescher;
+using OCore;
+using OCore.Util;
+using OCore.Cue;
 
 public class TestSpear : MonoBehaviour
 {
@@ -14,9 +12,9 @@ public class TestSpear : MonoBehaviour
 	[SerializeField]
 	private float GravityDelay = 3.0f;
 	[SerializeField]
-	private LayerMask HitLayer = new LayerMask();
+	private LayerMask HitLayer = new();
 	[SerializeField]
-	private Easing.EaseParams RecallEase = new Easing.EaseParams();
+	private Easing.EaseParams RecallEase = new();
 	[SerializeField]
 	private float RecallSeconds = 5.0f;
 
@@ -39,7 +37,7 @@ public class TestSpear : MonoBehaviour
 	private Transform HighlightSpear = null;
 
 	[Space, SerializeField]
-	private Easing.EaseParams playerSnapEase = new Easing.EaseParams();
+	private Easing.EaseParams playerSnapEase = new();
 	[SerializeField]
 	private float playerSnapEaseSeconds = 1.0f;
 
@@ -54,7 +52,7 @@ public class TestSpear : MonoBehaviour
 	private bool isAiming = false;
 	private TestCharacter character;
 	private Collider trigger = null;
-	private readonly TransformFollower follower = new TransformFollower();
+	private readonly TransformFollower follower = new();
 
 	private Vector3 CharacterStandPoint => transform.position + (0.5f * transform.localScale.y * Vector3.up) + (0.45f * transform.localScale.z * -transform.forward);
 
@@ -221,7 +219,7 @@ public class TestSpear : MonoBehaviour
 				// transform.SetPositionAndRotation(hit.point - (0.4f * transform.localScale.z * transform.forward), Quaternion.LookRotation(-hit.normal));
 				trigger.enabled = true;
 
-				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, OliverLoescher.Util.Mono.Type.Default, OliverLoescher.Util.Mono.Priorities.CharacterController, this);
+				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, OCore.Util.Mono.Type.Default, OCore.Util.Mono.Priorities.CharacterController, this);
 			}
 			SOCue.Play(hitCue, new CueContext(hit.point));
 			return;
@@ -236,7 +234,9 @@ public class TestSpear : MonoBehaviour
 		}
 		transform.position += Velocity * Time.deltaTime;
 		if (Velocity.NotNearZero())
+		{
 			transform.rotation = Quaternion.LookRotation(Velocity);
+		}
 	}
 
 	private void OnAttachedMoved(Vector3 pDeltaPosition)
@@ -261,12 +261,17 @@ public class TestSpear : MonoBehaviour
 		(float pProgress) =>
 		{
 			if (character != null)
+			{
 				character.transform.position = Vector3.LerpUnclamped(startPosition, CharacterStandPoint, pProgress);
+			}
 		},
 		(float _) =>
 		{
 			if (character != null)
+			{
 				character.transform.position = CharacterStandPoint;
+			}
+
 			isAnimating = false;
 		});
 	}

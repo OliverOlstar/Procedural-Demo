@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector and scene view tools for IKSolverLimb
 	 * */
+
 	public class IKSolverLimbInspector: IKSolverInspector {
 		
 		#region Public methods
@@ -31,7 +31,11 @@ namespace RootMotion.FinalIK {
 			EditorGUILayout.PropertyField(prop.FindPropertyRelative("bendModifier"), new GUIContent("Bend Modifier", "Bend normal modifier."));
 			EditorGUILayout.PropertyField(prop.FindPropertyRelative("bendModifierWeight"), new GUIContent("Bend Modifier Weight", "Weight of the bend modifier."));
 
-			if (prop.FindPropertyRelative("bendModifier").enumValueIndex == 4) EditorGUILayout.PropertyField(prop.FindPropertyRelative("bendGoal"), new GUIContent("Bend Goal", "The bend goal Transform (optional, you can also use IKSolverTrigonometric.SetBendGoalPosition(Vector position, float weight)."));
+			if (prop.FindPropertyRelative("bendModifier").enumValueIndex == 4)
+			{
+				EditorGUILayout.PropertyField(prop.FindPropertyRelative("bendGoal"), new GUIContent("Bend Goal", "The bend goal Transform (optional, you can also use IKSolverTrigonometric.SetBendGoalPosition(Vector position, float weight)."));
+			}
+
 
 			EditorGUILayout.Space();
 		}
@@ -40,8 +44,17 @@ namespace RootMotion.FinalIK {
 		 * Draws the scene view helpers for IKSolverLimb
 		 * */
 		public static void AddScene(IKSolverLimb solver, Color color, bool modifiable) {
-			if (Application.isPlaying && !solver.initiated) return;
-			if (!Application.isPlaying && !solver.IsValid()) return;
+			if (Application.isPlaying && !solver.initiated)
+			{
+				return;
+			}
+
+
+			if (!Application.isPlaying && !solver.IsValid())
+			{
+				return;
+			}
+
 
 			if (solver.bendGoal != null && solver.bendModifierWeight > 0f) {
 				Color c = color;
@@ -49,7 +62,7 @@ namespace RootMotion.FinalIK {
 				Handles.color = c;
 
 				Handles.DrawLine(solver.bone2.transform.position, solver.bendGoal.position);
-				Inspector.SphereCap(0, solver.bendGoal.position, Quaternion.identity, GetHandleSize(solver.bendGoal.position) * 0.5f);
+				SphereCap(0, solver.bendGoal.position, Quaternion.identity, GetHandleSize(solver.bendGoal.position) * 0.5f);
 
 				Handles.color = Color.white;
 			}

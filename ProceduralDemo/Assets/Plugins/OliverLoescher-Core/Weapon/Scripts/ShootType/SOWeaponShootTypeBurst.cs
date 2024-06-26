@@ -1,57 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/ShootType/Burst")]
 	public class SOWeaponShootTypeBurst : SOWeaponShootTypeBase
 	{
 		[SerializeField, Min(2)]
-		private int shootCount = 3;
+		private int m_ShootCount = 3;
 		[SerializeField, Min(0.0f)]
-		private float secondsBetweenShots = 0.1f;
+		private float m_SecondsBetweenShots = 0.1f;
 		[SerializeField, Min(0.0f)]
-		private float secondsBetweenBurstShots = 0.1f;
+		private float m_SecondsBetweenBurstShots = 0.1f;
 
-		private bool isShooting = false;
-		private int activeCount = 0;
+		private bool m_IsShooting = false;
+		private int m_ActiveCount = 0;
 
 		public override void ShootStart()
 		{
-			if (isShooting)
+			if (m_IsShooting)
+			{
 				return;
-			isShooting = true;
+			}
+			m_IsShooting = true;
 
-			activeCount = shootCount;
-			shoot.Invoke();
+			m_ActiveCount = m_ShootCount;
+			m_Shoot.Invoke();
 		}
 
-		public override void ShootEnd()
-		{
-
-		}
+		public override void ShootEnd() { }
 
 		public override void OnUpdate(float pDeltaTime)
 		{
-			if (isShooting && Time.time >= nextCanShootTime)
+			if (m_IsShooting && Time.time >= NextCanShootTime)
 			{
-				shoot.Invoke();
+				m_Shoot.Invoke();
 			}
 		}
 
 		public override void OnShoot()
 		{
-			activeCount--;
-			if (activeCount <= 0)
+			m_ActiveCount--;
+			if (m_ActiveCount > 0)
 			{
-				nextCanShootTime = Time.time + secondsBetweenShots;
-				isShooting = false;
+				NextCanShootTime = Time.time + m_SecondsBetweenBurstShots;
+				return;
 			}
-			else
-			{
-				nextCanShootTime = Time.time + secondsBetweenBurstShots;
-			}
+			NextCanShootTime = Time.time + m_SecondsBetweenShots;
+			m_IsShooting = false;
 		}
 	}
 }

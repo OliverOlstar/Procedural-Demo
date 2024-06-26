@@ -112,19 +112,19 @@ namespace Core
 
 		public static void SetGreyscale(MaskableGraphic image, float amount = 1.0f, float brightness = 1.0f, Color tint = new Color())
 		{
-			bool apply = amount > Core.Util.EPSILON;
+			bool apply = amount > Util.EPSILON;
 			image.material = apply ? GetGreyscaleMat() : null;
 			if (apply && image.material != null)
 			{
-				if (!Core.Util.Approximately(amount, 1.0f))
+				if (!Util.Approximately(amount, 1.0f))
 				{
 					image.material.SetFloat("_GreyscaleAmount", amount);
 				}
-				if (!Core.Util.Approximately(brightness, 1.0f))
+				if (!Util.Approximately(brightness, 1.0f))
 				{
 					image.material.SetFloat("_Brightness", brightness);
 				}
-				if (!Color.Equals(tint, new Color()))
+				if (!Equals(tint, new Color()))
 				{
 					image.material.SetColor("_Tint", tint);
 				}

@@ -78,7 +78,7 @@ namespace GraphEditor
 					{
 						break;
 					}
-					if (m_MouseDragStates[guiEvent.button] == true)
+					if (m_MouseDragStates[guiEvent.button])
 					{
 						m_MouseDragStates[guiEvent.button] = false;
 						m_MouseEndDragEvents[guiEvent.button]?.Invoke(guiEvent);
@@ -96,7 +96,7 @@ namespace GraphEditor
 						break;
 					}
 					m_MouseDownPositions[guiEvent.button] = null;
-					if (m_MouseDragStates[guiEvent.button] == false)
+					if (!m_MouseDragStates[guiEvent.button])
 					{
 						m_MouseDragStates[guiEvent.button] = true;
 						m_MouseBeginDragEvents[guiEvent.button]?.Invoke(guiEvent);
@@ -104,7 +104,7 @@ namespace GraphEditor
 					m_MouseDragEvents[guiEvent.button]?.Invoke(guiEvent);
 					break;
 				case EventType.KeyDown:
-					if (m_KeyDownStates[(int)guiEvent.keyCode] == true)
+					if (m_KeyDownStates[(int)guiEvent.keyCode])
 					{
 						break;
 					}
@@ -113,7 +113,7 @@ namespace GraphEditor
 					break;
 				case EventType.KeyUp:
 					m_KeyUpEvents[(int)guiEvent.keyCode]?.Invoke(guiEvent);
-					if (m_KeyDownStates[(int)guiEvent.keyCode] == true)
+					if (m_KeyDownStates[(int)guiEvent.keyCode])
 					{
 						m_KeyPressEvents[(int)guiEvent.keyCode]?.Invoke(guiEvent);
 					}

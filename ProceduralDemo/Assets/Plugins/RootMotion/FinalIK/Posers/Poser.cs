@@ -1,7 +1,7 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// The base abstract class for all class that are translating a hierarchy of bones to match the translation of bones in another hierarchy.
@@ -47,9 +47,16 @@ namespace RootMotion.FinalIK {
 		 * Updates the solver. If you need full control of the execution order of your IK solvers, disable this script and call UpdateSolver() instead.
 		 * */
 		protected override void UpdateSolver() {
-			if (!initiated) InitiateSolver();
-			if (!initiated) return;
-			
+			if (!initiated)
+			{
+				InitiateSolver();
+			}
+
+			if (!initiated)
+			{
+				return;
+			}
+
 			UpdatePoser();
 		}
 		
@@ -57,14 +64,22 @@ namespace RootMotion.FinalIK {
 		 * Initiates the %IK solver
 		 * */
 		protected override void InitiateSolver() {
-			if (initiated) return;
+			if (initiated)
+			{
+				return;
+			}
+
 			InitiatePoser();
 			initiated = true;
 		}
 		
 		protected override void FixTransforms() {
-			if (!initiated) return;
- 			FixPoserTransforms();
+			if (!initiated)
+			{
+				return;
+			}
+
+			FixPoserTransforms();
 		}
 	}
 }

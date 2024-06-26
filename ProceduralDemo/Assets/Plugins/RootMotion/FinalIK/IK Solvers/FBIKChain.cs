@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// A chain of bones in IKSolverFullBody.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class FBIKChain {
 		
 		#region Main Interface
@@ -15,7 +16,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Linear constraint between child chains of a FBIKChain.
 		/// </summary>
-		[System.Serializable]
+		[Serializable]
 		public class ChildConstraint {
 
 			/// <summary>
@@ -79,7 +80,11 @@ namespace RootMotion.FinalIK {
 				if (isRigid) {
 					float offset = solver.chain[chain1Index].pull - solver.chain[chain2Index].pull;
 					crossFade = 1f - (0.5f + (offset * 0.5f));
-				} else crossFade = 0.5f;
+				} else
+				{
+					crossFade = 0.5f;
+				}
+
 
 				inverseCrossFade = 1f - crossFade;
 			}
@@ -88,13 +93,26 @@ namespace RootMotion.FinalIK {
 			 * Solving the constraint
 			 * */
 			public void Solve(IKSolverFullBody solver) {
-				if (pushElasticity >= 1 && pullElasticity >= 1) return;
+				if (pushElasticity >= 1 && pullElasticity >= 1)
+				{
+					return;
+				}
+
 
 				Vector3 direction = solver.chain[chain2Index].nodes[0].solverPosition - solver.chain[chain1Index].nodes[0].solverPosition;
 
 				float distance = direction.magnitude;
-				if (distance == nominalDistance) return;
-				if (distance == 0f) return;
+				if (distance == nominalDistance)
+				{
+					return;
+				}
+
+
+				if (distance == 0f)
+				{
+					return;
+				}
+
 
 				float force = 1f;
 
@@ -112,7 +130,7 @@ namespace RootMotion.FinalIK {
 			}
 		}
 
-		[System.Serializable]
+		[Serializable]
 		public enum Smoothing {
 			None,
 			Exponential,
@@ -168,7 +186,7 @@ namespace RootMotion.FinalIK {
 		/// Gets the bend constraint (if this chain has 3 segments).
 		/// </summary>
 		/// <value>The bend constraint.</value>
-		public IKConstraintBend bendConstraint = new IKConstraintBend();
+		public IKConstraintBend bendConstraint = new();
 
 		#endregion Main Interface
 
@@ -206,7 +224,11 @@ namespace RootMotion.FinalIK {
 
 		public int GetNodeIndex(Transform boneTransform) {
 			for (int i = 0; i < nodes.Length; i++) {
-				if (nodes[i].transform == boneTransform) return i;
+				if (nodes[i].transform == boneTransform)
+				{
+					return i;
+				}
+
 			}
 			return -1;
 		}
@@ -220,11 +242,15 @@ namespace RootMotion.FinalIK {
 				return false;
 			}
 			
-			foreach (IKSolver.Node node in nodes) if (node.transform == null) {
+			foreach (IKSolver.Node node in nodes)
+			{
+				if (node.transform == null) {
 				message = "Node transform is null in FBIK chain.";
 				return false;
 			}
-			
+			}
+
+
 			return true;
 		}
 		
@@ -242,9 +268,13 @@ namespace RootMotion.FinalIK {
 			CalculateBoneLengths(solver);
 			
 			// Initiating child constraints
-			foreach (ChildConstraint c in childConstraints) c.Initiate(solver as IKSolverFullBody);
+			foreach (ChildConstraint c in childConstraints)
+			{
+				c.Initiate(solver as IKSolverFullBody);
+			}
 
 			// Initiating the bend constraint
+
 			if (nodes.Length == 3) {
 				bendConstraint.SetBones(nodes[0].transform, nodes[1].transform, nodes[2].transform);
 				bendConstraint.Initiate(solver as IKSolverFullBody);
@@ -259,8 +289,12 @@ namespace RootMotion.FinalIK {
 		 * Before updating the chain
 		 * */
 		public void ReadPose(IKSolverFullBody solver, bool fullBody) {
-			if (!initiated) return;
-			
+			if (!initiated)
+			{
+				return;
+			}
+
+
 			for (int i = 0; i < nodes.Length; i++) {
 				nodes[i].solverPosition = nodes[i].transform.position + nodes[i].offset;
 			}
@@ -270,12 +304,21 @@ namespace RootMotion.FinalIK {
 
 			if (fullBody) {
 				// Pre-update child constraints
-				for (int i = 0; i < childConstraints.Length; i++) childConstraints[i].OnPreSolve(solver);
+				for (int i = 0; i < childConstraints.Length; i++)
+				{
+					childConstraints[i].OnPreSolve(solver);
+				}
+
 
 				if (children.Length > 0) {
 					// PullSum
-					float pullSum = nodes[nodes.Length - 1].effectorPositionWeight;
-					for (int i = 0; i < children.Length; i++) pullSum += solver.chain[children[i]].nodes[0].effectorPositionWeight * solver.chain[children[i]].pull;
+					float pullSum = nodes[^1].effectorPositionWeight;
+					for (int i = 0; i < children.Length; i++)
+					{
+						pullSum += solver.chain[children[i]].nodes[0].effectorPositionWeight * solver.chain[children[i]].pull;
+					}
+
+
 					pullSum = Mathf.Clamp(pullSum, 1f, Mathf.Infinity);
 
 					// CrossFades
@@ -286,15 +329,27 @@ namespace RootMotion.FinalIK {
 
 				// Finding the total pull force by all child chains
 				pullParentSum = 0f;
-				for (int i = 0; i < children.Length; i++) pullParentSum += solver.chain[children[i]].pull;
+				for (int i = 0; i < children.Length; i++)
+				{
+					pullParentSum += solver.chain[children[i]].pull;
+				}
+
+
 				pullParentSum = Mathf.Clamp(pullParentSum, 1f, Mathf.Infinity);
 
 				// Reach force
 				if (nodes.Length == 3) {
 					reachForce = reach * Mathf.Clamp(nodes[2].effectorPositionWeight, 0f, 1f);
-				} else reachForce = 0f;
-		
-				if (push > 0f && nodes.Length > 1) distance = Vector3.Distance(nodes[0].transform.position, nodes[nodes.Length - 1].transform.position);
+				} else
+				{
+					reachForce = 0f;
+				}
+
+				if (push > 0f && nodes.Length > 1)
+				{
+					distance = Vector3.Distance(nodes[0].transform.position, nodes[^1].transform.position);
+				}
+
 			}
 		}
 
@@ -314,7 +369,7 @@ namespace RootMotion.FinalIK {
 			}
 			
 			for (int i = 0; i < children.Length; i++) {
-				solver.chain[children[i]].rootLength = (solver.chain[children[i]].nodes[0].transform.position - nodes[nodes.Length - 1].transform.position).magnitude;
+				solver.chain[children[i]].rootLength = (solver.chain[children[i]].nodes[0].transform.position - nodes[^1].transform.position).magnitude;
 				
 				if (solver.chain[children[i]].rootLength == 0f) {
 					return;
@@ -335,16 +390,32 @@ namespace RootMotion.FinalIK {
 		 * Reaching limbs
 		 * */
 		public void Reach(IKSolverFullBody solver) {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
 			// Solve children first
-			for (int i = 0; i < children.Length; i++) solver.chain[children[i]].Reach(solver);
 
-			if (reachForce <= 0f) return;
+			for (int i = 0; i < children.Length; i++)
+			{
+				solver.chain[children[i]].Reach(solver);
+			}
+
+
+			if (reachForce <= 0f)
+			{
+				return;
+			}
+
 
 			Vector3 solverDirection = nodes[2].solverPosition - nodes[0].solverPosition;
-			if (solverDirection == Vector3.zero) return;
-				
+			if (solverDirection == Vector3.zero)
+			{
+				return;
+			}
+
+
 			float solverLength = solverDirection.magnitude;
 
 			//Reaching
@@ -380,21 +451,35 @@ namespace RootMotion.FinalIK {
 			}
 
 			// Apply the push from a child
-			nodes[nodes.Length - 1].solverPosition += sum;
+			nodes[^1].solverPosition += sum;
 
 			// Calculating the push of THIS chain (passed on to the parent as we're in a recursive method)
-			if (nodes.Length < 2) return Vector3.zero;
-			if (push <= 0f) return Vector3.zero;
-			
+			if (nodes.Length < 2)
+			{
+				return Vector3.zero;
+			}
+
+			if (push <= 0f)
+			{
+				return Vector3.zero;
+			}
+
 			Vector3 solverDirection = nodes[2].solverPosition - nodes[0].solverPosition;
 			float solverLength = solverDirection.magnitude;
-			if (solverLength == 0f) return Vector3.zero;
+			if (solverLength == 0f)
+			{
+				return Vector3.zero;
+			}
 
 			// Get the push force factor
 			float f = 1f - (solverLength / distance);
-			if (f <= 0f) return Vector3.zero;
+			if (f <= 0f)
+			{
+				return Vector3.zero;
+			}
 
 			// Push smoothing
+
 			switch (pushSmoothing) {
 			case Smoothing.Exponential:
 				f *= f;
@@ -405,7 +490,7 @@ namespace RootMotion.FinalIK {
 			}
 
 			// The final push force
-			Vector3 p = -solverDirection * f * push;
+			Vector3 p = f * push * -solverDirection;
 			
 			nodes[0].solverPosition += p;
 			return p;
@@ -415,21 +500,37 @@ namespace RootMotion.FinalIK {
 		 * Applying trigonometric IK solver on the 3 segmented chains to relieve tension from the solver and increase accuracy.
 		 * */
 		public void SolveTrigonometric(IKSolverFullBody solver, bool calculateBendDirection = false) {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
 			// Solve children first
-			for (int i = 0; i < children.Length; i++) solver.chain[children[i]].SolveTrigonometric(solver, calculateBendDirection);
-			
-			if (nodes.Length != 3) return;
+
+			for (int i = 0; i < children.Length; i++)
+			{
+				solver.chain[children[i]].SolveTrigonometric(solver, calculateBendDirection);
+			}
+
+
+			if (nodes.Length != 3)
+			{
+				return;
+			}
 
 			// Direction of the limb in solver
+
 			Vector3 solverDirection = nodes[2].solverPosition - nodes[0].solverPosition;
 
 			// Distance between the first and the last node solver positions
 			float solverLength = solverDirection.magnitude;
-			if (solverLength == 0f) return;
+			if (solverLength == 0f)
+			{
+				return;
+			}
 
 			// Maximim stretch of the limb
+
 			float maxMag = Mathf.Clamp(solverLength, 0f, length * maxLimbLength);
 			Vector3 direction = (solverDirection / solverLength) * maxMag;
 
@@ -448,15 +549,19 @@ namespace RootMotion.FinalIK {
 		 * */
 		public void Stage1(IKSolverFullBody solver) {
 			// Stage 1
-			for (int i = 0; i < children.Length; i++) solver.chain[children[i]].Stage1(solver);
-			
+			for (int i = 0; i < children.Length; i++)
+			{
+				solver.chain[children[i]].Stage1(solver);
+			}
+
 			// If is the last chain in this hierarchy, solve immediatelly and return
+
 			if (children.Length == 0) {
-				ForwardReach(nodes[nodes.Length - 1].solverPosition);
+				ForwardReach(nodes[^1].solverPosition);
 				return;
 			}
 
-			Vector3 centroid = nodes[nodes.Length - 1].solverPosition;
+			Vector3 centroid = nodes[^1].solverPosition;
 			
 			// Satisfying child constraints
 			SolveChildConstraints(solver);
@@ -466,14 +571,18 @@ namespace RootMotion.FinalIK {
 				Vector3 childPosition = solver.chain[children[i]].nodes[0].solverPosition;
 
 				if (solver.chain[children[i]].rootLength > 0) {
-					childPosition = SolveFABRIKJoint(nodes[nodes.Length - 1].solverPosition, solver.chain[children[i]].nodes[0].solverPosition, solver.chain[children[i]].rootLength);
+					childPosition = SolveFABRIKJoint(nodes[^1].solverPosition, solver.chain[children[i]].nodes[0].solverPosition, solver.chain[children[i]].rootLength);
 				}
 					
-				if (pullParentSum > 0) centroid += (childPosition - nodes[nodes.Length - 1].solverPosition) * (solver.chain[children[i]].pull / pullParentSum);
+				if (pullParentSum > 0)
+				{
+					centroid += (childPosition - nodes[^1].solverPosition) * (solver.chain[children[i]].pull / pullParentSum);
+				}
+
 			}
 			
 			// Forward reach to the centroid (unless pinned)
-			ForwardReach(Vector3.Lerp(centroid, nodes[nodes.Length - 1].solverPosition, pin));
+			ForwardReach(Vector3.Lerp(centroid, nodes[^1].solverPosition, pin));
 		}
 		
 		/*
@@ -487,11 +596,18 @@ namespace RootMotion.FinalIK {
 
 			// Iterating child constraints and child chains to make sure they are not conflicting
 			if (childConstraints.Length > 0) {
-				for (int i = 0; i < it; i++) SolveConstraintSystems(solver);
+				for (int i = 0; i < it; i++)
+				{
+					SolveConstraintSystems(solver);
+				}
 			}
 
 			// Stage 2 for the children
-			for (int i = 0; i < children.Length; i++) solver.chain[children[i]].Stage2(solver, nodes[nodes.Length - 1].solverPosition);
+			for (int i = 0; i < children.Length; i++)
+			{
+				solver.chain[children[i]].Stage2(solver, nodes[^1].solverPosition);
+			}
+
 		}
 
 		/*
@@ -502,7 +618,7 @@ namespace RootMotion.FinalIK {
 			SolveChildConstraints(solver);
 
 			for (int i = 0; i < children.Length; i++) {
-				SolveLinearConstraint(nodes[nodes.Length - 1], solver.chain[children[i]].nodes[0], crossFades[i], solver.chain[children[i]].rootLength);
+				SolveLinearConstraint(nodes[^1], solver.chain[children[i]].nodes[0], crossFades[i], solver.chain[children[i]].rootLength);
 			}
 		}
 
@@ -522,7 +638,12 @@ namespace RootMotion.FinalIK {
 			float x = ((directionMagnitude * directionMagnitude) + sqrMagDif) / 2f / directionMagnitude;
 			float y = (float)Math.Sqrt(Mathf.Clamp(sqrMag1 - x * x, 0, Mathf.Infinity));
 
-			if (direction == Vector3.zero) return Vector3.zero;
+			if (direction == Vector3.zero)
+			{
+				return Vector3.zero;
+			}
+
+
 			return Quaternion.LookRotation(direction, bendDirection) * new Vector3(0f, y, x);
 		}
 
@@ -543,8 +664,17 @@ namespace RootMotion.FinalIK {
 
 			float mag = dir.magnitude;
 
-			if (distance == mag) return;
-			if (mag == 0f) return;
+			if (distance == mag)
+			{
+				return;
+			}
+
+
+			if (mag == 0f)
+			{
+				return;
+			}
+
 
 			Vector3 offset = dir * (1f - distance / mag);
 			
@@ -557,7 +687,7 @@ namespace RootMotion.FinalIK {
 		 * */
 		public void ForwardReach(Vector3 position) {
 			// Lerp last node's solverPosition to position
-			nodes[nodes.Length - 1].solverPosition = position;
+			nodes[^1].solverPosition = position;
 			
 			for (int i = nodes.Length - 2; i > -1; i--) {
 				// Finding joint positions
@@ -570,7 +700,12 @@ namespace RootMotion.FinalIK {
 		 * */
 		private void BackwardReach(Vector3 position) {
 			// Solve forst node only if it already hasn't been solved in SolveConstraintSystems
-			if (rootLength > 0) position = SolveFABRIKJoint(nodes[0].solverPosition, position, rootLength);
+			if (rootLength > 0)
+			{
+				position = SolveFABRIKJoint(nodes[0].solverPosition, position, rootLength);
+			}
+
+
 			nodes[0].solverPosition = position;
 
 			// Finding joint positions

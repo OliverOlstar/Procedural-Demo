@@ -1,13 +1,11 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Unimate/Core/Sequence")]
 public class UnimateSequence : Unimate<UnimateSequence, UnimateSequence.Player>
 {
 	[SerializeField]
-	private UnimaSet m_AnimationSet = new UnimaSet();
+	private UnimaSet m_AnimationSet = new();
 	public UnimaSet Set => m_AnimationSet;
 
 	protected override string OnEditorValidate(GameObject gameObject)

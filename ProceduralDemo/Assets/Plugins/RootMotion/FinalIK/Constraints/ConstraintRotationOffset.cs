@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Offsets the transform from its (animated) rotation
@@ -17,10 +18,19 @@ namespace RootMotion.FinalIK {
 		public Quaternion offset;
 		
 		public override void UpdateConstraint() {
-			if (weight <= 0) return;
-			if (!isValid) return;
-			
+			if (weight <= 0)
+			{
+				return;
+			}
+
+
+			if (!isValid)
+			{
+				return;
+			}
+
 			// Initiating
+
 			if (!initiated) {
 				// Storing default rotations.
 				defaultLocalRotation = transform.localRotation;
@@ -30,9 +40,13 @@ namespace RootMotion.FinalIK {
 			}
 			
 			// Check if rotation has changed. If true, set default local rotation to current.
-			if (rotationChanged) defaultLocalRotation = transform.localRotation;
-			
+			if (rotationChanged)
+			{
+				defaultLocalRotation = transform.localRotation;
+			}
+
 			// Offsetting the rotation
+
 			transform.localRotation = defaultLocalRotation;
 			transform.rotation = Quaternion.Slerp(transform.rotation, offset, weight);
 			

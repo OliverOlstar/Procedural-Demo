@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Core
 {
-	public class DebugOptionList : System.Attribute {}
+	public class DebugOptionList : Attribute { }
 
 	[DebugOptionList]
 	public class DebugOptions
@@ -62,7 +62,7 @@ namespace Core
 			string tooltip = null)
 		{
 			m_Group = group;
-			m_Name = Core.Util.IsRelease() ? $"Release_{name}" : name; // Prevent bugs when installing a release build over top of a dev build
+			m_Name = Util.IsRelease() ? $"Release_{name}" : name; // Prevent bugs when installing a release build over top of a dev build
 			m_ArgKey = m_Name + "Arg";
 			m_Default = defaultSetting;
 			m_Release = releaseSetting;
@@ -202,7 +202,7 @@ namespace Core
 				return m_Arg.Value;
 			}
 #if UNITY_EDITOR
-			string arg = UnityEditor.EditorPrefs.GetString(m_ArgKey, Core.Str.EMPTY);
+			string arg = UnityEditor.EditorPrefs.GetString(m_ArgKey, Str.EMPTY);
 #else
 			string arg = PlayerPrefs.GetString(m_ArgKey, Core.Str.EMPTY);
 #endif
@@ -232,7 +232,7 @@ namespace Core
 			return true;
 		}
 
-		public bool IsEnumSet<T>(out T e, bool throwExceptionOnParseFail = false) where T : struct, System.Enum
+		public bool IsEnumSet<T>(out T e, bool throwExceptionOnParseFail = false) where T : struct, Enum
 		{
 			if (!IsSet())
 			{
@@ -245,18 +245,18 @@ namespace Core
 				e = default;
 				if (throwExceptionOnParseFail)
 				{
-					Core.DebugUtil.DevException($"Debug Option '{m_Name}' string argument cannot be empty, " +
-						$"it must be a valid entry in Enum of type {typeof(T).Name}: {string.Join(", ", System.Enum.GetNames(typeof(T)))}");
+					DebugUtil.DevException($"Debug Option '{m_Name}' string argument cannot be empty, " +
+						$"it must be a valid entry in Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}");
 				}
 				return false;
 			}
-			if (System.Enum.TryParse(arg, out e))
+			if (Enum.TryParse(arg, out e))
 			{
 				return true;
 			}
 			if (throwExceptionOnParseFail)
 			{
-				Core.DebugUtil.DevException($"Debug Option '{m_Name}' cannot parse '{arg}' to Enum of type {typeof(T).Name}: {string.Join(", ", System.Enum.GetNames(typeof(T)))}");
+				DebugUtil.DevException($"Debug Option '{m_Name}' cannot parse '{arg}' to Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}");
 			}
 			return false;
 		}

@@ -1,61 +1,62 @@
 using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
 	[System.Serializable]
 	public struct Capsule : IPrimitive
 	{
-		public Vector3 center;
-		public float radius;
-		public float height;
-		public Transform upTransform;
+		public Vector3 Center;
+		public float Radius;
+		public float Height;
+		public Transform UpTransform;
 
-		public Vector3 Up => upTransform != null ? upTransform.up : Vector3.up;
+		public readonly Vector3 Up => UpTransform != null ? UpTransform.up : Vector3.up;
 
 		public Capsule(Transform pUpTransform)
 		{
-			center = default;
-			radius = 0.5f;
-			height = 2.0f;
-			upTransform = pUpTransform;
+			Center = default;
+			Radius = 0.5f;
+			Height = 2.0f;
+			UpTransform = pUpTransform;
+			m_RaycastHits = new RaycastHit[0];
 		}
 		public Capsule(Vector3 pCenter, float pRadius, float pHeight, Transform pUpTransform = null)
 		{
-			center = pCenter;
-			radius = pRadius;
-			height = pHeight;
-			upTransform = pUpTransform;
+			Center = pCenter;
+			Radius = pRadius;
+			Height = pHeight;
+			UpTransform = pUpTransform;
+			m_RaycastHits = new RaycastHit[0];
 		}
 
-		public bool PointIntersects(Vector3 pPoint, Vector3 pPosition)
+		public readonly bool PointIntersects(Vector3 pPoint, Vector3 pPosition)
 		{
-			Vector3 worldSpaceCenter = pPosition + center;
-			float sphereHeight = height - (radius * 2.0f);
+			Vector3 worldSpaceCenter = pPosition + Center;
+			float sphereHeight = Height - (Radius * 2.0f);
 			if (sphereHeight <= 0.0f) // Is a sphere
 			{
-				return Util.Math.DistanceGreaterThan(pPoint, worldSpaceCenter, radius);
+				return Util.Math.DistanceGreaterThan(pPoint, worldSpaceCenter, Radius);
 			}
 			else if (pPoint.y > worldSpaceCenter.y + sphereHeight * 0.5f) // Is above
 			{
-				return Util.Math.DistanceGreaterThan(pPoint, worldSpaceCenter + (Up * sphereHeight * 0.5f), radius);
+				return Util.Math.DistanceGreaterThan(pPoint, worldSpaceCenter + (0.5f * sphereHeight * Up), Radius);
 			}
 			else if (pPoint.y < worldSpaceCenter.y - sphereHeight * 0.5f) // If below
 			{
-				return Util.Math.DistanceGreaterThan(pPoint, worldSpaceCenter + (-Up * sphereHeight * 0.5f), radius);
+				return Util.Math.DistanceGreaterThan(pPoint, worldSpaceCenter + (0.5f * sphereHeight * -Up), Radius);
 			}
 			else // Is at same height
 			{
-				return Util.Math.DistanceOnPlaneEqualGreaterThan(pPoint, worldSpaceCenter, radius, Up);
+				return Util.Math.DistanceOnPlaneEqualGreaterThan(pPoint, worldSpaceCenter, Radius, Up);
 			}
 		}
 
-		public bool CheckCollisions(Vector3 pMovement, Vector3 pPosition, LayerMask pLayerMask, out Vector3 resultPosition, out Vector3 collisionNormal)
+		private readonly RaycastHit[] m_RaycastHits;
+		public readonly bool CheckCollisions(Vector3 pMovement, Vector3 pPosition, LayerMask pLayerMask, out Vector3 pResultPosition, out Vector3 pCollisionNormal)
 		{
-			resultPosition = pPosition + pMovement;
-			collisionNormal = Up; // Default result
+			pResultPosition = pPosition + pMovement;
+			pCollisionNormal = Up; // Default result
 
 			if (pMovement.sqrMagnitude == 0)
 			{
@@ -64,8 +65,13 @@ namespace OliverLoescher
 
 			// Raycast
 			RaycastHit? nearestHit = null;
-			Vector3 up = Up * ((height * 0.5f) - radius);
-			foreach (RaycastHit hit in Physics.CapsuleCastAll(pPosition + center + up, pPosition + center - up, radius, pMovement, pMovement.magnitude, pLayerMask))
+			Vector3 up = Up * ((Height * 0.5f) - Radius);
+			if (Physics.CapsuleCastNonAlloc(pPosition + Center + up, pPosition + Center - up, Radius, pMovement, m_RaycastHits, pMovement.magnitude, pLayerMask) <= 0)
+			{
+				return false;
+			}
+
+			foreach (RaycastHit hit in m_RaycastHits)
 			{
 				if (!nearestHit.HasValue || nearestHit.Value.distance > hit.distance)
 				{
@@ -77,17 +83,17 @@ namespace OliverLoescher
 			if (nearestHit.HasValue)
 			{
 				Vector3 movementToTarget = pMovement.normalized * (nearestHit.Value.distance - Util.Math.NEARZERO);
-				resultPosition = pPosition + movementToTarget;
-				collisionNormal = /*IsValidGround(nearestHit.Value.normal) ?*/ nearestHit.Value.normal /*: Util.Horizontalize(nearestHit.Value.normal, Up, true)*/; // Slope you can't walk up or down, consider them as just flat walls
+				pResultPosition = pPosition + movementToTarget;
+				pCollisionNormal = /*IsValidGround(nearestHit.Value.normal) ?*/ nearestHit.Value.normal /*: Util.Horizontalize(nearestHit.Value.normal, Up, true)*/; // Slope you can't walk up or down, consider them as just flat walls
 				return true;
 			}
+
 			return false;
 		}
 
-		public bool CheckCollisions(Vector3 pMovement, Vector3 pPosition, int pBounces, LayerMask pLayerMask, out Vector3 resultPosition, out Vector3 collisionNormal)
+		public readonly bool CheckCollisions(Vector3 pMovement, Vector3 pPosition, int pBounces, LayerMask pLayerMask, out Vector3 resultPosition, out Vector3 collisionNormal)
 		{
 			bool didCollide = false;
-
 			do
 			{
 				if (!CheckCollisions(pMovement, pPosition, pLayerMask, out resultPosition, out collisionNormal))
@@ -103,64 +109,63 @@ namespace OliverLoescher
 				pBounces--;
 			}
 			while (pBounces >= 0);
-
 			return didCollide;
 		}
 
-		public void DrawGizmos(Vector3 pPosition)
+		public readonly void DrawGizmos(Vector3 pPosition)
 		{
-			pPosition += center;
-			Vector3 up = Up * ((height * 0.5f) - radius);
-			Util.Debug2.GizmoCapsule(pPosition + up, pPosition - up, radius);
+			pPosition += Center;
+			Vector3 up = Up * ((Height * 0.5f) - Radius);
+			Util.Debug2.GizmoCapsule(pPosition + up, pPosition - up, Radius);
 		}
 	}
 
 	[System.Serializable]
 	public struct CharacterControllerCapsule : IPrimitive
 	{
-		public CharacterController controller;
+		public CharacterController Controller;
 		[DisableInPlayMode]
-		public Transform upTransform; // Copy so we can set in inspector but not have to show our capsule member
+		public Transform UpTransform; // Copy so we can set in inspector but not have to show our capsule member
 		[HideInInspector]
-		public Capsule capsule;
+		public Capsule Capsule;
 
 		public CharacterControllerCapsule(CharacterController pController, Transform pUpTransform = null)
 		{
-			controller = pController;
-			upTransform = pUpTransform;
-			capsule = new Capsule(controller.center, controller.radius, controller.height, upTransform);
+			Controller = pController;
+			UpTransform = pUpTransform;
+			Capsule = new Capsule(Controller.center, Controller.radius, Controller.height, UpTransform);
 		}
 
-		public Vector3 Up => capsule.Up;
+		public readonly Vector3 Up => Capsule.Up;
 
 		private void UpdateCapsuleValues()
 		{
-			if (controller == null)
+			if (Controller == null)
 			{
 				Debug.LogError("CharacterControllerCapsule.UpdateCapsuleValues() But has no characterController, this should never happen.");
 				return;
 			}
-			capsule.center = controller.center;
-			capsule.radius = controller.radius;
-			capsule.height = controller.height;
+			Capsule.Center = Controller.center;
+			Capsule.Radius = Controller.radius;
+			Capsule.Height = Controller.height;
 		}
 
 		public bool PointIntersects(Vector3 pPoint, Vector3 pPosition)
 		{
 			UpdateCapsuleValues();
-			return capsule.PointIntersects(pPoint, pPosition);
+			return Capsule.PointIntersects(pPoint, pPosition);
 		}
 
 		public bool CheckCollisions(Vector3 pMovement, Vector3 pPosition, int pBounces, LayerMask pLayerMask, out Vector3 resultPosition, out Vector3 collisionNormal) // Returns resulting position
 		{
 			UpdateCapsuleValues();
-			return capsule.CheckCollisions(pMovement, pPosition, pBounces, pLayerMask, out resultPosition, out collisionNormal);
+			return Capsule.CheckCollisions(pMovement, pPosition, pBounces, pLayerMask, out resultPosition, out collisionNormal);
 		}
 
 		public void DrawGizmos(Vector3 pPosition)
 		{
 			UpdateCapsuleValues();
-			capsule.DrawGizmos(pPosition);
+			Capsule.DrawGizmos(pPosition);
 		}
 	}
 }

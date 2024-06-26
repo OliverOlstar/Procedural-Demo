@@ -1,30 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
-
-namespace OliverLoescher
+namespace OCore
 {
-    public static class PauseSystem
+	public static class PauseSystem
     {
         public delegate void PauseEvent();
 
-        public static PauseEvent onPause;
-        public static PauseEvent onUnpause;
-        public static bool isPaused { get; private set; } = false;
+        public static PauseEvent s_OnPause;
+        public static PauseEvent s_OnUnpause;
+		private static bool s_IsPaused = false;
 
-        public static void Pause(bool pPause)
+		public static bool IsPaused => s_IsPaused;
+
+		public static void Pause(bool pPause)
         {
-            if (isPaused != pPause)
+            if (s_IsPaused != pPause)
             {
-                isPaused = pPause;
-                if (isPaused)
+				s_IsPaused = pPause;
+                if (s_IsPaused)
                 {
-                    onPause?.Invoke();
+                    s_OnPause?.Invoke();
                 }
                 else
                 {
-                    onUnpause?.Invoke();
+                    s_OnUnpause?.Invoke();
                 }
             }
         }

@@ -1,16 +1,16 @@
 using UnityEngine;
 
-namespace OliverLoescher.Cue
+namespace OCore.Cue
 {
 	[System.Serializable]
 	public class CueModule
 	{
 		[SerializeField]
-		private bool IsEnabled = true;
+		private bool m_IsEnabled = true;
 
 		public void Play(in CueContext pContext, in SOCue pParent)
 		{
-			if (IsEnabled)
+			if (m_IsEnabled)
 			{
 				PlayInternal(pContext, pParent);
 			}

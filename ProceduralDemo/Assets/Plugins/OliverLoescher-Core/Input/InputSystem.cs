@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace OliverLoescher 
+namespace OCore
 {
 	public class InputSystem : Singleton<PlayerInput> {}
 }

@@ -1,14 +1,13 @@
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
 namespace RootMotion.FinalIK
 {
 
-    /*
+	/*
 	 * Custom inspector for RotationLimitAngle.
 	 * */
-    [CustomEditor(typeof(RotationLimitAngle))]
+	[CustomEditor(typeof(RotationLimitAngle))]
     [CanEditMultipleObjects]
     public class RotationLimitAngleInspector : RotationLimitInspector
     {
@@ -26,8 +25,11 @@ namespace RootMotion.FinalIK
 
             script.limit = Mathf.Clamp(script.limit, 0, 180);
 
-            if (GUI.changed) EditorUtility.SetDirty(script);
-        }
+            if (GUI.changed)
+			{
+				EditorUtility.SetDirty(script);
+			}
+		}
 
         #endregion Inspector
 
@@ -36,10 +38,17 @@ namespace RootMotion.FinalIK
         void OnSceneGUI()
         {
             // Set defaultLocalRotation so that the initial local rotation will be the zero point for the rotation limit
-            if (!Application.isPlaying && !script.defaultLocalRotationOverride) script.defaultLocalRotation = script.transform.localRotation;
-            if (script.axis == Vector3.zero) return;
+            if (!Application.isPlaying && !script.defaultLocalRotationOverride)
+			{
+				script.defaultLocalRotation = script.transform.localRotation;
+			}
 
-            DrawRotationSphere(script.transform.position);
+			if (script.axis == Vector3.zero)
+			{
+				return;
+			}
+
+			DrawRotationSphere(script.transform.position);
 
             // Display the main axis
             DrawArrow(script.transform.position, Direction(script.axis), colorDefault, "Axis", 0.02f);
@@ -60,16 +69,22 @@ namespace RootMotion.FinalIK
 
                 Vector3 limitPoint = script.transform.position + limitedDirection;
 
-                if (i == 0) zeroPoint = limitPoint;
+                if (i == 0)
+				{
+					zeroPoint = limitPoint;
+				}
 
-                Handles.DrawLine(script.transform.position, limitPoint);
+				Handles.DrawLine(script.transform.position, limitPoint);
 
                 if (i > 0)
                 {
                     Handles.color = colorDefault;
                     Handles.DrawLine(limitPoint, lastPoint);
-                    if (i == 358) Handles.DrawLine(limitPoint, zeroPoint);
-                }
+                    if (i == 358)
+					{
+						Handles.DrawLine(limitPoint, zeroPoint);
+					}
+				}
 
                 lastPoint = limitPoint;
             }
@@ -84,8 +99,12 @@ namespace RootMotion.FinalIK
 		 * */
         private Vector3 Direction(Vector3 v)
         {
-            if (script.transform.parent == null) return script.defaultLocalRotation * v;
-            return script.transform.parent.rotation * (script.defaultLocalRotation * v);
+            if (script.transform.parent == null)
+			{
+				return script.defaultLocalRotation * v;
+			}
+
+			return script.transform.parent.rotation * (script.defaultLocalRotation * v);
         }
 
         #endregion Scene

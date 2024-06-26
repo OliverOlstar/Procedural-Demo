@@ -1,13 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
-using OliverLoescher;
-using OliverLoescher.Util;
+using OCore;
+using OCore.Util;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
 	[SerializeField]
-	private OliverLoescher.Util.Mono.Updateable m_Updateable = new(OliverLoescher.Util.Mono.Type.Early, OliverLoescher.Util.Mono.Priorities.CharacterController);
+	private OCore.Util.Mono.Updateable m_Updateable = new(OCore.Util.Mono.Type.Early, OCore.Util.Mono.Priorities.CharacterController);
 	[SerializeField]
 	private CharacterController m_Controller = null;
 	[SerializeField]

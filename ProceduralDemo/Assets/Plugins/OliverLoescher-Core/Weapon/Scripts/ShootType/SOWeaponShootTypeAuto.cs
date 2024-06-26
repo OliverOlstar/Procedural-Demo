@@ -1,39 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/ShootType/Auto")]
 	public class SOWeaponShootTypeAuto : SOWeaponShootTypeBase
 	{
 		[SerializeField, Min(0.0f)]
-		private float secondsBetweenShots = 0.1f;
+		private float m_SecondsBetweenShots = 0.1f;
 
-		private bool isShooting = false;
+		private bool m_IsShooting = false;
 
 		public override void ShootStart()
 		{
-			isShooting = true;
-			shoot.Invoke();
+			m_IsShooting = true;
+			m_Shoot.Invoke();
 		}
 
 		public override void ShootEnd()
 		{
-			isShooting = false;
+			m_IsShooting = false;
 		}
 
 		public override void OnUpdate(float pDeltaTime)
 		{
-			if (isShooting && Time.time >= nextCanShootTime)
+			if (m_IsShooting && Time.time >= NextCanShootTime)
 			{
-				shoot.Invoke();
+				m_Shoot.Invoke();
 			}
 		}
 
 		public override void OnShoot()
 		{
-			nextCanShootTime = Time.time + secondsBetweenShots;
+			NextCanShootTime = Time.time + m_SecondsBetweenShots;
 		}
 	}
 }

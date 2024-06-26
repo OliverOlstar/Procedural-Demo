@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Camera
+namespace OCore.Camera
 {
-    public class FirstPersonCamera : MonoBehaviour
+	public class FirstPersonCamera : MonoBehaviour
     {
-        [SerializeField] private Transform cameraTransform = null;
-        [SerializeField, MinMaxSlider(-90, 90, true)] private Vector2 cameraYClamp = new Vector2(-40, 50);
+        [SerializeField]
+private Transform cameraTransform = null;
+        [SerializeField, MinMaxSlider(-90, 90, true)] private Vector2 cameraYClamp = new(-40, 50);
 
         public void OnCameraMove(Vector2 pInput)
         {

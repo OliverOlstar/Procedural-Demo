@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Experimental.GraphView;
@@ -12,7 +11,7 @@ public class UberPickerSearchWindowProvider : ScriptableObject, ISearchWindowPro
 	private const string NULLITEMNAME = "None";
 
 	private static readonly Core.AssetDatabaseDependentValues<string, UberPickerSearchWindowProvider> s_CachedSearchWindows =
-		new Core.AssetDatabaseDependentValues<string, UberPickerSearchWindowProvider>();
+		new();
 
 	public static UberPickerSearchWindowProvider GetOrCreate(
 		SerializedProperty property,
@@ -68,7 +67,7 @@ public class UberPickerSearchWindowProvider : ScriptableObject, ISearchWindowPro
 			}
 			else if (name == UberPickerPathCache.NULL_ITEM_NAME)
 			{
-				SearchTreeEntry entry = new SearchTreeEntry(m_NoneEntryContent);
+				SearchTreeEntry entry = new(m_NoneEntryContent);
 				entry.userData = null;
 				entry.level = level;
 				m_Entries.Add(entry);
@@ -78,7 +77,7 @@ public class UberPickerSearchWindowProvider : ScriptableObject, ISearchWindowPro
 				GUIContent content = Path.HasExtension(path) ? // If this is an asset path, then get it's icon
 					new GUIContent(name, AssetDatabase.GetCachedIcon(path)) :
 					new GUIContent(name, AssetDatabase.GetCachedIcon(ICONPATH));
-				SearchTreeEntry entry = new SearchTreeEntry(content);
+				SearchTreeEntry entry = new(content);
 				entry.userData = path;
 				entry.level = level;
 				m_Entries.Add(entry);
@@ -127,7 +126,7 @@ public class UberPickerSearchWindowProvider : ScriptableObject, ISearchWindowPro
 			//	Debug.LogError("GWAR2 " + groupStart + " " + groupCount);
 			//}
 			largestGroupCount = Mathf.Max(largestGroupCount, groupCount);
-			largestGroupLevel = m_Paths.ItemLevels[m_Paths.ItemLevels.Length - 1];
+			largestGroupLevel = m_Paths.ItemLevels[^1];
 			if (!found)
 			{
 				break;

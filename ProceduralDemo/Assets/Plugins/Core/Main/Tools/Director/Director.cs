@@ -205,7 +205,7 @@ namespace Core
 			{
 				return;
 			}
-			List<Type> keys = new List<Type>();
+			List<Type> keys = new();
 			foreach (KeyValuePair<Type, IDirector> kvp in s_Directors)
 			{
 				if (predicate.Invoke(kvp.Value))

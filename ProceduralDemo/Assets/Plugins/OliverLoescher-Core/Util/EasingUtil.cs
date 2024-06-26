@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
 	public static class Easing
 	{
 		[System.Serializable]
 		public struct EaseParams
 		{
-			[SerializeField]
 			public Method Method;
-			[SerializeField]
 			public Direction Direction;
-			
+
 			public EaseParams(Method pMethod, Direction pDirection)
 			{
 				Method = pMethod;
@@ -236,111 +232,71 @@ namespace OliverLoescher.Util
 
 		public static float Ease(float x, Method method, Direction direction)
 		{
-			switch (direction)
+			return direction switch
 			{
-				case Direction.In:
-					return EaseIn(x, method);
-				case Direction.Out:
-					return EaseOut(x, method);
-				case Direction.InOut:
-					return EaseInOut(x, method);
-				default:
-					throw new System.NotImplementedException();
-			}
+				Direction.In => EaseIn(x, method),
+				Direction.Out => EaseOut(x, method),
+				Direction.InOut => EaseInOut(x, method),
+				_ => throw new System.NotImplementedException(),
+			};
 		}
 		public static float Ease(this EaseParams ease, float x) => Ease(x, ease.Method, ease.Direction);
 
 		public static float EaseIn(float x, Method method)
 		{
-			switch (method)
+			return method switch
 			{
-				case Method.Linear:
-					return x;
-				case Method.Sine:
-					return InSine(x);
-				case Method.Quad:
-					return InQuad(x);
-				case Method.Cubic:
-					return InCubic(x);
-				case Method.Quart:
-					return InQuart(x);
-				case Method.Quint:
-					return InQuint(x);
-				case Method.Expo:
-					return InExpo(x);
-				case Method.Circ:
-					return InCirc(x);
-				case Method.Back:
-					return InBack(x);
-				case Method.Elastic:
-					return InElastic(x);
-				case Method.Bounce:
-					return InBounce(x);
-				default:
-					throw new System.NotImplementedException();
-			}
+				Method.Linear => x,
+				Method.Sine => InSine(x),
+				Method.Quad => InQuad(x),
+				Method.Cubic => InCubic(x),
+				Method.Quart => InQuart(x),
+				Method.Quint => InQuint(x),
+				Method.Expo => InExpo(x),
+				Method.Circ => InCirc(x),
+				Method.Back => InBack(x),
+				Method.Elastic => InElastic(x),
+				Method.Bounce => InBounce(x),
+				_ => throw new System.NotImplementedException(),
+			};
 		}
 
 		public static float EaseOut(float x, Method method)
 		{
-			switch (method)
+			return method switch
 			{
-				case Method.Linear:
-					return x;
-				case Method.Sine:
-					return OutSine(x);
-				case Method.Quad:
-					return OutQuad(x);
-				case Method.Cubic:
-					return OutCubic(x);
-				case Method.Quart:
-					return OutQuart(x);
-				case Method.Quint:
-					return OutQuint(x);
-				case Method.Expo:
-					return OutExpo(x);
-				case Method.Circ:
-					return OutCirc(x);
-				case Method.Back:
-					return OutBack(x);
-				case Method.Elastic:
-					return OutElastic(x);
-				case Method.Bounce:
-					return OutBounce(x);
-				default:
-					throw new System.NotImplementedException();
-			}
+				Method.Linear => x,
+				Method.Sine => OutSine(x),
+				Method.Quad => OutQuad(x),
+				Method.Cubic => OutCubic(x),
+				Method.Quart => OutQuart(x),
+				Method.Quint => OutQuint(x),
+				Method.Expo => OutExpo(x),
+				Method.Circ => OutCirc(x),
+				Method.Back => OutBack(x),
+				Method.Elastic => OutElastic(x),
+				Method.Bounce => OutBounce(x),
+				_ => throw new System.NotImplementedException(),
+			};
 		}
 
 		public static float EaseInOut(float x, Method method)
 		{
-			switch (method)
+			return method switch
 			{
-				case Method.Linear:
-					return x;
-				case Method.Sine:
-					return InOutSine(x);
-				case Method.Quad:
-					return InOutQuad(x);
-				case Method.Cubic:
-					return InOutCubic(x);
-				case Method.Quart:
-					return InOutQuart(x);
-				case Method.Quint:
-					return InOutQuint(x);
-				case Method.Expo:
-					return InOutExpo(x);
-				case Method.Circ:
-					return InOutCirc(x);
-				case Method.Back:
-					return InOutBack(x);
-				case Method.Elastic:
-					return InOutElastic(x);
-				case Method.Bounce:
-					return InOutBounce(x);
-				default:
-					throw new System.NotImplementedException();
-			}
+				Method.Linear => x,
+				Method.Sine => InOutSine(x),
+				Method.Quad => InOutQuad(x),
+				Method.Cubic => InOutCubic(x),
+				Method.Quart => InOutQuart(x),
+				Method.Quint => InOutQuint(x),
+				Method.Expo => InOutExpo(x),
+				Method.Circ => InOutCirc(x),
+				Method.Back => InOutBack(x),
+				Method.Elastic => InOutElastic(x),
+				Method.Bounce => InOutBounce(x),
+				_ => throw new System.NotImplementedException(),
+			};
 		}
 	}
 }

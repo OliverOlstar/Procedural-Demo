@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using RootMotion.FinalIK;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Ragdoll Utility controls switching characters in and out of ragdoll mode. It also enables you to use IK effects on top of ragdoll simulation.
@@ -45,8 +45,11 @@ namespace RootMotion.FinalIK {
 		/// Switches to ragdoll.
 		/// </summary>
 		public void EnableRagdoll() {
-			if (isRagdoll) return;
-			
+			if (isRagdoll)
+			{
+				return;
+			}
+
 			StopAllCoroutines();
 			enableRagdollFlag = true;
 		}
@@ -55,7 +58,11 @@ namespace RootMotion.FinalIK {
 		/// Blends back to animation.
 		/// </summary>
 		public void DisableRagdoll() {
-			if (!isRagdoll) return;
+			if (!isRagdoll)
+			{
+				return;
+			}
+
 			StoreLocalState();
 			StopAllCoroutines();
 			StartCoroutine(DisableRagdollSmooth());
@@ -99,7 +106,7 @@ namespace RootMotion.FinalIK {
 				deltaPosition = t.position - lastPosition;
 				lastPosition = t.position;
 
-				deltaRotation = RootMotion.QuaTools.FromToRotation(lastRotation, t.rotation);
+				deltaRotation = QuaTools.FromToRotation(lastRotation, t.rotation);
 				lastRotation = t.rotation;
 
 				deltaTime = Time.deltaTime;
@@ -150,8 +157,11 @@ namespace RootMotion.FinalIK {
 
 			// Force to the last stored local state
 			public void FixTransform(float weight) {
-				if (weight <= 0f) return;
-				
+				if (weight <= 0f)
+				{
+					return;
+				}
+
 				if (weight >= 1f) {
 					t.localPosition = localPosition;
 					t.localRotation = localRotation;
@@ -190,7 +200,10 @@ namespace RootMotion.FinalIK {
 			disabledIKComponents = new bool[allIKComponents.Length];
 			fixTransforms = new bool[allIKComponents.Length];
 
-			if (ik != null) ik.GetIKSolver().OnPostUpdate += AfterLastIK;
+			if (ik != null)
+			{
+				ik.GetIKSolver().OnPostUpdate += AfterLastIK;
+			}
 
 			// Gather all the rigidbodies and their associates
 			Rigidbody[] rigidbodies = (Rigidbody[])GetComponentsInChildren<Rigidbody>();
@@ -221,7 +234,10 @@ namespace RootMotion.FinalIK {
 			// Reset IK components
 			for (int i = 0; i < allIKComponents.Length; i++) {
 				allIKComponents[i].fixTransforms = fixTransforms[i];
-				if (disabledIKComponents[i]) allIKComponents[i].enabled = true;
+				if (disabledIKComponents[i])
+				{
+					allIKComponents[i].enabled = true;
+				}
 			}
 
 			// Animator has not updated yet.
@@ -235,8 +251,11 @@ namespace RootMotion.FinalIK {
 			// Blend back to animation
 			while (ragdollWeight > 0f) {
 				ragdollWeight = Mathf.SmoothDamp(ragdollWeight, 0f, ref ragdollWeightV, ragdollToAnimationTime);
-				if (ragdollWeight < 0.001f) ragdollWeight = 0f;
-				
+				if (ragdollWeight < 0.001f)
+				{
+					ragdollWeight = 0f;
+				}
+
 				yield return null;
 			}
 			
@@ -244,7 +263,10 @@ namespace RootMotion.FinalIK {
 		}
 
 		public void Update() {
-			if (!isRagdoll) return;
+			if (!isRagdoll)
+			{
+				return;
+			}
 
 			// Disable IK components if applyIKOnRagdoll has been set to false while in ragdoll.
 			if (!applyIkOnRagdoll) {
@@ -257,7 +279,10 @@ namespace RootMotion.FinalIK {
 				}
 
 				if (disableIK) {
-					for (int i = 0; i < allIKComponents.Length; i++) disabledIKComponents[i] = false;
+					for (int i = 0; i < allIKComponents.Length; i++)
+					{
+						disabledIKComponents[i] = false;
+					}
 				}
 
 				for (int i = 0; i < allIKComponents.Length; i++) {
@@ -283,14 +308,20 @@ namespace RootMotion.FinalIK {
 						}
 					}
 
-					for (int i = 0; i < allIKComponents.Length; i++) disabledIKComponents[i] = false;
+					for (int i = 0; i < allIKComponents.Length; i++)
+					{
+						disabledIKComponents[i] = false;
+					}
 				}
 			}
 		}
 
 		public void FixedUpdate() {
 			// When in ragdoll, move the bones to where they were after the last physics simulation, so IK won't screw up the physics
-			if (isRagdoll && applyIkOnRagdoll) FixTransforms(1f);
+			if (isRagdoll && applyIkOnRagdoll)
+			{
+				FixTransforms(1f);
+			}
 
 			fixedFrame = true;
 		}
@@ -304,13 +335,19 @@ namespace RootMotion.FinalIK {
 			fixedFrame = false;
 
 			// No IK so the final pose of the character is the current pose
-			if (!ikUsed) OnFinalPose();
+			if (!ikUsed)
+			{
+				OnFinalPose();
+			}
 		}
 
 		// Called by the last IK component after it has updated
 		private void AfterLastIK() {
 			// We should have the final pose of the character
-			if (ikUsed) OnFinalPose();
+			if (ikUsed)
+			{
+				OnFinalPose();
+			}
 		}
 
 		// When animation has been applied by Mecanim
@@ -326,8 +363,15 @@ namespace RootMotion.FinalIK {
 
 		// When we have the final pose of the character for this frame
 		private void OnFinalPose() {
-			if (!isRagdoll) RecordVelocities();
-			if (enableRagdollFlag) RagdollEnabler();
+			if (!isRagdoll)
+			{
+				RecordVelocities();
+			}
+
+			if (enableRagdollFlag)
+			{
+				RagdollEnabler();
+			}
 		}
 
 		// Switching to ragdoll
@@ -336,7 +380,10 @@ namespace RootMotion.FinalIK {
 			StoreLocalState();
 
 			// Disable IK components if necessary
-			for (int i = 0; i < allIKComponents.Length; i++) disabledIKComponents[i] = false;
+			for (int i = 0; i < allIKComponents.Length; i++)
+			{
+				disabledIKComponents[i] = false;
+			}
 
 			if (!applyIkOnRagdoll) {
 				for (int i = 0; i < allIKComponents.Length; i++) {
@@ -357,7 +404,10 @@ namespace RootMotion.FinalIK {
 				animatorDisabled = true;
 			}
 			
-			for (int i = 0; i < rigidbones.Length; i++) rigidbones[i].WakeUp(applyVelocity, applyAngularVelocity);
+			for (int i = 0; i < rigidbones.Length; i++)
+			{
+				rigidbones[i].WakeUp(applyVelocity, applyAngularVelocity);
+			}
 
 			// Remember some variables so we can revert to them when coming back from ragdoll
 			for (int i = 0; i < fixTransforms.Length; i++) {
@@ -376,17 +426,30 @@ namespace RootMotion.FinalIK {
 
 		// Store position and rotation deltas for all the rigidbodies
 		private void RecordVelocities() {
-			foreach (Rigidbone r in rigidbones) r.RecordVelocity();
+			foreach (Rigidbone r in rigidbones)
+			{
+				r.RecordVelocity();
+			}
 		}
 
 		// Is there any IK components acting on the character?
 		private bool ikUsed {
 			get {
-				if (ik == null) return false;
-				if (ik.enabled && ik.GetIKSolver().IKPositionWeight > 0) return true;
+				if (ik == null)
+				{
+					return false;
+				}
+
+				if (ik.enabled && ik.GetIKSolver().IKPositionWeight > 0)
+				{
+					return true;
+				}
 
 				foreach (IK k in allIKComponents) {
-					if (k.enabled && k.GetIKSolver().IKPositionWeight > 0) return true;
+					if (k.enabled && k.GetIKSolver().IKPositionWeight > 0)
+					{
+						return true;
+					}
 				}
 				return false;
 			}
@@ -394,12 +457,18 @@ namespace RootMotion.FinalIK {
 
 		// Stored the current pose of the character
 		private void StoreLocalState() {
-			foreach (Child c in children) c.StoreLocalState();
+			foreach (Child c in children)
+			{
+				c.StoreLocalState();
+			}
 		}
 
 		// Interpolate the character to the last stored pose (see StoreLocalState)
 		private void FixTransforms(float weight) {
-			foreach (Child c in children) c.FixTransform(weight);
+			foreach (Child c in children)
+			{
+				c.FixTransform(weight);
+			}
 		}
 
 		// Cleaning up the delegates

@@ -1,47 +1,45 @@
 using Core;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	[CreateAssetMenu(menuName = "Scriptable Object/Weapon/Collision/Explosion")]
 	public class SOProjectileCollisionExplosion : SOProjectileCollisionBase
 	{
 		[Space, SerializeField, Min(0.1f)]
-		private float explosionRadius = 5.0f;
+		private float m_ExplosionRadius = 5.0f;
 		[SerializeField, Min(0)]
-		private int explosionDamage = 5;
+		private int m_ExplosionDamage = 5;
 		[SerializeField, Min(0.0f)]
-		protected float explosionForce = 2000.0f;
+		protected float m_ExplosionForce = 2000.0f;
 		[SerializeField, Min(0.0f)]
-		private float explosiveUpwardsModifier = 1;
+		private float m_ExplosiveUpwardsModifier = 1;
 
-		public override bool DoCollision(Projectile pProjectile, Collider pOther, ref bool canDamage, ref bool activeSelf)
+		public override bool DoCollision(Projectile pProjectile, Collider pOther, ref bool rCanDamage, ref bool rActiveSelf)
 		{
-			pProjectile.myRigidbody.isKinematic = true;
-			canDamage = false;
-			base.DoCollision(pProjectile, pOther, ref canDamage, ref activeSelf);
+			pProjectile.MyRigidbody.isKinematic = true;
+			rCanDamage = false;
+			base.DoCollision(pProjectile, pOther, ref rCanDamage, ref rActiveSelf);
 			Explode(pProjectile.transform.position, pProjectile);
 			return true;
 		}
 
 		public void Explode(Vector3 pPoint, Projectile pProjectile)
 		{
-			Collider[] hits = Physics.OverlapSphere(pPoint, explosionRadius);
-			foreach (var hit in hits)
+			Collider[] hits = Physics.OverlapSphere(pPoint, m_ExplosionRadius);
+			foreach (Collider hit in hits)
 			{
-				Rigidbody rb = hit.GetComponent<Rigidbody>();
-				if (rb != null)
+				if (hit.TryGetComponent<Rigidbody>(out Rigidbody rb))
 				{
-					rb.AddExplosionForce(explosionForce, pPoint, explosionRadius, explosiveUpwardsModifier);
+					rb.AddExplosionForce(m_ExplosionForce, pPoint, m_ExplosionRadius, m_ExplosiveUpwardsModifier);
 				}
 				IDamageable damageable = hit.GetComponent<IDamageable>();
 				List<IDamageable> hitDamagables = ListPool<IDamageable>.Request();
 				if (damageable != null && !hitDamagables.Contains(damageable.GetParentDamageable()))
 				{
 					hitDamagables.Add(damageable.GetParentDamageable());
-					damageable.Damage(explosionDamage, pProjectile.sender, pPoint, (hit.transform.position - pPoint).normalized);
+					damageable.Damage(m_ExplosionDamage, pProjectile.Sender, pPoint, (hit.transform.position - pPoint).normalized);
 				}
 				ListPool<IDamageable>.Return(hitDamagables);
 			}
@@ -49,7 +47,7 @@ namespace OliverLoescher.Weapon
 
 		public override void DrawGizmos(Projectile pProjectile)
 		{
-			Gizmos.DrawWireSphere(pProjectile.transform.position, explosionRadius);
+			Gizmos.DrawWireSphere(pProjectile.transform.position, m_ExplosionRadius);
 		}
 	}
 }

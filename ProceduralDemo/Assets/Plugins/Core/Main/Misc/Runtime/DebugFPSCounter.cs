@@ -19,7 +19,7 @@ namespace Core
 
 		static readonly string DISPLAY_STRING = "f0";
 	 
-	    Rect m_Rect = new Rect(10.0f, 10.0f, 120.0f, 75.0f); // The rect the window is initially displayed at.
+	    Rect m_Rect = new(10.0f, 10.0f, 120.0f, 75.0f); // The rect the window is initially displayed at.
 	    float m_Frequency = 10.0f; // The update frequency of the fps
 		float m_MinMaxFrequency = 10.0f;
 	     
@@ -83,19 +83,19 @@ namespace Core
 			m_TimeLastFrame = Time.realtimeSinceStartup;
 
 			m_TimeSinceStart += timeThisFrame;
-			if (1.0f / timeThisFrame >= 5.0f - Core.Util.SUPER_LOW_PRECISION_EPSILON)
+			if (1.0f / timeThisFrame >= 5.0f - Util.SUPER_LOW_PRECISION_EPSILON)
 			{
 				m_TimeSpentAbove5FPS += timeThisFrame;
 			}
-			if (1.0f / timeThisFrame >= 10.0f - Core.Util.SUPER_LOW_PRECISION_EPSILON)
+			if (1.0f / timeThisFrame >= 10.0f - Util.SUPER_LOW_PRECISION_EPSILON)
 			{
 				m_TimeSpentAbove10FPS += timeThisFrame;
 			}
-			if (1.0f / timeThisFrame >= 15.0f - Core.Util.SUPER_LOW_PRECISION_EPSILON)
+			if (1.0f / timeThisFrame >= 15.0f - Util.SUPER_LOW_PRECISION_EPSILON)
 			{
 				m_TimeSpentAbove15FPS += timeThisFrame;
 			}
-			if (1.0f / timeThisFrame >= 30.0f - Core.Util.SUPER_LOW_PRECISION_EPSILON)
+			if (1.0f / timeThisFrame >= 30.0f - Util.SUPER_LOW_PRECISION_EPSILON)
 			{
 				m_TimeSpentAbove30FPS += timeThisFrame;
 			}
@@ -132,11 +132,11 @@ namespace Core
 				Screen.width + " x " + Screen.height,
 				m_Style);
 
-			if (Core.TimeScaleManager.Get() != null)
+			if (TimeScaleManager.Get() != null)
 			{
 				GUI.Label(
-					new Rect(0.0f, 2.0f * height, width, height), 
-					Core.TimeScaleManager.Get().GetEditorSlowMo() + "% ", 
+					new Rect(0.0f, 2.0f * height, width, height),
+					TimeScaleManager.Get().GetEditorSlowMo() + "% ", 
 					m_Style);
 			}
 			GUILayout.EndArea();

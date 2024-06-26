@@ -1,24 +1,23 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Input
+namespace OCore.Input
 {
 	[System.Serializable]
     public class InputModule_Vector2 : InputModule_Base
 	{
 		[BoxGroup, HideInEditorMode, SerializeField]
-		private Vector2 input = new();
-		public Vector2 Input => input;
-		public Vector3 InputHorizontal => new(input.x, 0.0f, input.y);
+		private Vector2 m_Input = new();
+		public Vector2 Input => m_Input;
+		public Vector3 InputHorizontal => new(m_Input.x, 0.0f, m_Input.y);
 
 		[BoxGroup, SerializeField] 
-		private Vector2 scalar = Vector2.one;
+		private Vector2 m_Scalar = Vector2.one;
 		[BoxGroup, SerializeField]
-		private bool normalize = false;
+		private bool m_Normalize = false;
 		[BoxGroup, SerializeField]
-		private bool invertY = false;
+		private bool m_InvertY = false;
 
 		[BoxGroup]
 		public UnityEventsUtil.Vector2Event OnChanged;
@@ -35,8 +34,8 @@ namespace OliverLoescher.Input
 		}
 		public override void Clear()
 		{
-			input = Vector2.zero;
-			OnChanged?.Invoke(input);
+			m_Input = Vector2.zero;
+			OnChanged?.Invoke(m_Input);
 		}
 
 		private void OnPerformed(InputAction.CallbackContext ctx)
@@ -45,14 +44,14 @@ namespace OliverLoescher.Input
 			{
 				return;
 			}
-			input = ctx.ReadValue<Vector2>();
-			input.x *= scalar.x;
-			input.y *= scalar.y * (invertY ? -1 : 1);
-			if (normalize)
+			m_Input = ctx.ReadValue<Vector2>();
+			m_Input.x *= m_Scalar.x;
+			m_Input.y *= m_Scalar.y * (m_InvertY ? -1 : 1);
+			if (m_Normalize)
 			{
-				input.Normalize();
+				m_Input.Normalize();
 			}
-			OnChanged?.Invoke(input);
+			OnChanged?.Invoke(m_Input);
 		}
 	}
 }

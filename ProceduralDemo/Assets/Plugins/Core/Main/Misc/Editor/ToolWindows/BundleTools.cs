@@ -8,7 +8,7 @@ public class BundleTools : EditorWindow
 	[MenuItem("Window/Debug/Bundle Tools", false, 9999)]
 	static void CreateWizard()
 	{
-		BundleTools window = EditorWindow.GetWindow<BundleTools>("Bundle Tools");
+		BundleTools window = GetWindow<BundleTools>("Bundle Tools");
 		window.Show();
 	}
 
@@ -38,7 +38,7 @@ public class BundleTools : EditorWindow
 			{
 				if (GUILayout.Button(Path.GetFileName(asset), GUI.skin.label))
 				{
-					Selection.activeObject= AssetDatabase.LoadAssetAtPath(asset, typeof(UnityEngine.Object));
+					Selection.activeObject= AssetDatabase.LoadAssetAtPath(asset, typeof(Object));
 				}
 			}
 		}

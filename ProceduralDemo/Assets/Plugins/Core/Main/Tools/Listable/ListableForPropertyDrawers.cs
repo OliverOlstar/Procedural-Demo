@@ -17,7 +17,7 @@ namespace Core
 		where Wrapper : IListableWrapper<TObj>, new()
 	{
 		[SerializeField, Flatten(false, false, false)]
-		private List<Wrapper> m_List = new List<Wrapper>();
+		private List<Wrapper> m_List = new();
 
 		public ListableForPropertyDrawers(TObj defaultValue)
 		{
@@ -36,7 +36,7 @@ namespace Core
 			int length = m_List.Count;
 			for (int i = 0; i < length; i++)
 			{
-				if (object.Equals(m_List[i].Item, item))
+				if (Equals(m_List[i].Item, item))
 				{
 					return i;
 				}

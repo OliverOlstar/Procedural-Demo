@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	// Custom inspector and scene view tools for IKSolverFullBodyBiped
+
 	public class IKSolverFullBodyBipedInspector : IKSolverInspector {
 		
 		#region Public methods
@@ -30,8 +30,17 @@ namespace RootMotion.FinalIK {
 
 		// Draws the scene view helpers for IKSolverFullBodyBiped
 		public static void AddScene(UnityEngine.Object target, IKSolverFullBodyBiped solver, Color color, ref int selectedEffector, Transform root) {
-			if (Application.isPlaying && !solver.initiated) return;
-			if (!Application.isPlaying && !solver.IsValid()) return;
+			if (Application.isPlaying && !solver.initiated)
+			{
+				return;
+			}
+
+
+			if (!Application.isPlaying && !solver.IsValid())
+			{
+				return;
+			}
+
 
 			bool modifiable = solver.initiated;
 
@@ -48,8 +57,8 @@ namespace RootMotion.FinalIK {
 					Handles.color = c;
 					
 					Handles.DrawLine(solver.chain[i].nodes[1].transform.position, solver.chain[i].bendConstraint.bendGoal.position);
-					Inspector.SphereCap(0, solver.chain[i].nodes[1].transform.position, Quaternion.identity, size * 0.5f);
-					Inspector.SphereCap(0, solver.chain[i].bendConstraint.bendGoal.position, Quaternion.identity, size * 0.5f);
+					SphereCap(0, solver.chain[i].nodes[1].transform.position, Quaternion.identity, size * 0.5f);
+					SphereCap(0, solver.chain[i].bendConstraint.bendGoal.position, Quaternion.identity, size * 0.5f);
 					
 					Handles.color = Color.white;
 				}
@@ -89,13 +98,13 @@ namespace RootMotion.FinalIK {
 					GUI.color = new Color(1f, 0.75f, 0.75f);
 					Handles.color = Color.yellow;
 
-					if (Inspector.DotButton(chain.nodes[1].transform.position, Quaternion.identity, size * 0.5f, size)) {
+					if (DotButton(chain.nodes[1].transform.position, Quaternion.identity, size * 0.5f, size)) {
 						Warning.logged = false;
 						Warning.Log("The bend direction of this limb appears to be inverted. Please rotate this bone so that the limb is bent in its natural bending direction. If this limb is supposed to be bent in the direction pointed by the arrow, ignore this warning.", root, true);
 					}
 				}
 
-				Inspector.ArrowCap(0, chain.nodes[1].transform.position, Quaternion.LookRotation(bendDirection), size * 2f);
+				ArrowCap(0, chain.nodes[1].transform.position, Quaternion.LookRotation(bendDirection), size * 2f);
 
 				GUI.color = Color.white;
 				Handles.color = c;
@@ -105,7 +114,7 @@ namespace RootMotion.FinalIK {
 				Handles.color = Color.red;
 				GUI.color = new Color(1f, 0.75f, 0.75f);
 
-				if (Inspector.DotButton(chain.nodes[1].transform.position, Quaternion.identity, size * 0.5f, size)) {
+				if (DotButton(chain.nodes[1].transform.position, Quaternion.identity, size * 0.5f, size)) {
 					Warning.logged = false;
 					Warning.Log("The limb is completely stretched out. Full Body Biped IK does not know which way the limb should be bent. Please rotate this bone slightly in its bending direction.", root, true);
 				}
@@ -128,7 +137,7 @@ namespace RootMotion.FinalIK {
 		}
 
 		private static void AddSolver(SerializedProperty prop) {
-			var chains = prop.FindPropertyRelative("chain");
+			SerializedProperty chains = prop.FindPropertyRelative("chain");
 
 			AddBody(prop, chains.GetArrayElementAtIndex(0), new GUIContent("Body", string.Empty));
 			AddLimb(prop, chains.GetArrayElementAtIndex(1), FullBodyBipedChain.LeftArm, new GUIContent("Left Arm", string.Empty));
@@ -144,10 +153,10 @@ namespace RootMotion.FinalIK {
 			GUILayout.BeginVertical();
 
 			if (chain.isExpanded) {
-				var effectors = prop.FindPropertyRelative("effectors");
-				var effector = effectors.GetArrayElementAtIndex(0);
-				var spineMapping = prop.FindPropertyRelative("spineMapping");
-				var headMapping = prop.FindPropertyRelative("boneMappings").GetArrayElementAtIndex(0);
+				SerializedProperty effectors = prop.FindPropertyRelative("effectors");
+				SerializedProperty effector = effectors.GetArrayElementAtIndex(0);
+				SerializedProperty spineMapping = prop.FindPropertyRelative("spineMapping");
+				SerializedProperty headMapping = prop.FindPropertyRelative("boneMappings").GetArrayElementAtIndex(0);
 
 				GUILayout.BeginVertical(style);
 				
@@ -187,10 +196,10 @@ namespace RootMotion.FinalIK {
 			GUILayout.BeginVertical();
 			
 			if (chain.isExpanded) {
-				var effectors = prop.FindPropertyRelative("effectors");
-				var endEffector = effectors.GetArrayElementAtIndex(GetEndEffectorIndex(chainType));
-				var startEffector = effectors.GetArrayElementAtIndex(GetStartEffectorIndex(chainType));
-				var mapping = prop.FindPropertyRelative("limbMappings").GetArrayElementAtIndex(GetLimbMappingIndex(chainType));
+				SerializedProperty effectors = prop.FindPropertyRelative("effectors");
+				SerializedProperty endEffector = effectors.GetArrayElementAtIndex(GetEndEffectorIndex(chainType));
+				SerializedProperty startEffector = effectors.GetArrayElementAtIndex(GetStartEffectorIndex(chainType));
+				SerializedProperty mapping = prop.FindPropertyRelative("limbMappings").GetArrayElementAtIndex(GetLimbMappingIndex(chainType));
 
 				GUILayout.BeginVertical(style);
 				
@@ -237,8 +246,12 @@ namespace RootMotion.FinalIK {
 			if (texture != null) {
 				Rect rect = EditorGUILayout.GetControlRect(GUILayout.Width(16), GUILayout.Height(16));
 				GUI.DrawTexture(rect, texture);
-			} else GUILayout.Space(21);
-			
+			} else
+			{
+				GUILayout.Space(21);
+			}
+
+
 			EditorGUILayout.LabelField(new GUIContent(label, string.Empty));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(3);
@@ -306,7 +319,12 @@ namespace RootMotion.FinalIK {
 
 		private static Texture2D endEffectorIcon {
 			get {
-				if (_endEffectorIcon == null) _endEffectorIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/RootMotion/FinalIK/Gizmos/EndEffector Icon.png", typeof(Texture2D));
+				if (_endEffectorIcon == null)
+				{
+					_endEffectorIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/RootMotion/FinalIK/Gizmos/EndEffector Icon.png", typeof(Texture2D));
+				}
+
+
 				return _endEffectorIcon;
 			}
 		}
@@ -314,7 +332,12 @@ namespace RootMotion.FinalIK {
 		
 		private static Texture2D startEffectorIcon {
 			get {
-				if (_startEffectorIcon == null) _startEffectorIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/RootMotion/FinalIK/Gizmos/MidEffector Icon.png", typeof(Texture2D));
+				if (_startEffectorIcon == null)
+				{
+					_startEffectorIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/RootMotion/FinalIK/Gizmos/MidEffector Icon.png", typeof(Texture2D));
+				}
+
+
 				return _startEffectorIcon;
 			}
 		}
@@ -322,7 +345,12 @@ namespace RootMotion.FinalIK {
 		
 		private static Texture2D chainIcon {
 			get {
-				if (_chainIcon == null) _chainIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/RootMotion/FinalIK/Gizmos/Chain Icon.png", typeof(Texture2D));
+				if (_chainIcon == null)
+				{
+					_chainIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/RootMotion/FinalIK/Gizmos/Chain Icon.png", typeof(Texture2D));
+				}
+
+
 				return _chainIcon;
 			}
 		}
@@ -330,7 +358,12 @@ namespace RootMotion.FinalIK {
 		
 		private static Texture2D mappingIcon {
 			get {
-				if (_mappingIcon == null) _mappingIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/RootMotion/FinalIK/Gizmos/Mapping Icon.png", typeof(Texture2D));
+				if (_mappingIcon == null)
+				{
+					_mappingIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/RootMotion/FinalIK/Gizmos/Mapping Icon.png", typeof(Texture2D));
+				}
+
+
 				return _mappingIcon;
 			}
 		}

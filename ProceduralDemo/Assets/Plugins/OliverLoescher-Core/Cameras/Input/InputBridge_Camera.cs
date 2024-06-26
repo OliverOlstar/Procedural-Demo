@@ -1,38 +1,36 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Sirenix.OdinInspector;
-using OliverLoescher.Input;
+using OCore.Input;
 
-namespace OliverLoescher
+namespace OCore
 {
 	public class InputBridge_Camera : InputBridge_Base
 	{
 		[SerializeField]
-		private InputModule_Vector2Update lookInput = new InputModule_Vector2Update();
+		private InputModule_Vector2Update m_LookInput = new();
 		[SerializeField]
-		private InputModule_Vector2 lookDeltaInput = new InputModule_Vector2();
+		private InputModule_Vector2 m_LookDeltaInput = new();
 		[SerializeField]
-		private InputModule_Scroll zoomInput = new InputModule_Scroll();
+		private InputModule_Scroll m_ZoomInput = new();
 
-		public InputModule_Vector2Update Look => lookInput;
-		public InputModule_Vector2 LookDelta => lookDeltaInput;
-		public InputModule_Scroll Zoom => zoomInput;
+		public InputModule_Vector2Update Look => m_LookInput;
+		public InputModule_Vector2 LookDelta => m_LookDeltaInput;
+		public InputModule_Scroll Zoom => m_ZoomInput;
 
 		public override InputActionMap Actions => InputSystem.Instance.Camera.Get();
 		public override IEnumerable<IInputModule> GetAllInputModules()
 		{
-			yield return lookInput;
-			yield return lookDeltaInput;
-			yield return zoomInput;
+			yield return m_LookInput;
+			yield return m_LookDeltaInput;
+			yield return m_ZoomInput;
 		}
 
 		protected override void Awake()
 		{
-			lookInput.Initalize(InputSystem.Instance.Camera.Look, IsValid);
-			lookDeltaInput.Initalize(InputSystem.Instance.Camera.LookDelta, IsValid);
-			zoomInput.Initalize(InputSystem.Instance.Camera.Zoom, IsValid);
+			m_LookInput.Initalize(InputSystem.Instance.Camera.Look, IsValid);
+			m_LookDeltaInput.Initalize(InputSystem.Instance.Camera.LookDelta, IsValid);
+			m_ZoomInput.Initalize(InputSystem.Instance.Camera.Zoom, IsValid);
 
 			base.Awake();
 		}

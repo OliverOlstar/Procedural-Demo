@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.UI
+namespace OCore.UI
 {
 	[RequireComponent(typeof(Canvas))]
 	public class CanvasCameraSetter : MonoBehaviour
 	{
 		[SerializeField, Min(0.0f)]
-		private float planeDistance = 0.101f;
+		private float m_PlaneDistance = 0.101f;
 
 		private void Start()
 		{
@@ -19,7 +17,7 @@ namespace OliverLoescher.UI
             }
 			canvas.renderMode = RenderMode.ScreenSpaceCamera;
 			canvas.worldCamera = Camera.main;
-			canvas.planeDistance = planeDistance;
+			canvas.planeDistance = m_PlaneDistance;
 			Destroy(this);
 		}
 	}

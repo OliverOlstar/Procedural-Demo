@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace OliverLoescher
+namespace OCore
 {
-    public static class AudioPriority
+	public static class AudioPriority
     {
 		public enum Enum
 		{
@@ -17,7 +13,7 @@ namespace OliverLoescher
 		}
 		
 		// 0 - 256
-		private static readonly int[] PriorityInt = new int[]
+		private static readonly int[] s_PriorityInt = new int[]
 		{
 			130,
 			130,
@@ -27,6 +23,6 @@ namespace OliverLoescher
 			100,
 		};
 
-		public static int ToInt(this Enum pEnum) => PriorityInt[(int)pEnum];		
+		public static int ToInt(this Enum pEnum) => s_PriorityInt[(int)pEnum];		
     }
 }

@@ -1,42 +1,42 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
-    public static class Mesh
-    {
-		private static Dictionary<PrimitiveType, UnityEngine.Mesh> primitiveMeshes = new Dictionary<PrimitiveType, UnityEngine.Mesh>();
+	public static class Mesh
+	{
+		private static readonly Dictionary<PrimitiveType, UnityEngine.Mesh> m_PrimitiveMeshes = new();
 
-		public static GameObject CreatePrimitive(PrimitiveType type, bool withCollider)
+		public static GameObject CreatePrimitive(PrimitiveType pType, bool pWithCollider)
 		{
-			if (withCollider) { return GameObject.CreatePrimitive(type); }
+			if (pWithCollider)
+			{
+				return GameObject.CreatePrimitive(pType);
+			}
 
-			GameObject gameObject = new GameObject(type.ToString());
+			GameObject gameObject = new(pType.ToString());
 			MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
-			meshFilter.sharedMesh = GetPrimitiveMesh(type);
+			meshFilter.sharedMesh = GetPrimitiveMesh(pType);
 			gameObject.AddComponent<MeshRenderer>();
-
 			return gameObject;
 		}
 
-		public static UnityEngine.Mesh GetPrimitiveMesh(PrimitiveType type)
+		public static UnityEngine.Mesh GetPrimitiveMesh(PrimitiveType pType)
 		{
-			if (!primitiveMeshes.ContainsKey(type))
+			if (!m_PrimitiveMeshes.ContainsKey(pType))
 			{
-				CreatePrimitiveMesh(type);
+				CreatePrimitiveMesh(pType);
 			}
-
-			return primitiveMeshes[type];
+			return m_PrimitiveMeshes[pType];
 		}
 
-		private static UnityEngine.Mesh CreatePrimitiveMesh(PrimitiveType type)
+		private static UnityEngine.Mesh CreatePrimitiveMesh(PrimitiveType pType)
 		{
-			GameObject gameObject = GameObject.CreatePrimitive(type);
+			GameObject gameObject = GameObject.CreatePrimitive(pType);
 			UnityEngine.Mesh mesh = gameObject.GetComponent<MeshFilter>().sharedMesh;
-			GameObject.DestroyImmediate(gameObject);
+			Object.DestroyImmediate(gameObject);
 
-			primitiveMeshes[type] = mesh;
+			m_PrimitiveMeshes[pType] = mesh;
 			return mesh;
 		}
 	}

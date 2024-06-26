@@ -1,16 +1,14 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
 	public static class Math
 	{
 		public const float NEARZERO = 0.0001f;
 
 		public static Vector3 Horizontal(this Vector3 pVector) { pVector.y = 0; return pVector; }
-		public static Vector2 Horizontal2D(this Vector3 pVector) => new Vector2(pVector.x, pVector.z);
+		public static Vector2 Horizontal2D(this Vector3 pVector) => new(pVector.x, pVector.z);
 		public static Vector3 Horizontal(this Vector3 pVector, Vector3 pUp) => Vector3.ProjectOnPlane(pVector, pUp);
 
 		public static Vector3 Horizontalize(this Vector3 pVector) => new Vector3(pVector.x, 0.0f, pVector.z).normalized;
@@ -21,7 +19,7 @@ namespace OliverLoescher.Util
 
 		public static Vector3 ProjectOnPlane(this Vector3 pVector, Vector3 pUp) => Vector3.ProjectOnPlane(pVector, pUp);
 
-		public static Vector3 Inverse(in Vector3 pVector) => new Vector3(1.0f / pVector.x, 1.0f / pVector.y, 1.0f / pVector.z);
+		public static Vector3 Inverse(in Vector3 pVector) => new(1.0f / pVector.x, 1.0f / pVector.y, 1.0f / pVector.z);
 
 		public static float Clamp(this float pValue, Vector2 pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
 		public static float ClampMax(this float pValue, float pMax) => Mathf.Min(pValue, pMax);
@@ -51,8 +49,8 @@ namespace OliverLoescher.Util
 
 		public static float DistanceXZ(Vector3 pA, Vector3 pB) => Horizontal2D(pA - pB).magnitude;
 
-		public static Vector3 Mult(Vector3 pA, Vector3 pB) => new Vector3(pA.x * pB.x, pA.y * pB.y, pA.z * pB.z);
-		public static Vector3 Add(Vector3 pA, Vector3 pB) => new Vector3(pA.x + pB.x, pA.y + pB.y, pA.z + pB.z);
+		public static Vector3 Mult(Vector3 pA, Vector3 pB) => new(pA.x * pB.x, pA.y * pB.y, pA.z * pB.z);
+		public static Vector3 Add(Vector3 pA, Vector3 pB) => new(pA.x + pB.x, pA.y + pB.y, pA.z + pB.z);
 		public static Vector3 Add(params Vector3[] pVectors)
 		{
 			Vector3 vector = Vector3.zero;
@@ -87,9 +85,9 @@ namespace OliverLoescher.Util
 			return pVector;
 		}
 
-		public static Quaternion Difference(this Quaternion to, Quaternion from) => to * Quaternion.Inverse(from);
-		public static Quaternion Add(this Quaternion start, Quaternion diff) => diff * start;
-		public static Quaternion UpForwardRotation(Vector3 forward, Vector3 up) => Quaternion.FromToRotation(Vector3.up, up) * Quaternion.LookRotation(forward);
+		public static Quaternion Difference(this Quaternion pTo, Quaternion pFrom) => pTo * Quaternion.Inverse(pFrom);
+		public static Quaternion Add(this Quaternion pStart, Quaternion pDiff) => pDiff * pStart;
+		public static Quaternion UpForwardRotation(Vector3 pForward, Vector3 pUp) => Quaternion.FromToRotation(Vector3.up, pUp) * Quaternion.LookRotation(pForward);
 
 		public static float AddPercents(IEnumerable<float> pValues)
 		{

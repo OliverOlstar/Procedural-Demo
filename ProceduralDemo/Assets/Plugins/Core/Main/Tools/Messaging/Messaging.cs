@@ -175,7 +175,7 @@ public abstract class Messaging<TKey> : Messaging where TKey : Enum
 					// Actions which cause exceptions create the worst type of bugs because 
 					// means someone could end up waiting forever for the next callback in the list
 					// Its worth catching exceptions here in release, but we still want to make them obvious in dev
-					Core.DebugUtil.DevExceptionFormat("Caught exception while routing message: {0}", exception);
+					DebugUtil.DevExceptionFormat("Caught exception while routing message: {0}", exception);
 				}
 			}
 			ListPool<Message<TData>>.Return(routingList);

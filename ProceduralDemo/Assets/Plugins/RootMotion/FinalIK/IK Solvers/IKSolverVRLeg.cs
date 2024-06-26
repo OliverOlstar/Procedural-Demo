@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
-using RootMotion;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
 	/// <summary>
 	/// Hybrid %IK solver designed for mapping a character to a VR headset and 2 hand controllers 
 	/// </summary>
@@ -13,7 +12,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// 4-segmented analytic leg chain.
 		/// </summary>
-		[System.Serializable]
+		[Serializable]
 		public class Leg: BodyPart {
 
             [LargeHeader("Foot/Toe")]
@@ -74,7 +73,7 @@ namespace RootMotion.FinalIK {
             /// <summary>
             /// Evaluates stretching of the leg by target distance relative to leg length. Value at time 1 represents stretching amount at the point where distance to the target is equal to leg length. Value at time 1 represents stretching amount at the point where distance to the target is double the leg length. Value represents the amount of stretching. Linear stretching would be achieved with a linear curve going up by 45 degrees. Increase the range of stretching by moving the last key up and right at the same amount. Smoothing in the curve can help reduce knee snapping (start stretching the arm slightly before target distance reaches leg length). To get a good optimal value for this curve, please go to the 'VRIK (Basic)' demo scene and copy the stretch curve over from the Pilot character.
             /// </summary>
-            public AnimationCurve stretchCurve = new AnimationCurve();
+            public AnimationCurve stretchCurve = new();
 
 			/// <summary>
 			/// Target position of the toe/foot. Will be overwritten if target is assigned.
@@ -118,7 +117,7 @@ namespace RootMotion.FinalIK {
 			private VirtualBone calf { get { return bones[1]; }}
 			private VirtualBone foot { get { return bones[2]; }}
 			private VirtualBone toes { get { return bones[3]; }}
-			public VirtualBone lastBone { get { return bones[bones.Length - 1]; }}
+			public VirtualBone lastBone { get { return bones[^1]; }}
 			public Vector3 thighRelativeToPelvis { get; private set; }
 
 			private Vector3 footPosition;
@@ -194,7 +193,7 @@ namespace RootMotion.FinalIK {
 				rotation = lastBone.solverRotation;
 
 				if (rotationWeight > 0f) {
-					ApplyRotationOffset(RootMotion.QuaTools.FromToRotation(rotation, IKRotation), rotationWeight);
+					ApplyRotationOffset(QuaTools.FromToRotation(rotation, IKRotation), rotationWeight);
 				}
 
 				if (positionWeight > 0f) {
@@ -259,7 +258,11 @@ namespace RootMotion.FinalIK {
 
 			// Foot position offset
 			private void ApplyPositionOffset(Vector3 offset, float weight) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
+
 				offset *= weight;
 
 				// Foot position offset
@@ -269,7 +272,11 @@ namespace RootMotion.FinalIK {
 
 			// Foot rotation offset
 			private void ApplyRotationOffset(Quaternion offset, float weight) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
+
 				if (weight < 1f) {
 					offset = Quaternion.Lerp(Quaternion.identity, offset, weight);
 				}
@@ -281,7 +288,10 @@ namespace RootMotion.FinalIK {
 			}
 
 			public void Solve(bool stretch) {
-				if (stretch && LOD < 1) Stretching();
+				if (stretch && LOD < 1)
+				{
+					Stretching();
+				}
 
 				// Foot pass
 				VirtualBone.SolveTrigonometric(bones, 0, 1, 2, footPosition, bendNormal, 1f);
@@ -345,7 +355,10 @@ namespace RootMotion.FinalIK {
                     footAdd = (foot.solverPosition - calf.solverPosition) * (legLengthMlp - 1f);// * positionWeight;
 					calf.solverPosition += kneeAdd;
 					foot.solverPosition += kneeAdd + footAdd;
-					if (hasToes) toes.solverPosition += kneeAdd + footAdd;
+					if (hasToes)
+					{
+						toes.solverPosition += kneeAdd + footAdd;
+					}
 				}
 
 				// Stretching
@@ -359,7 +372,10 @@ namespace RootMotion.FinalIK {
 
 				calf.solverPosition += kneeAdd;
 				foot.solverPosition += kneeAdd + footAdd;
-				if (hasToes) toes.solverPosition += kneeAdd + footAdd;
+				if (hasToes)
+				{
+					toes.solverPosition += kneeAdd + footAdd;
+				}
 			}
 
 			public override void Write(ref Vector3[] solvedPositions, ref Quaternion[] solvedRotations) {

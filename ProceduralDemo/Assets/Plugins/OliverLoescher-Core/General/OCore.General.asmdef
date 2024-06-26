@@ -1,6 +1,6 @@
 {
-    "name": "OliverLoescher.General",
-    "rootNamespace": "OliverLoescher",
+    "name": "OCore.General",
+    "rootNamespace": "OCore",
     "references": [
         "GUID:5b10c1f9ecd537f4dbe3d211152286e8",
         "GUID:6055be8ebefd69e48b49212b09b47b2f"

@@ -1,36 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher 
+namespace OCore
 {
 	public class StateMachine : MonoBehaviour
 	{
 		[Header("StateMachine")]
-		[SerializeField, DisableInPlayMode] private BaseState defaultState = null;
-		[SerializeField, DisableInPlayMode, HideInEditorMode] private BaseState currState = null;
-		[SerializeField, DisableInPlayMode, HideInEditorMode] private BaseState[] states = new BaseState[0];
+		[SerializeField, DisableInPlayMode]
+		private BaseState m_DefaultState = null;
+		[SerializeField, DisableInPlayMode, HideInEditorMode]
+		private BaseState m_CurrState = null;
+		[SerializeField, DisableInPlayMode, HideInEditorMode]
+		private BaseState[] m_States = new BaseState[0];
 
-		[SerializeField] private bool printDebugs = false;
+		[SerializeField]
+		private bool m_PrintDebugs = false;
 
-		private void Start() 
+		private void Start()
 		{
-			states = GetComponentsInChildren<BaseState>();
+			m_States = GetComponentsInChildren<BaseState>();
 
 			// Initizalize
-			foreach (BaseState state in states)
+			foreach (BaseState state in m_States)
+			{
 				state.Init(this);
+			}
 
 			// Enter first state
-			SwitchState(defaultState);
+			SwitchState(m_DefaultState);
 		}
 
-		private void FixedUpdate() 
+		private void FixedUpdate()
 		{
-			foreach (BaseState state in states)
+			foreach (BaseState state in m_States)
 			{
-				if (state != currState)
+				if (state != m_CurrState)
 				{
 					if (state.CanEnter())
 					{
@@ -48,48 +52,59 @@ namespace OliverLoescher
 				}
 			}
 
-			if (currState != null)
-				currState.OnFixedUpdate();
+			if (m_CurrState != null)
+			{
+				m_CurrState.OnFixedUpdate();
+			}
 		}
 
-		private void Update() 
+		private void Update()
 		{
-			if (currState != null)
-				currState.OnUpdate();
+			if (m_CurrState != null)
+			{
+				m_CurrState.OnUpdate();
+			}
 		}
 
 		public void SwitchState(BaseState pState)
 		{
-			Log("SwitchState: from " + StateName(currState) + " - to " + StateName(pState));
+			Log("SwitchState: from " + StateName(m_CurrState) + " - to " + StateName(pState));
 
-			if (currState != null)
-				currState.OnExit();
+			if (m_CurrState != null)
+			{
+				m_CurrState.OnExit();
+			}
 
-			currState = pState;
-			
-			if (currState != null)
-				currState.OnEnter();
+			m_CurrState = pState;
+
+			if (m_CurrState != null)
+			{
+				m_CurrState.OnEnter();
+			}
 		}
 
 		public void ReturnToDefault()
 		{
-			SwitchState(defaultState);
+			SwitchState(m_DefaultState);
 		}
 
 		public bool IsState(BaseState pState)
 		{
-			return currState == pState;
+			return m_CurrState == pState;
 		}
 		public bool IsDefaultState()
 		{
-			return currState == defaultState;
+			return m_CurrState == m_DefaultState;
 		}
 
 		private void Log(string pString)
 		{
-			if (printDebugs)
-				Debug.Log("[StateMachine.cs] " + pString, this);
+			if (!m_PrintDebugs)
+			{
+				return;
+			}
+			Debug.Log("[StateMachine.cs] " + pString, this);
 		}
-		private string StateName(BaseState pState) => (pState == null ? "Null" : pState.ToString());
+		private string StateName(BaseState pState) => pState == null ? "Null" : pState.ToString();
 	}
 }

@@ -1,14 +1,13 @@
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
 namespace RootMotion.FinalIK
 {
 
-    /*
+	/*
 	 * Custom inspector for RotationLimitHinge
 	 * */
-    [CustomEditor(typeof(RotationLimitHinge))]
+	[CustomEditor(typeof(RotationLimitHinge))]
     [CanEditMultipleObjects]
     public class RotationLimitHingeInspector : RotationLimitInspector
     {
@@ -24,8 +23,11 @@ namespace RootMotion.FinalIK
             // Draw the default inspector
             DrawDefaultInspector();
 
-            if (GUI.changed) EditorUtility.SetDirty(script);
-        }
+            if (GUI.changed)
+			{
+				EditorUtility.SetDirty(script);
+			}
+		}
 
         #endregion Inspector
 
@@ -34,20 +36,34 @@ namespace RootMotion.FinalIK
         void OnSceneGUI()
         {
             // Set defaultLocalRotation so that the initial local rotation will be the zero point for the rotation limit
-            if (!Application.isPlaying && !script.defaultLocalRotationOverride) script.defaultLocalRotation = script.transform.localRotation;
-            if (script.axis == Vector3.zero) return;
+            if (!Application.isPlaying && !script.defaultLocalRotationOverride)
+			{
+				script.defaultLocalRotation = script.transform.localRotation;
+			}
 
-            // Quick Editing Tools
-            Handles.BeginGUI();
+			if (script.axis == Vector3.zero)
+			{
+				return;
+			}
+
+			// Quick Editing Tools
+			Handles.BeginGUI();
             GUILayout.BeginArea(new Rect(10, 10, 200, 50), "Rotation Limit Hinge", "Window");
 
             // Rotating display
             if (GUILayout.Button("Rotate display 90 degrees"))
             {
-                if (!Application.isPlaying) Undo.RecordObject(script, "Rotate Display");
-                script.zeroAxisDisplayOffset += 90;
-                if (script.zeroAxisDisplayOffset >= 360) script.zeroAxisDisplayOffset = 0;
-            }
+                if (!Application.isPlaying)
+				{
+					Undo.RecordObject(script, "Rotate Display");
+				}
+
+				script.zeroAxisDisplayOffset += 90;
+                if (script.zeroAxisDisplayOffset >= 360)
+				{
+					script.zeroAxisDisplayOffset = 0;
+				}
+			}
 
             GUILayout.EndArea();
             Handles.EndGUI();
@@ -75,10 +91,13 @@ namespace RootMotion.FinalIK
 
             Inspector.CircleCap(0, script.transform.position, Quaternion.LookRotation(axis, cross), 0.5f);
 
-            if (!script.useLimits) return;
+            if (!script.useLimits)
+			{
+				return;
+			}
 
-            // Handles for adjusting rotation limits in the scene
-            Quaternion minRotation = Quaternion.AngleAxis(script.min, axis);
+			// Handles for adjusting rotation limits in the scene
+			Quaternion minRotation = Quaternion.AngleAxis(script.min, axis);
             Handles.DrawLine(script.transform.position, script.transform.position + minRotation * cross);
 
             Quaternion maxRotation = Quaternion.AngleAxis(script.max, axis);
@@ -89,16 +108,24 @@ namespace RootMotion.FinalIK
             min = DrawLimitHandle(min, script.transform.position + minRotation * cross, Quaternion.identity, 0.5f, "Min", -10);
             if (min != script.min)
             {
-                if (!Application.isPlaying) Undo.RecordObject(script, "Min Limit");
-                script.min = min;
+                if (!Application.isPlaying)
+				{
+					Undo.RecordObject(script, "Min Limit");
+				}
+
+				script.min = min;
             }
 
             float max = script.max;
             max = DrawLimitHandle(max, script.transform.position + maxRotation * cross, Quaternion.identity, 0.5f, "Max", 10);
             if (max != script.max)
             {
-                if (!Application.isPlaying) Undo.RecordObject(script, "Max Limit");
-                script.max = max;
+                if (!Application.isPlaying)
+				{
+					Undo.RecordObject(script, "Max Limit");
+				}
+
+				script.max = max;
             }
 
             Handles.color = Color.white;
@@ -110,8 +137,12 @@ namespace RootMotion.FinalIK
 		 * */
         private Vector3 Direction(Vector3 v)
         {
-            if (script.transform.parent == null) return script.defaultLocalRotation * v;
-            return script.transform.parent.rotation * (script.defaultLocalRotation * v);
+            if (script.transform.parent == null)
+			{
+				return script.defaultLocalRotation * v;
+			}
+
+			return script.transform.parent.rotation * (script.defaultLocalRotation * v);
         }
 
         #endregion Scene

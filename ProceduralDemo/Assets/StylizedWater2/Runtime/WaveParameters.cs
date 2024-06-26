@@ -33,9 +33,12 @@ namespace StylizedWater2
         
         public static bool WavesEnabled(Material waterMat)
         {
-            if (!waterMat) return false;
-            
-            return waterMat.IsKeywordEnabled(WavesKeyword);
+            if (!waterMat)
+			{
+				return false;
+			}
+
+			return waterMat.IsKeywordEnabled(WavesKeyword);
         }
 
         public static float GetMaxWaveHeight(Material mat)

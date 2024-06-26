@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
-    /// <summary>
-    /// Arm %IK solver component.
-    /// </summary>
-    [HelpURL("http://www.root-motion.com/finalikdox/html/page2.html")]
+	/// <summary>
+	/// Arm %IK solver component.
+	/// </summary>
+	[HelpURL("http://www.root-motion.com/finalikdox/html/page2.html")]
     [AddComponentMenu("Scripts/RootMotion.FinalIK/IK/Arm IK")]
 	public class ArmIK : IK {
 
@@ -37,7 +37,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The Arm %IK solver.
 		/// </summary>
-		public IKSolverArm solver = new IKSolverArm();
+		public IKSolverArm solver = new();
 		
 		public override IKSolver GetIKSolver() {
 			return solver as IKSolver;

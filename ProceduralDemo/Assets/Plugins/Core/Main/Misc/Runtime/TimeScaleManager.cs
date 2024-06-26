@@ -303,11 +303,11 @@ namespace Core
 
 		public static void SetBaseTimeScale(float timeScale)
 		{
-			if (timeScale < Core.Util.LOW_PRECISION_EPSILON)
+			if (timeScale < Util.LOW_PRECISION_EPSILON)
 			{
 				Debug.LogError("TimeScaleManager.SetBaseTimeScale: Time scale " + timeScale + " is invalid. Base time scale cannot be <= 0.");
 			}
-			TimeScaleManager tem = TimeScaleManager.Get();
+			TimeScaleManager tem = Get();
 			if (tem == null)
 			{
 				Debug.LogWarning("TimeScaleManager.SetBaseTimeScale: TimeScaleManager is null.");
@@ -351,7 +351,7 @@ namespace Core
 		{
 			TimeScaleManager tem = GetOrCreate();
 			int handle = tem.GetHandle();
-			TimeEvent timeEvent = new TimeEvent(handle, timeScale, affectsAudio);
+			TimeEvent timeEvent = new(handle, timeScale, affectsAudio);
 			CreateTimeEvent(timeEvent);
 			Debug.Log($"[{nameof(TimeScaleManager)}] Starting time event: {handle}");
 			return handle;
@@ -361,7 +361,7 @@ namespace Core
 		{
 			TimeScaleManager tem = GetOrCreate();
 			int handle = tem.GetHandle();
-			TimeEvent timeEvent = new TimeEvent(handle, timeScale, duration, scaleTimer, affectsAudio, fadeOut);
+			TimeEvent timeEvent = new(handle, timeScale, duration, scaleTimer, affectsAudio, fadeOut);
 			CreateTimeEvent(timeEvent);
 			Debug.Log($"[{nameof(TimeScaleManager)}] Starting time event: {handle}");
 			return handle;

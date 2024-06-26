@@ -8,7 +8,7 @@ namespace Core
 	[InitializeOnLoad]
 	public class EditorHistory
 	{
-		static List<Object[]> m_History = new List<Object[]>(100);
+		static List<Object[]> m_History = new(100);
 		static int m_Index = -1;
 		static bool m_Ignore = false;
 
@@ -222,15 +222,15 @@ namespace Core
 
 		static string HistoryToString()
 		{
-			string s = Core.Str.EMPTY;
+			string s = Str.EMPTY;
 			for (int i = 0; i < m_History.Count; i++)
 			{
-				string name = Core.Str.EMPTY;
+				string name = Str.EMPTY;
 				foreach (Object obj in m_History[i])
 				{
 					if (obj != null)
 					{
-						if (!Core.Str.IsEmpty(name))
+						if (!Str.IsEmpty(name))
 						{
 							name += ',';
 						}

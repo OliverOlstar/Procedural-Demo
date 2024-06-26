@@ -2,7 +2,6 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEditor;
-using UnityEngine;
 
 namespace Core
 {
@@ -18,7 +17,7 @@ namespace Core
 		{
 			string path = self.propertyPath.Replace(".Array.data", string.Empty);
 			string[] tokens = path.Split('.');
-			Regex regex = new Regex("(\\[[0-9]\\])");
+			Regex regex = new("(\\[[0-9]\\])");
 			object target = self.serializedObject.targetObject;
 			for (int i = 0; i < tokens.Length; ++i)
 			{

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -6,15 +5,15 @@ using UnityEngine;
 
 public class AssetPickerRenameWindow : EditorWindow
 {
-	public static void Open(UnityEngine.Object obj, System.Type assetType, Vector2 position)
+	public static void Open(Object obj, System.Type assetType, Vector2 position)
 	{
-		AssetPickerRenameWindow window = ScriptableObject.CreateInstance<AssetPickerRenameWindow>();
+		AssetPickerRenameWindow window = CreateInstance<AssetPickerRenameWindow>();
 
 		window.m_Path = AssetDatabase.GetAssetPath(obj);
 		window.m_NewName = Path.GetFileNameWithoutExtension(window.m_Path);
 
 		string[] paths = Core.AssetDatabaseUtil.Find(assetType);
-		List<UnityEngine.Object> assets = new List<Object>();
+		List<Object> assets = new();
 		Core.AssetDatabaseUtil.LoadAll(assetType, assets);
 		string folder = Path.GetDirectoryName(window.m_Path);
 		folder = folder.Replace('\\', '/');
@@ -22,7 +21,7 @@ public class AssetPickerRenameWindow : EditorWindow
 		float width = 100.0f;
 		for (int i = 0; i < assets.Count; i++)
 		{
-			UnityEngine.Object asset = assets[i];
+			Object asset = assets[i];
 			string path = AssetDatabase.GetAssetPath(asset);
 			if (path.StartsWith(folder))
 			{
@@ -44,8 +43,8 @@ public class AssetPickerRenameWindow : EditorWindow
 		window.position = r;
 	}
 
-	private List<GUIContent> m_OtherAssets = new List<GUIContent>();
-	private List<(string, string, Texture)> m_OtherAssets2 = new List<(string, string, Texture)>();
+	private List<GUIContent> m_OtherAssets = new();
+	private List<(string, string, Texture)> m_OtherAssets2 = new();
 	private string m_Path = string.Empty;
 	private string m_NewName = string.Empty;
 	private Vector2 m_ScrollPos = Vector2.zero;
@@ -55,7 +54,7 @@ public class AssetPickerRenameWindow : EditorWindow
 	private void OnGUI()
 	{
 		string folder = Path.GetDirectoryName(m_Path);
-		UnityEngine.Object obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(folder);
+		Object obj = AssetDatabase.LoadAssetAtPath<Object>(folder);
 		GUIContent c = EditorGUIUtility.ObjectContent(obj, obj.GetType());
 		c.text = folder.Replace('\\','/').Replace("Assets/", "");
 		EditorGUILayout.LabelField(c);

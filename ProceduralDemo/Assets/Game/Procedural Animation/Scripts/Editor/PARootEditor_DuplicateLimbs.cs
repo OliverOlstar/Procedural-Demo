@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.Utilities;
 using UnityEngine;
 using UnityEditor;
 using PA;
-using System.Linq;
 
 public static class PARootEditor_DuplicateLimbs
 {

@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace OliverLoescher 
+namespace OCore
 {
+	/// <summary> Used to have serialized UnityEvents </summary>
 	public static class UnityEventsUtil
 	{
 		[System.Serializable] 

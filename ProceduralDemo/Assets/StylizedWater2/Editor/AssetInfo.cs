@@ -130,7 +130,7 @@ namespace StylizedWater2
             
             private void OnPreprocessAsset()
             {
-                var oldShaders = false;
+				bool oldShaders = false;
                 //Importing/updating the Stylized Water 2 asset
                 if (assetPath.EndsWith("StylizedWater2/Editor/AssetInfo.cs") || assetPath.EndsWith("sc.stylizedwater2/Editor/AssetInfo.cs"))
                 {
@@ -155,7 +155,7 @@ namespace StylizedWater2
                 if (oldShaders)
                 {
                     //Old non-templated shader(s) still present.
-                    if (EditorUtility.DisplayDialog(AssetInfo.ASSET_NAME, "Updating to v1.4.0+. Obsolete shader files were detected." +
+                    if (EditorUtility.DisplayDialog(ASSET_NAME, "Updating to v1.4.0+. Obsolete shader files were detected." +
                                                                           "\n\n" +
                                                                           "The water shader(s) are a now C# generated, thus has moved to a different file." +
                                                                           "\n\n" +
@@ -230,7 +230,7 @@ namespace StylizedWater2
             
             EditorUtility.ClearProgressBar();
 
-            List<string> deletedFiles = new List<string>();
+            List<string> deletedFiles = new();
             //Delete old files
             {
                 void DeleteFile(string path)
@@ -260,7 +260,7 @@ namespace StylizedWater2
 
             if (upgradedMaterialCount > 0 || deletedFiles.Count > 0)
             {
-                if (EditorUtility.DisplayDialog(AssetInfo.ASSET_NAME, $"Converted {upgradedMaterialCount} materials to use the new water shader." + 
+                if (EditorUtility.DisplayDialog(ASSET_NAME, $"Converted {upgradedMaterialCount} materials to use the new water shader." + 
                                                                       $"\n\nObsolete shader files ({deletedFiles.Count}) deleted:\n\n" +
                                                                       String.Join(Environment.NewLine, deletedFiles), 
                     "OK")) { }
@@ -273,17 +273,20 @@ namespace StylizedWater2
         
         public static bool MeetsMinimumVersion(string versionMinimum)
         {
-            Version curVersion = new Version(INSTALLED_VERSION);
-            Version minVersion = new Version(versionMinimum);
+            Version curVersion = new(INSTALLED_VERSION);
+            Version minVersion = new(versionMinimum);
 
             return curVersion >= minVersion;
         }
 
         public static void OpenAssetStore(string url = null)
         {
-            if (url == string.Empty) url = "https://assetstore.unity.com/packages/slug/" + ASSET_ID;
-            
-            Application.OpenURL(url + "?aid=1011l7Uk8&pubref=sw2editor");
+            if (url == string.Empty)
+			{
+				url = "https://assetstore.unity.com/packages/slug/" + ASSET_ID;
+			}
+
+			Application.OpenURL(url + "?aid=1011l7Uk8&pubref=sw2editor");
         }
 
         public static void OpenReviewsPage()
@@ -336,11 +339,11 @@ namespace StylizedWater2
                 supportedVersion = false;
                 #endif
 
-                alphaVersion = GetUnityVersion().Contains("f") == false;
+                alphaVersion = !GetUnityVersion().Contains("f");
             }
 
             public static string fetchedVersionString;
-            public static System.Version fetchedVersion;
+            public static Version fetchedVersion;
             private static bool showPopup;
 
             public enum VersionStatus
@@ -379,10 +382,10 @@ namespace StylizedWater2
 
                 queryStatus = QueryStatus.Fetching;
 
-                using (WebClient webClient = new WebClient())
+                using (WebClient webClient = new())
                 {
-                    webClient.DownloadStringCompleted += new System.Net.DownloadStringCompletedEventHandler(OnRetrievedServerVersion);
-                    webClient.DownloadStringAsync(new System.Uri(VERSION_FETCH_URL), fetchedVersionString);
+                    webClient.DownloadStringCompleted += new DownloadStringCompletedEventHandler(OnRetrievedServerVersion);
+                    webClient.DownloadStringAsync(new Uri(VERSION_FETCH_URL), fetchedVersionString);
                 }
             }
 
@@ -391,8 +394,8 @@ namespace StylizedWater2
                 if (e.Error == null && !e.Cancelled)
                 {
                     fetchedVersionString = e.Result;
-                    fetchedVersion = new System.Version(fetchedVersionString);
-                    System.Version installedVersion = new System.Version(INSTALLED_VERSION);
+                    fetchedVersion = new Version(fetchedVersionString);
+					Version installedVersion = new(INSTALLED_VERSION);
 
                     //Success
                     IS_UPDATED = (installedVersion >= fetchedVersion) ? true : false;
@@ -403,7 +406,7 @@ namespace StylizedWater2
 
                     queryStatus = QueryStatus.Completed;
 
-                    if (VersionChecking.showPopup)
+                    if (showPopup)
                     {
                         if (!IS_UPDATED)
                         {

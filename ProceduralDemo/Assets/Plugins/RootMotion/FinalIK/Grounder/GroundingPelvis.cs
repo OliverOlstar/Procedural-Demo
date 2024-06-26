@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using RootMotion;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	public partial class Grounding {
 
@@ -44,23 +43,40 @@ namespace RootMotion.FinalIK {
 			
 			// Should be called each time the pelvis is (re)activated
 			public void OnEnable() {
-				if (!initiated) return;
+				if (!initiated)
+				{
+					return;
+				}
+
+
 				this.lastRootPosition = grounding.root.transform.position;
 				lastTime = Time.time;
 			}
 			
 			// Updates the pelvis position offset
 			public void Process(float lowestOffset, float highestOffset, bool isGrounded) {
-				if (!initiated) return;
+				if (!initiated)
+				{
+					return;
+				}
+
 
 				float deltaTime = Time.time - lastTime;
 				lastTime = Time.time;
-				if (deltaTime <= 0f) return;
-				
+				if (deltaTime <= 0f)
+				{
+					return;
+				}
+
+
 				float offsetTarget = lowestOffset + highestOffset;
-				if (!grounding.rootGrounded) offsetTarget = 0f;
-				
+				if (!grounding.rootGrounded)
+				{
+					offsetTarget = 0f;
+				}
+
 				// Interpolating the offset
+
 				heightOffset = Mathf.Lerp(heightOffset, offsetTarget, deltaTime * grounding.pelvisSpeed);
 
 				// Damper

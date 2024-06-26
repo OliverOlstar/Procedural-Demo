@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [ExecuteInEditMode]
 public class UnityEventWithKeyDown : UnityEventWithButton
 {
-	[SerializeField] private KeyCode keyDown = KeyCode.None;
-	[SerializeField] private bool executeInEditMode = false;
+	[SerializeField]
+	private KeyCode m_KeyDown = KeyCode.None;
+	[SerializeField]
+	private bool m_ExecuteInEditMode = false;
 
-	private void Update() 
+	private void Update()
 	{
-		if (Input.GetKeyDown(keyDown) && (executeInEditMode || Application.isPlaying))
+		if (Input.GetKeyDown(m_KeyDown) && (m_ExecuteInEditMode || Application.isPlaying))
 		{
 			InvokeEvent();
 		}

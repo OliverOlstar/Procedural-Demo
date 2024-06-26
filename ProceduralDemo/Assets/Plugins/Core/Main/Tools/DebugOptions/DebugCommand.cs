@@ -6,7 +6,7 @@ namespace Core
 {
 	public class DebugCommandGUI
 	{
-		private Dictionary<string, List<(DebugCommandAttribute, MethodInfo)>> m_Methods = new Dictionary<string, List<(DebugCommandAttribute, MethodInfo)>>();
+		private Dictionary<string, List<(DebugCommandAttribute, MethodInfo)>> m_Methods = new();
 		private string[] m_Categories = null;
 		private int m_CategoryIndex = 0;
 
@@ -31,7 +31,7 @@ namespace Core
 							continue;
 						}
 
-						if (!m_Methods.TryGetValue(attribute.Category, out var list))
+						if (!m_Methods.TryGetValue(attribute.Category, out List<(DebugCommandAttribute, MethodInfo)> list))
 						{
 							list = new List<(DebugCommandAttribute, MethodInfo)>();
 							m_Methods[attribute.Category] = list;
@@ -70,7 +70,7 @@ namespace Core
 			foreach ((DebugCommandAttribute, MethodInfo) method in m_Methods[selectedCatagory])
 			{
 				bool enabled = Application.isPlaying;
-				GUIContent content = new GUIContent(method.Item1.Label, enabled ? method.Item1.Tooltip : "Editor must be in playing");
+				GUIContent content = new(method.Item1.Label, enabled ? method.Item1.Tooltip : "Editor must be in playing");
 				GUI.enabled = enabled;
 				bool pressed = GUILayout.Button(content);
 				GUI.enabled = true;

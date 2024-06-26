@@ -4,19 +4,19 @@ using UnityEngine;
 using Photon.Pun;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Weapon.Multiplayer
+namespace OCore.Weapon.Multiplayer
 {
 	[RequireComponent(typeof(PhotonView))]
 	public class WeaponMultiplayer : Weapon
 	{
-		private PhotonView mPhotonView = null;
-		private Dictionary<int, ProjectileMultiplayer> mActiveProjectiles = new Dictionary<int, ProjectileMultiplayer>();
+		private PhotonView m_PhotonView = null;
+		private Dictionary<int, ProjectileMultiplayer> m_ActiveProjectiles = new Dictionary<int, ProjectileMultiplayer>();
 
-		public bool IsValid => PhotonNetwork.IsConnected && mPhotonView.IsMine;
+		public bool IsValid => PhotonNetwork.IsConnected && m_PhotonView.IsMine;
 
 		protected override void Init()
 		{
-			mPhotonView = GetComponent<PhotonView>();
+			m_PhotonView = GetComponent<PhotonView>();
 		}
 
 		#region Self
@@ -31,7 +31,7 @@ namespace OliverLoescher.Weapon.Multiplayer
 
 			if (IsValid)
 			{
-				mPhotonView.RPC(nameof(RPC_ShootProjectile), RpcTarget.Others, id, pPoint, pForce);
+				m_PhotonView.RPC(nameof(RPC_ShootProjectile), RpcTarget.Others, id, pPoint, pForce);
 			}
 			return projectile;
 		}
@@ -41,7 +41,7 @@ namespace OliverLoescher.Weapon.Multiplayer
 			base.SpawnRaycast(pPoint, pForward);
 			if (IsValid)
 			{
-				mPhotonView.RPC(nameof(RPC_ShootRaycast), RpcTarget.Others, pPoint, pForward);
+				m_PhotonView.RPC(nameof(RPC_ShootRaycast), RpcTarget.Others, pPoint, pForward);
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace OliverLoescher.Weapon.Multiplayer
 			base.OnShootFailed();
 			if (IsValid)
 			{
-				mPhotonView.RPC(nameof(RPC_ShootFailed), RpcTarget.Others);
+				m_PhotonView.RPC(nameof(RPC_ShootFailed), RpcTarget.Others);
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace OliverLoescher.Weapon.Multiplayer
 		{
 			if (IsValid)
 			{
-				mPhotonView.RPC(nameof(RPC_Projectile_DoLifeEnd), RpcTarget.Others, pID, pPosition);
+				m_PhotonView.RPC(nameof(RPC_Projectile_DoLifeEnd), RpcTarget.Others, pID, pPosition);
 			}
 		}
 
@@ -66,7 +66,7 @@ namespace OliverLoescher.Weapon.Multiplayer
 		{
 			if (IsValid)
 			{
-				mPhotonView.RPC(nameof(RPC_Projectile_DoCollision), RpcTarget.Others, pID, pPosition, pDidDamage);
+				m_PhotonView.RPC(nameof(RPC_Projectile_DoCollision), RpcTarget.Others, pID, pPosition, pDidDamage);
 			}
 		}
 		#endregion Self
@@ -88,7 +88,7 @@ namespace OliverLoescher.Weapon.Multiplayer
 				return;
 			}
 			projectileMultiplayer.InitMultiplayer(pID, this, false);
-			mActiveProjectiles.Add(pID, projectileMultiplayer);
+			m_ActiveProjectiles.Add(pID, projectileMultiplayer);
 		}
 
 		[PunRPC]
@@ -100,7 +100,7 @@ namespace OliverLoescher.Weapon.Multiplayer
 		[PunRPC]
 		public void RPC_Projectile_DoLifeEnd(int pID, Vector3 pPosition)
 		{
-			if (Util.TryGetAndRemove(ref mActiveProjectiles, pID, out ProjectileMultiplayer projectile))
+			if (Util.TryGetAndRemove(ref m_ActiveProjectiles, pID, out ProjectileMultiplayer projectile))
 			{
 				projectile.transform.position = pPosition;
 				projectile.ForceLifeEnd();
@@ -110,14 +110,14 @@ namespace OliverLoescher.Weapon.Multiplayer
 		[PunRPC]
 		public void RPC_Projectile_DoCollision(int pID, Vector3 pPosition, bool pDidDamage)
 		{
-			if (!mActiveProjectiles.TryGetValue(pID, out ProjectileMultiplayer projectile))
+			if (!m_ActiveProjectiles.TryGetValue(pID, out ProjectileMultiplayer projectile))
 			{
 				return;
 			}
 			projectile.transform.position = pPosition;
 			if (projectile.ForceCollision(pDidDamage))
 			{
-				mActiveProjectiles.Remove(pID);
+				m_ActiveProjectiles.Remove(pID);
 			}
 		}
 		#endregion

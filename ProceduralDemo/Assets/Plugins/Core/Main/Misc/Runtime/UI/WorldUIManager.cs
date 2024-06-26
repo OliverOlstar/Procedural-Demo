@@ -9,13 +9,13 @@ namespace Core
 		{
 			static WorldUIManager sSingleton = null;
 
-			Dictionary<int, WorldUIBehaviour> mWorldUIElements = new Dictionary<int, WorldUIBehaviour>(100);
+			Dictionary<int, WorldUIBehaviour> mWorldUIElements = new(100);
 
 			public static WorldUIManager Get() { return sSingleton; }
 
 			public static void CheckIn(WorldUIBehaviour element)
 			{
-				WorldUIManager worldUIManager = WorldUIManager.Get();
+				WorldUIManager worldUIManager = Get();
 				if (worldUIManager == null)
 				{
 					return;
@@ -26,7 +26,7 @@ namespace Core
 
 			public static void CheckOut(WorldUIBehaviour element)
 			{
-				WorldUIManager worldUIManager = WorldUIManager.Get();
+				WorldUIManager worldUIManager = Get();
 				if (worldUIManager == null)
 				{
 					return;
@@ -82,7 +82,10 @@ namespace Core
 					element.ScaleToCamera();
 				}
 
-				while (Sort());
+				while (Sort())
+				{
+					;
+				}
 			}
 		} 
 	}

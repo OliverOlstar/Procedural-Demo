@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// %Constraints to position in world space.
@@ -17,10 +18,19 @@ namespace RootMotion.FinalIK {
 		public Vector3 position;
 		
 		public override void UpdateConstraint() {
-			if (weight <= 0) return;
-			if (!isValid) return;
-			
+			if (weight <= 0)
+			{
+				return;
+			}
+
+
+			if (!isValid)
+			{
+				return;
+			}
+
 			// Lerping to position
+
 			transform.position = Vector3.Lerp(transform.position, position, weight);
 		}
 		

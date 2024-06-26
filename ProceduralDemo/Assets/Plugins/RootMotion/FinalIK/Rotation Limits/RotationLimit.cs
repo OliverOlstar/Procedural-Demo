@@ -1,13 +1,12 @@
 using UnityEngine;
-using System.Collections;
 
 namespace RootMotion.FinalIK
 {
 
-    /// <summary>
-    /// The base abstract class for all Rotation limits. Contains common functionality and static helper methods
-    /// </summary>
-    public abstract class RotationLimit : MonoBehaviour
+	/// <summary>
+	/// The base abstract class for all Rotation limits. Contains common functionality and static helper methods
+	/// </summary>
+	public abstract class RotationLimit : MonoBehaviour
     {
 
         #region Main Interface
@@ -43,10 +42,13 @@ namespace RootMotion.FinalIK
         public Quaternion GetLimitedLocalRotation(Quaternion localRotation, out bool changed)
         {
             // Making sure the Rotation Limit is initiated
-            if (!initiated) Awake();
+            if (!initiated)
+			{
+				Awake();
+			}
 
-            // Subtracting defaultLocalRotation
-            Quaternion rotation = Quaternion.Inverse(defaultLocalRotation) * localRotation;
+			// Subtracting defaultLocalRotation
+			Quaternion rotation = Quaternion.Inverse(defaultLocalRotation) * localRotation;
 
             Quaternion limitedRotation = LimitRotation(rotation);
 #if UNITY_2018_3_OR_NEWER
@@ -54,10 +56,13 @@ namespace RootMotion.FinalIK
 #endif
             changed = limitedRotation != rotation;
 
-            if (!changed) return localRotation;
+            if (!changed)
+			{
+				return localRotation;
+			}
 
-            // Apply defaultLocalRotation back on
-            return defaultLocalRotation * limitedRotation;
+			// Apply defaultLocalRotation back on
+			return defaultLocalRotation * limitedRotation;
         }
 
         /// <summary>
@@ -118,10 +123,17 @@ namespace RootMotion.FinalIK
         void Awake()
         {
             // Store the local rotation to map the zero rotation point to the current rotation
-            if (!defaultLocalRotationSet) SetDefaultLocalRotation();
+            if (!defaultLocalRotationSet)
+			{
+				SetDefaultLocalRotation();
+			}
 
-            if (axis == Vector3.zero) Debug.LogError("Axis is Vector3.zero.");
-            initiated = true;
+			if (axis == Vector3.zero)
+			{
+				Debug.LogError("Axis is Vector3.zero.");
+			}
+
+			initiated = true;
         }
 
         /*
@@ -157,9 +169,12 @@ namespace RootMotion.FinalIK
         protected static Quaternion LimitTwist(Quaternion rotation, Vector3 axis, Vector3 orthoAxis, float twistLimit)
         {
             twistLimit = Mathf.Clamp(twistLimit, 0, 180);
-            if (twistLimit >= 180) return rotation;
+            if (twistLimit >= 180)
+			{
+				return rotation;
+			}
 
-            Vector3 normal = rotation * axis;
+			Vector3 normal = rotation * axis;
             Vector3 orthoTangent = orthoAxis;
             Vector3.OrthoNormalize(ref normal, ref orthoTangent);
 
@@ -168,10 +183,13 @@ namespace RootMotion.FinalIK
 
             Quaternion fixedRotation = Quaternion.FromToRotation(rotatedOrthoTangent, orthoTangent) * rotation;
 
-            if (twistLimit <= 0) return fixedRotation;
+            if (twistLimit <= 0)
+			{
+				return fixedRotation;
+			}
 
-            // Rotate from zero twist to free twist by the limited angle
-            return Quaternion.RotateTowards(fixedRotation, rotation, twistLimit);
+			// Rotate from zero twist to free twist by the limited angle
+			return Quaternion.RotateTowards(fixedRotation, rotation, twistLimit);
         }
 
         /*

@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Unimate/Core/Animation Clip")]
 public class UnimateAnimationClip : UnimateTween<UnimateAnimationClip, UnimateAnimationClip.Player>

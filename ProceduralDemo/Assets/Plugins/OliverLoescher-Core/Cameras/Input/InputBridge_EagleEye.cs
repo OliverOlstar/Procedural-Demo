@@ -1,43 +1,41 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Sirenix.OdinInspector;
-using OliverLoescher.Input;
+using OCore.Input;
 
-namespace OliverLoescher
+namespace OCore
 {
 	public class InputBridge_EagleEye : InputBridge_Base
 	{
 		[SerializeField]
-		private InputModule_Vector2 moveInput = new();
+		private InputModule_Vector2 m_MoveInput = new();
 		[SerializeField]
-		private InputModule_ToggledInput<InputModule_Vector2> moveDeltaInput = new();
+		private InputModule_ToggledInput<InputModule_Vector2> m_MoveDeltaInput = new();
 		[SerializeField]
-		private InputModule_Scroll zoomInput = new();
+		private InputModule_Scroll m_ZoomInput = new();
 		[SerializeField]
-		private InputModule_Scroll rotateInput = new();
+		private InputModule_Scroll m_RotateInput = new();
 
-		public InputModule_Vector2 Move => moveInput;
-		public InputModule_ToggledInput<InputModule_Vector2> MoveDelta => moveDeltaInput;
-		public InputModule_Scroll Zoom => zoomInput;
-		public InputModule_Scroll Rotate => rotateInput;
+		public InputModule_Vector2 Move => m_MoveInput;
+		public InputModule_ToggledInput<InputModule_Vector2> MoveDelta => m_MoveDeltaInput;
+		public InputModule_Scroll Zoom => m_ZoomInput;
+		public InputModule_Scroll Rotate => m_RotateInput;
 
 		public override InputActionMap Actions => InputSystem.Instance.EagleEye.Get();
 		public override IEnumerable<IInputModule> GetAllInputModules()
 		{
-			yield return moveInput;
-			yield return moveDeltaInput;
-			yield return zoomInput;
-			yield return rotateInput;
+			yield return m_MoveInput;
+			yield return m_MoveDeltaInput;
+			yield return m_ZoomInput;
+			yield return m_RotateInput;
 		}
 
 		protected override void Awake()
 		{
-			moveInput.Initalize(InputSystem.Instance.EagleEye.Move, IsValid);
-			moveDeltaInput.Initalize(InputSystem.Instance.EagleEye.MoveDelta, InputSystem.Instance.EagleEye.MoveDeltaButton, IsValid);
-			zoomInput.Initalize(InputSystem.Instance.EagleEye.Zoom, IsValid);
-			rotateInput.Initalize(InputSystem.Instance.EagleEye.Rotate, IsValid);
+			m_MoveInput.Initalize(InputSystem.Instance.EagleEye.Move, IsValid);
+			m_MoveDeltaInput.Initalize(InputSystem.Instance.EagleEye.MoveDelta, InputSystem.Instance.EagleEye.MoveDeltaButton, IsValid);
+			m_ZoomInput.Initalize(InputSystem.Instance.EagleEye.Zoom, IsValid);
+			m_RotateInput.Initalize(InputSystem.Instance.EagleEye.Rotate, IsValid);
 
 			base.Awake();
 		}

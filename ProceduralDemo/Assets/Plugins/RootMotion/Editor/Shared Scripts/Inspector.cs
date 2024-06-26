@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace RootMotion {
+namespace RootMotion
+{
 
 	/*
 	 * Inspector contains helper methods for creating undoable custom inspectors with enforced layout, tooltips and styling
 	 * */
+
 	public class Inspector {
 		
 		#region InspectorGUI tools
@@ -22,13 +23,23 @@ namespace RootMotion {
 		private static SerializedProperty element;
 		
 		public static string GetArrayName(SerializedProperty array, string emptyName, string propertyName = "") {
-			if (array.arraySize < 1) return emptyName;
+			if (array.arraySize < 1)
+			{
+				return emptyName;
+			}
+
+
 			property = propertyName == ""? array.GetArrayElementAtIndex(0): array.GetArrayElementAtIndex(0).FindPropertyRelative(propertyName);
 			return GetObjectReferenceName(property, emptyName);
 		}
 		
 		public static string GetObjectReferenceName(SerializedProperty prop, string emptyName) {
-			if (prop.objectReferenceValue == null) return emptyName;
+			if (prop.objectReferenceValue == null)
+			{
+				return emptyName;
+			}
+
+
 			return prop.objectReferenceValue.name;
 		}
 		
@@ -51,9 +62,13 @@ namespace RootMotion {
 			
 			int deleteIndex = -1;
 			
-			if (drawArrayElement == null || !showHeading) prop.isExpanded = true;
-			
+			if (drawArrayElement == null || !showHeading)
+			{
+				prop.isExpanded = true;
+			}
+
 			// Draw Array elements
+
 			if (prop.isExpanded) {			
 				for(int i = 0; i < prop.arraySize; i++) {
 					GUILayout.BeginHorizontal(); // Main
@@ -104,8 +119,11 @@ namespace RootMotion {
 				}
 				
 				// Deleting array elements
-				if (deleteIndex != -1) prop.DeleteArrayElementAtIndex(deleteIndex);
-				
+				if (deleteIndex != -1)
+				{
+					prop.DeleteArrayElementAtIndex(deleteIndex);
+				}
+
 				// Adding array elements
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(((EditorGUI.indentLevel + 1) * indent) + 4);
@@ -114,7 +132,11 @@ namespace RootMotion {
 				if (editHierarchy && GUILayout.Button(new GUIContent("+", "Add"), EditorStyles.miniButton, GUILayout.Width(20))) {
 					prop.arraySize ++;
 					
-					if (onAddToArray != null) onAddToArray(prop.GetArrayElementAtIndex(prop.arraySize - 1));
+					if (onAddToArray != null)
+					{
+						onAddToArray(prop.GetArrayElementAtIndex(prop.arraySize - 1));
+					}
+
 				}
 				
 				GUILayout.EndVertical();
@@ -147,15 +169,24 @@ namespace RootMotion {
 		}
 		
 		public static void AddObjectReference(SerializedProperty prop, GUIContent guiContent, bool editHierarchy, int labelWidth, bool alignToEdge = true) {
-			if (alignToEdge) GUILayout.BeginHorizontal();
+			if (alignToEdge)
+			{
+				GUILayout.BeginHorizontal();
+			}
+
+
 			EditorGUILayout.LabelField(guiContent, GUILayout.MinWidth(labelWidth));
 			if (editHierarchy) {
 				EditorGUILayout.PropertyField(prop, GUIContent.none);
 			} else {
-				UnityEngine.Object obj = prop.objectReferenceValue;
+				Object obj = prop.objectReferenceValue;
 				EditorGUILayout.LabelField(new GUIContent(obj != null? obj.name: "None"));
 			}
-			if (alignToEdge) GUILayout.EndHorizontal();
+			if (alignToEdge)
+			{
+				GUILayout.EndHorizontal();
+			}
+
 		}
 		
 		public static void AddObjectReference(SerializedProperty prop, GUIContent guiContent, bool editHierarchy, int labelWidth, int propWidth, bool alignToEdge = true) {
@@ -164,7 +195,7 @@ namespace RootMotion {
 			if (editHierarchy) {
 				EditorGUILayout.PropertyField(prop, GUIContent.none, GUILayout.Width(propWidth));
 			} else {
-				UnityEngine.Object obj = prop.objectReferenceValue;
+				Object obj = prop.objectReferenceValue;
 				EditorGUILayout.LabelField(new GUIContent(obj != null? obj.name: "None"), GUILayout.Width(propWidth));
 			}
 			//if (alignToEdge) GUILayout.EndHorizontal();
@@ -176,7 +207,12 @@ namespace RootMotion {
 		
 		public static bool Button(string name, string toolTip, Object undoObject, params GUILayoutOption[] options) {
 			bool button = GUILayout.Button(new GUIContent(name, toolTip), options);
-			if (button && !Application.isPlaying) Undo.RecordObject(undoObject, name);
+			if (button && !Application.isPlaying)
+			{
+				Undo.RecordObject(undoObject, name);
+			}
+
+
 			return button;
 		}
 		
@@ -189,7 +225,12 @@ namespace RootMotion {
 		public static System.Enum AddEnum(System.Enum input, string name, string toolTip, Object undoObject, params GUILayoutOption[] options) {
 			System.Enum newValue = EditorGUILayout.EnumPopup(new GUIContent(name, toolTip), input, options);
 			
-			if (newValue.ToString() != input.ToString() && !Application.isPlaying) Undo.RecordObject(undoObject, name);
+			if (newValue.ToString() != input.ToString() && !Application.isPlaying)
+			{
+				Undo.RecordObject(undoObject, name);
+			}
+
+
 			return newValue;
 		}
 		
@@ -233,12 +274,22 @@ namespace RootMotion {
 		}
 		
 		private static float RecordObjectFloat(float input, float newValue, string name, Object undoObject) {
-			if (newValue != input && !Application.isPlaying) Undo.RecordObject(undoObject, name);
+			if (newValue != input && !Application.isPlaying)
+			{
+				Undo.RecordObject(undoObject, name);
+			}
+
+
 			return newValue;
 		}
 		
 		private static Object RecordObject(Object input, Object newValue, string name, Object undoObject) {
-			if (newValue != input && !Application.isPlaying) Undo.RecordObject(undoObject, name);
+			if (newValue != input && !Application.isPlaying)
+			{
+				Undo.RecordObject(undoObject, name);
+			}
+
+
 			return newValue;
 		}
 		

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Mapping a bone hierarchy to 2 triangles defined by the hip and chest planes.
@@ -46,16 +47,27 @@ namespace RootMotion.FinalIK {
 		/// Determines whether this IKMappingSpine is valid
 		/// </summary>
 		public override bool IsValid(IKSolver solver, ref string message) {
-			if (!base.IsValid(solver, ref message)) return false;
-			
-			foreach (Transform spineBone in spineBones) if (spineBone == null) {
+			if (!base.IsValid(solver, ref message))
+			{
+				return false;
+			}
+
+
+			foreach (Transform spineBone in spineBones)
+			{
+				if (spineBone == null) {
 				message = "Spine bones contains a null reference.";
 				return false;
 			}
-			
+			}
+
 			int nodes = 0;
 			for (int i = 0; i < spineBones.Length; i++) {
-				if (solver.GetPoint(spineBones[i]) != null) nodes ++;
+				if (solver.GetPoint(spineBones[i]) != null)
+				{
+					nodes ++;
+				}
+
 			}
 			
 			if (nodes == 0) {
@@ -109,7 +121,7 @@ namespace RootMotion.FinalIK {
 		
 		private int rootNodeIndex;
 		private BoneMap[] spine = new BoneMap[0];
-		private BoneMap leftUpperArm = new BoneMap(), rightUpperArm = new BoneMap(), leftThigh = new BoneMap(), rightThigh = new BoneMap();
+		private BoneMap leftUpperArm = new(), rightUpperArm = new(), leftThigh = new(), rightThigh = new();
 		private bool useFABRIK;
 		
 		public IKMappingSpine() {}
@@ -142,34 +154,74 @@ namespace RootMotion.FinalIK {
 		 * Initiating and setting defaults
 		 * */
 		public override void Initiate(IKSolverFullBody solver) {
-			if (iterations <= 0) iterations = 3;
-			
+			if (iterations <= 0)
+			{
+				iterations = 3;
+			}
+
 			// Creating the bone maps
-			if (spine == null || spine.Length != spineBones.Length) spine = new BoneMap[spineBones.Length];
+
+			if (spine == null || spine.Length != spineBones.Length)
+			{
+				spine = new BoneMap[spineBones.Length];
+			}
+
 
 			rootNodeIndex = -1;
 			
 			for (int i = 0; i < spineBones.Length; i++) {
-				if (spine[i] == null) spine[i] = new BoneMap();
+				if (spine[i] == null)
+				{
+					spine[i] = new BoneMap();
+				}
+
+
 				spine[i].Initiate(spineBones[i], solver);
 
 				// Finding the root node
-				if (spine[i].isNodeBone) rootNodeIndex = i;
+				if (spine[i].isNodeBone)
+				{
+					rootNodeIndex = i;
+				}
+
 			}
 
-			if (leftUpperArm == null) leftUpperArm = new BoneMap();
-			if (rightUpperArm == null) rightUpperArm = new BoneMap();
-			if (leftThigh == null) leftThigh = new BoneMap();
-			if (rightThigh == null) rightThigh = new BoneMap();
-			
+			if (leftUpperArm == null)
+			{
+				leftUpperArm = new BoneMap();
+			}
+
+
+			if (rightUpperArm == null)
+			{
+				rightUpperArm = new BoneMap();
+			}
+
+
+			if (leftThigh == null)
+			{
+				leftThigh = new BoneMap();
+			}
+
+
+			if (rightThigh == null)
+			{
+				rightThigh = new BoneMap();
+			}
+
+
 			leftUpperArm.Initiate(leftUpperArmBone, solver);
 			rightUpperArm.Initiate(rightUpperArmBone, solver);
 			leftThigh.Initiate(leftThighBone, solver);
 			rightThigh.Initiate(rightThighBone, solver);
 
-			for (int i = 0; i < spine.Length; i++) spine[i].SetIKPosition();
-			
+			for (int i = 0; i < spine.Length; i++)
+			{
+				spine[i].SetIKPosition();
+			}
+
 			// Defining the plane for the first bone
+
 			spine[0].SetPlane(solver, spine[rootNodeIndex].transform, leftThigh.transform, rightThigh.transform);
 			
 			// Finding bone lengths and axes
@@ -181,16 +233,26 @@ namespace RootMotion.FinalIK {
 			}
 			
 			// Defining the plane for the last bone
-			spine[spine.Length - 1].SetPlane(solver, spine[rootNodeIndex].transform, leftUpperArm.transform, rightUpperArm.transform);
-			spine[spine.Length - 1].SetLocalSwingAxis(leftUpperArm, rightUpperArm);
+			spine[^1].SetPlane(solver, spine[rootNodeIndex].transform, leftUpperArm.transform, rightUpperArm.transform);
+			spine[^1].SetLocalSwingAxis(leftUpperArm, rightUpperArm);
 
 			useFABRIK = UseFABRIK();
 		}
 
 		// Should the spine mapping use the FABRIK algorithm
 		private bool UseFABRIK() {
-			if (spine.Length > 3) return true;
-			if (rootNodeIndex != 1) return true;
+			if (spine.Length > 3)
+			{
+				return true;
+			}
+
+
+			if (rootNodeIndex != 1)
+			{
+				return true;
+			}
+
+
 			return false;
 		}
 
@@ -207,8 +269,8 @@ namespace RootMotion.FinalIK {
 				spine[i].SetLocalTwistAxis(leftUpperArm.transform.position - rightUpperArm.transform.position, spine[i + 1].transform.position - spine[i].transform.position);
 			}
 			
-			spine[spine.Length - 1].UpdatePlane(true, true);
-			spine[spine.Length - 1].SetLocalSwingAxis(leftUpperArm, rightUpperArm);
+			spine[^1].UpdatePlane(true, true);
+			spine[^1].SetLocalSwingAxis(leftUpperArm, rightUpperArm);
 		}
 
 		/*
@@ -217,7 +279,7 @@ namespace RootMotion.FinalIK {
 		public void WritePose(IKSolverFullBody solver) {
 			Vector3 firstPosition = spine[0].GetPlanePosition(solver);
 			Vector3 rootPosition = solver.GetNode(spine[rootNodeIndex].chainIndex, spine[rootNodeIndex].nodeIndex).solverPosition;
-			Vector3 lastPosition = spine[spine.Length - 1].GetPlanePosition(solver);
+			Vector3 lastPosition = spine[^1].GetPlanePosition(solver);
 
 			// If we have more than 3 bones, use the FABRIK algorithm
 			if (useFABRIK) {
@@ -239,7 +301,7 @@ namespace RootMotion.FinalIK {
 				spine[rootNodeIndex].ikPosition = rootPosition;
 			}
 
-			spine[spine.Length - 1].ikPosition = lastPosition;
+			spine[^1].ikPosition = lastPosition;
 
 			// Mapping the spine bones to the solver
 			MapToSolverPositions(solver);
@@ -293,8 +355,8 @@ namespace RootMotion.FinalIK {
 			}
 			
 			// Translating the last bone
-			spine[spine.Length - 1].SetToIKPosition();
-			spine[spine.Length - 1].RotateToPlane(solver, 1f);
+			spine[^1].SetToIKPosition();
+			spine[^1].RotateToPlane(solver, 1f);
 		}
 	}
 }

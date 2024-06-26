@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion.FinalIK
 {
 
-    /// <summary>
-    /// Relaxes the twist rotation if the TwistSolver transforms relative to their parent and a child Transforms, using their initial rotations as the most relaxed pose.
-    /// </summary>
-    public class TwistRelaxer : MonoBehaviour
+	/// <summary>
+	/// Relaxes the twist rotation if the TwistSolver transforms relative to their parent and a child Transforms, using their initial rotations as the most relaxed pose.
+	/// </summary>
+	public class TwistRelaxer : MonoBehaviour
     {
 
         public IK ik;
@@ -69,7 +68,10 @@ namespace RootMotion.FinalIK
 
         void OnDestroy()
         {
-            if (ik != null) ik.GetIKSolver().OnPostUpdate -= OnPostUpdate;
-        }
+            if (ik != null)
+			{
+				ik.GetIKSolver().OnPostUpdate -= OnPostUpdate;
+			}
+		}
     }
 }

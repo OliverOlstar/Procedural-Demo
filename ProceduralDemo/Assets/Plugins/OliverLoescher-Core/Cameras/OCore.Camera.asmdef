@@ -1,10 +1,12 @@
 {
-    "name": "OliverLoescher.Cue",
-    "rootNamespace": "OliverLoescher.Cue",
+    "name": "OCore.Camera",
+    "rootNamespace": "OCore.Camera",
     "references": [
         "GUID:5b10c1f9ecd537f4dbe3d211152286e8",
         "GUID:81741247162146e40bdf68cc474125d7",
-        "GUID:0118ec06b32cf0e4b8991ce4ac3b0263"
+        "GUID:1347e37f53d1f5c489b2d499baae4ef6",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:4307f53044263cf4b835bd812fc161a4"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

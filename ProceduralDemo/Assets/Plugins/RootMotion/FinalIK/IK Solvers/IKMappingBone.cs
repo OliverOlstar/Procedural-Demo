@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Maps a single bone to a node in %IK Solver
@@ -26,8 +27,12 @@ namespace RootMotion.FinalIK {
 		/// Determines whether this IKMappingBone is valid.
 		/// </summary>
 		public override bool IsValid(IKSolver solver, ref string message) {
-			if (!base.IsValid(solver, ref message)) return false;
-			
+			if (!base.IsValid(solver, ref message))
+			{
+				return false;
+			}
+
+
 			if (bone == null) {
 				message = "IKMappingBone's bone is null.";
 				return false;
@@ -38,7 +43,7 @@ namespace RootMotion.FinalIK {
 		
 		#endregion Main Interface
 		
-		private BoneMap boneMap = new BoneMap();
+		private BoneMap boneMap = new();
 		
 		public IKMappingBone() {}
 		
@@ -58,7 +63,11 @@ namespace RootMotion.FinalIK {
 		 * Initiating and setting defaults
 		 * */
 		public override void Initiate(IKSolverFullBody solver) {
-			if (boneMap == null) boneMap = new BoneMap();
+			if (boneMap == null)
+			{
+				boneMap = new BoneMap();
+			}
+
 
 			boneMap.Initiate(bone, solver);
 		}

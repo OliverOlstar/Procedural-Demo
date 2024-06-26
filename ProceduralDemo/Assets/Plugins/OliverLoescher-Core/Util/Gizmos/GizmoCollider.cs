@@ -1,29 +1,27 @@
-using OliverLoescher.Debug2;
-using System.Collections;
-using System.Collections.Generic;
+using OCore.Debug2;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
 	[RequireComponent(typeof(Collider))]
-    public class GizmoCollider : GizmoBase
+	public class GizmoCollider : GizmoBase
 	{
 		[SerializeField]
-		private bool wireframe = false;
+		private bool m_Wireframe = false;
 
-		private Collider target = null;
+		private Collider m_Target = null;
 
 		protected override void DrawGizmos()
 		{
 			base.DrawGizmos();
-			if (target == null && !TryGetComponent(out target))
+			if (m_Target == null && !TryGetComponent(out m_Target))
 			{
 				return;
 			}
 			Gizmos.matrix = transform.localToWorldMatrix;
-			if (wireframe)
+			if (m_Wireframe)
 			{
-				switch (target)
+				switch (m_Target)
 				{
 					case BoxCollider box:
 						Gizmos.DrawWireCube(box.center, box.size);
@@ -41,7 +39,7 @@ namespace OliverLoescher
 			}
 			else
 			{
-				switch (target)
+				switch (m_Target)
 				{
 					case BoxCollider box:
 						Gizmos.DrawCube(box.center, box.size);

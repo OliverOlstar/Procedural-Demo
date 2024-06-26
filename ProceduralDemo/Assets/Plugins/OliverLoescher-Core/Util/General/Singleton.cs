@@ -1,31 +1,27 @@
-using System;
 using System.Diagnostics;
 using UnityEngine;
 
 
-namespace OliverLoescher
+namespace OCore
 {
 	public abstract class Singleton<T> where T : class, new()
 	{
-		private static T _Instance = null;
-		private static ISingleton _InstanceInterface = null;
+		private static T s_Instance = null;
+		private static ISingleton s_InstanceInterface = null;
 
 		public static T Instance
 		{
 			get
 			{
 				// Create
-				if (_Instance == null)
+				if (s_Instance == null)
 				{
-					_Instance = new T();
-					_InstanceInterface = (_Instance is ISingleton i) ? i : null;
+					s_Instance = new T();
+					s_InstanceInterface = (s_Instance is ISingleton i) ? i : null;
 				}
 				// Access
-				if (_InstanceInterface != null)
-				{
-					_InstanceInterface.OnAccessed();
-				}
-				return _Instance;
+				s_InstanceInterface?.OnAccessed();
+				return s_Instance;
 			}
 		}
 

@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
 	public class PoolElement : MonoBehaviour
 	{
-		private string poolKey = string.Empty;
-		public string PoolKey => string.IsNullOrEmpty(poolKey) ? gameObject.name : poolKey;
-		public Transform parent { get; private set; } = null;
+		private string m_PoolKey = string.Empty;
+		public string PoolKey => string.IsNullOrEmpty(m_PoolKey) ? gameObject.name : m_PoolKey;
+		public Transform Parent { get; private set; } = null;
 
 		public virtual void Init(string pPoolKey, Transform pParent)
 		{
-			poolKey = pPoolKey;
-			parent = pParent;
+			m_PoolKey = pPoolKey;
+			Parent = pParent;
 		}
 
 		public virtual void ReturnToPool()

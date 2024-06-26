@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace OliverLoescher.Debug2
+namespace OCore.Debug2
 {
 	public abstract class GizmoBase : MonoBehaviour
 	{
 		[SerializeField]
-		private Color color = new Color(0, 0.5f, 1, 1);
+		private Color m_Colour = new(0.0f, 0.5f, 1.0f, 1.0f);
 		[SerializeField]
-		private bool alwaysShow = false;
+		private bool m_AlwaysShow = false;
 
 		private void Awake()
 		{
@@ -22,7 +20,7 @@ namespace OliverLoescher.Debug2
 
 		protected virtual void OnDrawGizmos()
 		{
-			if (alwaysShow == true)
+			if (m_AlwaysShow)
 			{
 				DrawGizmos();
 			}
@@ -30,7 +28,7 @@ namespace OliverLoescher.Debug2
 
 		protected virtual void OnDrawGizmosSelected()
 		{
-			if (alwaysShow == false)
+			if (!m_AlwaysShow)
 			{
 				DrawGizmos();
 			}
@@ -38,7 +36,7 @@ namespace OliverLoescher.Debug2
 
 		protected virtual void DrawGizmos()
 		{
-			Gizmos.color = color;
+			Gizmos.color = m_Colour;
 		}
 	}
 }

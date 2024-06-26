@@ -163,14 +163,27 @@ namespace RootMotion.FinalIK {
             // Smooth weight
             float targetWeight = target != null ? weight : 0f;
             ik.solver.IKPositionWeight = Mathf.SmoothDamp(ik.solver.IKPositionWeight, targetWeight, ref weightV, weightSmoothTime);
-            if (ik.solver.IKPositionWeight >= 0.999f && targetWeight > ik.solver.IKPositionWeight) ik.solver.IKPositionWeight = 1f;
-            if (ik.solver.IKPositionWeight <= 0.001f && targetWeight < ik.solver.IKPositionWeight) ik.solver.IKPositionWeight = 0f;
+            if (ik.solver.IKPositionWeight >= 0.999f && targetWeight > ik.solver.IKPositionWeight)
+			{
+				ik.solver.IKPositionWeight = 1f;
+			}
 
-            if (ik.solver.IKPositionWeight <= 0f) return;
+			if (ik.solver.IKPositionWeight <= 0.001f && targetWeight < ik.solver.IKPositionWeight)
+			{
+				ik.solver.IKPositionWeight = 0f;
+			}
+
+			if (ik.solver.IKPositionWeight <= 0f)
+			{
+				return;
+			}
 
 			// Smooth target switching
 			switchWeight = Mathf.SmoothDamp(switchWeight, 1f, ref switchWeightV, targetSwitchSmoothTime);
-			if (switchWeight >= 0.999f) switchWeight = 1f;
+			if (switchWeight >= 0.999f)
+			{
+				switchWeight = 1f;
+			}
 
 			if (target != null) {
 				ik.solver.IKPosition = Vector3.Lerp(lastPosition, target.position + offset, switchWeight);
@@ -186,13 +199,19 @@ namespace RootMotion.FinalIK {
 				Vector3 targetDir = ik.solver.IKPosition - pivot;
 
                 // Slerp
-				if (slerpSpeed > 0f) dir = Vector3.Slerp(dir, targetDir, Time.deltaTime * slerpSpeed);
+				if (slerpSpeed > 0f)
+				{
+					dir = Vector3.Slerp(dir, targetDir, Time.deltaTime * slerpSpeed);
+				}
 
-                // RotateTowards
-				if (maxRadiansDelta > 0 || maxMagnitudeDelta > 0f) dir = Vector3.RotateTowards(dir, targetDir, Time.deltaTime * maxRadiansDelta, maxMagnitudeDelta);
+				// RotateTowards
+				if (maxRadiansDelta > 0 || maxMagnitudeDelta > 0f)
+				{
+					dir = Vector3.RotateTowards(dir, targetDir, Time.deltaTime * maxRadiansDelta, maxMagnitudeDelta);
+				}
 
-                // SmoothDamp
-                if (smoothDampTime > 0f)
+				// SmoothDamp
+				if (smoothDampTime > 0f)
                 {
                     float yaw = V3Tools.GetYaw(dir);
                     float targetYaw = V3Tools.GetYaw(targetDir);
@@ -252,12 +271,18 @@ namespace RootMotion.FinalIK {
 
 				if (angle > max) {
 					rotation = angle - max;
-                    if (!turningToTarget && turnToTarget) StartCoroutine(TurnToTarget());
+                    if (!turningToTarget && turnToTarget)
+					{
+						StartCoroutine(TurnToTarget());
+					}
 				}
 				if (angle < -max) {
 					rotation = angle + max;
-                    if (!turningToTarget && turnToTarget) StartCoroutine(TurnToTarget());
-                }
+                    if (!turningToTarget && turnToTarget)
+					{
+						StartCoroutine(TurnToTarget());
+					}
+				}
 
                 ik.transform.rotation = Quaternion.AngleAxis(rotation, ik.transform.up) * ik.transform.rotation;		
 			}
@@ -271,9 +296,12 @@ namespace RootMotion.FinalIK {
             while (turnToTargetMlp > 0f)
             {
                 turnToTargetMlp = Mathf.SmoothDamp(turnToTargetMlp, 0f, ref turnToTargetMlpV, turnToTargetTime);
-                if (turnToTargetMlp < 0.01f) turnToTargetMlp = 0f;
-                
-                 yield return null;
+                if (turnToTargetMlp < 0.01f)
+				{
+					turnToTargetMlp = 0f;
+				}
+
+				yield return null;
             }
 
             turnToTargetMlp = 1f;

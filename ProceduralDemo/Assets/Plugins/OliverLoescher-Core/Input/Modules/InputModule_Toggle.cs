@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Input
+namespace OCore.Input
 {
 	[System.Serializable]
     public class InputModule_Toggle : InputModule_Base
@@ -46,7 +46,7 @@ namespace OliverLoescher.Input
 			}
 			// True if not toggle || not currently pressed
 			// False if toggle && currently pressed
-			Set(m_IsToggle == false || m_Input == false);
+			Set(!m_IsToggle || !m_Input);
 		}
 		private void OnCanceled(InputAction.CallbackContext ctx)
 		{

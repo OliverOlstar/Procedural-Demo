@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using OliverLoescher.Util;
+using OCore.Util;
 
 namespace Core
 {
 	public class CollectionPool<TCollection, T> where TCollection : class, ICollection<T>, new()
 	{
-		private static Stack<TCollection> s_Pool;
-		private static HashSet<TCollection> s_Set;
+		private static readonly Stack<TCollection> s_Pool;
+		private static readonly HashSet<TCollection> s_Set;
 
 		static CollectionPool()
 		{
@@ -32,7 +32,7 @@ namespace Core
 			}
 			else
 			{
-				TCollection collection = new TCollection();
+				TCollection collection = new();
 				//UnityEngine.Debug.Log($"{typeof(TCollection).Name}.Request() New " + collection.GetHashCode());
 				return collection;
 			}
@@ -63,8 +63,6 @@ namespace Core
 			s_Set.Add(collection);
 		}
 
-		protected CollectionPool()
-		{
-		}
+		protected CollectionPool() { }
 	}
 }

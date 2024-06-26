@@ -1,21 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher
+namespace OCore
 {
 	[RequireComponent(typeof(ParticleSystem))]
 	public class ParticlePoolElement : PoolElement
 	{
 		[InfoBox("Ensure particle stopping action is Callback")]
-		private ParticleSystem particle = null;
+		private ParticleSystem m_Particle = null;
 
 		public override void Init(string pPoolKey, Transform pParent)
 		{
 			base.Init(pPoolKey, pParent);
-			particle = GetComponent<ParticleSystem>();
-			SetStoppingAction(particle);
+			m_Particle = GetComponent<ParticleSystem>();
+			SetStoppingAction(m_Particle);
 		}
 
 		private void Reset()
@@ -37,7 +35,7 @@ namespace OliverLoescher
 		public override void ReturnToPool()
 		{
 			base.ReturnToPool();
-			particle.Stop();
+			m_Particle.Stop();
 		}
 
 		public override void OnExitPool()

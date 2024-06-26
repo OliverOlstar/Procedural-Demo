@@ -1,20 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Util
+namespace OCore.Util
 {
 	public class AnimUtilEase2D : Anim.IAnimationInternal
 	{
-		Easing.EaseParams EaseX;
-		Easing.EaseParams EaseY;
-		private readonly Anim.Tick2DEvent OnTick;
-		private readonly Anim.Tick2DEvent OnComplete;
+		private Easing.EaseParams m_EaseX;
+		private Easing.EaseParams m_EaseY;
+		private readonly Anim.Tick2DEvent m_OnTick;
+		private readonly Anim.Tick2DEvent m_OnComplete;
 
-		private readonly float InverseSeconds;
-		private float Progress01;
+		private readonly float m_InverseSeconds;
+		private float m_Progress01;
 
-		public bool IsComplete => Progress01 >= 1.0f;
+		public bool IsComplete => m_Progress01 >= 1.0f;
 
 		public AnimUtilEase2D(Easing.EaseParams pEaseX, Easing.EaseParams pEaseY, float pSeconds, Anim.Tick2DEvent pOnTick, Anim.Tick2DEvent pOnComplete, float pDelay)
 		{
@@ -23,13 +21,13 @@ namespace OliverLoescher.Util
 				Debug2.DevException("pOnTick should never be null", "", typeof(AnimUtilEase));
 			}
 			
-			EaseX = pEaseX;
-			EaseY = pEaseY;
-			OnTick = pOnTick;
-			OnComplete = pOnComplete ?? pOnTick;
+			m_EaseX = pEaseX;
+			m_EaseY = pEaseY;
+			m_OnTick = pOnTick;
+			m_OnComplete = pOnComplete ?? pOnTick;
 
-			InverseSeconds = 1.0f / pSeconds;
-			Progress01 = -pDelay * InverseSeconds;
+			m_InverseSeconds = 1.0f / pSeconds;
+			m_Progress01 = -pDelay * m_InverseSeconds;
 		}
 
 		bool Anim.IAnimationInternal.Tick(float pDeltaTime)
@@ -38,26 +36,27 @@ namespace OliverLoescher.Util
 			{
 				return true;
 			}
-			Progress01 += pDeltaTime * InverseSeconds;
+			m_Progress01 += pDeltaTime * m_InverseSeconds;
 			if (IsComplete)
 			{
-				OnComplete.Invoke(Vector2.one);
+				m_OnComplete.Invoke(Vector2.one);
 				return true;
 			}
-			if (Progress01 >= 0.0f)
+			if (m_Progress01 >= 0.0f)
 			{
-				OnTick.Invoke(new Vector2(EaseX.Ease(Progress01), EaseY.Ease(Progress01)));
+				m_OnTick.Invoke(new Vector2(m_EaseX.Ease(m_Progress01), m_EaseY.Ease(m_Progress01)));
 			}
 			return false;
 		}
 
 		public void Cancel()
 		{
-			if (!IsComplete)
+			if (IsComplete)
 			{
-				Progress01 = 1.0f;
-				OnComplete.Invoke(Vector2.one);
+				return;
 			}
+			m_Progress01 = 1.0f;
+			m_OnComplete.Invoke(Vector2.one);
 		}
 	}
 }

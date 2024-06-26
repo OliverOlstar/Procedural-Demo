@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 #if URP
@@ -8,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace StylizedWater2
 {
-    [CustomEditor(typeof(WaterObject))]
+	[CustomEditor(typeof(WaterObject))]
     [CanEditMultipleObjects]
     public class WaterObjectInspector : Editor
     {
@@ -45,10 +44,13 @@ namespace StylizedWater2
         private void CheckMaterial()
         {
             #if URP
-            if (UniversalRenderPipeline.asset == null || component.material == null) return;
+            if (UniversalRenderPipeline.asset == null || component.material == null)
+			{
+				return;
+			}
 
-            depthTextureRequired = UniversalRenderPipeline.asset.supportsCameraDepthTexture == false && component.material.GetFloat("_DisableDepthTexture") == 0f;
-            opaqueTextureRequired = UniversalRenderPipeline.asset.supportsCameraOpaqueTexture == false && component.material.GetFloat("_RefractionOn") == 1f;
+			depthTextureRequired = !UniversalRenderPipeline.asset.supportsCameraDepthTexture && component.material.GetFloat("_DisableDepthTexture") == 0f;
+            opaqueTextureRequired = !UniversalRenderPipeline.asset.supportsCameraOpaqueTexture && component.material.GetFloat("_RefractionOn") == 1f;
             #endif
         }
         
@@ -114,7 +116,7 @@ namespace StylizedWater2
                     {
                         foreach (WaterObject obj in WaterObject.Instances)
                         {
-                            var rect = EditorGUILayout.BeginHorizontal(EditorStyles.miniLabel);
+							Rect rect = EditorGUILayout.BeginHorizontal(EditorStyles.miniLabel);
 
                             if (rect.Contains(Event.current.mousePosition))
                             {

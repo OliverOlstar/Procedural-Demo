@@ -1,7 +1,7 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Using a spline to limit the range of rotation on universal and ball-and-socket joints. 
@@ -74,17 +74,27 @@ namespace RootMotion.FinalIK {
 		 * Apply the swing rotation limits
 		 * */
 		public Quaternion LimitSwing(Quaternion rotation) {
-			if (axis == Vector3.zero) return rotation; // Ignore with zero axes
-			if (rotation == Quaternion.identity) return rotation; // Assuming initial rotation is in the reachable area
-			
+			if (axis == Vector3.zero)
+			{
+				return rotation; // Ignore with zero axes
+			}
+
+			if (rotation == Quaternion.identity)
+			{
+				return rotation; // Assuming initial rotation is in the reachable area
+			}
+
 			// Get the rotation angle orthogonal to Axis
 			Vector3 swingAxis = rotation * axis;
 			float angle = GetOrthogonalAngle(swingAxis, secondaryAxis, axis);
 			
 			// Convert angle from 180 to 360 degrees representation
 			float dot = Vector3.Dot(swingAxis, crossAxis);
-			if (dot < 0) angle = 180 + (180 - angle);
-			
+			if (dot < 0)
+			{
+				angle = 180 + (180 - angle);
+			}
+
 			// Evaluate the limit for this angle
 			float limit = spline.Evaluate(angle);
 			

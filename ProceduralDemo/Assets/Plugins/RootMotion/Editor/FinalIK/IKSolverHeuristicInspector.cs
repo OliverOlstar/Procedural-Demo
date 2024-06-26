@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector and scene view tools for IK solvers extending IKSolverHeuristic
 	 * */
+
 	public class IKSolverHeuristicInspector: IKSolverInspector {
 
 		#region Public methods
@@ -51,8 +52,17 @@ namespace RootMotion.FinalIK {
 		 * */
 		public static void AddScene(IKSolverHeuristic solver, Color color, bool modifiable) {
 			// Protect from null reference errors
-			if (Application.isPlaying && !solver.initiated) return;
-			if (!Application.isPlaying && !solver.IsValid()) return;
+			if (Application.isPlaying && !solver.initiated)
+			{
+				return;
+			}
+
+
+			if (!Application.isPlaying && !solver.IsValid())
+			{
+				return;
+			}
+
 
 			Handles.color = color;
 			GUI.color = color;
@@ -61,22 +71,31 @@ namespace RootMotion.FinalIK {
 			for (int i = 0; i < solver.bones.Length; i++) {
 				IKSolver.Bone bone = solver.bones[i];
 
-				if (i < solver.bones.Length - 1) Handles.DrawLine(bone.transform.position, solver.bones[i + 1].transform.position);
-				Inspector.SphereCap(0, solver.bones[i].transform.position, Quaternion.identity, GetHandleSize(solver.bones[i].transform.position));
+				if (i < solver.bones.Length - 1)
+				{
+					Handles.DrawLine(bone.transform.position, solver.bones[i + 1].transform.position);
+				}
+
+
+				SphereCap(0, solver.bones[i].transform.position, Quaternion.identity, GetHandleSize(solver.bones[i].transform.position));
 			}
 			
 			// Selecting joint and manipulating IKPosition
 			if (Application.isPlaying && solver.IKPositionWeight > 0) {
 				if (modifiable) {
-					Inspector.CubeCap(0, solver.IKPosition, solver.GetRoot().rotation, GetHandleSize(solver.IKPosition));
+					CubeCap(0, solver.IKPosition, solver.GetRoot().rotation, GetHandleSize(solver.IKPosition));
 						
 					// Manipulating position
-					if (solver.target == null) solver.IKPosition = Handles.PositionHandle(solver.IKPosition, Quaternion.identity);
+					if (solver.target == null)
+					{
+						solver.IKPosition = Handles.PositionHandle(solver.IKPosition, Quaternion.identity);
+					}
+
 				}
 				
 				// Draw a transparent line from last bone to IKPosition
 				Handles.color = new Color(color.r, color.g, color.b, color.a * solver.IKPositionWeight);
-				Handles.DrawLine(solver.bones[solver.bones.Length - 1].transform.position, solver.IKPosition);
+				Handles.DrawLine(solver.bones[^1].transform.position, solver.IKPosition);
 			}
 			
 			Handles.color = Color.white;
@@ -89,7 +108,11 @@ namespace RootMotion.FinalIK {
 		
 		private static void DrawArrayElementLabelBone(SerializedProperty bone, bool editHierarchy) {
 			AddObjectReference(bone.FindPropertyRelative("transform"), GUIContent.none, editHierarchy, 0, weights? 100: 200);
-			if (weights) AddWeightSlider(bone.FindPropertyRelative("weight"));
+			if (weights)
+			{
+				AddWeightSlider(bone.FindPropertyRelative("weight"));
+			}
+
 		}
 		
 		private static void OnAddToArrayBone(SerializedProperty bone) {

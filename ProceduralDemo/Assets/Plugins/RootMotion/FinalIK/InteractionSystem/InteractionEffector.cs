@@ -1,9 +1,8 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using RootMotion;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Managing Interactions for a single FBBIK effector.
@@ -31,7 +30,7 @@ namespace RootMotion.FinalIK {
 		private Quaternion pickUpRotation, pauseRotationRelative;
 		private InteractionTarget interactionTarget;
 		private Transform target;
-		private List<bool> triggered = new List<bool>();
+		private List<bool> triggered = new();
 		private InteractionSystem interactionSystem;
 		private bool started;
 
@@ -55,7 +54,10 @@ namespace RootMotion.FinalIK {
         /// Store the default values to which the effector will be reset to after an interaction has ended.
         /// </summary>
 		public void StoreDefaults() {
-            if (interactionSystem == null) return;
+            if (interactionSystem == null)
+			{
+				return;
+			}
 
 			defaultPositionWeight = interactionSystem.ik.solver.GetEffector(effectorType).positionWeight;
 			defaultRotationWeight = interactionSystem.ik.solver.GetEffector(effectorType).rotationWeight;
@@ -69,24 +71,61 @@ namespace RootMotion.FinalIK {
 
 		// Interpolate to default values when currently not in interaction
 		public bool ResetToDefaults(float speed, float deltaTime) {
-			if (inInteraction) return false;
-			if (isPaused) return false;
-			if (defaults) return false; 
+			if (inInteraction)
+			{
+				return false;
+			}
+
+			if (isPaused)
+			{
+				return false;
+			}
+
+			if (defaults)
+			{
+				return false;
+			}
 
 			resetTimer = Mathf.MoveTowards(resetTimer, 0f, deltaTime * speed);
 
 			// Pull and Reach
 			if (effector.isEndEffector) {
-				if (pullUsed) interactionSystem.ik.solver.GetChain(effectorType).pull = Mathf.Lerp(defaultPull, interactionSystem.ik.solver.GetChain(effectorType).pull, resetTimer);
-				if (reachUsed) interactionSystem.ik.solver.GetChain(effectorType).reach = Mathf.Lerp(defaultReach, interactionSystem.ik.solver.GetChain(effectorType).reach, resetTimer);
-				if (pushUsed) interactionSystem.ik.solver.GetChain(effectorType).push = Mathf.Lerp(defaultPush, interactionSystem.ik.solver.GetChain(effectorType).push, resetTimer);
-				if (pushParentUsed) interactionSystem.ik.solver.GetChain(effectorType).pushParent = Mathf.Lerp(defaultPushParent, interactionSystem.ik.solver.GetChain(effectorType).pushParent, resetTimer);
-                if (bendGoalWeightUsed) interactionSystem.ik.solver.GetChain(effectorType).bendConstraint.weight = Mathf.Lerp(defaultBendGoalWeight, interactionSystem.ik.solver.GetChain(effectorType).bendConstraint.weight, resetTimer);
-            }
+				if (pullUsed)
+				{
+					interactionSystem.ik.solver.GetChain(effectorType).pull = Mathf.Lerp(defaultPull, interactionSystem.ik.solver.GetChain(effectorType).pull, resetTimer);
+				}
+
+				if (reachUsed)
+				{
+					interactionSystem.ik.solver.GetChain(effectorType).reach = Mathf.Lerp(defaultReach, interactionSystem.ik.solver.GetChain(effectorType).reach, resetTimer);
+				}
+
+				if (pushUsed)
+				{
+					interactionSystem.ik.solver.GetChain(effectorType).push = Mathf.Lerp(defaultPush, interactionSystem.ik.solver.GetChain(effectorType).push, resetTimer);
+				}
+
+				if (pushParentUsed)
+				{
+					interactionSystem.ik.solver.GetChain(effectorType).pushParent = Mathf.Lerp(defaultPushParent, interactionSystem.ik.solver.GetChain(effectorType).pushParent, resetTimer);
+				}
+
+				if (bendGoalWeightUsed)
+				{
+					interactionSystem.ik.solver.GetChain(effectorType).bendConstraint.weight = Mathf.Lerp(defaultBendGoalWeight, interactionSystem.ik.solver.GetChain(effectorType).bendConstraint.weight, resetTimer);
+				}
+			}
 
 			// Effector weights
-			if (positionWeightUsed) effector.positionWeight = Mathf.Lerp(defaultPositionWeight, effector.positionWeight, resetTimer);
-			if (rotationWeightUsed) effector.rotationWeight = Mathf.Lerp(defaultRotationWeight, effector.rotationWeight, resetTimer);
+			if (positionWeightUsed)
+			{
+				effector.positionWeight = Mathf.Lerp(defaultPositionWeight, effector.positionWeight, resetTimer);
+			}
+
+			if (rotationWeightUsed)
+			{
+				effector.rotationWeight = Mathf.Lerp(defaultRotationWeight, effector.rotationWeight, resetTimer);
+			}
 
 			if (resetTimer <= 0f) {
 				pullUsed = false;
@@ -106,7 +145,11 @@ namespace RootMotion.FinalIK {
 
 		// Pause this interaction
 		public bool Pause() {
-			if (!inInteraction) return false;
+			if (!inInteraction)
+			{
+				return false;
+			}
+
 			isPaused = true;
 
 			pausePositionRelative = target.InverseTransformPoint(effector.position);
@@ -121,10 +164,16 @@ namespace RootMotion.FinalIK {
 
 		// Resume a paused interaction
 		public bool Resume() {
-			if (!inInteraction) return false;
+			if (!inInteraction)
+			{
+				return false;
+			}
 
 			isPaused = false;
-			if (interactionSystem.OnInteractionResume != null) interactionSystem.OnInteractionResume(effectorType, interactionObject);
+			if (interactionSystem.OnInteractionResume != null)
+			{
+				interactionSystem.OnInteractionResume(effectorType, interactionObject);
+			}
 
 			return true;
 		}
@@ -135,9 +184,12 @@ namespace RootMotion.FinalIK {
             // Get the InteractionTarget
             InteractionTarget interactionTarget = null;
             target = interactionObject.GetTarget(effectorType, tag);
-            if (target != null) interactionTarget = target.GetComponent<InteractionTarget>();
-            
-            return Start(interactionObject, interactionTarget, fadeInTime, interrupt);
+            if (target != null)
+			{
+				interactionTarget = target.GetComponent<InteractionTarget>();
+			}
+
+			return Start(interactionObject, interactionTarget, fadeInTime, interrupt);
         }
 
         public bool Start(InteractionObject interactionObject, InteractionTarget interactionTarget, float fadeInTime, bool interrupt)
@@ -152,16 +204,26 @@ namespace RootMotion.FinalIK {
             }
             else
             {
-                if (!interrupt) return false;
-                else defaults = false;
-            }
+                if (!interrupt)
+				{
+					return false;
+				}
+				else
+				{
+					defaults = false;
+				}
+			}
             
             target = interactionTarget != null? interactionTarget.transform: interactionObject.transform;
 
             // Start the interaction
             this.interactionObject = interactionObject;
-            if (interactionSystem.OnInteractionStart != null) interactionSystem.OnInteractionStart(effectorType, interactionObject);
-            interactionObject.OnStartInteraction(interactionSystem);
+            if (interactionSystem.OnInteractionStart != null)
+			{
+				interactionSystem.OnInteractionStart(effectorType, interactionObject);
+			}
+
+			interactionObject.OnStartInteraction(interactionSystem);
 
             // Cleared triggered events
             triggered.Clear();
@@ -184,9 +246,12 @@ namespace RootMotion.FinalIK {
             // Posing the hand/foot
             if (poser != null && poserUsed)
             {
-                if (poser.poseRoot == null) poser.weight = 0f;
+                if (poser.poseRoot == null)
+				{
+					poser.weight = 0f;
+				}
 
-                if (interactionTarget != null)
+				if (interactionTarget != null)
                 {
 					if (interactionTarget.usePoser)
 					{
@@ -204,10 +269,13 @@ namespace RootMotion.FinalIK {
                 poser.AutoMapping();
             }
 
-            if (defaults) StoreDefaults();
+            if (defaults)
+			{
+				StoreDefaults();
+			}
 
-            // Reset internal values
-            timer = 0f;
+			// Reset internal values
+			timer = 0f;
             weight = 0f;
             fadeInSpeed = fadeInTime > 0f ? 1f / fadeInTime : 1000f;
             length = interactionObject.length;
@@ -217,9 +285,12 @@ namespace RootMotion.FinalIK {
             pickUpPosition = Vector3.zero;
             pickUpRotation = Quaternion.identity;
 
-            if (interactionTarget != null) interactionTarget.RotateTo(effector.bone);
+            if (interactionTarget != null)
+			{
+				interactionTarget.RotateTo(effector.bone);
+			}
 
-            started = true;
+			started = true;
 
             return true;
         }
@@ -239,7 +310,10 @@ namespace RootMotion.FinalIK {
 			}
 
 			// Rotate target
-			if (interactionTarget != null && !interactionTarget.rotateOnce) interactionTarget.RotateTo(effector.bone);
+			if (interactionTarget != null && !interactionTarget.rotateOnce)
+			{
+				interactionTarget.RotateTo(effector.bone);
+			}
 
 			if (isPaused) {
                 if (!pickedUp)
@@ -273,11 +347,18 @@ namespace RootMotion.FinalIK {
 			// Apply the current interaction state to the solver
 			interactionObject.Apply(interactionSystem.ik.solver, effectorType, interactionTarget, timer, weight, false);
 
-            if (pickUp) PickUp(root);
-            if (pause) Pause();
+            if (pickUp)
+			{
+				PickUp(root);
+			}
 
-            // Hand poser weight
-            float poserWeight = interactionObject.GetValue (InteractionObject.WeightCurve.Type.PoserWeight, interactionTarget, timer);
+			if (pause)
+			{
+				Pause();
+			}
+
+			// Hand poser weight
+			float poserWeight = interactionObject.GetValue (InteractionObject.WeightCurve.Type.PoserWeight, interactionTarget, timer);
 
 			if (poser != null && poserUsed) {
 				poser.weight = Mathf.Lerp (poser.weight, poserWeight, weight);
@@ -287,14 +368,25 @@ namespace RootMotion.FinalIK {
 				}
 			}
 
-			if (timer >= length) Stop();
+			if (timer >= length)
+			{
+				Stop();
+			}
 		}
 
 		// Get the normalized progress of the interaction
 		public float progress {
 			get {
-				if (!inInteraction) return 0f;
-				if (length == 0f) return 0f;
+				if (!inInteraction)
+				{
+					return 0f;
+				}
+
+				if (length == 0f)
+				{
+					return 0f;
+				}
+
 				return timer / length;
 			}
 		}
@@ -316,20 +408,29 @@ namespace RootMotion.FinalIK {
 						
 						// Picking up
 						if (interactionObject.events[i].pickUp) {
-							if (timer >= interactionObject.events[i].time) timer = interactionObject.events[i].time;
+							if (timer >= interactionObject.events[i].time)
+							{
+								timer = interactionObject.events[i].time;
+							}
 
 							pickUp = true;
 						}
 						
 						// Pausing
 						if (interactionObject.events[i].pause) {
-							if (timer >= interactionObject.events[i].time) timer = interactionObject.events[i].time;
+							if (timer >= interactionObject.events[i].time)
+							{
+								timer = interactionObject.events[i].time;
+							}
 
 							pause = true;
 						}
 						
-						if (interactionSystem.OnInteractionEvent != null) interactionSystem.OnInteractionEvent(effectorType, interactionObject, interactionObject.events[i]);
-						
+						if (interactionSystem.OnInteractionEvent != null)
+						{
+							interactionSystem.OnInteractionEvent(effectorType, interactionObject, interactionObject.events[i]);
+						}
+
 						triggered[i] = true;
 					}
 				}
@@ -346,40 +447,53 @@ namespace RootMotion.FinalIK {
 
 			pickedUp = true;
 
-			var rigidbody = interactionObject.targetsRoot.GetComponent<Rigidbody>();
-
-			if (rigidbody != null) {
+			
+			if (interactionObject.targetsRoot.TryGetComponent<Rigidbody>(out Rigidbody rigidbody)) {
 				if (!rigidbody.isKinematic) {
 					rigidbody.isKinematic = true;
 				}
 
                 // Ignore collisions between the character and the colliders of the interaction object
-                var rootCollider = root.GetComponent<Collider>();
-
-				if (rootCollider != null) {
-					var colliders = interactionObject.targetsRoot.GetComponentsInChildren<Collider>();
+                
+				if (root.TryGetComponent<Collider>(out Collider rootCollider)) {
+					Collider[] colliders = interactionObject.targetsRoot.GetComponentsInChildren<Collider>();
 
 					foreach (Collider collider in colliders) {
-						if (!collider.isTrigger && collider.enabled) Physics.IgnoreCollision(rootCollider, collider);
+						if (!collider.isTrigger && collider.enabled)
+						{
+							Physics.IgnoreCollision(rootCollider, collider);
+						}
 					}
 				}
 			}
 				
-			if (interactionSystem.OnInteractionPickUp != null) interactionSystem.OnInteractionPickUp(effectorType, interactionObject);
+			if (interactionSystem.OnInteractionPickUp != null)
+			{
+				interactionSystem.OnInteractionPickUp(effectorType, interactionObject);
+			}
 		}
 
 		// Stop the interaction
 		public bool Stop() {
-			if (!inInteraction) return false;
+			if (!inInteraction)
+			{
+				return false;
+			}
 
 			bool pickUp = false;
 			bool pause = false;
 			TriggerUntriggeredEvents(false, out pickUp, out pause);
 
-			if (interactionSystem.OnInteractionStop != null) interactionSystem.OnInteractionStop(effectorType, interactionObject);
+			if (interactionSystem.OnInteractionStop != null)
+			{
+				interactionSystem.OnInteractionStop(effectorType, interactionObject);
+			}
 
 			// Reset the interaction target
-			if (interactionTarget != null) interactionTarget.ResetRotation();
+			if (interactionTarget != null)
+			{
+				interactionTarget.ResetRotation();
+			}
 
 			// Reset the internal values
 			interactionObject = null;
@@ -399,7 +513,10 @@ namespace RootMotion.FinalIK {
 
 		// Called after FBBIK update
 		public void OnPostFBBIK() {
-			if (!inInteraction) return;
+			if (!inInteraction)
+			{
+				return;
+			}
 
 			// Rotate the hands/feet to the RotateBoneWeight curve
 			float rotateBoneWeight = interactionObject.GetValue(InteractionObject.WeightCurve.Type.RotateBoneWeight, interactionTarget, timer) * weight;

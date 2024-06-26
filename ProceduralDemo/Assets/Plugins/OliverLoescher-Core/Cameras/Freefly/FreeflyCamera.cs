@@ -1,82 +1,87 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace OliverLoescher.Camera
+namespace OCore.Camera
 {
-    public class FreeflyCamera : MonoBehaviour
-    {
-        [Header("Look")]
-        [SerializeField] protected Transform lookTransform = null;
-        [SerializeField] private float sensitivityDelta = 1.0f;
-        [SerializeField] private float sensitivityUpdate = 1.0f;
-        [SerializeField, MinMaxSlider(-90, 90, true)] private Vector2 cameraYClamp = new Vector2(-40, 50);
+	public class FreeflyCamera : MonoBehaviour
+	{
+		[Header("Look")]
+		[SerializeField]
+		protected Transform m_LookTransform = null;
+		[SerializeField]
+		private float m_SensitivityDelta = 1.0f;
+		[SerializeField]
+		private float m_SensitivityUpdate = 1.0f;
+		[SerializeField, MinMaxSlider(-90, 90, true)]
+		private Vector2 m_CameraYClamp = new(-40, 50);
 
-        [Header("Movement")]
-        [SerializeField] protected Transform moveTransform = null;
-        [SerializeField] private float moveSpeed = 1.0f;
-        [SerializeField] private float sprintSpeed = 2.0f;
+		[Header("Movement")]
+		[SerializeField]
+		protected Transform m_MoveTransform = null;
+		[SerializeField]
+		private float m_MoveSpeed = 1.0f;
+		[SerializeField]
+		private float m_SprintSpeed = 2.0f;
 
-        // Inputs
-        private Vector2 moveInputHorizontal = new Vector2();
-        private float moveInputVertical = 0.0f;
-        private Vector2 lookInput = new Vector2();
-        private bool sprintInput = false;
-        
-        private void FixedUpdate() 
-        {
-            if (moveInputHorizontal != Vector2.zero || moveInputVertical != 0.0f)
-            {
-                DoMove(moveInputHorizontal, moveInputVertical, (sprintInput ? sprintSpeed : moveSpeed) * Time.fixedDeltaTime);
-            }
-            
-            if (lookInput != Vector2.zero)
-            {
-                DoRotateCamera(lookInput * sensitivityUpdate * Time.fixedDeltaTime);
-            }
-        }
+		// Inputs
+		private Vector2 m_MoveInputHorizontal = new();
+		private float m_MoveInputVertical = 0.0f;
+		private Vector2 m_LookInput = new();
+		private bool m_SprintInput = false;
 
-        protected virtual void DoMove(Vector2 pMovement, float pUp, float pMult)
-        {
-            Vector3 move = (pMovement.y * transform.forward) + (pMovement.x * transform.right) + (pUp * transform.up);
-            moveTransform.position += move.normalized * pMult;
-        }
+		private void FixedUpdate()
+		{
+			if (m_MoveInputHorizontal != Vector2.zero || m_MoveInputVertical != 0.0f)
+			{
+				DoMove(m_MoveInputHorizontal, m_MoveInputVertical, (m_SprintInput ? m_SprintSpeed : m_MoveSpeed) * Time.fixedDeltaTime);
+			}
 
-        protected virtual void DoRotateCamera(Vector2 pInput)
-        {
-            Vector3 euler = lookTransform.eulerAngles;
-            euler.x = Mathf.Clamp(Util.Func.SafeAngle(euler.x - pInput.y), cameraYClamp.x, cameraYClamp.y);
-            euler.y = euler.y + pInput.x;
-            euler.z = 0.0f;
-            lookTransform.rotation = Quaternion.Euler(euler);
-        }
+			if (m_LookInput != Vector2.zero)
+			{
+				DoRotateCamera(m_SensitivityUpdate * Time.fixedDeltaTime * m_LookInput);
+			}
+		}
 
-#region Inputs
-        public void OnMoveHorizontal(Vector2 pInput)
-        {
-            moveInputHorizontal = pInput;
-        }
+		protected virtual void DoMove(Vector2 pMovement, float pUp, float pMult)
+		{
+			Vector3 move = (pMovement.y * transform.forward) + (pMovement.x * transform.right) + (pUp * transform.up);
+			m_MoveTransform.position += move.normalized * pMult;
+		}
 
-        public void OnMoveVertical(float pInput)
-        {
-            moveInputVertical = pInput;
-        }
+		protected virtual void DoRotateCamera(Vector2 pInput)
+		{
+			Vector3 euler = m_LookTransform.eulerAngles;
+			euler.x = Mathf.Clamp(Util.Func.SafeAngle(euler.x - pInput.y), m_CameraYClamp.x, m_CameraYClamp.y);
+			euler.y += pInput.x;
+			euler.z = 0.0f;
+			m_LookTransform.rotation = Quaternion.Euler(euler);
+		}
 
-        public void OnLook(Vector2 pInput)
-        {
-            lookInput = pInput;
-        }
+		#region Inputs
+		public void OnMoveHorizontal(Vector2 pInput)
+		{
+			m_MoveInputHorizontal = pInput;
+		}
 
-        public void OnLookDelta(Vector2 pInput)
-        {
-            DoRotateCamera(pInput * sensitivityDelta);
-        }
+		public void OnMoveVertical(float pInput)
+		{
+			m_MoveInputVertical = pInput;
+		}
 
-        public void OnSprint(bool pInput)
-        {
-            sprintInput = pInput;
-        }
-#endregion
-    }
+		public void OnLook(Vector2 pInput)
+		{
+			m_LookInput = pInput;
+		}
+
+		public void OnLookDelta(Vector2 pInput)
+		{
+			DoRotateCamera(pInput * m_SensitivityDelta);
+		}
+
+		public void OnSprint(bool pInput)
+		{
+			m_SprintInput = pInput;
+		}
+		#endregion
+	}
 }

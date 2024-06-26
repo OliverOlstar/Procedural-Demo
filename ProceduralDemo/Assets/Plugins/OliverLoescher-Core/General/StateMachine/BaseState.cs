@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher 
+namespace OCore
 {
 	public class BaseState : MonoBehaviour
 	{
-		protected StateMachine machine; 
+		protected StateMachine m_Machine; 
 
-		public virtual void Init(StateMachine pMachine) { machine = pMachine; }
+		public virtual void Init(StateMachine pMachine) { m_Machine = pMachine; }
 
 		public virtual void OnEnter() { }
 		public virtual void OnExit() { }

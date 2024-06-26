@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Definition of FBBIK Offset pose.
@@ -43,11 +44,19 @@ namespace RootMotion.FinalIK {
 
 		// Apply positionOffsets of all the EffectorLinks
 		public void Apply(IKSolverFullBodyBiped solver, float weight) {
-			for (int i = 0; i < effectorLinks.Length; i++) effectorLinks[i].Apply(solver, weight, solver.GetRoot().rotation);
+			for (int i = 0; i < effectorLinks.Length; i++)
+			{
+				effectorLinks[i].Apply(solver, weight, solver.GetRoot().rotation);
+			}
+
 		}
 
 		public void Apply(IKSolverFullBodyBiped solver, float weight, Quaternion rotation) {
-			for (int i = 0; i < effectorLinks.Length; i++) effectorLinks[i].Apply(solver, weight, rotation);
+			for (int i = 0; i < effectorLinks.Length; i++)
+			{
+				effectorLinks[i].Apply(solver, weight, rotation);
+			}
+
 		}
 	}
 }

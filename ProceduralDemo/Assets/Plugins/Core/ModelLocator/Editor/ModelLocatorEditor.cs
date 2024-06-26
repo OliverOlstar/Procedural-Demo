@@ -18,7 +18,7 @@ namespace ModelLocator
 
 		public static void Save(SOModelLocator locator)
 		{
-			SerializedObject sObj = new SerializedObject(locator);
+			SerializedObject sObj = new(locator);
 			Transform dummyTransform = ModelLocatorTools.Editor.transform;
 			sObj.FindProperty("m_ParentName").stringValue = dummyTransform.parent == null ? string.Empty : dummyTransform.parent.name;
 			sObj.FindProperty("m_Position").vector3Value = dummyTransform.localPosition;

@@ -37,10 +37,10 @@ namespace ActCore
 			float zoom = 1.0f / scale;
 			float density = 2;
 			offset *= density;
-			Vector2 tiling = new Vector2(
+			Vector2 tiling = new(
 				density * position.width / gridTex.width,
 				density * position.height / gridTex.height);
-			Rect texCoords = new Rect(
+			Rect texCoords = new(
 				-offset.x / gridTex.width,
 				(offset.y / gridTex.height) - zoom * tiling.y,
 				zoom * tiling.x,

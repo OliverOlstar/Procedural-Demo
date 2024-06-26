@@ -1,156 +1,154 @@
-using System.Collections;
-using System.Collections.Generic;
-using OliverLoescher.Util;
+using OCore.Util;
 using UnityEngine;
 
-namespace OliverLoescher
+namespace OCore
 {
 	/// <summary>
 	/// A solution to follow transform's movement with an offset without childing your transform to it
 	/// </summary>
 	public class TransformFollower
 	{
-		private Util.Mono.Updateable updateable = new();
-		private Transform parent;
-		private Transform child;
-		private CharacterController childController;
-		private Rigidbody childRigidbody;
-		private Object debugObject;
-		private System.Action<Vector3> onMoved;
-		private bool rotateChild;
+		private Util.Mono.Updateable m_Updateable = new();
+		private Transform m_Parent;
+		private Transform m_Child;
+		private CharacterController m_ChildController;
+		private Rigidbody m_ChildRigidbody;
+		private Object m_DebugObject;
+		private System.Action<Vector3> m_OnMoved;
+		private bool m_RotateChild;
 
-		private Vector3 lastPosition = Vector3.zero;
-		private Quaternion lastRotation = Quaternion.identity;
-		private Vector3 localPosition;
+		private Vector3 m_LastPosition = Vector3.zero;
+		private Quaternion m_LastRotation = Quaternion.identity;
+		private Vector3 m_LocalPosition;
 
-		public bool IsStarted => updateable.IsRegistered;
-		public Transform ParentTransform => parent;
-		public Transform ChildTransform => child;
+		public bool IsStarted => m_Updateable.IsRegistered;
+		public Transform ParentTransform => m_Parent;
+		public Transform ChildTransform => m_Child;
 
 		public void Start(Transform pParent, Rigidbody pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
-			debugObject = pDebugParent;
+			m_DebugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug2.DevException("pChild (Rigidbody) is null", "Start", debugObject);
+				Util.Debug2.DevException("pChild (Rigidbody) is null", "Start", m_DebugObject);
 				return;
 			}
-			childRigidbody = pChild;
+			m_ChildRigidbody = pChild;
 			Start(pParent, pChild.transform, pPoint, pOnMoved, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
 		}
 
 		public void Start(Transform pParent, CharacterController pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
-			debugObject = pDebugParent;
+			m_DebugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug2.DevException("pChild (CharacterController) is null", "Start", debugObject);
+				Util.Debug2.DevException("pChild (CharacterController) is null", "Start", m_DebugObject);
 				return;
 			}
-			childController = pChild;
+			m_ChildController = pChild;
 			Start(pParent, pChild.transform, pPoint, pOnMoved, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
 		}
 
 		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
-			debugObject = pDebugParent;
+			m_DebugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug2.DevException("pChild is null", "Start", debugObject);
+				Util.Debug2.DevException("pChild is null", "Start", m_DebugObject);
 				return;
 			}
 			if (pParent == null)
 			{
-				Util.Debug2.DevException("pParent is null", "Start", debugObject);
+				Util.Debug2.DevException("pParent is null", "Start", m_DebugObject);
 				return;
 			}
-			if (child != null) // Already started
+			if (m_Child != null) // Already started
 			{
-				if (child != pChild)
+				if (m_Child != pChild)
 				{
-					Util.Debug2.DevException("Already started but with a different child transform", "Start", debugObject);
+					Util.Debug2.DevException("Already started but with a different child transform", "Start", m_DebugObject);
 				}
-				else if (pParent != parent)
+				else if (pParent != m_Parent)
 				{
-					Util.Debug2.DevException("Already started but with a different parent transform", "Start", debugObject);
+					Util.Debug2.DevException("Already started but with a different parent transform", "Start", m_DebugObject);
 				}
 				else
 				{
-					Util.Debug2.LogError("Already started", "Start", debugObject);
+					Util.Debug2.LogError("Already started", "Start", m_DebugObject);
 				}
 				return;
 			}
-			parent = pParent;
-			child = pChild;
-			onMoved = pOnMoved;
-			rotateChild = pRotateChild;
+			m_Parent = pParent;
+			m_Child = pChild;
+			m_OnMoved = pOnMoved;
+			m_RotateChild = pRotateChild;
 
-			lastPosition = pPoint;
-			lastRotation = parent.rotation;
-			localPosition = parent.InverseTransformPoint(pPoint);
+			m_LastPosition = pPoint;
+			m_LastRotation = m_Parent.rotation;
+			m_LocalPosition = m_Parent.InverseTransformPoint(pPoint);
 
-			updateable.SetProperties(pUpdateType, pUpdatePriority);
-			updateable.Register(Tick);
+			m_Updateable.SetProperties(pUpdateType, pUpdatePriority);
+			m_Updateable.Register(Tick);
 		}
 
 		public void Stop()
 		{
-			if (child == null)
+			if (m_Child == null)
 			{
-				Util.Debug2.LogWarning("Not started, please start first", "Stop", debugObject);
+				Util.Debug2.LogWarning("Not started, please start first", "Stop", m_DebugObject);
 				return;
 			}
-			parent = null;
-			child = null;
+			m_Parent = null;
+			m_Child = null;
 
-			updateable.Deregister();
+			m_Updateable.Deregister();
 		}
 
 		public void ChangeParent(Transform pParent)
 		{
 			if (pParent == null)
 			{
-				Util.Debug2.DevException("pParent is null", "ChangePoint", debugObject);
+				Util.Debug2.DevException("pParent is null", "ChangePoint", m_DebugObject);
 				return;
 			}
-			parent = pParent;
+			m_Parent = pParent;
 			
-			lastRotation = parent.rotation;
-			localPosition = parent.InverseTransformPoint(lastPosition);
+			m_LastRotation = m_Parent.rotation;
+			m_LocalPosition = m_Parent.InverseTransformPoint(m_LastPosition);
 		}
 
 		private void Tick(float pDeltaTime)
 		{
-			Vector3 currPositon = parent.TransformPoint(localPosition);
-			Vector3 deltaPosition = currPositon - lastPosition;
+			Vector3 currPositon = m_Parent.TransformPoint(m_LocalPosition);
+			Vector3 deltaPosition = currPositon - m_LastPosition;
 			if (deltaPosition.IsNearZero())
 			{
 				return;
 			}
 
 			SetControllerAcitve(false); // Disable so we can move the transform
-			child.position += deltaPosition;
-			if (childRigidbody != null)
+			m_Child.position += deltaPosition;
+			if (m_ChildRigidbody != null)
 			{
-				childRigidbody.position += deltaPosition;
+				m_ChildRigidbody.position += deltaPosition;
 			}
-			if (rotateChild)
+			if (m_RotateChild)
 			{
-				Quaternion deltaRotation = lastRotation.Difference(parent.rotation);
+				Quaternion deltaRotation = m_LastRotation.Difference(m_Parent.rotation);
 				deltaRotation.ToAngleAxis(out float angle, out Vector3 axis);
-				child.RotateAround(currPositon, axis, -angle);
-				lastRotation = parent.rotation;
+				m_Child.RotateAround(currPositon, axis, -angle);
+				m_LastRotation = m_Parent.rotation;
 			}
 			SetControllerAcitve(true);
-			lastPosition = currPositon;
+			m_LastPosition = currPositon;
 
-			if (currPositon != child.position)
+			if (currPositon != m_Child.position)
 			{
-				lastPosition += child.position - currPositon;
-				localPosition = parent.InverseTransformPoint(child.position);
+				m_LastPosition += m_Child.position - currPositon;
+				m_LocalPosition = m_Parent.InverseTransformPoint(m_Child.position);
 			}
 
-			onMoved?.Invoke(deltaPosition);
+			m_OnMoved?.Invoke(deltaPosition);
 		}
 
 		private void SetControllerAcitve(bool pEnabled)
@@ -159,15 +157,15 @@ namespace OliverLoescher
 			// {
 			// 	childRigidbody.isKinematic = !pEnabled;
 			// }
-			if (childController)
+			if (m_ChildController)
 			{
-				childController.enabled = pEnabled;
+				m_ChildController.enabled = pEnabled;
 			}
 		}
 
 		public void OnDestroy()
 		{
-			if (child != null)
+			if (m_Child != null)
 			{
 				Stop();
 			}
@@ -175,13 +173,13 @@ namespace OliverLoescher
 
 		public void OnDrawGizmos()
 		{
-			if (child == null)
+			if (m_Child == null)
 			{
 				return;
 			}
 			Gizmos.color = Color.cyan;
-			Gizmos.DrawWireSphere(parent.TransformPoint(localPosition), 0.5f);
-			Gizmos.DrawSphere(parent.TransformPoint(localPosition), 0.25f);
+			Gizmos.DrawWireSphere(m_Parent.TransformPoint(m_LocalPosition), 0.5f);
+			Gizmos.DrawSphere(m_Parent.TransformPoint(m_LocalPosition), 0.25f);
 		}
 	}
 }

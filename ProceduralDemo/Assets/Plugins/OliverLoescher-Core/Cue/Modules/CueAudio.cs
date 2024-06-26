@@ -1,16 +1,16 @@
 using UnityEngine;
 
-namespace OliverLoescher.Cue
+namespace OCore.Cue
 {
 	[System.Serializable]
 	public class CueAudio : CueModule
 	{
 		[SerializeField]
-		private Util.Audio.AudioPiece Sound;
+		private Util.Audio.AudioPiece m_Sound;
 
 		protected override void PlayInternal(in CueContext pContext, in SOCue pParent)
 		{
-			Sound.Play(pContext.Point);
+			m_Sound.Play(pContext.Point);
 		}
 	}
 }

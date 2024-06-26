@@ -12,13 +12,13 @@ namespace Core.CheatMenu
 
 		private string m_Category;
 		private List<string> m_Categories;
-		private Dictionary<string, List<(Core.DebugCommandAttribute, MethodInfo)>> m_Methods;
+		private Dictionary<string, List<(DebugCommandAttribute, MethodInfo)>> m_Methods;
 
 		protected override void OnInitialize()
 		{
-			m_Category = Core.DebugCommandAttribute.DefaultCategory;
+			m_Category = DebugCommandAttribute.DefaultCategory;
 			m_Categories = new List<string>();
-			m_Methods = new Dictionary<string, List<(Core.DebugCommandAttribute, MethodInfo)>>();
+			m_Methods = new Dictionary<string, List<(DebugCommandAttribute, MethodInfo)>>();
 			foreach (Type type in TypeUtility.GetAllTypes())
 			{
 				try
@@ -32,14 +32,14 @@ namespace Core.CheatMenu
 						{
 							continue;
 						}
-						Core.DebugCommandAttribute attribute = method.GetCustomAttribute<Core.DebugCommandAttribute>();
+						DebugCommandAttribute attribute = method.GetCustomAttribute<DebugCommandAttribute>();
 						if (attribute == null)
 						{
 							continue;
 						}
-						if (!m_Methods.TryGetValue(attribute.Category, out var list))
+						if (!m_Methods.TryGetValue(attribute.Category, out List<(DebugCommandAttribute, MethodInfo)> list))
 						{
-							list = new List<(Core.DebugCommandAttribute, MethodInfo)>();
+							list = new List<(DebugCommandAttribute, MethodInfo)>();
 							m_Methods[attribute.Category] = list;
 						}
 						list.Add((attribute, methods[i]));
@@ -72,11 +72,11 @@ namespace Core.CheatMenu
 			index = GUILayout.SelectionGrid(index, m_Categories.ToArray(), 3);
 			m_Category = m_Categories[index];
 			GUILayout.Space(10f);
-			if (!m_Methods.TryGetValue(m_Category, out List<(Core.DebugCommandAttribute, MethodInfo)> methods))
+			if (!m_Methods.TryGetValue(m_Category, out List<(DebugCommandAttribute, MethodInfo)> methods))
 			{
 				return;
 			}
-			foreach ((Core.DebugCommandAttribute, MethodInfo) method in methods)
+			foreach ((DebugCommandAttribute, MethodInfo) method in methods)
 			{
 				if (GUILayout.Button(method.Item1.Label))
 				{

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -19,7 +18,7 @@ namespace Scriptionary
 
 			SerializedProperty sKey = property.FindPropertyRelative("m_Key");
 			int selected = -1;
-			List<GUIContent> keys = new List<GUIContent>();
+			List<GUIContent> keys = new();
 			foreach (IScriptionaryItem item in scriptionary._EditorGetItems())
 			{
 				if (sKey.stringValue == item.Key)

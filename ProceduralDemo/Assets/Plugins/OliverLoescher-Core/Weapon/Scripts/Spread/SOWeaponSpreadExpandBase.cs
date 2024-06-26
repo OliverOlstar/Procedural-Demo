@@ -1,24 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher.Weapon
+namespace OCore.Weapon
 {
 	public abstract class SOWeaponSpreadExpandBase : SOWeaponSpreadBase
 	{
-		[Range(0.0f, 1.0f)] public float spreadIncrease = 0.4f;
-		[Range(Util.Math.NEARZERO, 3)] public float spreadDecrease = 0.6f;
+		[SerializeField, Range(0.0f, 1.0f)]
+		private float m_SpreadIncrease = 0.4f;
+		[SerializeField, Range(Util.Math.NEARZERO, 3)]
+		private float m_SpreadDecrease = 0.6f;
 
-		protected float spread01 = 0.0f;
+		protected float m_Spread01 = 0.0f;
 
 		public override void OnShoot()
 		{
-			spread01 = Mathf.Min(1, spread01 + spreadIncrease);
+			m_Spread01 = Mathf.Min(1, m_Spread01 + m_SpreadIncrease);
 		}
 
 		public override void OnUpdate(in float pDeltaTime)
 		{
-			spread01 = Mathf.Max(0, spread01 - (Time.deltaTime * spreadDecrease));
+			m_Spread01 = Mathf.Max(0, m_Spread01 - (Time.deltaTime * m_SpreadDecrease));
 		}
 	}
 }

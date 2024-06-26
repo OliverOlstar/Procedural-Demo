@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -24,7 +23,7 @@ namespace Core
 			SerializedProperty set = property.FindPropertyRelative("m_Set");
 
 			System.Type genericType = baseType.GetGenericArguments()[0];
-			List<string> paths = new List<string>(Core.AssetDatabaseUtil.Find(genericType));
+			List<string> paths = new(AssetDatabaseUtil.Find(genericType));
 			if (paths.Count == 0)
 			{
 				AssetPickerUtilityMenu.TryAttachMenu(ref position, set, genericType, null, OnSelectedObject);
@@ -81,7 +80,7 @@ namespace Core
 			}
 			set.arraySize++;
 			SerializedProperty element = set.GetArrayElementAtIndex(set.arraySize - 1);
-			element.objectReferenceValue = AssetDatabase.LoadAssetAtPath(path, typeof(UnityEngine.Object));
+			element.objectReferenceValue = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
 			set.serializedObject.ApplyModifiedProperties();
 		}
 	}

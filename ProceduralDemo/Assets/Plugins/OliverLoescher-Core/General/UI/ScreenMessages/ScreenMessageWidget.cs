@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace OliverLoescher
+namespace OCore
 {
     public class ScreenMessageWidget : MonoBehaviour
     {
         [SerializeField]
-        private TMP_Text text = null;
+        private TMP_Text m_Text = null;
 
-        private Queue<ScreenMessage.Message> messages = new Queue<ScreenMessage.Message>();
-        private ScreenMessage.Message activeMessage = null;
+        private readonly Queue<ScreenMessage.Message> m_Messages = new();
+        private ScreenMessage.Message m_ActiveMessage = null;
 
         private void OnEnable()
         {
-            text.text = string.Empty;
+            m_Text.text = string.Empty;
         }
 
         private void OnDisable()
@@ -25,47 +25,47 @@ namespace OliverLoescher
 
         public void QueueMessage(ScreenMessage.Message pMessage)
         {
-            if (activeMessage != null)
+            if (m_ActiveMessage != null)
             {
-                messages.Enqueue(pMessage);
+                m_Messages.Enqueue(pMessage);
                 return;
             }
-            activeMessage = pMessage;
+            m_ActiveMessage = pMessage;
             StartCoroutine(DisplayRoutine());
         }
 
         private IEnumerator DisplayRoutine()
         {
-            text.text = activeMessage.message;
+            m_Text.text = m_ActiveMessage.MyMessage;
 
-            Color color = text.color;
+            Color color = m_Text.color;
             color.a = 0.0f;
-            text.color = color;
+            m_Text.color = color;
             while (color.a < 1.0f)
             {
                 yield return null;
                 color.a += Time.deltaTime * 5.0f;
-                text.color = color;
+                m_Text.color = color;
             }
 
-            yield return new WaitForSeconds(activeMessage.seconds);
+            yield return new WaitForSeconds(m_ActiveMessage.Seconds);
 
             while (color.a > 0.0f)
             {
                 yield return null;
                 color.a -= Time.deltaTime * 5.0f;
-                text.color = color;
+                m_Text.color = color;
             }
 
-            text.text = string.Empty;
+            m_Text.text = string.Empty;
 
-            if (messages.Count > 0)
+            if (m_Messages.Count > 0)
             {
-                activeMessage = messages.Dequeue();
+                m_ActiveMessage = m_Messages.Dequeue();
                 StartCoroutine(DisplayRoutine());
                 yield break;
             }
-            activeMessage = null;
+            m_ActiveMessage = null;
         }
     }
 }

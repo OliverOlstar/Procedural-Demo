@@ -10,7 +10,7 @@ public class UnimateGraphicMaterialProperty : UnimateTween<UnimateGraphicMateria
 	private string m_PropertyName = null;
 
 	[SerializeField]
-	private AnimationCurve m_PropertyValue = new AnimationCurve(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
+	private AnimationCurve m_PropertyValue = new(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
 
 	[SerializeField]
 	private float m_Duration = 1.0f;
@@ -40,7 +40,7 @@ public class UnimateGraphicMaterialProperty : UnimateTween<UnimateGraphicMateria
 		{
 			return "Curve keys should be in the range 0 to 1";
 		}
-		List<Graphic> graphics = new List<Graphic>();
+		List<Graphic> graphics = new();
 		if (m_Recursive)
 		{
 			gameObject.GetComponentsInChildren(graphics);
@@ -69,7 +69,7 @@ public class UnimateGraphicMaterialProperty : UnimateTween<UnimateGraphicMateria
 
 	public class Player : UnimaTweenPlayer<UnimateGraphicMaterialProperty>
 	{
-		private List<Graphic> m_AllGraphics = new List<Graphic>();
+		private List<Graphic> m_AllGraphics = new();
 		private List<Graphic> m_Graphics = null;
 		private float[] m_InitialValues = null;
 		private int m_PropertyID = 0;

@@ -1,14 +1,14 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Rotates a hierarchy of bones to make a Transform aim at a target.
 	/// If there are problems with continuity and the solver get's jumpy, make sure to keep IKPosition at a safe distance from the transform and try decreasing solver and bone weights.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class IKSolverAim : IKSolverHeuristic {
 		
 		#region Main Interface
@@ -89,45 +89,83 @@ namespace RootMotion.FinalIK {
 			
 			// Disable Rotation Limits from updating to take control of their execution order
 			for (int i = 0; i < bones.Length; i++) {
-				if (bones[i].rotationLimit != null) bones[i].rotationLimit.Disable();
+				if (bones[i].rotationLimit != null)
+				{
+					bones[i].rotationLimit.Disable();
+				}
 			}
 
 			step = 1f / (float)bones.Length;
-			if (Application.isPlaying) axis = axis.normalized;
+			if (Application.isPlaying)
+			{
+				axis = axis.normalized;
+			}
 		}
 		
 		protected override void OnUpdate() {
 			if (axis == Vector3.zero) {
-				if (!Warning.logged) LogWarning("IKSolverAim axis is Vector3.zero.");
+				if (!Warning.logged)
+				{
+					LogWarning("IKSolverAim axis is Vector3.zero.");
+				}
+
 				return;
 			}
 
 			if (poleAxis == Vector3.zero && poleWeight > 0f) {
-				if (!Warning.logged) LogWarning("IKSolverAim poleAxis is Vector3.zero.");
+				if (!Warning.logged)
+				{
+					LogWarning("IKSolverAim poleAxis is Vector3.zero.");
+				}
+
 				return;
 			}
 
-			if (target != null) IKPosition = target.position;
-			if (poleTarget != null) polePosition = poleTarget.position;
+			if (target != null)
+			{
+				IKPosition = target.position;
+			}
 
-			if (XY) IKPosition.z = bones[0].transform.position.z;
-			
+			if (poleTarget != null)
+			{
+				polePosition = poleTarget.position;
+			}
+
+			if (XY)
+			{
+				IKPosition.z = bones[0].transform.position.z;
+			}
+
 			// Clamping weights
-			if (IKPositionWeight <= 0) return;
+			if (IKPositionWeight <= 0)
+			{
+				return;
+			}
+
 			IKPositionWeight = Mathf.Clamp(IKPositionWeight, 0f, 1f);
 
 			// Rotation Limit on the Aim Transform
 			if (transform != lastTransform) {
-				transformLimit = transform.GetComponent<RotationLimit>();
-				if (transformLimit != null) transformLimit.enabled = false;
+				if (transform.TryGetComponent<RotationLimit>(out transformLimit))
+				{
+					transformLimit.enabled = false;
+				}
+
 				lastTransform = transform;
 			}
 
-			if (transformLimit != null) transformLimit.Apply();
-			
+			if (transformLimit != null)
+			{
+				transformLimit.Apply();
+			}
+
 			// In case transform becomes unassigned in runtime
 			if (transform == null) {
-				if (!Warning.logged) LogWarning("Aim Transform unassigned in Aim IK solver. Please Assign a Transform (lineal descendant to the last bone in the spine) that you want to be aimed at IKPosition");
+				if (!Warning.logged)
+				{
+					LogWarning("Aim Transform unassigned in Aim IK solver. Please Assign a Transform (lineal descendant to the last bone in the spine) that you want to be aimed at IKPosition");
+				}
+
 				return;
 			}
 			
@@ -142,11 +180,18 @@ namespace RootMotion.FinalIK {
 			for (int i = 0; i < maxIterations; i++) {
 				
 				// Optimizations
-				if (i >= 1 && tolerance > 0 && GetAngle() < tolerance) break;
+				if (i >= 1 && tolerance > 0 && GetAngle() < tolerance)
+				{
+					break;
+				}
+
 				lastLocalDirection = localDirection;
 
-				if (OnPreIteration != null) OnPreIteration(i);
-				
+				if (OnPreIteration != null)
+				{
+					OnPreIteration(i);
+				}
+
 				Solve();
 			}
 			
@@ -165,17 +210,28 @@ namespace RootMotion.FinalIK {
 		 * */
         private void Solve() {
 			// Rotating bones to get closer to target.
-			for (int i = 0; i < bones.Length - 1; i++) RotateToTarget(clampedIKPosition, bones[i], step * (i + 1) * IKPositionWeight * bones[i].weight);
-			RotateToTarget(clampedIKPosition, bones[bones.Length - 1], IKPositionWeight * bones[bones.Length - 1].weight);
+			for (int i = 0; i < bones.Length - 1; i++)
+			{
+				RotateToTarget(clampedIKPosition, bones[i], step * (i + 1) * IKPositionWeight * bones[i].weight);
+			}
+
+			RotateToTarget(clampedIKPosition, bones[^1], IKPositionWeight * bones[^1].weight);
 		}
 		
 		/*
 		 * Clamping the IKPosition to legal range
 		 * */
 		private Vector3 GetClampedIKPosition() {
-			if (clampWeight <= 0f) return IKPosition;
-			if (clampWeight >= 1f) return transform.position + transformAxis * (IKPosition - transform.position).magnitude;
-			
+			if (clampWeight <= 0f)
+			{
+				return IKPosition;
+			}
+
+			if (clampWeight >= 1f)
+			{
+				return transform.position + transformAxis * (IKPosition - transform.position).magnitude;
+			}
+
 			// Getting the dot product of IK direction and transformAxis
 			//float dot = (Vector3.Dot(transformAxis, (IKPosition - transform.position).normalized) + 1) * 0.5f;
 			float angle = Vector3.Angle(transformAxis, (IKPosition - transform.position));
@@ -199,7 +255,7 @@ namespace RootMotion.FinalIK {
 		/*
 		 * Rotating bone to get transform aim closer to target
 		 * */
-		private void RotateToTarget(Vector3 targetPosition, IKSolver.Bone bone, float weight) {
+		private void RotateToTarget(Vector3 targetPosition, Bone bone, float weight) {
 			// Swing
 			if (XY) {
 				if (weight >= 0f) {
@@ -236,7 +292,10 @@ namespace RootMotion.FinalIK {
 				}
 			}
 
-			if (useRotationLimits && bone.rotationLimit != null) bone.rotationLimit.Apply();
+			if (useRotationLimits && bone.rotationLimit != null)
+			{
+				bone.rotationLimit.Apply();
+			}
 		}
 		
 		/*
@@ -244,7 +303,7 @@ namespace RootMotion.FinalIK {
 		 * */
 		protected override Vector3 localDirection {
 			get {
-				return bones[0].transform.InverseTransformDirection(bones[bones.Length - 1].transform.forward);
+				return bones[0].transform.InverseTransformDirection(bones[^1].transform.forward);
 			}
 		}
 	}

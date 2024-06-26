@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RotateSelf : MonoBehaviour
 {
-	[SerializeField] private Vector3 rotateSpeed = new Vector3(0, 1, 0);
+	[SerializeField]
+	private Vector3 m_RotateSpeed = new(0.0f, 1.0f, 0.0f);
 
 	private void LateUpdate()
 	{
-		transform.Rotate(rotateSpeed * Time.deltaTime, Space.Self);
+		transform.Rotate(m_RotateSpeed * Time.deltaTime, Space.Self);
 	}
 }

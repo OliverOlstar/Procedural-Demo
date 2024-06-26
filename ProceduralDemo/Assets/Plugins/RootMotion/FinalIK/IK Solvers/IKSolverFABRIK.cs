@@ -1,15 +1,16 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
-	namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Forward and Backward Reaching Inverse Kinematics solver.
 	/// 
 	/// This class is based on the "FABRIK: A fast, iterative solver for the inverse kinematics problem." paper by Aristidou, A., Lasenby, J.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class IKSolverFABRIK : IKSolverHeuristic {
 		
 		#region Main Interface
@@ -19,7 +20,12 @@ using System;
 		/// </summary>
 		public void SolveForward(Vector3 position) {
 			if (!initiated) {
-				if (!Warning.logged) LogWarning("Trying to solve uninitiated FABRIK chain.");
+				if (!Warning.logged)
+				{
+					LogWarning("Trying to solve uninitiated FABRIK chain.");
+				}
+
+
 				return;
 			}
 			
@@ -33,7 +39,12 @@ using System;
 		/// </summary>
 		public void SolveBackward(Vector3 position) {
 			if (!initiated) {
-				if (!Warning.logged) LogWarning("Trying to solve uninitiated FABRIK chain.");
+				if (!Warning.logged)
+				{
+					LogWarning("Trying to solve uninitiated FABRIK chain.");
+				}
+
+
 				return;
 			}
 			
@@ -43,7 +54,12 @@ using System;
 		}
 
 		public override Vector3 GetIKPosition() {
-			if (target != null) return target.position;
+			if (target != null)
+			{
+				return target.position;
+			}
+
+
 			return IKPosition;
 		}
 
@@ -58,7 +74,11 @@ using System;
 		private Vector3[] solverLocalPositions = new Vector3[0];
 
 		protected override void OnInitiate() {
-			if (firstInitiation || !Application.isPlaying) IKPosition = bones[bones.Length - 1].transform.position;
+			if (firstInitiation || !Application.isPlaying)
+			{
+				IKPosition = bones[^1].transform.position;
+			}
+
 
 			for (int i = 0; i < bones.Length; i++) {
 				bones[i].solverPosition = bones[i].transform.position;
@@ -76,24 +96,47 @@ using System;
 		}
 		
 		protected override void OnUpdate() {
-			if (IKPositionWeight <= 0) return;
+			if (IKPositionWeight <= 0)
+			{
+				return;
+			}
+
+
 			IKPositionWeight = Mathf.Clamp(IKPositionWeight, 0f, 1f);
 			
 			OnPreSolve();
 
-			if (target != null) IKPosition = target.position;
-			if (XY) IKPosition.z = bones[0].transform.position.z;
+			if (target != null)
+			{
+				IKPosition = target.position;
+			}
+
+
+			if (XY)
+			{
+				IKPosition.z = bones[0].transform.position.z;
+			}
+
 
 			Vector3 singularityOffset = maxIterations > 1? GetSingularityOffset(): Vector3.zero;
 
 			// Iterating the solver
 			for (int i = 0; i < maxIterations; i++) {
 				// Optimizations
-				if (singularityOffset == Vector3.zero && i >= 1 && tolerance > 0 && positionOffset < tolerance * tolerance) break;
+				if (singularityOffset == Vector3.zero && i >= 1 && tolerance > 0 && positionOffset < tolerance * tolerance)
+				{
+					break;
+				}
+
+
 				lastLocalDirection = localDirection;
 
-				if (OnPreIteration != null) OnPreIteration(i);
-				
+				if (OnPreIteration != null)
+				{
+					OnPreIteration(i);
+				}
+
+
 				Solve(IKPosition + (i == 0? singularityOffset: Vector3.zero));
 			}
 			
@@ -109,8 +152,12 @@ using System;
 		 * Interpolates the joint position to match the bone's length
 		*/
 		private Vector3 SolveJoint(Vector3 pos1, Vector3 pos2, float length) {
-			if (XY) pos1.z = pos2.z;
-			
+			if (XY)
+			{
+				pos1.z = pos2.z;
+			}
+
+
 			return pos2 + (pos1 - pos2).normalized * length;
 		}
 
@@ -131,7 +178,11 @@ using System;
 					chainLength += bones[i].length;
 				}
 
-				if (useRotationLimits) solverLocalPositions[i] = Quaternion.Inverse(GetParentSolverRotation(i)) * (bones[i].transform.position - GetParentSolverPosition(i));
+				if (useRotationLimits)
+				{
+					solverLocalPositions[i] = Quaternion.Inverse(GetParentSolverRotation(i)) * (bones[i].transform.position - GetParentSolverPosition(i));
+				}
+
 			}
 		}
 		
@@ -140,8 +191,15 @@ using System;
 		 * */
 		private void OnPostSolve() {
 			// Rotating bones to match the solver positions
-			if (!useRotationLimits) MapToSolverPositions();
-			else MapToSolverPositionsLimited();
+			if (!useRotationLimits)
+			{
+				MapToSolverPositions();
+			}
+			else
+			{
+				MapToSolverPositionsLimited();
+			}
+
 
 			lastLocalDirection = localDirection;
 		}
@@ -159,10 +217,14 @@ using System;
 		 * */
 		private void ForwardReach(Vector3 position) {
 			// Lerp last bone's solverPosition to position
-			bones[bones.Length - 1].solverPosition = Vector3.Lerp(bones[bones.Length - 1].solverPosition, position, IKPositionWeight);
+			bones[^1].solverPosition = Vector3.Lerp(bones[^1].solverPosition, position, IKPositionWeight);
 
-			for (int i = 0; i < limitedBones.Length; i++) limitedBones[i] = false;
-			
+			for (int i = 0; i < limitedBones.Length; i++)
+			{
+				limitedBones[i] = false;
+			}
+
+
 			for (int i = bones.Length - 2; i > -1; i--) {
 				// Finding joint positions
 				bones[i].solverPosition = SolveJoint(bones[i].solverPosition, bones[i + 1].solverPosition, bones[i].length);
@@ -185,7 +247,11 @@ using System;
 			for (int i = index; i < bones.Length; i++) {
 				bones[i].solverRotation = rotation * bones[i].solverRotation;
 
-				if (!recursive) return;
+				if (!recursive)
+				{
+					return;
+				}
+
 			}
 		}
 
@@ -203,14 +269,34 @@ using System;
 		}
 
 		private Quaternion GetParentSolverRotation(int index) {
-			if (index > 0) return bones[index - 1].solverRotation;
-			if (bones[0].transform.parent == null) return Quaternion.identity;
+			if (index > 0)
+			{
+				return bones[index - 1].solverRotation;
+			}
+
+
+			if (bones[0].transform.parent == null)
+			{
+				return Quaternion.identity;
+			}
+
+
 			return bones[0].transform.parent.rotation;
 		}
 
 		private Vector3 GetParentSolverPosition(int index) {
-			if (index > 0) return bones[index - 1].solverPosition;
-			if (bones[0].transform.parent == null) return Vector3.zero;
+			if (index > 0)
+			{
+				return bones[index - 1].solverPosition;
+			}
+
+
+			if (bones[0].transform.parent == null)
+			{
+				return Vector3.zero;
+			}
+
+
 			return bones[0].transform.parent.position;
 		}
 
@@ -222,8 +308,12 @@ using System;
 			
 			Quaternion limitedLocalRotation = bones[index].rotationLimit.GetLimitedLocalRotation(localRotation, out changed);
 			
-			if (!changed) return q;
-			
+			if (!changed)
+			{
+				return q;
+			}
+
+
 			return parentRotation * limitedLocalRotation;
 		}
 
@@ -231,15 +321,28 @@ using System;
 		 * Applying rotation limit to a bone in stage 1 in a more stable way
 		 * */
 		private void LimitForward(int rotateBone, int limitBone) {
-			if (!useRotationLimits) return;
-			if (bones[limitBone].rotationLimit == null) return;
+			if (!useRotationLimits)
+			{
+				return;
+			}
+
+
+			if (bones[limitBone].rotationLimit == null)
+			{
+				return;
+			}
 
 			// Storing last bone's position before applying the limit
-			Vector3 lastBoneBeforeLimit = bones[bones.Length - 1].solverPosition;
+
+			Vector3 lastBoneBeforeLimit = bones[^1].solverPosition;
 
 			// Moving and rotating this bone and all its children to their solver positions
 			for (int i = rotateBone; i < bones.Length - 1; i++) {
-				if (limitedBones[i]) break;
+				if (limitedBones[i])
+				{
+					break;
+				}
+
 
 				Quaternion fromTo = Quaternion.FromToRotation(bones[i].solverRotation * bones[i].axis, bones[i + 1].solverPosition - bones[i].solverPosition);
 				SolverRotate(i, fromTo, false);
@@ -258,13 +361,13 @@ using System;
 					SolverMoveChildrenAroundPoint(limitBone, change);
 
 					// Rotating to compensate for the limit
-					Quaternion fromTo = Quaternion.FromToRotation(bones[bones.Length - 1].solverPosition - bones[rotateBone].solverPosition, lastBoneBeforeLimit - bones[rotateBone].solverPosition);
+					Quaternion fromTo = Quaternion.FromToRotation(bones[^1].solverPosition - bones[rotateBone].solverPosition, lastBoneBeforeLimit - bones[rotateBone].solverPosition);
 
 					SolverRotate(rotateBone, fromTo, true);
 					SolverMoveChildrenAroundPoint(rotateBone, fromTo);
 
 					// Moving the bone so that last bone maintains its initial position
-					SolverMove(rotateBone, lastBoneBeforeLimit - bones[bones.Length - 1].solverPosition);
+					SolverMove(rotateBone, lastBoneBeforeLimit - bones[^1].solverPosition);
 				} else {
 					// last bone
 					bones[limitBone].solverRotation = afterLimit;
@@ -278,8 +381,15 @@ using System;
 		 * Stage 2 of FABRIK algorithm
 		 * */
 		private void BackwardReach(Vector3 position) {
-			if (useRotationLimits) BackwardReachLimited(position);
-			else BackwardReachUnlimited(position);
+			if (useRotationLimits)
+			{
+				BackwardReachLimited(position);
+			}
+			else
+			{
+				BackwardReachUnlimited(position);
+			}
+
 		}
 		
 		/*
@@ -352,7 +462,11 @@ using System;
             bones[0].transform.position = bones[0].solverPosition;
 
 			for (int i = 0; i < bones.Length; i++) {
-				if (i < bones.Length - 1) bones[i].transform.rotation = bones[i].solverRotation;
+				if (i < bones.Length - 1)
+				{
+					bones[i].transform.rotation = bones[i].solverRotation;
+				}
+
 			}
 		}
 	}

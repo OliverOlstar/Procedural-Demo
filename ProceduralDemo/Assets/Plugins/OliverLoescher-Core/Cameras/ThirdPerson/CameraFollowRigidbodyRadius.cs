@@ -1,54 +1,58 @@
-using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace OliverLoescher 
+namespace OCore
 {
-    public class CameraFollowRigidbodyRadius : MonoBehaviour
-    {
-        [SerializeField] private Rigidbody target = null;
+	public class CameraFollowRigidbodyRadius : MonoBehaviour
+	{
 		[SerializeField]
-		private Util.Mono.Updateable updateable = new Util.Mono.Updateable(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
+		private Rigidbody m_Target = null;
+		[SerializeField]
+		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
 
 		[Header("Look")]
-        [SerializeField] private float lookVelocity = 1.0f;
-        [SerializeField] private Vector3 lookOffset = new Vector3();
-        [SerializeField] private float lookDampening = 5.0f;
+		[SerializeField]
+		private float m_LookVelocity = 1.0f;
+		[SerializeField]
+		private Vector3 m_LookOffset = new();
+		[SerializeField]
+		private float m_LookDampening = 5.0f;
 
-        [Header("Follow")]
-        [SerializeField] private float followDistance = 9.0f;
-        [SerializeField] private float followHeight = 2.0f;
-        [SerializeField] private float followDampening = 1.0f;
+		[Header("Follow")]
+		[SerializeField]
+		private float m_FollowDistance = 9.0f;
+		[SerializeField]
+		private float m_FollowHeight = 2.0f;
+		[SerializeField]
+		private float m_FollowDampening = 1.0f;
 
 		private void Start()
 		{
-			updateable.Register(Tick);
+			m_Updateable.Register(Tick);
 		}
 
 		private void OnDestroy()
 		{
-			updateable.Deregister();
+			m_Updateable.Deregister();
 		}
 
 		void Tick(float pDeltaTime)
-        {
-			Vector3 offset = Util.Math.Horizontalize(transform.position - target.position) * followDistance; // x, z
-            offset.y = followHeight; // y
-            transform.position = Vector3.Lerp(transform.position, target.position + offset, followDampening * pDeltaTime);
+		{
+			Vector3 offset = Util.Math.Horizontalize(transform.position - m_Target.position) * m_FollowDistance; // x, z
+			offset.y = m_FollowHeight; // y
+			transform.position = Vector3.Lerp(transform.position, m_Target.position + offset, m_FollowDampening * pDeltaTime);
 
-            Vector3 lookAtTarget = target.transform.position + (target.velocity * lookVelocity) + lookOffset;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookAtTarget - transform.position), pDeltaTime * lookDampening);
-        }
+			Vector3 lookAtTarget = m_Target.transform.position + (m_Target.velocity * m_LookVelocity) + m_LookOffset;
+			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookAtTarget - transform.position), pDeltaTime * m_LookDampening);
+		}
 
-        private void OnDrawGizmosSelected()
-        {
-			if (target == null)
+		private void OnDrawGizmosSelected()
+		{
+			if (m_Target == null)
 			{
 				return;
 			}
-            // transform.position = target.position + followOffset;
-            transform.LookAt(target.transform.position + (target.velocity * lookVelocity) + lookOffset);
-        }
-    }
+			// transform.position = target.position + followOffset;
+			transform.LookAt(m_Target.transform.position + (m_Target.velocity * m_LookVelocity) + m_LookOffset);
+		}
+	}
 }

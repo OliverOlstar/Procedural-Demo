@@ -88,20 +88,30 @@ namespace EZCameraShake
             if (fadeInDuration > 0 && sustain)
             {
                 if (currentFadeTime < 1)
-                    currentFadeTime += Time.deltaTime / fadeInDuration;
-                else if (fadeOutDuration > 0)
-                    sustain = false;
-            }
+				{
+					currentFadeTime += Time.deltaTime / fadeInDuration;
+				}
+				else if (fadeOutDuration > 0)
+				{
+					sustain = false;
+				}
+			}
 
             if (!sustain)
-                currentFadeTime -= Time.deltaTime / fadeOutDuration;
+			{
+				currentFadeTime -= Time.deltaTime / fadeOutDuration;
+			}
 
-            if (sustain)
-                tick += Time.deltaTime * Roughness * roughMod;
-            else
-                tick += Time.deltaTime * Roughness * roughMod * currentFadeTime;
+			if (sustain)
+			{
+				tick += Time.deltaTime * Roughness * roughMod;
+			}
+			else
+			{
+				tick += Time.deltaTime * Roughness * roughMod * currentFadeTime;
+			}
 
-            return amt * Magnitude * magnMod * currentFadeTime;
+			return currentFadeTime * Magnitude * magnMod * amt;
         }
 
         /// <summary>
@@ -111,9 +121,11 @@ namespace EZCameraShake
         public void StartFadeOut(float fadeOutTime)
         {
             if (fadeOutTime == 0)
-                currentFadeTime = 0;
+			{
+				currentFadeTime = 0;
+			}
 
-            fadeOutDuration = fadeOutTime;
+			fadeOutDuration = fadeOutTime;
             fadeInDuration = 0;
             sustain = false;
         }
@@ -125,9 +137,11 @@ namespace EZCameraShake
         public void StartFadeIn(float fadeInTime)
         {
             if (fadeInTime == 0)
-                currentFadeTime = 1;
+			{
+				currentFadeTime = 1;
+			}
 
-            fadeInDuration = fadeInTime;
+			fadeInDuration = fadeInTime;
             fadeOutDuration = 0;
             sustain = true;
         }
@@ -173,14 +187,22 @@ namespace EZCameraShake
             get
             {
                 if (IsFadingIn)
-                    return CameraShakeState.FadingIn;
-                else if (IsFadingOut)
-                    return CameraShakeState.FadingOut;
-                else if (IsShaking)
-                    return CameraShakeState.Sustained;
-                else
-                    return CameraShakeState.Inactive;
-            }
+				{
+					return CameraShakeState.FadingIn;
+				}
+				else if (IsFadingOut)
+				{
+					return CameraShakeState.FadingOut;
+				}
+				else if (IsShaking)
+				{
+					return CameraShakeState.Sustained;
+				}
+				else
+				{
+					return CameraShakeState.Inactive;
+				}
+			}
         }
     }
 }

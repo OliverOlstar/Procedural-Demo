@@ -106,7 +106,7 @@ namespace Core
 		public void AddRange(IEnumerable<T> collection)
 		{
 			int index = 0;
-			foreach (var value in collection)
+			foreach (T value in collection)
 			{
 				WriteValue(m_Values.Count - 1 + index, value);
 				index++;

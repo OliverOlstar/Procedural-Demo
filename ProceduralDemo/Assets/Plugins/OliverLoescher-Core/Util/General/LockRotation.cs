@@ -1,35 +1,34 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LockRotation : MonoBehaviour
 {
 	public bool LockXRotation = false;
 	public bool LockYRotation = false;
 	public bool LockZRotation = false;
-	Vector3 initialRotation;
+	Vector3 m_InitialRotation;
 
 	void Start() 
 	{
-		initialRotation = transform.eulerAngles;
+		m_InitialRotation = transform.eulerAngles;
 	}
 
-	void lockRotation() 
+	void DoLockRotation()
 	{
-		if (LockXRotation || LockYRotation || LockZRotation) 
+		if (!LockXRotation && !LockYRotation && !LockZRotation)
 		{
-			Vector3 currentRotation = transform.eulerAngles;
-			transform.eulerAngles = new Vector3(LockXRotation ? initialRotation.x : currentRotation.x, LockYRotation ? initialRotation.y : currentRotation.y, LockZRotation ? initialRotation.z : currentRotation.z);
+			return;
 		}
+		Vector3 currentRotation = transform.eulerAngles;
+		transform.eulerAngles = new Vector3(LockXRotation ? m_InitialRotation.x : currentRotation.x, LockYRotation ? m_InitialRotation.y : currentRotation.y, LockZRotation ? m_InitialRotation.z : currentRotation.z);
 	}
 
 	private void FixedUpdate() 
 	{
-		lockRotation();
+		DoLockRotation();
 	}
 
 	private void Update() 
 	{
-		lockRotation();
+		DoLockRotation();
 	}
 }

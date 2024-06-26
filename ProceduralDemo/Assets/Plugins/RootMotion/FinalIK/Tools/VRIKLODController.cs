@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
-using RootMotion.FinalIK;
 
 namespace RootMotion.FinalIK
 {
 
-    /// <summary>
-    /// Simple VRIK LOD level controller based on renderer.isVisible and camera distance.
-    /// </summary>
-    public class VRIKLODController : MonoBehaviour
+	/// <summary>
+	/// Simple VRIK LOD level controller based on renderer.isVisible and camera distance.
+	/// </summary>
+	public class VRIKLODController : MonoBehaviour
     {
 
         public Renderer LODRenderer;
@@ -32,15 +30,25 @@ namespace RootMotion.FinalIK
         {
             if (allowCulled)
             {
-                if (LODRenderer == null) return 0;
-                if (!LODRenderer.isVisible) return 2;
-            }
+                if (LODRenderer == null)
+				{
+					return 0;
+				}
+
+				if (!LODRenderer.isVisible)
+				{
+					return 2;
+				}
+			}
 
             // Set LOD to 1 if too far from camera
             float sqrMag = (ik.transform.position - Camera.main.transform.position).sqrMagnitude;
-            if (sqrMag > LODDistance * LODDistance) return 1;
+            if (sqrMag > LODDistance * LODDistance)
+			{
+				return 1;
+			}
 
-            return 0;
+			return 0;
         }
     }
 }
