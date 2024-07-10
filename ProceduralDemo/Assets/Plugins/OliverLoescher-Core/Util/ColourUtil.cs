@@ -14,7 +14,7 @@ namespace OCore.Util
 			}
 			if (pHEX[0] == '#')
 			{
-				Debug2.LogError("ColorConst.FromHex: Colour hex code doesnt start with a \'#\'.", "FromHex", typeof(Colour));
+				Debug.LogError("ColorConst.FromHex: Colour hex code doesnt start with a \'#\'.", typeof(Colour));
 			}
 			ColorUtility.TryParseHtmlString(pHEX, out Color colour);
 			return colour;

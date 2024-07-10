@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
@@ -24,12 +25,12 @@ namespace OCore
 		}
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected static void Log(string pMessage, string pMethodName) => Util.Debug2.Log(pMessage, pMethodName, typeof(T));
+		protected static void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(pMessage, typeof(T), pMethodName);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected static void LogWarning(string pMessage, string pMethodName) => Util.Debug2.LogWarning(pMessage, pMethodName, typeof(T));
+		protected static void LogWarning(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogWarning(pMessage, typeof(T), pMethodName);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected static void LogError(string pMessage, string pMethodName) => Util.Debug2.LogError(pMessage, pMethodName, typeof(T));
+		protected static void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(pMessage, typeof(T), pMethodName);
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
-		protected static void LogExeception(string pMessage, string pMethodName) => Util.Debug2.DevException(pMessage, pMethodName, typeof(T));
+		protected static void LogExeception(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.DevException(pMessage, typeof(T), pMethodName);
 	}
 }

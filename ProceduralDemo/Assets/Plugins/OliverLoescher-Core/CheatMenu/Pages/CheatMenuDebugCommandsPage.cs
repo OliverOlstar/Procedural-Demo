@@ -51,7 +51,7 @@ namespace OCore.CheatMenu.Pages
 			// 		Debug.LogError(e);
 			// 	}
 			// }
-			Util.Debug2.DevException(new NotImplementedException());
+			Util.Debug.DevException(new NotImplementedException());
 		}
 
 		public override void DrawGUI()

@@ -125,7 +125,6 @@ namespace OCore.Util
 		private static void RegisterUpdate(in Updateable pUpdatable)
 		{
 			TryCreate();
-			Log("Hi friend :D");
 
 			ref List<Updateable> items = ref GetUpdatables(pUpdatable.Type);
 			int index;

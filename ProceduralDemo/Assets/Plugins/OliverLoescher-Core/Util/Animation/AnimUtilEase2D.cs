@@ -18,7 +18,7 @@ namespace OCore.Util
 		{
 			if (pOnTick == null)
 			{
-				Debug2.DevException("pOnTick should never be null", "", typeof(AnimUtilEase));
+				Debug.DevException("pOnTick should never be null", typeof(AnimUtilEase));
 			}
 			
 			m_EaseX = pEaseX;

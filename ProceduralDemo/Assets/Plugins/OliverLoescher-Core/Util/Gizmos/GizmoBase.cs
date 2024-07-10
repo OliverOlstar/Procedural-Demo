@@ -13,7 +13,7 @@ namespace OCore.Debug2
 		{
 			if (!Application.isEditor)
 			{
-				Debug.LogWarning($"This {GetType()} exist, destory it. Please clean these up. {Util.Debug2.GetPath(transform)}");
+				Debug.LogWarning($"This {GetType()} exist, destory it. Please clean these up. {Util.Debug.GetPath(transform)}");
 				DestroyImmediate(this);
 			}
 		}

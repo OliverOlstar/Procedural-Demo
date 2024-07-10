@@ -30,7 +30,7 @@ namespace OCore
 			m_DebugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug2.DevException("pChild (Rigidbody) is null", "Start", m_DebugObject);
+				Util.Debug.DevException("pChild (Rigidbody) is null", m_DebugObject);
 				return;
 			}
 			m_ChildRigidbody = pChild;
@@ -42,7 +42,7 @@ namespace OCore
 			m_DebugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug2.DevException("pChild (CharacterController) is null", "Start", m_DebugObject);
+				Util.Debug.DevException("pChild (CharacterController) is null", m_DebugObject);
 				return;
 			}
 			m_ChildController = pChild;
@@ -54,27 +54,27 @@ namespace OCore
 			m_DebugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug2.DevException("pChild is null", "Start", m_DebugObject);
+				Util.Debug.DevException("pChild is null", m_DebugObject);
 				return;
 			}
 			if (pParent == null)
 			{
-				Util.Debug2.DevException("pParent is null", "Start", m_DebugObject);
+				Util.Debug.DevException("pParent is null", m_DebugObject);
 				return;
 			}
 			if (m_Child != null) // Already started
 			{
 				if (m_Child != pChild)
 				{
-					Util.Debug2.DevException("Already started but with a different child transform", "Start", m_DebugObject);
+					Util.Debug.DevException("Already started but with a different child transform", m_DebugObject);
 				}
 				else if (pParent != m_Parent)
 				{
-					Util.Debug2.DevException("Already started but with a different parent transform", "Start", m_DebugObject);
+					Util.Debug.DevException("Already started but with a different parent transform", m_DebugObject);
 				}
 				else
 				{
-					Util.Debug2.LogError("Already started", "Start", m_DebugObject);
+					Util.Debug.LogError("Already started", m_DebugObject);
 				}
 				return;
 			}
@@ -95,7 +95,7 @@ namespace OCore
 		{
 			if (m_Child == null)
 			{
-				Util.Debug2.LogWarning("Not started, please start first", "Stop", m_DebugObject);
+				Util.Debug.LogWarning("Not started, please start first", m_DebugObject);
 				return;
 			}
 			m_Parent = null;
@@ -108,7 +108,7 @@ namespace OCore
 		{
 			if (pParent == null)
 			{
-				Util.Debug2.DevException("pParent is null", "ChangePoint", m_DebugObject);
+				Util.Debug.DevException("pParent is null", m_DebugObject);
 				return;
 			}
 			m_Parent = pParent;

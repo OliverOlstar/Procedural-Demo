@@ -27,7 +27,7 @@ namespace OCore.Util
 		{
 			if (pClip == null)
 			{
-				Debug2.LogWarning("Clip cannot be null", "PlayOneShot", typeof(Audio));
+				Debug.LogWarning("Clip cannot be null", typeof(Audio));
 				return;
 			}
 			AudioSource source = AudioPool.Instance.GetFreeSource();
@@ -44,7 +44,7 @@ namespace OCore.Util
 		{
 			if (pClip == null)
 			{
-				Debug2.LogWarning("Clip is null", "PlayOneShot", typeof(Audio));
+				Debug.LogWarning("Clip is null", typeof(Audio));
 				return;
 			}
 			AudioSource source = AudioPool.Instance.GetFreeSource();

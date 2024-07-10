@@ -43,12 +43,12 @@ namespace OCore
 		}
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-        protected static void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug2.Log(pMessage, pMethodName, s_Instance);
+        protected static void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(pMessage, s_Instance, pMethodName);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-        protected static void LogWarning(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug2.LogWarning(pMessage, pMethodName, s_Instance);
+        protected static void LogWarning(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogWarning(pMessage, s_Instance, pMethodName);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-        protected static void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug2.LogError(pMessage, pMethodName, s_Instance);
+        protected static void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(pMessage, s_Instance, pMethodName);
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
-        protected static void LogExeception(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug2.DevException(pMessage, pMethodName, s_Instance);
+        protected static void LogExeception(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.DevException(pMessage, s_Instance, pMethodName);
     }
 }

@@ -18,7 +18,7 @@ namespace OCore
 		{
 			if (Instance != null)
 			{
-				Util.Debug2.DevException($"Second MainCamera, this should never happen. Please ensure cleaning up the old one first if a new one is intended. Destroying self ({gameObject.name}).", "Awake", this);
+				Util.Debug.DevException($"Second MainCamera, this should never happen. Please ensure cleaning up the old one first if a new one is intended. Destroying self ({gameObject.name}).", this);
 				Destroy(gameObject);
 				return;
 			}

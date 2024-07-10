@@ -134,7 +134,7 @@ namespace OCore.Weapon
 				}
 				if (!isSameTeam || Team.TeamDamage)
 				{
-					Debug.Log($"[{nameof(Projectile)}] {nameof(DamageOther)}({pOther.name}, {damageable.GetGameObject().name}, {(damageable.GetTeam() == null ? "No Team" : damageable.GetTeam().name)})", pOther);
+					UnityEngine.Debug.Log($"[{nameof(OCore.Weapon.Projectile)}] {nameof(DamageOther)}({pOther.name}, {damageable.GetGameObject().name}, {(damageable.GetTeam() == null ? "No Team" : damageable.GetTeam().name)})", pOther);
 					DamageOther(damageable, pPoint);
 					didDamage = true;
 				}

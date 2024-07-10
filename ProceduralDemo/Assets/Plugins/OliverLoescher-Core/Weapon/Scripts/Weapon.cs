@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using System.Runtime.CompilerServices;
 
 namespace OCore.Weapon
 {
@@ -292,9 +293,9 @@ namespace OCore.Weapon
 
 		#region Helpers
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected void Log(string pMessage, string pMethodName) => Util.Debug2.Log(pMessage, pMethodName, this);
+		protected void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(pMessage, this, pMethodName);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected void LogError(string pMessage, string pMethodName) => Util.Debug2.LogError(pMessage, pMethodName, this);
+		protected void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(pMessage, this, pMethodName);
 		#endregion
 	}
 }
