@@ -15,6 +15,15 @@ namespace OCore.Util
 		static void RunOnStart() { s_IsApplicationQuitting = false; Application.quitting += Quit; }
 		#endregion Application
 
+		public static bool IsRelease()
+		{
+#if RELEASE
+			return true;
+#else
+			return false;
+#endif
+		}
+
 		public static float SpringDamper(this float pFrom, float pTo, ref float rVelocity, float pSpring, float pDamper, float pDeltaTime)
 		{
 			float differance = pFrom - pTo;
