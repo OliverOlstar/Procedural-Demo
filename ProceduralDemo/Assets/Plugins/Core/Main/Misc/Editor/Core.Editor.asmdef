@@ -1,5 +1,6 @@
 {
     "name": "Core.Editor",
+    "rootNamespace": "",
     "references": [
         "GUID:eeca017b6799a164e8f666ace7596ba3"
     ],
@@ -11,7 +12,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "CORE_ENABLED"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

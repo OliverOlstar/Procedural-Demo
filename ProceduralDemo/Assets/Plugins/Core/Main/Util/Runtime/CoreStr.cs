@@ -12,9 +12,9 @@ namespace Core
 
 		public static bool Equals(string s1, string s2)
 		{
-			if (ReferenceEquals(s1, null) || ReferenceEquals(s2, null))
+			if (s1 is null || s2 is null)
 			{
-				return ReferenceEquals(s1, null) && ReferenceEquals(s2, null);
+				return s1 is null && s2 is null;
 			}
 			int s1Len = s1.Length;
 			if (s1Len != s2.Length)
@@ -33,12 +33,12 @@ namespace Core
 
 		public static bool IsEmpty(string s)
 		{
-			return ReferenceEquals(s, null) || s.Length == 0;
+			return s is null || s.Length == 0;
 		}
 
 		public static bool Contains(string s1, string s2)
 		{
-			if (ReferenceEquals(s1, null) || ReferenceEquals(s2, null))
+			if (s1 is null || s2 is null)
 			{
 				return false;
 			}
@@ -63,7 +63,7 @@ namespace Core
 
 		public static bool Contains(string s, char c)
 		{
-			if (ReferenceEquals(s, null))
+			if (s is null)
 			{
 				return false;
 			}
@@ -80,7 +80,7 @@ namespace Core
 
 		public static int FirstIndexOf(string s, char c)
 		{
-			if (ReferenceEquals(s, null))
+			if (s is null)
 			{
 				return -1;
 			}
@@ -97,7 +97,7 @@ namespace Core
 
 		public static int LastIndexOf(string s, char c)
 		{
-			if (ReferenceEquals(s, null))
+			if (s is null)
 			{
 				return -1;
 			}
@@ -114,17 +114,17 @@ namespace Core
 
 		public static bool StartsWith(string s1, string s2)
 		{
-			if (ReferenceEquals(s1, null) || ReferenceEquals(s2, null))
+			if (s1 is null || s2 is null)
 			{
 				return false;
 			}
-			int s1Len = s1.Length;
-			int s2Len = s2.Length;
-			if (s1Len < s2Len)
+			int s1Length = s1.Length;
+			int s2Length = s2.Length;
+			if (s1Length < s2Length)
 			{
 				return false;
 			}
-			for (int i = 0; i < s2Len; ++i)
+			for (int i = 0; i < s2Length; ++i)
 			{
 				if (s1[i] != s2[i])
 				{
@@ -136,7 +136,7 @@ namespace Core
 
 		public static bool EndsWith(string s1, string s2)
 		{
-			if (ReferenceEquals(s1, null) || ReferenceEquals(s2, null))
+			if (s1 is null || s2 is null)
 			{
 				return false;
 			}
@@ -158,7 +158,7 @@ namespace Core
 
 		public static bool StartsWith(string s1, char c)
 		{
-			if (ReferenceEquals(s1, null) || s1.Length == 0)
+			if (s1 is null || s1.Length == 0)
 			{
 				return false;
 			}
@@ -167,7 +167,7 @@ namespace Core
 
 		public static bool EndsWith(string s1, char c)
 		{
-			if (ReferenceEquals(s1, null) || s1.Length == 0)
+			if (s1 is null || s1.Length == 0)
 			{
 				return false;
 			}

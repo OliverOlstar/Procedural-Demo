@@ -12,12 +12,12 @@ namespace Core
 			window.Show();
 		}
 
-		private DebugCommandGUI m_CommandGUI = new();
+		private readonly DebugCommandGUI m_CommandGUI = new();
 
 		private Vector2 m_ScrollPos = Vector2.zero;
 
 		private EditorPrefsInt m_ModeIndex;
-		private string[] m_ModeNames = { "Options", "Commands" };
+		private readonly string[] m_ModeNames = { "Options", "Commands" };
 
 		private void OnEnable()
 		{
