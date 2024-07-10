@@ -1,3 +1,14 @@
 {
-	"name": "OCore.PlayerPrefs"
+    "name": "OCore.PlayerPrefs",
+    "rootNamespace": "OCore.PlayerPrefs",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

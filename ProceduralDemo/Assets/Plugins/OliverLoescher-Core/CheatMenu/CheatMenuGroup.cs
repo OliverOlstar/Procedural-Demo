@@ -143,7 +143,7 @@ namespace OCore.CheatMenu
 			{
 				return false;
 			}
-			using (GUIUtil.UsableVertical.Use(GUI.skin.box))
+			using (Util.GUI.UsableVertical.Use(GUI.skin.box))
 			{
 				CheatMenuGUI.SetNextControlID("CheatMenuGroup.SelectionGrid");
 				int index = CheatMenuGUI.SelectionGrid(m_CurrentIndex, m_PageNames, tabCount);

@@ -13,13 +13,11 @@ namespace OCore
 		{
 			get
 			{
-				// Create
 				if (s_Instance == null)
 				{
 					s_Instance = new T();
 					s_InstanceInterface = (s_Instance is ISingleton i) ? i : null;
 				}
-				// Access
 				s_InstanceInterface?.OnAccessed();
 				return s_Instance;
 			}

@@ -8,11 +8,20 @@ namespace OCore.Util
 	public static class Func
 	{
 		#region Application
-		public static bool s_IsApplicationQuitting = false;
-		static void Quit() => s_IsApplicationQuitting = true;
+		private static bool s_IsApplicationQuitting = false;
+		public static bool IsApplicationQuitting => s_IsApplicationQuitting;
 
 		[RuntimeInitializeOnLoadMethod]
-		static void RunOnStart() { s_IsApplicationQuitting = false; Application.quitting += Quit; }
+		static void RunOnStart()
+		{
+			s_IsApplicationQuitting = false;
+			Application.quitting += Quit;
+		}
+		private static void Quit()
+		{
+			s_IsApplicationQuitting = true;
+			Application.quitting -= Quit;
+		}
 		#endregion Application
 
 		public static bool IsRelease()

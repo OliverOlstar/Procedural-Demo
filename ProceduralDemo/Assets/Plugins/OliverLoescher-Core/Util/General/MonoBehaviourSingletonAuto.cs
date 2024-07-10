@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OCore
 {
-    public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviourSingleton<T>, new()
+    public abstract class MonoBehaviourSingletonAuto<T> : MonoBehaviour where T : MonoBehaviourSingletonAuto<T>, new()
     {
         private static T s_Instance = null;
         private static ISingleton s_InstanceInterface = null;
@@ -13,6 +13,7 @@ namespace OCore
         {
             get
             {
+				TryCreate();
 				s_InstanceInterface?.OnAccessed();
                 return s_Instance;
             }
@@ -20,16 +21,20 @@ namespace OCore
 
 		public static bool Exists => s_Instance != null;
 
-		protected virtual void Awake()
+		protected static void TryCreate()
 		{
-			if (s_Instance != null)
+			if (Util.Func.IsApplicationQuitting || s_Instance != null)
 			{
-				LogExeception("There is already an instance of this, destroying self");
-				Destroy(this);
 				return;
 			}
-			s_Instance = this as T;
-			DontDestroyOnLoad(gameObject);
+
+			s_Instance = new GameObject().AddComponent<T>();
+			DontDestroyOnLoad(s_Instance.gameObject);
+			s_InstanceInterface = (s_Instance is ISingleton i) ? i : null;
+			if (!Util.Func.IsRelease())
+			{
+				s_Instance.gameObject.name = s_Instance.GetType().Name;
+			}
 		}
 
 		protected virtual void OnDestroy()

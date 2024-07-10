@@ -1,27 +1,29 @@
-﻿
-public sealed class PlayerPrefsIntList : PlayerPrefsList<int>
+﻿namespace OCore.PlayerPrefs
 {
-	public PlayerPrefsIntList(string key, bool isGlobalPref = false)
-		: base(key, isGlobalPref)
+	public sealed class PlayerPrefsIntList : PlayerPrefsList<int>
 	{
-	}
-
-	protected override int GetIndex(int index, bool isGlobal)
-	{
-		if (isGlobal)
+		public PlayerPrefsIntList(string key, bool isGlobalPref = false)
+			: base(key, isGlobalPref)
 		{
-			return PlayerPrefs.GetGlobalInt(Key + index, 0);
 		}
-		return PlayerPrefs.GetInt(Key + index, 0);
-	}
 
-	protected override void SetIndex(int index, int value, bool isGlobal)
-	{
-		if (isGlobal)
+		protected override int GetIndex(int index, bool isGlobal)
 		{
-			PlayerPrefs.SetGlobalInt(Key + index, value);
-			return;
+			if (isGlobal)
+			{
+				return PlayerPrefs.GetGlobalInt(Key + index, 0);
+			}
+			return PlayerPrefs.GetInt(Key + index, 0);
 		}
-		PlayerPrefs.SetInt(Key + index, value);
+
+		protected override void SetIndex(int index, int value, bool isGlobal)
+		{
+			if (isGlobal)
+			{
+				PlayerPrefs.SetGlobalInt(Key + index, value);
+				return;
+			}
+			PlayerPrefs.SetInt(Key + index, value);
+		}
 	}
 }

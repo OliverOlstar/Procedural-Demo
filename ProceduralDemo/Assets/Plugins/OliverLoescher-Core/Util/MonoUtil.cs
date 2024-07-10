@@ -10,7 +10,7 @@ namespace OCore.Util
 	/// <summary>
 	/// Public access point for any class to access MonoBehaviour functions
 	/// </summary>
-	public class Mono : MonoBehaviourSingleton<Mono>
+	public class Mono : MonoBehaviourSingletonAuto<Mono>
 	{
 		private void Awake()
 		{
@@ -69,7 +69,7 @@ namespace OCore.Util
 			{
 				if (m_Action != null)
 				{
-					LogError("Tried setting properties when already registered", "SetProperties");
+					LogError("Tried setting properties when already registered");
 					return;
 				}
 				m_Type = pType;
@@ -80,14 +80,14 @@ namespace OCore.Util
 			{
 				if (pAction == null)
 				{
-					LogExeception("Was passed a null action", "Register");
+					LogExeception("Was passed a null action");
 					return;
 				}
 				if (IsRegistered)
 				{
 					if (m_Action.Method == pAction.Method)
 					{
-						LogWarning("Was passed the same method which was already registered, returning.", "Register");
+						LogWarning("Was passed the same method which was already registered, returning.");
 						return;
 					}
 					Deregister(); // Remove old action before registering the new one
@@ -100,7 +100,7 @@ namespace OCore.Util
 			{
 				if (m_Action == null)
 				{
-					LogWarning("Tried deregistering when not registered", "Deregister");
+					LogWarning("Tried deregistering when not registered");
 					return;
 				}
 				DeregisterUpdate(this);
@@ -125,6 +125,7 @@ namespace OCore.Util
 		private static void RegisterUpdate(in Updateable pUpdatable)
 		{
 			TryCreate();
+			Log("Hi friend :D");
 
 			ref List<Updateable> items = ref GetUpdatables(pUpdatable.Type);
 			int index;
@@ -142,7 +143,7 @@ namespace OCore.Util
 		{
 			if (!GetUpdatables(pUpdatable.Type).Remove(pUpdatable))
 			{
-				LogError($"Failed to remove {pUpdatable}.", "DeregisterUpdate");
+				LogError($"Failed to remove {pUpdatable}.");
 			}
 		}
 

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using OCore.PlayerPrefs;
 
 namespace OCore.CheatMenu
 {
-	public class CheatMenu : MonoBehaviour
+	public class CheatMenu : MonoBehaviourSingleton<CheatMenu>
 	{
 		[AttributeUsage(AttributeTargets.Class)]
 		public class IgnorePageAttribute : Attribute { }
@@ -30,17 +31,15 @@ namespace OCore.CheatMenu
 			"ie. We don't want the GUI to be 2x smaller when working on a 4k screen vs and HD screen")]
 		private float m_ReferenceScreenWidth = 1080.0f;
 
-		private float Ratio => Screen.width / m_ReferenceScreenWidth;
-		private float NormalizedScale => Ratio * m_ScaleGUI;
-		private float ScaledWidth => Screen.width / NormalizedScale;
-		private float ScaledHeight => Screen.height / NormalizedScale;
-		
-#pragma warning disable CS0414
 		[SerializeField]
 		private float m_HorizScreenSpace = 1.0f;
 		[SerializeField]
 		private float m_VertScreenSpace = 0.95f;
-#pragma warning restore
+
+		private float Ratio => Screen.width / m_ReferenceScreenWidth;
+		private float NormalizedScale => Ratio * m_ScaleGUI;
+		private float ScaledWidth => Screen.width / NormalizedScale;
+		private float ScaledHeight => Screen.height / NormalizedScale;
 
 #if RELEASE
 		public static void Open() { }
@@ -48,25 +47,21 @@ namespace OCore.CheatMenu
 		public static void CloseGroup() { }
 		public static bool IsOpen => false;
 #else
-		private static CheatMenu s_Instance = null;
-
-		public static void Open() { if (s_Instance != null) { s_Instance.OpenInternal(); } }
-		public static void Close() { if (s_Instance != null) { s_Instance.CloseInternal(); } }
-		public static void CloseGroup() { if (s_Instance != null) { s_Instance.CloseGroupInternal(); } }
-		public static bool IsOpen => s_Instance != null ? s_Instance.m_IsOpen : false;
+		public static void Open() { if (Exists) { Instance.OpenInternal(); } }
+		public static void Close() { if (Exists) { Instance.CloseInternal(); } }
+		public static void CloseGroup() { if (Exists) { Instance.CloseGroupInternal(); } }
+		public static bool IsOpen => Exists && Instance.m_IsOpen;
 
 		private bool m_IsOpen = false;
-		private PlayerPrefsString m_CurrentGroupName = null;
+		private PlayerPrefsString m_CurrentGroupName;
 		private Vector2 m_ScrollPosition = Vector2.zero;
-		private static CheatMenuGroup[] s_GroupArray = null;
-		private static Dictionary<string, CheatMenuGroup> s_GroupDict;
+		private CheatMenuGroup[] m_GroupArray = null;
+		private Dictionary<string, CheatMenuGroup> m_GroupDict;
 		private int m_TimeScaleHandle = TimeScaleManager.INVALID_HANDLE;
 		private GUIStyle m_HeaderStyle = null;
 
-#pragma warning disable CS0414 // No referenced in RELEASE
 		[SerializeField]
 		private GameObject m_InputBlocker = null;
-#pragma warning restore CS0414
 
 		private float m_OpenTimer = 0.0f;
 
@@ -74,60 +69,56 @@ namespace OCore.CheatMenu
 		protected virtual void OnOpened() { }
 		protected virtual void OnClosed() { }
 
-		void Awake()
+		protected override void Awake()
 		{
-			if (s_Instance != null)
+			base.Awake();
+			
+			if (m_InputBlocker != null)
 			{
-				DebugUtil.DevException("A new CheatMenu was just created but one already existed. CheatMenu is a singleton, this should never happen.");
+				m_InputBlocker.SetActive(false);
 			}
-			s_Instance = this;
 
-			DontDestroyOnLoad(gameObject);
-			m_InputBlocker.gameObject.SetActive(false);
-
-			if (s_GroupArray == null)
+			if (m_GroupArray == null)
 			{
-				s_GroupDict = new Dictionary<string, CheatMenuGroup>();
-				List<CheatMenuGroup> groupList = ListPool<CheatMenuGroup>.Request();
-				foreach (Type type in TypeUtility.GetTypesDerivedFrom(typeof(CheatMenuPage)))
-				{
-					if (type.IsAbstract || type.GetCustomAttributes(typeof(IgnorePageAttribute), true).Length > 0)
-					{
-						continue;
-					}
-					CheatMenuPage page = Activator.CreateInstance(type) as CheatMenuPage;
-					if (!s_GroupDict.TryGetValue(page.Group.Name, out CheatMenuGroup group))
-					{
-						group = page.Group;
-						s_GroupDict.Add(group.Name, group);
-						groupList.Add(group);
-					}
-					group.AddPage(page);
-				}
-				s_GroupArray = groupList.ToArray();
-				ListPool<CheatMenuGroup>.Return(groupList);
-				Array.Sort(s_GroupArray, ComparePageGroupsByPriority);
+				m_GroupDict = new Dictionary<string, CheatMenuGroup>();
+				// List<CheatMenuGroup> groupList = ListPool<CheatMenuGroup>.Request();
+				// foreach (Type type in TypeUtility.GetTypesDerivedFrom(typeof(CheatMenuPage)))
+				// {
+				// 	if (type.IsAbstract || type.GetCustomAttributes(typeof(IgnorePageAttribute), true).Length > 0)
+				// 	{
+				// 		continue;
+				// 	}
+				// 	CheatMenuPage page = Activator.CreateInstance(type) as CheatMenuPage;
+				// 	if (!s_GroupDict.TryGetValue(page.Group.Name, out CheatMenuGroup group))
+				// 	{
+				// 		group = page.Group;
+				// 		s_GroupDict.Add(group.Name, group);
+				// 		groupList.Add(group);
+				// 	}
+				// 	group.AddPage(page);
+				// }
+				// s_GroupArray = groupList.ToArray();
+				// ListPool<CheatMenuGroup>.Return(groupList);
+				m_GroupArray = new CheatMenuGroup[0];
+				Array.Sort(m_GroupArray, ComparePageGroupsByPriority);
 			}
 
 			m_CurrentGroupName = new PlayerPrefsString(CHEAT_MENU_GROUP_PREF);
 
-			foreach (CheatMenuGroup group in s_GroupArray)
+			foreach (CheatMenuGroup group in m_GroupArray)
 			{
 				group.OnInitialize();
 			}
 			OnAwake();
 		}
 
-		void OnDestroy()
+		protected override void OnDestroy()
 		{
-			if (s_Instance == this)
-			{
-				s_Instance = null;
-			}
-			foreach (CheatMenuGroup group in s_GroupArray)
+			foreach (CheatMenuGroup group in m_GroupArray)
 			{
 				group.OnDestroy();
 			}
+			base.OnDestroy();
 		}
 
 		protected virtual CheatMenuGUI.ControlInput GetControlInput()
@@ -135,7 +126,7 @@ namespace OCore.CheatMenu
 			if (!IsOpen)
 			{
 				if ((Application.isEditor && !Input.GetMouseButton(1)) ||
-				    (Application.isMobilePlatform && Input.touchCount < 2))
+					(Application.isMobilePlatform && Input.touchCount < 2))
 				{
 					m_OpenTimer = 0.0f;
 					return CheatMenuGUI.ControlInput.None;
@@ -240,7 +231,7 @@ namespace OCore.CheatMenu
 			float width = ScaledWidth;
 			float height = ScaledHeight;
 			GUI.Box(new Rect(0f, 0f, width, height), string.Empty); // Background
-			
+
 			float widthScale = m_HorizScreenSpace;
 			float heightScale = m_VertScreenSpace;
 			Rect rect = new(
@@ -248,7 +239,7 @@ namespace OCore.CheatMenu
 				0.5f * (1.0f - heightScale) * height,
 				widthScale * width,
 				heightScale * height);
-			using (GUIUtil.UsableArea.Use(rect))
+			using (Util.GUI.UsableArea.Use(rect))
 			{
 				// Check current group
 				bool hasCurrentGroup = false;
@@ -288,7 +279,7 @@ namespace OCore.CheatMenu
 
 		private void DrawGroupMenuButtons(CheatMenuGroup currentGroup)
 		{
-			using (GUIUtil.UsableHorizontal.Use(GUI.skin.box, GUILayout.ExpandHeight(false)))
+			using (Util.GUI.UsableHorizontal.Use(GUI.skin.box, GUILayout.ExpandHeight(false)))
 			{
 				CheatMenuGUI.SetNextControlID("CheatMenu.DrawGroupMenuButtons.Back");
 				if (CheatMenuGUI.Button("Back", GUILayout.Width(85.0f)))
@@ -307,7 +298,7 @@ namespace OCore.CheatMenu
 
 		private void DrawMenuButtons()
 		{
-			using (GUIUtil.UsableHorizontal.Use(GUI.skin.box, GUILayout.ExpandHeight(false)))
+			using (Util.GUI.UsableHorizontal.Use(GUI.skin.box, GUILayout.ExpandHeight(false)))
 			{
 				CheatMenuGUI.SetNextControlID("CheatMenu.DrawMenuButtons.Close");
 				if (CheatMenuGUI.Button("Close"))
@@ -322,15 +313,15 @@ namespace OCore.CheatMenu
 			int index = 0;
 			bool newSection = false;
 
-			for (int row = 0; index < s_GroupArray.Length && row < 99; row += BUTTONS_PER_ROW)
+			for (int row = 0; index < m_GroupArray.Length && row < 99; row += BUTTONS_PER_ROW)
 			{
-				using (GUIUtil.UsableHorizontal.Use())
+				using (Util.GUI.UsableHorizontal.Use())
 				{
-					for (int column = 0; column < BUTTONS_PER_ROW && index < s_GroupArray.Length; column++)
+					for (int column = 0; column < BUTTONS_PER_ROW && index < m_GroupArray.Length; column++)
 					{
-						CheatMenuGroup group = s_GroupArray[index];
+						CheatMenuGroup group = m_GroupArray[index];
 						if (index > 0 && !newSection &&
-						    s_GroupArray[index - 1].Priority < group.Priority - SPACE_PRIORITY_THRESHOLD)
+							m_GroupArray[index - 1].Priority < group.Priority - SPACE_PRIORITY_THRESHOLD)
 						{
 							newSection = true;
 							break;
@@ -365,7 +356,7 @@ namespace OCore.CheatMenu
 			groupName = m_CurrentGroupName.Value;
 			return !string.IsNullOrEmpty(groupName);
 		}
-		private bool TryGetCurrentCurrentGroup(out CheatMenuGroup group) => s_GroupDict.TryGetValue(m_CurrentGroupName.Value, out group);
+		private bool TryGetCurrentCurrentGroup(out CheatMenuGroup group) => m_GroupDict.TryGetValue(m_CurrentGroupName.Value, out group);
 		private void ClearCurrentGroup() => SetCurrentGroup(string.Empty);
 		private void SetCurrentGroup(string groupName)
 		{

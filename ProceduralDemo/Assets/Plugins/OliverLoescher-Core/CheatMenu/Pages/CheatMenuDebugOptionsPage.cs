@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace OCore.CheatMenu
+namespace OCore.CheatMenu.Pages
 {
 	public class CheatMenuDebugOptionsPage : CheatMenuPage
 	{
@@ -14,36 +14,29 @@ namespace OCore.CheatMenu
 
 		public override void DrawGUI()
 		{
-			// Timescale
-			GUILayout.BeginHorizontal();
-			if (TimeScaleManager.Get() != null)
+			TimeScaleManagerGUI();
+
+			// TODO: Move to readonly member variables
+			GUIStyle titleStyle = new(GUI.skin.label)
 			{
-				CheatMenuGUI.SetNextControlID("CheatMenuDebugOptionsPage.DecTime");
-				if (CheatMenuGUI.Button(" < "))
-				{
-					TimeScaleManager.Get().EditorDec();
-				}
-				GUILayout.Label("Time Scale " + TimeScaleManager.Get().GetEditorSlowMo() + "%");
-				CheatMenuGUI.SetNextControlID("CheatMenuDebugOptionsPage.IncTime");
-				if (CheatMenuGUI.Button(" > "))
-				{
-					TimeScaleManager.Get().EditorInc();
-				}
-			}
-			GUILayout.EndHorizontal();
+				fontStyle = FontStyle.Bold
+			};
 
-			GUIStyle titleStyle = new(GUI.skin.label);
-			titleStyle.fontStyle = FontStyle.Bold;
+			GUIStyle toggleStyle = new(GUI.skin.label)
+			{
+				fontSize = 24,
+				alignment = TextAnchor.MiddleLeft
+			};
 
-			GUIStyle toggleStyle = new(GUI.skin.label);
-			toggleStyle.fontSize = 24;
-			toggleStyle.alignment = TextAnchor.MiddleLeft;
+			GUIStyle toggleTipStyle = new(toggleStyle)
+			{
+				fontSize = 16
+			};
 
-			GUIStyle toggleTipStyle = new(toggleStyle);
-			toggleTipStyle.fontSize = 16;
-
-			GUIStyle buttonStyle = new(GUI.skin.label);
-			buttonStyle.alignment = TextAnchor.MiddleLeft;
+			GUIStyle buttonStyle = new(GUI.skin.label)
+			{
+				alignment = TextAnchor.MiddleLeft
+			};
 
 			// Debug Options
 			foreach (string groupName in DebugOption.GetGroupNames())
@@ -167,7 +160,7 @@ namespace OCore.CheatMenu
 						}
 					}
 
-					if (!Str.Equals(arg, newArg))
+					if (arg != newArg)
 					{
 						DebugOption.SetArg(op, newArg);
 					}
@@ -187,6 +180,25 @@ namespace OCore.CheatMenu
 			{
 				DebugOption.Reset();
 			}
+		}
+
+		private static void TimeScaleManagerGUI()
+		{
+			TimeScaleManager timeScaleManager = TimeScaleManager.Instance;
+
+			GUILayout.BeginHorizontal();
+			CheatMenuGUI.SetNextControlID("CheatMenuDebugOptionsPage.DecTime");
+			if (CheatMenuGUI.Button(" < "))
+			{
+				timeScaleManager.EditorDec();
+			}
+			GUILayout.Label($"Time Scale {timeScaleManager.EditorSlowMo}%");
+			CheatMenuGUI.SetNextControlID("CheatMenuDebugOptionsPage.IncTime");
+			if (CheatMenuGUI.Button(" > "))
+			{
+				timeScaleManager.EditorInc();
+			}
+			GUILayout.EndHorizontal();
 		}
 	}
 }

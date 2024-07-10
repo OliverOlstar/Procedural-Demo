@@ -1,6 +1,6 @@
 {
     "name": "OCore.PlayerPrefs.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "OCore.PlayerPrefs",
     "references": [
         "GUID:ed0cf72217d72d343bf36032cea541c6"
     ],

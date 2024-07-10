@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace OCore.CheatMenu
+namespace OCore.CheatMenu.Pages
 {
 	public class CheatMenuDebugCommandsPage : CheatMenuPage
 	{
@@ -19,38 +19,39 @@ namespace OCore.CheatMenu
 			m_Category = DebugCommandAttribute.DefaultCategory;
 			m_Categories = new List<string>();
 			m_Methods = new Dictionary<string, List<(DebugCommandAttribute, MethodInfo)>>();
-			foreach (Type type in TypeUtility.GetAllTypes())
-			{
-				try
-				{
-					MethodInfo[] methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-					for (int i = 0; i < methods.Length; ++i)
-					{
-						MethodInfo method = methods[i];
-						// static void MethodName() signatures only
-						if (!method.IsStatic || method.ReturnType != typeof(void) || method.GetParameters().Length > 0)
-						{
-							continue;
-						}
-						DebugCommandAttribute attribute = method.GetCustomAttribute<DebugCommandAttribute>();
-						if (attribute == null)
-						{
-							continue;
-						}
-						if (!m_Methods.TryGetValue(attribute.Category, out List<(DebugCommandAttribute, MethodInfo)> list))
-						{
-							list = new List<(DebugCommandAttribute, MethodInfo)>();
-							m_Methods[attribute.Category] = list;
-						}
-						list.Add((attribute, methods[i]));
-						m_Categories.AddUniqueItem(attribute.Category);
-					}
-				}
-				catch (Exception e)
-				{
-					Debug.LogError(e);
-				}
-			}
+			// foreach (Type type in TypeUtility.GetAllTypes())
+			// {
+			// 	try
+			// 	{
+			// 		MethodInfo[] methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+			// 		for (int i = 0; i < methods.Length; ++i)
+			// 		{
+			// 			MethodInfo method = methods[i];
+			// 			// static void MethodName() signatures only
+			// 			if (!method.IsStatic || method.ReturnType != typeof(void) || method.GetParameters().Length > 0)
+			// 			{
+			// 				continue;
+			// 			}
+			// 			DebugCommandAttribute attribute = method.GetCustomAttribute<DebugCommandAttribute>();
+			// 			if (attribute == null)
+			// 			{
+			// 				continue;
+			// 			}
+			// 			if (!m_Methods.TryGetValue(attribute.Category, out List<(DebugCommandAttribute, MethodInfo)> list))
+			// 			{
+			// 				list = new List<(DebugCommandAttribute, MethodInfo)>();
+			// 				m_Methods[attribute.Category] = list;
+			// 			}
+			// 			list.Add((attribute, methods[i]));
+			// 			m_Categories.AddUniqueItem(attribute.Category);
+			// 		}
+			// 	}
+			// 	catch (Exception e)
+			// 	{
+			// 		Debug.LogError(e);
+			// 	}
+			// }
+			Util.Debug2.DevException(new NotImplementedException());
 		}
 
 		public override void DrawGUI()

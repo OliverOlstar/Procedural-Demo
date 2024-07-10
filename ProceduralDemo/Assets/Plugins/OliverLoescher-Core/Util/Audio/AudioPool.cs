@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OCore
 {
-	public class AudioPool : MonoBehaviourSingleton<AudioPool>
+	public class AudioPool : MonoBehaviourSingletonAuto<AudioPool>
     {
 		private static int s_NameIndex = -1;
 

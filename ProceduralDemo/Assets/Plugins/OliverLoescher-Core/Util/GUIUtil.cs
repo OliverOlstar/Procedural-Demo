@@ -1,8 +1,9 @@
 using UnityEngine;
+using UGUI = UnityEngine.GUI;
 
-namespace Core
+namespace OCore.Util
 {
-	public static class GUIUtil
+	public static class GUI
 	{
 		public static int IntField(int value)
 		{
@@ -164,21 +165,21 @@ namespace Core
 			public static GUILayout.HorizontalScope Use(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
 				=> new(content, style, options);
 			public static GUILayout.HorizontalScope Use(Color color, params GUILayoutOption[] options)
-				=> Use(GUI.skin.label, color, options);
+				=> Use(UGUI.skin.label, color, options);
 			public static GUILayout.HorizontalScope Use(GUIStyle style, Color color, params GUILayoutOption[] options)
 			{
-				GUI.color = color;
+				UGUI.color = color;
 				GUILayout.HorizontalScope scope = new(style, options);
-				GUI.color = Color.white;
+				UGUI.color = Color.white;
 				return scope;
 			}
 			public static GUILayout.HorizontalScope Use(string text, GUIStyle style, Color color, params GUILayoutOption[] options)
 				=> Use(new GUIContent(text), style, color, options);
 			public static GUILayout.HorizontalScope Use(GUIContent content, GUIStyle style, Color color, params GUILayoutOption[] options)
 			{
-				GUI.color = color;
+				UGUI.color = color;
 				GUILayout.HorizontalScope scope = new(content, style, options);
-				GUI.color = Color.white;
+				UGUI.color = Color.white;
 				return scope;
 			}
 		}
@@ -194,21 +195,21 @@ namespace Core
 			public static GUILayout.VerticalScope Use(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
 				=> new(content, style, options);
 			public static GUILayout.VerticalScope Use(Color color, params GUILayoutOption[] options)
-				=> Use(GUI.skin.label, color, options);
+				=> Use(UGUI.skin.label, color, options);
 			public static GUILayout.VerticalScope Use(GUIStyle style, Color color, params GUILayoutOption[] options)
 			{
-				GUI.color = color;
+				UGUI.color = color;
 				GUILayout.VerticalScope scope = new(style, options);
-				GUI.color = Color.white;
+				UGUI.color = Color.white;
 				return scope;
 			}
 			public static GUILayout.VerticalScope Use(string text, GUIStyle style, Color color, params GUILayoutOption[] options)
 				=> Use(new GUIContent(text), style, color, options);
 			public static GUILayout.VerticalScope Use(GUIContent content, GUIStyle style, Color color, params GUILayoutOption[] options)
 			{
-				GUI.color = color;
+				UGUI.color = color;
 				GUILayout.VerticalScope scope = new(content, style, options);
-				GUI.color = Color.white;
+				UGUI.color = Color.white;
 				return scope;
 			}
 		}
@@ -216,60 +217,60 @@ namespace Core
 		public class UsableScrollRect
 		{
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, false, false, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, GUI.skin.scrollView, Color.white, options);
+				=> Use(ref scrollPosition, false, false, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, UGUI.skin.scrollView, Color.white, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, bool alwaysShowHorizontal, bool alwayShowVertical, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, GUI.skin.scrollView, Color.white, options);
+				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, UGUI.skin.scrollView, Color.white, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIStyle style, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, false, false, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, style, Color.white, options);
+				=> Use(ref scrollPosition, false, false, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, style, Color.white, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle style, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, style, Color.white, options);
+				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, style, Color.white, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle horizontalScrollbar, GUIStyle verticalScrollbar, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, GUI.skin.scrollView, Color.white, options);
+				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, UGUI.skin.scrollView, Color.white, options);
 
 			// Color
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, false, false, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, GUI.skin.scrollView, color, options);
+				=> Use(ref scrollPosition, false, false, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, UGUI.skin.scrollView, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, bool alwaysShowHorizontal, bool alwayShowVertical, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, GUI.skin.scrollView, color, options);
+				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, UGUI.skin.scrollView, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIStyle style, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, false, false, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, style, color, options);
+				=> Use(ref scrollPosition, false, false, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, style, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle style, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, style, color, options);
+				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, style, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle horizontalScrollbar, GUIStyle verticalScrollbar, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, GUI.skin.scrollView, color, options);
+				=> Use(ref scrollPosition, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, UGUI.skin.scrollView, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle horizontalScrollbar, GUIStyle verticalScrollbar, GUIStyle background, Color color, params GUILayoutOption[] options)
 				=> Use(ref scrollPosition, null, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, background, color, options);
 			
 			// Content
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, false, false, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, GUI.skin.scrollView, Color.white, options);
+				=> Use(ref scrollPosition, content, false, false, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, UGUI.skin.scrollView, Color.white, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, bool alwaysShowHorizontal, bool alwayShowVertical, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, GUI.skin.scrollView, Color.white, options);
+				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, UGUI.skin.scrollView, Color.white, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, GUIStyle style, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, false, false, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, style, Color.white, options);
+				=> Use(ref scrollPosition, content, false, false, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, style, Color.white, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle style, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, style, Color.white, options);
+				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, style, Color.white, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle horizontalScrollbar, GUIStyle verticalScrollbar, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, GUI.skin.scrollView, Color.white, options);
+				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, UGUI.skin.scrollView, Color.white, options);
 
 			// Color & Content
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, false, false, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, GUI.skin.scrollView, color, options);
+				=> Use(ref scrollPosition, content, false, false, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, UGUI.skin.scrollView, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, bool alwaysShowHorizontal, bool alwayShowVertical, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, GUI.skin.scrollView, color, options);
+				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, UGUI.skin.scrollView, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, GUIStyle style, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, false, false, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, style, color, options);
+				=> Use(ref scrollPosition, content, false, false, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, style, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle style, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, GUI.skin.horizontalScrollbar, GUI.skin.verticalScrollbar, style, color, options);
+				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, UGUI.skin.horizontalScrollbar, UGUI.skin.verticalScrollbar, style, color, options);
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle horizontalScrollbar, GUIStyle verticalScrollbar, Color color, params GUILayoutOption[] options)
-				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, GUI.skin.scrollView, color, options);
+				=> Use(ref scrollPosition, content, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, UGUI.skin.scrollView, color, options);
 
 			public static GUILayout.ScrollViewScope Use(ref Vector2 scrollPosition, GUIContent content, bool alwaysShowHorizontal, bool alwayShowVertical, GUIStyle horizontalScrollbar, GUIStyle verticalScrollbar, GUIStyle background, Color color, params GUILayoutOption[] options)
 			{
-				GUI.color = color;
+				UGUI.color = color;
 				GUILayout.ScrollViewScope scope = new(scrollPosition, alwaysShowHorizontal, alwayShowVertical, horizontalScrollbar, verticalScrollbar, background, options);
 				scrollPosition = scope.scrollPosition;
-				GUI.color = Color.white;
+				UGUI.color = Color.white;
 				if (content != null)
 				{
 					GUILayout.Label(content);
@@ -289,16 +290,16 @@ namespace Core
 			public static GUILayout.AreaScope Use(Rect screenRect, GUIContent content, GUIStyle style)
 				=> new(screenRect, content, style);
 			public static GUILayout.AreaScope Use(Rect screenRect, Color color)
-				=> Use(screenRect, new GUIContent(), GUI.skin.scrollView, color);
+				=> Use(screenRect, new GUIContent(), UGUI.skin.scrollView, color);
 			public static GUILayout.AreaScope Use(Rect screenRect, GUIStyle style, Color color)
 				=> Use(screenRect, new GUIContent(), style, color);
 			public static GUILayout.AreaScope Use(Rect screenRect, string text, GUIStyle style, Color color)
 				=> Use(screenRect, new GUIContent(text), style, color);
 			public static GUILayout.AreaScope Use(Rect screenRect, GUIContent content, GUIStyle style, Color color)
 			{
-				GUI.color = color;
+				UGUI.color = color;
 				GUILayout.AreaScope scope = new(screenRect, content, style);
-				GUI.color = Color.white;
+				UGUI.color = Color.white;
 				return scope;
 			}
 		}

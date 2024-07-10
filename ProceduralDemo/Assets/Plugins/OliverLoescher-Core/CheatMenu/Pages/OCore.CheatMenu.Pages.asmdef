@@ -1,10 +1,11 @@
 {
     "name": "OCore.CheatMenu.Pages",
-    "rootNamespace": "",
+    "rootNamespace": "OCore.CheatMenu.Pages",
     "references": [
         "GUID:5b10c1f9ecd537f4dbe3d211152286e8",
         "GUID:05676474e65237c4ab45fdad8d03b172",
-        "GUID:ab1aad39cbb91e64497a4e14aa9a29ad"
+        "GUID:ab1aad39cbb91e64497a4e14aa9a29ad",
+        "GUID:81741247162146e40bdf68cc474125d7"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

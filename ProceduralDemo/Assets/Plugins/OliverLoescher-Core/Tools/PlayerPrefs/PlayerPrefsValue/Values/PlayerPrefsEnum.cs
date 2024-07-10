@@ -1,42 +1,45 @@
 using System;
 
-public class PlayerPrefsEnum<T> : PlayerPrefsValue<T> where T : struct, Enum
+namespace OCore.PlayerPrefs
 {
-	public PlayerPrefsEnum(string key, bool isGlobalPref = false)
-		: base(key, isGlobalPref)
+	public class PlayerPrefsEnum<T> : PlayerPrefsValue<T> where T : struct, Enum
 	{
-	}
+		public PlayerPrefsEnum(string key, bool isGlobalPref = false)
+			: base(key, isGlobalPref)
+		{
+		}
 
-	public PlayerPrefsEnum(string key, T defaultValue, bool isGlobalPref = false)
-		: base(key, defaultValue, isGlobalPref)
-	{
-	}
+		public PlayerPrefsEnum(string key, T defaultValue, bool isGlobalPref = false)
+			: base(key, defaultValue, isGlobalPref)
+		{
+		}
 
-	protected override T Get(bool isGlobal)
-	{
-		string value;
-		if (isGlobal)
+		protected override T Get(bool isGlobal)
 		{
-			value = PlayerPrefs.GetGlobalString(Key, null);
+			string value;
+			if (isGlobal)
+			{
+				value = PlayerPrefs.GetGlobalString(Key, null);
+			}
+			else
+			{
+				value = PlayerPrefs.GetString(Key, null);
+			}
+			if (Enum.TryParse(value, out T result))
+			{
+				return result;
+			}
+			return m_DefaultValue;
 		}
-		else
-		{
-			value = PlayerPrefs.GetString(Key, null);
-		}
-		if (Enum.TryParse(value, out T result))
-		{
-			return result;
-		}
-		return m_DefaultValue;
-	}
 
-	protected override void Set(T value, bool isGlobal)
-	{
-		if (isGlobal)
+		protected override void Set(T value, bool isGlobal)
 		{
-			PlayerPrefs.SetGlobalString(Key, value.ToString());
-			return;
+			if (isGlobal)
+			{
+				PlayerPrefs.SetGlobalString(Key, value.ToString());
+				return;
+			}
+			PlayerPrefs.SetString(Key, value.ToString());
 		}
-		PlayerPrefs.SetString(Key, value.ToString());
 	}
 }

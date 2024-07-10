@@ -29,7 +29,7 @@ namespace OCore.Util
 
 		private static void Initalize()
 		{
-			if (Func.s_IsApplicationQuitting || s_IsInitalized)
+			if (Func.IsApplicationQuitting || s_IsInitalized)
 			{
 				return;
 			}
