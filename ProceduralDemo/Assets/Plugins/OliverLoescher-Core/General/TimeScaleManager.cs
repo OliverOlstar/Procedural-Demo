@@ -246,13 +246,13 @@ namespace OCore
 
 		public static void SetBaseTimeScale(float timeScale)
 		{
-			if (timeScale < OCore.Util.Math.NEARZERO)
+			if (timeScale < Util.Math.NEARZERO)
 			{
 				LogError($"Time scale {timeScale} is invalid. Base time scale cannot be <= 0.");
 			}
 			if (!Exists)
 			{
-				Debug.LogWarning("TimeScaleManager is null.");
+				LogWarning("TimeScaleManager is null.");
 				return;
 			}
 			TimeScaleManager instance = Instance;
@@ -293,7 +293,7 @@ namespace OCore
 			int handle = Instance.GetHandle();
 			TimeEvent timeEvent = new(handle, timeScale, affectsAudio);
 			CreateTimeEvent(timeEvent);
-			Debug.Log($"Starting time event: {handle}");
+			Log($"Starting time event: {handle}");
 			return handle;
 		}
 

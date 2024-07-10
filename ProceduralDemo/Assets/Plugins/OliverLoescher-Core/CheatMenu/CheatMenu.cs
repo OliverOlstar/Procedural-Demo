@@ -372,7 +372,10 @@ namespace OCore.CheatMenu
 			}
 			Log("Open");
 			m_IsOpen = true;
-			m_InputBlocker.gameObject.SetActive(true);
+			if (m_InputBlocker != null)
+			{
+				m_InputBlocker.SetActive(true);
+			}
 			m_TimeScaleHandle = TimeScaleManager.StartTimeEvent(0.0f);
 			OnOpened();
 			if (!TryGetCurrentCurrentGroup(out CheatMenuGroup currentGroup))
@@ -395,7 +398,10 @@ namespace OCore.CheatMenu
 			}
 			Log("Close");
 			m_IsOpen = false;
-			m_InputBlocker.gameObject.SetActive(false);
+			if (m_InputBlocker != null)
+			{
+				m_InputBlocker.SetActive(false);
+			}
 			if (m_TimeScaleHandle != TimeScaleManager.INVALID_HANDLE)
 			{
 				TimeScaleManager.EndTimeEvent(m_TimeScaleHandle);
