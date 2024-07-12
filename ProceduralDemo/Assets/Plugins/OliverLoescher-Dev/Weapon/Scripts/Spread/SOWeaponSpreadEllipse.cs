@@ -14,7 +14,7 @@ namespace ODev.Weapon
 		public override Vector3 ApplySpread(Vector3 pDirection)
 		{
 			Vector2 spread = Vector2.Lerp(m_SpreadVector, m_SpreadVectorMax, m_Spread01);
-			return Quaternion.Euler(Util.Random2.GetRandomPointInEllipse(spread.y * 2.0f, spread.x * 2.0f)) * pDirection;
+			return Quaternion.Euler(Util.Random.GetRandomPointInEllipse(spread.y * 2.0f, spread.x * 2.0f)) * pDirection;
 		}
 
 #if UNITY_EDITOR

@@ -37,7 +37,7 @@ namespace ODev.Util
 		public static void PlayOneShot(in AudioClip pClip, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 			=> PlayOneShot(pClip, Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
 		public static void PlayOneShot(in AudioClip pClip, in Vector2 pPitch, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
-			=> PlayOneShot(pClip, Random2.Range(pPitch), pVolume01, pPriority);
+			=> PlayOneShot(pClip, Random.Range(pPitch), pVolume01, pPriority);
 
 		// Basic 3D
 		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, float pPitch = 1.0f, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
@@ -55,7 +55,7 @@ namespace ODev.Util
 		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 			=> PlayOneShot(pClip, pPoint, Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
 		public static void PlayOneShot(in AudioClip pClip, Vector3 pPoint, in Vector2 pPitch, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
-			=> PlayOneShot(pClip, pPoint, Random2.Range(pPitch), pVolume01, pPriority);
+			=> PlayOneShot(pClip, pPoint, Random.Range(pPitch), pVolume01, pPriority);
 
 		// Random Clip
 		public static void PlayOneShot(in AudioClip[] pClips, float pPitch = 1.0f, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
@@ -63,7 +63,7 @@ namespace ODev.Util
 		public static void PlayOneShot(in AudioClip[] pClips, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 			=> PlayOneShot(GetRandomClip(pClips), Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
 		public static void PlayOneShot(in AudioClip[] pClips, in Vector2 pPitch, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
-			=> PlayOneShot(GetRandomClip(pClips), Random2.Range(pPitch), pVolume01, pPriority);
+			=> PlayOneShot(GetRandomClip(pClips), Random.Range(pPitch), pVolume01, pPriority);
 
 		// Random Clip 3D
 		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, float pPitch = 1.0f, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
@@ -71,7 +71,7 @@ namespace ODev.Util
 		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, in float pPitchMin, in float pPitchMax, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
 			=> PlayOneShot(GetRandomClip(pClips), pPoint, Random.Range(pPitchMin, pPitchMax), pVolume01, pPriority);
 		public static void PlayOneShot(in AudioClip[] pClips, Vector3 pPoint, in Vector2 pPitch, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None)
-			=> PlayOneShot(GetRandomClip(pClips), pPoint, Random2.Range(pPitch), pVolume01, pPriority);
+			=> PlayOneShot(GetRandomClip(pClips), pPoint, Random.Range(pPitch), pVolume01, pPriority);
 		
 		public static void SetValues(AudioSource pSource, AudioClip pClip, float pPitch = 1.0f, float pVolume01 = 1.0f, AudioPriority.Enum pPriority = AudioPriority.Enum.None, bool pIs3D = true, bool pLoop = false)
 		{

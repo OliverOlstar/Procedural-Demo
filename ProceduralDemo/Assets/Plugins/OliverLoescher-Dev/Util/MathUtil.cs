@@ -140,6 +140,9 @@ namespace ODev.Util
 		#endregion Lerp
 
 		#region Compare
+		public static bool Approximately(this float pA, float pB) => Mathf.Abs(pA - pB) <= NEARZERO;
+		public static bool Approximately(this int pA, int pB) => Mathf.Abs(pA - pB) <= NEARZERO;
+
 		public static bool DistanceEqual(this Vector3 pA, Vector3 pB, float pDistance) => (pA - pB).sqrMagnitude == Mathf.Pow(pDistance, 2);
 		public static bool DistanceGreaterThan(this Vector3 pA, Vector3 pB, float pDistance) => (pA - pB).sqrMagnitude > Mathf.Pow(pDistance, 2);
 		public static bool DistanceEqualGreaterThan(this Vector3 pA, Vector3 pB, float pDistance) => (pA - pB).sqrMagnitude >= Mathf.Pow(pDistance, 2);

@@ -1,36 +1,39 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomPropertyDrawer(typeof(UberPicker.AssetAttribute), true)]
-public class AssetPickerDrawer : PropertyDrawer
+namespace ODev.Picker
 {
-	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+	[CustomPropertyDrawer(typeof(AssetAttribute), true)]
+	public class AssetPickerDrawer : PropertyDrawer
 	{
-		UberPicker.AssetAttribute at = attribute as UberPicker.AssetAttribute;
-		UberPickerGUI.GUIObject(
-			property,
-			position,
-			label,
-			fieldInfo,
-			at,
-			new AssetPickerPathSource(new System.Type[] { fieldInfo.FieldType }, at.PathPrefix, canBeNested: at.CanBeNested));
+		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+		{
+			AssetAttribute at = attribute as AssetAttribute;
+			UberPickerGUI.GUIObject(
+				property,
+				position,
+				label,
+				fieldInfo,
+				at,
+				new AssetPickerPathSource(new System.Type[] { fieldInfo.FieldType }, at.PathPrefix, canBeNested: at.CanBeNested));
+		}
+
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => UberPickerGUI.GetPropertyHeight(property);
 	}
 
-	public override float GetPropertyHeight(SerializedProperty property, GUIContent label) => UberPickerGUI.GetPropertyHeight(property);
-}
-
-[CustomPropertyDrawer(typeof(UberPicker.AssetNameAttribute))]
-public class AssetNamePickerDrawer : PropertyDrawer
-{
-	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+	[CustomPropertyDrawer(typeof(AssetNameAttribute))]
+	public class AssetNamePickerDrawer : PropertyDrawer
 	{
-		UberPicker.AssetNameAttribute at = attribute as UberPicker.AssetNameAttribute;
-		UberPickerGUI.GUIString(
-			property,
-			position,
-			label,
-			fieldInfo,
-			at,
-			new AssetPickerPathSource(at.Types, at.PathPrefix));
+		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+		{
+			AssetNameAttribute at = attribute as AssetNameAttribute;
+			UberPickerGUI.GUIString(
+				property,
+				position,
+				label,
+				fieldInfo,
+				at,
+				new AssetPickerPathSource(at.Types, at.PathPrefix));
+		}
 	}
 }

@@ -1,0 +1,16 @@
+{
+    "name": "ODev.UberPicker",
+    "rootNamespace": "ODev.UberPicker",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "ODEV_UBERPICKER"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -2,6 +2,7 @@ using UnityEngine;
 using ODev;
 using ODev.Util;
 using ODev.Cue;
+using ODev.Picker;
 
 public class TestSpear : MonoBehaviour
 {
@@ -41,7 +42,7 @@ public class TestSpear : MonoBehaviour
 	[SerializeField]
 	private float playerSnapEaseSeconds = 1.0f;
 
-	[Space, SerializeField]
+	[Space, SerializeField, Asset]
 	private SOCue hitCue;
 
 	private Transform Camera = null;

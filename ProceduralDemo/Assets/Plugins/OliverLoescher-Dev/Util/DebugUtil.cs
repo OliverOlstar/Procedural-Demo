@@ -32,16 +32,6 @@ namespace ODev.Util
 			throw pException;
 #endif
 		}
-		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
-		public static void DevException<TException, TContext>(TException pException, [CallerMemberName] string pMethodName = "") where TException : Exception
-		{
-			LogError(pException.Message, typeof(TContext), pMethodName);
-#if RELEASE
-			UnityEngine.Debug.LogException(pException);
-#else
-			throw pException;
-#endif
-		}
 
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void DevException(string pMessage, UnityEngine.Object pContext, [CallerMemberName] string pMethodName = "")
@@ -59,15 +49,6 @@ namespace ODev.Util
 			UnityEngine.Debug.LogException(new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, pContext)));
 #else
 			throw new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, pContext));
-#endif
-		}
-		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
-		public static void DevException<TContext>(string pMessage, [CallerMemberName] string pMethodName = "")
-		{
-#if RELEASE
-			UnityEngine.Debug.LogException(new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, typeof(TContext))));
-#else
-			throw new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, typeof(TContext)));
 #endif
 		}
 
@@ -97,11 +78,6 @@ namespace ODev.Util
 		{
 			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, pContext));
 		}
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		public static void Log<TContext>(string pMessage, [CallerMemberName] string pMethodName = "")
-		{
-			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, typeof(TContext)));
-		}
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogWarning(string pMessage, UnityEngine.Object pContext, [CallerMemberName] string pMethodName = "")
@@ -113,11 +89,6 @@ namespace ODev.Util
 		{
 			UnityEngine.Debug.LogWarning(CreateLogMessage(pMessage, pMethodName, pContext));
 		}
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		public static void LogWarning<TContext>(string pMessage, [CallerMemberName] string pMethodName = "")
-		{
-			UnityEngine.Debug.LogWarning(CreateLogMessage(pMessage, pMethodName, typeof(TContext)));
-		}
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogError(string pMessage, UnityEngine.Object pContext, [CallerMemberName] string pMethodName = "")
@@ -128,11 +99,6 @@ namespace ODev.Util
 		public static void LogError(string pMessage, Type pContext, [CallerMemberName] string pMethodName = "")
 		{
 			UnityEngine.Debug.LogError(CreateLogMessage(pMessage, pMethodName, pContext));
-		}
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		public static void LogError<TContext>(string pMessage, [CallerMemberName] string pMethodName = "")
-		{
-			UnityEngine.Debug.LogError(CreateLogMessage(pMessage, pMethodName, typeof(TContext)));
 		}
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
@@ -274,6 +240,22 @@ namespace ODev.Util
 #else
 			return string.Empty;
 #endif
+		}
+
+		public static string BuildWithBetweens(string between, params string[] list)
+		{
+			if (list.Length == 0)
+			{
+				return string.Empty;
+			}
+			s_StringBuilder.Clear();
+			s_StringBuilder.Append(list[0]);
+			for (int i = 1; i < list.Length; i++)
+			{
+				s_StringBuilder.Append(between);
+				s_StringBuilder.Append(list[i]);
+			}
+			return s_StringBuilder.ToString();
 		}
 
 		#region Gizmos

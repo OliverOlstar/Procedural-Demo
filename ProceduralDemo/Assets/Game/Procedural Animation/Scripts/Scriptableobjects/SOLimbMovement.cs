@@ -1,6 +1,7 @@
 using UnityEngine;
 using ODev.Util;
 using ODev.Cue;
+using ODev.Picker;
 
 namespace PA
 {
@@ -20,7 +21,7 @@ namespace PA
 		public Vector2 LinecastUpDown = new(1, -1);
 		public LayerMask StepLayer = new();
 
-		[Header("Cues")]
+		[Header("Cues"), Asset]
 		public SOCue OnStepCue;
 	}
 }

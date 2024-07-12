@@ -108,6 +108,16 @@ namespace ODev.Util
 			return pAngle;
 		}
 
+		public static bool AddUniqueItem<T>(this List<T> self, T item)
+		{
+			if (self.Contains(item))
+			{
+				return false;
+			}
+			self.Add(item);
+			return true;
+		}
+
 		public static bool TryGetAndRemove<TKey, TValue>(ref Dictionary<TKey, TValue> rDictionary, TKey pKey, out TValue pValue)
 		{
 			if (rDictionary.TryGetValue(pKey, out pValue) && rDictionary.Remove(pKey))
@@ -123,6 +133,7 @@ namespace ODev.Util
 			rDictionary.Remove(pKey);
 			return pValue;
 		}
+		
 
 		public static T GetOrAddComponent<T>(this GameObject pObject) where T : Component
 		{

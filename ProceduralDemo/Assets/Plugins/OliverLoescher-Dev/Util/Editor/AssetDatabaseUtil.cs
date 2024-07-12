@@ -6,9 +6,9 @@ using UnityEditor;
 using System.IO;
 using System.Linq;
 
-namespace Core
+namespace ODev.Util
 {
-	public static class AssetDatabaseUtil
+	public static class AssetDatabase
 	{
 		// Doesn't make sense to throw duplicate name warnings for these types, we know there will be dupes
 		//private static readonly HashSet<System.Type> IGNORE_WARN_FOR_TYPES = new HashSet<System.Type>() { typeof(GameObject) };
@@ -29,7 +29,7 @@ namespace Core
 			{
 				m_Type = searchType;
 				string search = "t:" + m_Type.Name;
-				string[] guids = AssetDatabase.FindAssets(search);
+				string[] guids = UnityEditor.AssetDatabase.FindAssets(search);
 
 				// AssetDatabase.FindAssets behaves different for nested assets in 2020
 				// In 2019 it would return the same GUID of the root asset for each nested asset
@@ -39,11 +39,11 @@ namespace Core
 				for (int i = 0; i < guids.Length; i++)
 				{
 					string guid = guids[i];
-					string path = AssetDatabase.GUIDToAssetPath(guid);
+					string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
 					if (!m_Nested && canBeNested)
 					{
 						// If the main type at this path does not match assume this must be a nested asset
-						System.Type mainType = AssetDatabase.GetMainAssetTypeAtPath(path);
+						System.Type mainType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(path);
 						if (!mainType.IsAssignableFrom(searchType))
 						{
 							m_Nested = true;
@@ -88,7 +88,7 @@ namespace Core
 					foreach (string path in m_Paths)
 					{
 						// If some of the assets of this type are nested we need to do something more complicated
-						Object[] assets = AssetDatabase.LoadAllAssetsAtPath(path);
+						Object[] assets = UnityEditor.AssetDatabase.LoadAllAssetsAtPath(path);
 						foreach (Object asset in assets)
 						{
 							if (asset == null)
@@ -129,7 +129,7 @@ namespace Core
 				}
 				if (name.EndsWith(" "))
 				{
-					Debug.LogWarning("Core.AssetDatabaseUtil.Cache.AddAsset() '" + name + "' ends with a space, this will probably cause problems");
+					Debug.LogWarning($"Core.AssetDatabaseUtil.Cache.AddAsset() '{name}' ends with a space, this will probably cause problems", typeof(AssetDatabase));
 				}
 				m_Names.Add(name, path);
 				return true;
@@ -158,7 +158,7 @@ namespace Core
 					return false; // For nested assets everything has been loaded up front
 				}
 				// Non nested assets are lazy loaded
-				asset = AssetDatabase.LoadAssetAtPath(path, m_Type);
+				asset = UnityEditor.AssetDatabase.LoadAssetAtPath(path, m_Type);
 				m_Assets.Add(path + asset.name, asset);
 				return asset != null;
 			}
@@ -197,7 +197,7 @@ namespace Core
 		{
 			if (!assetType.IsSubclassOf(typeof(Object)))
 			{
-				Debug.LogWarning("Core.AssetDatabaseUtil.FindInternal() " + assetType.Name + " should be a subclass of UnityEngine.Object");
+				Debug.LogWarning($"Core.AssetDatabaseUtil.FindInternal() {assetType.Name} should be a subclass of UnityEngine.Object", typeof(AssetDatabase));
 			}
 			if (!s_SearchResults.TryGetValue(assetType, out Cache results))
 			{

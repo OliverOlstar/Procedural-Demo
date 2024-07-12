@@ -3,6 +3,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using RootMotion.FinalIK;
 using ODev.Util;
+using ODev.Picker;
 
 namespace PA
 {
@@ -14,12 +15,12 @@ namespace PA
 		private bool m_IsInitalized = false;
 
 		public IPACharacter Character { get; private set; }
-		[SerializeField]
+		[SerializeField, Asset]
 		private SOBody m_BodyData;
 		private PABody m_Body;
 		[SerializeField]
 		private Transform m_BodyTransform;
-		[SerializeField]
+		[SerializeField, Asset]
 		private SOLimb[] m_LimbDatas;
 		private PALimb[] m_Limbs;
 		private int m_LastLimbIndex = 0;

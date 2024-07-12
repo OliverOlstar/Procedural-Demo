@@ -13,7 +13,7 @@ namespace ODev.Weapon
 
 		public override Vector3 ApplySpread(Vector3 pDirection)
 		{
-			return Quaternion.Euler(Util.Random2.Range(m_SpreadVector.y), Util.Random2.Range(m_SpreadVector.x), 0) * pDirection;
+			return Quaternion.Euler(Util.Random.Range(m_SpreadVector.y), Util.Random.Range(m_SpreadVector.x), 0) * pDirection;
 		}
 
 #if UNITY_EDITOR

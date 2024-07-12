@@ -1,5 +1,4 @@
 using UnityEngine;
-using ODev.Util;
 using ODev.Cue;
 
 namespace PA
@@ -11,7 +10,7 @@ namespace PA
 		private readonly PARoot m_Root;
 		private readonly PALimb m_Limb;
 		private readonly SOLimbMovement m_Data;
-		private Anim.IAnimation m_Animation;
+		private ODev.Util.Anim.IAnimation m_Animation;
 
 		public Vector3 Position
 		{
@@ -31,7 +30,7 @@ namespace PA
 		public void StartMove()
 		{
 			m_StepOffset = Position;
-			m_Animation = Anim.Play2D(m_Data.EaseStep, m_Data.EaseHeight, Random2.Range(m_Data.StepSeconds), StepTick, StepComplete);
+			m_Animation = ODev.Util.Anim.Play2D(m_Data.EaseStep, m_Data.EaseHeight, ODev.Util.Random.Range(m_Data.StepSeconds), StepTick, StepComplete);
 		}
 		public void StopMove()
 		{
@@ -45,7 +44,7 @@ namespace PA
 		private void StepTick(Vector2 pProgress)
 		{
 			Vector3 endStepPoint = CalculateStepPoint();
-			Vector3 up = m_Root.Up * Math.LerpUnclamped(0, m_Data.UpHeight, 0, pProgress.y);
+			Vector3 up = m_Root.Up * ODev.Util.Math.LerpUnclamped(0, m_Data.UpHeight, 0, pProgress.y);
 			Vector3 horizontal = Vector3.LerpUnclamped(m_StepOffset, endStepPoint, pProgress.x);
 			Position = horizontal + up;
 		}

@@ -10,13 +10,10 @@ namespace Core
 {
 	public static class PropertyDrawerUtil
 	{
-		private static GUIStyle TOOL_TIP_ICON_STYLE = null;
-
-		static PropertyDrawerUtil()
+		private readonly GUIStyle m_ToolTipIconStyle = new GUIStyle(EditorStyles.label)
 		{
-			TOOL_TIP_ICON_STYLE = new GUIStyle(EditorStyles.label);
-			TOOL_TIP_ICON_STYLE.normal.textColor *= 0.6f;
-		}
+			normal.textColor *= 0.6f;
+		};
 
 		public static MethodInfo GetMethodOrProperty(Type type, string name)
 		{
@@ -102,7 +99,7 @@ namespace Core
 			position = EditorGUI.IndentedRect(position);
 			Vector2 size = EditorStyles.label.CalcSize(label);
 			Rect r = new(position.x + size.x - 4, position.y - 4, 12, position.height);
-			GUI.Label(r, "\u25E5", TOOL_TIP_ICON_STYLE);
+			GUI.Label(r, "\u25E5", m_ToolTipIconStyle);
 		}
 	}
 

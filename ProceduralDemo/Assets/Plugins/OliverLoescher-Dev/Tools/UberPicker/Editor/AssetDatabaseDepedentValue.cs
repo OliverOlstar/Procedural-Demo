@@ -63,10 +63,8 @@ namespace ODev
 	/// </summary>
 	public class PropertyDrawerCache<T> where T : class
 	{
-		private static AssetDatabaseDependentValues<string, T> s_Cache =
-			new();
-		public static string GetPropertyCacheKey(SerializedProperty property) =>
-			Str.Build(property.serializedObject.targetObject.GetType().Name, ".", property.propertyPath);
+		private static readonly AssetDatabaseDependentValues<string, T> s_Cache = new();
+		public static string GetPropertyCacheKey(SerializedProperty property) => $"{property.serializedObject.targetObject.GetType().Name}.{property.propertyPath}";
 
 		public static bool TryGetCache(string key, out T cache)
 		{

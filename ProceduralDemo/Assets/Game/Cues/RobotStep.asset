@@ -12,25 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889639f47c956344496a415cea10090c, type: 3}
   m_Name: RobotStep
   m_EditorClassIdentifier: 
-  Audio:
-  - IsEnabled: 1
-    Sound:
-      Clips:
-      - {fileID: 8300000, guid: 7d84a2ebc1f009147af2097162e3899b, type: 3}
-      Volume: 1
-      Pitch: {x: 0.9, y: 1.2}
-      Priority: 0
-  Particle:
-  - IsEnabled: 1
-    RandomParticles:
-    - {fileID: 3131707097971858360, guid: 831cd5cde3dc48b45929e170c8216bcd, type: 3}
-  CameraShake:
-  - IsEnabled: 1
-    Magnitude: 3.5
-    Roughness: 4
-    FadeInTime: 0.1
-    FadeOutTime: 0.75
-    PosInfluence: {x: 0.15, y: 0.15, z: 0.15}
-    RotInfluence: {x: 1, y: 1, z: 1}
-    InnerDistance: 25
-    MaxDistance: 90
+  m_Audio: []
+  m_Particle: []
+  m_CameraShake: []

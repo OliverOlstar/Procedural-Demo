@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UberPicker
+namespace ODev.Picker
 {
 	/// <summary>Some objects are too complicated to be viewed nicely in a foldout inspector or should only be viewed through a custom editor window. 
 	/// Use this attribute to disable the UberPickers foldout inspector.</summary>
@@ -8,11 +8,11 @@ namespace UberPicker
 
 	public class AssetAttribute : PropertyAttribute, IAssetPickerAttribute
 	{
-		private bool m_AllowNone;
-		private string m_Path;
-		public string PathPrefix => m_Path;
-		private string m_OverrideButtonName;
+		private readonly bool m_AllowNone;
+		private readonly string m_Path;
+		private readonly string m_OverrideButtonName;
 		private readonly bool m_CanBeNested;
+		public string PathPrefix => m_Path;
 
 		bool IAssetPickerAttribute.AllowNull => m_AllowNone;
 		bool IAssetPickerAttribute.ForceFlatten => false;
@@ -35,10 +35,7 @@ namespace UberPicker
 
 	public class AssetNonNullAttribute : AssetAttribute
 	{
-		public AssetNonNullAttribute(string path = null, string overrideButtonName = null) : base(false, path, overrideButtonName)
-		{
-
-		}
+		public AssetNonNullAttribute(string path = null, string overrideButtonName = null) : base(false, path, overrideButtonName) { }
 	}
 
 	public class AssetNameAttribute : PropertyAttribute, IAssetPickerAttribute

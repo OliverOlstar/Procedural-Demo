@@ -60,7 +60,7 @@ namespace ODev.Weapon
 		public void Init(Vector3 pPosition, Vector3 pDirection, GameObject pSender, SOTeam pTeam = null)
 		{
 			transform.SetPositionAndRotation(pPosition, Quaternion.LookRotation(pDirection));
-			MyRigidbody.velocity = pDirection.normalized * Random2.Range(Data.ShootForce);
+			MyRigidbody.velocity = pDirection.normalized * Util.Random.Range(Data.ShootForce);
 			transform.position += transform.forward * m_SpawnOffsetZ;
 
 			m_StartPos = transform.position;
@@ -68,7 +68,7 @@ namespace ODev.Weapon
 
 			Sender = pSender;
 			Team = pTeam;
-			Invoke(nameof(DoLifeEnd), Random2.Range(Data.LifeTime));
+			Invoke(nameof(DoLifeEnd), Util.Random.Range(Data.LifeTime));
 		}
 
 		private void FixedUpdate()
@@ -134,7 +134,7 @@ namespace ODev.Weapon
 				}
 				if (!isSameTeam || Team.TeamDamage)
 				{
-					UnityEngine.Debug.Log($"[{nameof(ODev.Weapon.Projectile)}] {nameof(DamageOther)}({pOther.name}, {damageable.GetGameObject().name}, {(damageable.GetTeam() == null ? "No Team" : damageable.GetTeam().name)})", pOther);
+					UnityEngine.Debug.Log($"[{nameof(Projectile)}] {nameof(DamageOther)}({pOther.name}, {damageable.GetGameObject().name}, {(damageable.GetTeam() == null ? "No Team" : damageable.GetTeam().name)})", pOther);
 					DamageOther(damageable, pPoint);
 					didDamage = true;
 				}
@@ -161,7 +161,7 @@ namespace ODev.Weapon
 			// if (otherRb != null)
 			//	 otherRb.AddForceAtPosition(rigidbody.velocity.normalized * data.hitForce, point);
 
-			if (Random.value > Data.CritChance01)
+			if (UnityEngine.Random.value > Data.CritChance01)
 			{
 				damageable.Damage(Data.Damage, Sender, transform.position, MyRigidbody.velocity);
 			}
