@@ -11,7 +11,7 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [
-        "CORE_ENABLED"
+        "CORE_CHEATMENU"
     ],
     "versionDefines": [],
     "noEngineReferences": false
