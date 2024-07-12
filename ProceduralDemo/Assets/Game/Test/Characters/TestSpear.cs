@@ -1,7 +1,7 @@
 using UnityEngine;
-using OCore;
-using OCore.Util;
-using OCore.Cue;
+using ODev;
+using ODev.Util;
+using ODev.Cue;
 
 public class TestSpear : MonoBehaviour
 {
@@ -219,7 +219,7 @@ public class TestSpear : MonoBehaviour
 				// transform.SetPositionAndRotation(hit.point - (0.4f * transform.localScale.z * transform.forward), Quaternion.LookRotation(-hit.normal));
 				trigger.enabled = true;
 
-				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, OCore.Util.Mono.Type.Default, OCore.Util.Mono.Priorities.CharacterController, this);
+				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, ODev.Util.Mono.Type.Default, ODev.Util.Mono.Priorities.CharacterController, this);
 			}
 			SOCue.Play(hitCue, new CueContext(hit.point));
 			return;

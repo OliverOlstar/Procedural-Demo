@@ -14,6 +14,6 @@ public class SpringDamperTest : MonoBehaviour
 
 	public void Update()
 	{
-		transform.position = OCore.Util.Func.SpringDamper(transform.position, Target.position, ref Velocity, Spring, Damper, Time.deltaTime);
+		transform.position = ODev.Util.Func.SpringDamper(transform.position, Target.position, ref Velocity, Spring, Damper, Time.deltaTime);
 	}
 }

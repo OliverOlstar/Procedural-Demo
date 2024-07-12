@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using RootMotion.FinalIK;
-using OCore.Util;
+using ODev.Util;
 
 namespace PA
 {
 	public class PARoot : MonoBehaviour
 	{
 		[SerializeField, DisableInPlayMode]
-		private OCore.Util.Mono.Updateable m_Updateable = new(OCore.Util.Mono.Type.Late, OCore.Util.Mono.Priorities.ModelController);
+		private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Late, ODev.Util.Mono.Priorities.ModelController);
 
 		private bool m_IsInitalized = false;
 
@@ -105,12 +105,12 @@ namespace PA
 		// {
 		// 	if (!m_IsInitalized)
 		// 	{
-		// 		OCore.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddLimb", this);
+		// 		ODev.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddLimb", this);
 		// 		return;
 		// 	}
 		// 	if (m_Limbs.Contains(pLimb))
 		// 	{
-		// 		OCore.Util.Debug.LogWarning("Limb already added", "AddLimb", this);
+		// 		ODev.Util.Debug.LogWarning("Limb already added", "AddLimb", this);
 		// 		return;
 		// 	}
 		// 	m_Limbs.Add(pLimb);
@@ -120,7 +120,7 @@ namespace PA
 		// {
 		// 	if (!m_Limbs.Remove(pLimb))
 		// 	{
-		// 		OCore.Util.Debug.LogWarning("Failed to remove", "RemoveLimb", this);
+		// 		ODev.Util.Debug.LogWarning("Failed to remove", "RemoveLimb", this);
 		// 	}
 		// }
 
@@ -128,12 +128,12 @@ namespace PA
 		// {
 		// 	if (!m_IsInitalized)
 		// 	{
-		// 		OCore.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddPoint", this);
+		// 		ODev.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddPoint", this);
 		// 		return;
 		// 	}
 		// 	if (Points.Contains(pPoint))
 		// 	{
-		// 		OCore.Util.Debug.LogWarning("Point already added", "AddPoint", this);
+		// 		ODev.Util.Debug.LogWarning("Point already added", "AddPoint", this);
 		// 		return;
 		// 	}
 		// 	Points.Add(pPoint);
@@ -143,7 +143,7 @@ namespace PA
 		// {
 		// 	if (!Points.Remove(pAPoint))
 		// 	{
-		// 		OCore.Util.Debug.LogWarning("Failed to remove", "RemovePoint", this);
+		// 		ODev.Util.Debug.LogWarning("Failed to remove", "RemovePoint", this);
 		// 	}
 		// }
 	}

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using OCore.Input;
+using ODev.Input;
 using UnityEngine.InputSystem;
 using InputSystem = InputSystem_Game;
 

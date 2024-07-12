@@ -1,12 +1,12 @@
 using System.Collections;
-using OCore;
-using OCore.Util;
+using ODev;
+using ODev.Util;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
 	[SerializeField]
-	private OCore.Util.Mono.Updateable m_Updateable = new(OCore.Util.Mono.Type.Early, OCore.Util.Mono.Priorities.CharacterController);
+	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Early, ODev.Util.Mono.Priorities.CharacterController);
 	[SerializeField]
 	private CharacterController m_Controller = null;
 	[SerializeField]
