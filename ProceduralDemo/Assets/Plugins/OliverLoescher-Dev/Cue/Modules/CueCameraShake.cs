@@ -35,7 +35,7 @@ namespace ODev.Cue
 			float distance = (pContext.Point - MainCamera.Position).magnitude;
 			float distanceScalar = 1 - Util.Func.SmoothStep(m_InnerDistance, m_MaxDistance, distance);
 			// Debug.Log("DistanceScale " + distanceScalar + " | Distance " + distance);
-			CameraShaker.Instance.ShakeOnce(m_Magnitude * distanceScalar, m_Roughness, m_FadeInTime, m_FadeOutTime, m_PosInfluence, m_RotInfluence);
+			CameraShaker.s_Instance.ShakeOnce(m_Magnitude * distanceScalar, m_Roughness, m_FadeInTime, m_FadeOutTime, m_PosInfluence, m_RotInfluence);
 		}
 	}
 }

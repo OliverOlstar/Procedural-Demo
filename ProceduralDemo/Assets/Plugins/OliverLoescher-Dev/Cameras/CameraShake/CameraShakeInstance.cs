@@ -32,12 +32,14 @@ namespace EZCameraShake
         public bool DeleteOnInactive = true;
 
 
-        float roughMod = 1, magnMod = 1;
-        float fadeOutDuration, fadeInDuration;
-        bool sustain;
-        float currentFadeTime;
-        float tick = 0;
-        Vector3 amt;
+        private float m_RoughMod = 1.0f;
+		private float m_MagnMod = 1.0f;
+		private float m_FadeOutDuration;
+		private float m_FadeInDuration;
+		private bool m_Sustain;
+		private float m_CurrentFadeTime;
+		private float m_Tick = 0.0f;
+		private Vector3 m_Amt;
 
         /// <summary>
         /// Will create a new instance that will shake once and fade over the given number of seconds.
@@ -48,21 +50,21 @@ namespace EZCameraShake
         public CameraShakeInstance(float magnitude, float roughness, float fadeInTime, float fadeOutTime)
         {
             this.Magnitude = magnitude;
-            fadeOutDuration = fadeOutTime;
-            fadeInDuration = fadeInTime;
+            m_FadeOutDuration = fadeOutTime;
+            m_FadeInDuration = fadeInTime;
             this.Roughness = roughness;
             if (fadeInTime > 0)
             {
-                sustain = true;
-                currentFadeTime = 0;
+                m_Sustain = true;
+                m_CurrentFadeTime = 0;
             }
             else
             {
-                sustain = false;
-                currentFadeTime = 1;
+                m_Sustain = false;
+                m_CurrentFadeTime = 1;
             }
 
-            tick = Random.Range(-100, 100);
+            m_Tick = Random.Range(-100, 100);
         }
 
         /// <summary>
@@ -74,44 +76,44 @@ namespace EZCameraShake
         {
             this.Magnitude = magnitude;
             this.Roughness = roughness;
-            sustain = true;
+            m_Sustain = true;
 
-            tick = Random.Range(-100, 100);
+            m_Tick = Random.Range(-100, 100);
         }
 
         public Vector3 UpdateShake()
         {
-            amt.x = Mathf.PerlinNoise(tick, 0) - 0.5f;
-            amt.y = Mathf.PerlinNoise(0, tick) - 0.5f;
-            amt.z = Mathf.PerlinNoise(tick, tick) - 0.5f;
+            m_Amt.x = Mathf.PerlinNoise(m_Tick, 0) - 0.5f;
+            m_Amt.y = Mathf.PerlinNoise(0, m_Tick) - 0.5f;
+            m_Amt.z = Mathf.PerlinNoise(m_Tick, m_Tick) - 0.5f;
 
-            if (fadeInDuration > 0 && sustain)
+            if (m_FadeInDuration > 0 && m_Sustain)
             {
-                if (currentFadeTime < 1)
+                if (m_CurrentFadeTime < 1)
 				{
-					currentFadeTime += Time.deltaTime / fadeInDuration;
+					m_CurrentFadeTime += Time.deltaTime / m_FadeInDuration;
 				}
-				else if (fadeOutDuration > 0)
+				else if (m_FadeOutDuration > 0)
 				{
-					sustain = false;
+					m_Sustain = false;
 				}
 			}
 
-            if (!sustain)
+            if (!m_Sustain)
 			{
-				currentFadeTime -= Time.deltaTime / fadeOutDuration;
+				m_CurrentFadeTime -= Time.deltaTime / m_FadeOutDuration;
 			}
 
-			if (sustain)
+			if (m_Sustain)
 			{
-				tick += Time.deltaTime * Roughness * roughMod;
+				m_Tick += Time.deltaTime * Roughness * m_RoughMod;
 			}
 			else
 			{
-				tick += Time.deltaTime * Roughness * roughMod * currentFadeTime;
+				m_Tick += Time.deltaTime * Roughness * m_RoughMod * m_CurrentFadeTime;
 			}
 
-			return currentFadeTime * Magnitude * magnMod * amt;
+			return m_CurrentFadeTime * Magnitude * m_MagnMod * m_Amt;
         }
 
         /// <summary>
@@ -122,12 +124,12 @@ namespace EZCameraShake
         {
             if (fadeOutTime == 0)
 			{
-				currentFadeTime = 0;
+				m_CurrentFadeTime = 0;
 			}
 
-			fadeOutDuration = fadeOutTime;
-            fadeInDuration = 0;
-            sustain = false;
+			m_FadeOutDuration = fadeOutTime;
+            m_FadeInDuration = 0;
+            m_Sustain = false;
         }
 
         /// <summary>
@@ -138,12 +140,12 @@ namespace EZCameraShake
         {
             if (fadeInTime == 0)
 			{
-				currentFadeTime = 1;
+				m_CurrentFadeTime = 1;
 			}
 
-			fadeInDuration = fadeInTime;
-            fadeOutDuration = 0;
-            sustain = true;
+			m_FadeInDuration = fadeInTime;
+            m_FadeOutDuration = 0;
+            m_Sustain = true;
         }
 
         /// <summary>
@@ -151,8 +153,8 @@ namespace EZCameraShake
         /// </summary>
         public float ScaleRoughness
         {
-            get { return roughMod; }
-            set { roughMod = value; }
+            get { return m_RoughMod; }
+            set { m_RoughMod = value; }
         }
 
         /// <summary>
@@ -160,24 +162,24 @@ namespace EZCameraShake
         /// </summary>
         public float ScaleMagnitude
         {
-            get { return magnMod; }
-            set { magnMod = value; }
+            get { return m_MagnMod; }
+            set { m_MagnMod = value; }
         }
 
         /// <summary>
         /// A normalized value (about 0 to about 1) that represents the current level of intensity.
         /// </summary>
         public float NormalizedFadeTime
-        { get { return currentFadeTime; } }
+        { get { return m_CurrentFadeTime; } }
 
         bool IsShaking
-        { get { return currentFadeTime > 0 || sustain; } }
+        { get { return m_CurrentFadeTime > 0 || m_Sustain; } }
 
         bool IsFadingOut
-        { get { return !sustain && currentFadeTime > 0; } }
+        { get { return !m_Sustain && m_CurrentFadeTime > 0; } }
 
         bool IsFadingIn
-        { get { return currentFadeTime < 1 && sustain && fadeInDuration > 0; } }
+        { get { return m_CurrentFadeTime < 1 && m_Sustain && m_FadeInDuration > 0; } }
 
         /// <summary>
         /// Gets the current state of the shake.

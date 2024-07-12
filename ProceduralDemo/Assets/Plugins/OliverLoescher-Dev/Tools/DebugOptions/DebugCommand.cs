@@ -12,38 +12,38 @@ namespace ODev
 
 		public DebugCommandGUI()
 		{
-			// foreach (System.Type type in TypeUtility.GetAllTypes())
-			// {
-			// 	try
-			// 	{
-			// 		MethodInfo[] methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-			// 		for (int i = 0; i < methods.Length; ++i)
-			// 		{
-			// 			MethodInfo method = methods[i];
-			// 			// static void MethodName() signatures only
-			// 			if (!method.IsStatic || method.ReturnType != typeof(void) || method.GetParameters().Length > 0)
-			// 			{
-			// 				continue;
-			// 			}
-			// 			DebugCommandAttribute attribute = method.GetCustomAttribute<DebugCommandAttribute>();
-			// 			if (attribute == null)
-			// 			{
-			// 				continue;
-			// 			}
+			foreach (System.Type type in Util.Types.GetAllTypes())
+			{
+				try
+				{
+					MethodInfo[] methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+					for (int i = 0; i < methods.Length; ++i)
+					{
+						MethodInfo method = methods[i];
+						// static void MethodName() signatures only
+						if (!method.IsStatic || method.ReturnType != typeof(void) || method.GetParameters().Length > 0)
+						{
+							continue;
+						}
+						DebugCommandAttribute attribute = method.GetCustomAttribute<DebugCommandAttribute>();
+						if (attribute == null)
+						{
+							continue;
+						}
 
-			// 			if (!m_Methods.TryGetValue(attribute.Category, out List<(DebugCommandAttribute, MethodInfo)> list))
-			// 			{
-			// 				list = new List<(DebugCommandAttribute, MethodInfo)>();
-			// 				m_Methods[attribute.Category] = list;
-			// 			}
-			// 			list.Add((attribute, methods[i]));
-			// 		}
-			// 	}
-			// 	catch (System.Exception e)
-			// 	{
-			// 		Debug.LogError(e);
-			// 	}
-			// }
+						if (!m_Methods.TryGetValue(attribute.Category, out List<(DebugCommandAttribute, MethodInfo)> list))
+						{
+							list = new List<(DebugCommandAttribute, MethodInfo)>();
+							m_Methods[attribute.Category] = list;
+						}
+						list.Add((attribute, methods[i]));
+					}
+				}
+				catch (System.Exception e)
+				{
+					Debug.LogError(e);
+				}
+			}
 			m_Categories = new string[m_Methods.Count];
 			int index = 0;
 			foreach (string catagory in m_Methods.Keys)

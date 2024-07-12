@@ -1,6 +1,6 @@
-using Core;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace ODev.Weapon
 {
@@ -27,21 +27,22 @@ namespace ODev.Weapon
 
 		public void Explode(Vector3 pPoint, Projectile pProjectile)
 		{
-			Collider[] hits = Physics.OverlapSphere(pPoint, m_ExplosionRadius);
+			Collider[] hits = new Collider[0];
+			Physics.OverlapSphereNonAlloc(pPoint, m_ExplosionRadius, hits);
 			foreach (Collider hit in hits)
 			{
-				if (hit.TryGetComponent<Rigidbody>(out Rigidbody rb))
+				if (hit.TryGetComponent(out Rigidbody rb))
 				{
 					rb.AddExplosionForce(m_ExplosionForce, pPoint, m_ExplosionRadius, m_ExplosiveUpwardsModifier);
 				}
 				IDamageable damageable = hit.GetComponent<IDamageable>();
-				List<IDamageable> hitDamagables = ListPool<IDamageable>.Request();
+				List<IDamageable> hitDamagables = ListPool<IDamageable>.Get();
 				if (damageable != null && !hitDamagables.Contains(damageable.GetParentDamageable()))
 				{
 					hitDamagables.Add(damageable.GetParentDamageable());
 					damageable.Damage(m_ExplosionDamage, pProjectile.Sender, pPoint, (hit.transform.position - pPoint).normalized);
 				}
-				ListPool<IDamageable>.Return(hitDamagables);
+				ListPool<IDamageable>.Release(hitDamagables);
 			}
 		}
 

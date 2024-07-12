@@ -25,11 +25,8 @@ namespace ODev
 		}
 
 		private static bool s_Initialized = false;
-		//private static HashSet<string> s_OptionNames = new HashSet<string>();
-		//private static List<DebugOption> s_Options = new List<DebugOption>();
 
-		private static SortedDictionary<string, SortedDictionary<string, DebugOption>> s_Options =
-			new();
+		private static SortedDictionary<string, SortedDictionary<string, DebugOption>> s_Options =	new();
 
 		private static void Initialize()
 		{
@@ -39,11 +36,11 @@ namespace ODev
 			}
 			// Static constructor get's called when the game runs, but this coded is needed to reload
 			// the debug options after code compiles while out of play mode
-			// foreach (System.Type type in TypeUtility.GetTypesWithAttribute(typeof(DebugOptionList)))
-			// {
-			// 	// Calling static constructor for class should register all options
-			// 	RuntimeHelpers.RunClassConstructor(type.TypeHandle);
-			// }
+			foreach (System.Type type in Util.Types.GetTypesWithAttribute(typeof(DebugOptionList)))
+			{
+				// Calling static constructor for class should register all options
+				RuntimeHelpers.RunClassConstructor(type.TypeHandle);
+			}
 			s_Initialized = true;
 		}
 

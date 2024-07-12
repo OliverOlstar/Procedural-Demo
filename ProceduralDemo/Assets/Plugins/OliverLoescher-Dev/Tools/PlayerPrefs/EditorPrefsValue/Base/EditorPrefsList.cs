@@ -18,8 +18,7 @@ namespace ODev
 
 		private List<T> m_Values;
 
-		public EditorPrefsList(string key)
-			: base(key)
+		public EditorPrefsList(string key) : base(key)
 		{
 			m_Values = new List<T>();
 			int index = 0;
@@ -30,15 +29,11 @@ namespace ODev
 			}
 		}
 
-		private EditorPrefsList(string key, IEnumerable<T> value)
-			: base(key, new List<T>(value))
+		private EditorPrefsList(string key, IEnumerable<T> value) : base(key, new List<T>(value))
 		{
 		}
 
-		protected sealed override List<T> Get()
-		{
-			return new List<T>(m_Values);
-		}
+		protected sealed override List<T> Get() => new List<T>(m_Values);
 
 		protected sealed override void Set(List<T> value)
 		{
