@@ -1,16 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ODev
+namespace ODev.Debug
 {
 	public class DebugOptionList : Attribute { }
-
-	[DebugOptionList]
-	public class DebugOptions
-	{
-		// Put core debug options here, starting at the opposite end of the bit mask
-		public static readonly DebugOption ABMLogs = new DebugOption.Toggle(DebugOption.Group.Log, "ABM Debug Logs", DebugOption.DefaultSetting.On);
-	}
 
 	public partial class DebugOption : IComparable<DebugOption>
 	{
@@ -26,7 +19,7 @@ namespace ODev
 		{
 			AlwaysOff = 0,
 			AlwaysOn,
-			Setable
+			Settable
 		}
 
 		public enum ShowIfType
@@ -42,7 +35,7 @@ namespace ODev
 		private string m_Group;
 		private string m_Name;
 		private string m_ArgKey;
-		(string, int)? m_Arg;
+		private (string, int)? m_Arg;
 		private bool? m_Set;
 		private DefaultSetting m_Default;
 		private ShowIfType m_ShowIfType;
@@ -113,22 +106,14 @@ namespace ODev
 		}
 		private bool SetDefault()
 		{
-			bool defaultValue = false;
-			switch (m_Default)
+			bool defaultValue = m_Default switch
 			{
-				case DefaultSetting.Off:
-					defaultValue = false;
-					break;
-				case DefaultSetting.On:
-					defaultValue = true;
-					break;
-				case DefaultSetting.OnInEditor:
-					defaultValue = Application.isEditor ? true : false;
-					break;
-				case DefaultSetting.OnDevice:
-					defaultValue = Application.isEditor ? false : true;
-					break;
-			}
+				DefaultSetting.Off => false,
+				DefaultSetting.On => true,
+				DefaultSetting.OnInEditor => Application.isEditor,
+				DefaultSetting.OnDevice => !Application.isEditor,
+				_ => false
+			};
 			m_Set = defaultValue;
 			return defaultValue;
 		}
@@ -246,7 +231,7 @@ namespace ODev
 				if (throwExceptionOnParseFail)
 				{
 					Util.Debug.DevException($"Debug Option '{m_Name}' string argument cannot be empty, " +
-						$"it must be a valid entry in Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}", typeof(DebugOptions));
+						$"it must be a valid entry in Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}", typeof(DebugOption));
 				}
 				return false;
 			}
@@ -256,7 +241,7 @@ namespace ODev
 			}
 			if (throwExceptionOnParseFail)
 			{
-				Util.Debug.DevException($"Debug Option '{m_Name}' cannot parse '{arg}' to Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}", typeof(DebugOptions));
+				Util.Debug.DevException($"Debug Option '{m_Name}' cannot parse '{arg}' to Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}", typeof(DebugOption));
 			}
 			return false;
 		}

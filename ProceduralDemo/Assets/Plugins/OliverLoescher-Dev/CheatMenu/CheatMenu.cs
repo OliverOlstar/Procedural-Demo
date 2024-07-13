@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ODev.PlayerPrefs;
+using System.Diagnostics;
+using ODev.Debug;
 
 namespace ODev.CheatMenu
 {
 	public class CheatMenu : MonoBehaviourSingleton<CheatMenu>
 	{
-		[AttributeUsage(AttributeTargets.Class)]
-		public class IgnorePageAttribute : Attribute { }
-
 		[DebugOptionList]
 		public static class DebugOptions
 		{
@@ -432,11 +431,12 @@ namespace ODev.CheatMenu
 			return x.Priority.CompareTo(y.Priority);
 		}
 
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		private void Log(string message)
 		{
 			if (DebugOptions.LogCheatMenu.IsSet())
 			{
-				Debug.Log($"[CheatMenu] {message}");
+				Util.Debug.Log(message, this);
 			}
 		}
 #endif

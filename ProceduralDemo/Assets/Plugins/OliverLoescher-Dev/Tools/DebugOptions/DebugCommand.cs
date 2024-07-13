@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace ODev
+namespace ODev.Debug
 {
 	public class DebugCommandGUI
 	{
@@ -41,7 +41,7 @@ namespace ODev
 				}
 				catch (System.Exception e)
 				{
-					Debug.LogError(e);
+					Util.Debug.DevException(e, typeof(DebugCommandGUI));
 				}
 			}
 			m_Categories = new string[m_Methods.Count];

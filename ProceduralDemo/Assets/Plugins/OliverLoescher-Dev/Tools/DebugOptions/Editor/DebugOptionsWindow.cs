@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace ODev
+namespace ODev.Debug
 {
 	public class DebugOptionsWindow : EditorWindow
 	{
@@ -147,7 +147,7 @@ namespace ODev
 					}
 					else
 					{
-						Debug.LogWarning($"DebugOptions {op.Name} is of type {nameof(DebugOption.Dropdown)} but arg presets is null or empty. This shouldn't happen");
+						Util.Debug.LogWarning($"DebugOptions {op.Name} is of type {nameof(DebugOption.Dropdown)} but arg presets is null or empty. This shouldn't happen", typeof(DebugOptionsWindow));
 						newArg = EditorGUILayout.TextField(arg);
 					}
 					break;

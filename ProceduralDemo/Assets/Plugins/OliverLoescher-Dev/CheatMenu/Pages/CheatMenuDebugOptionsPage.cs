@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using ODev.Debug;
 
 namespace ODev.CheatMenu.Pages
 {
@@ -151,7 +152,7 @@ namespace ODev.CheatMenu.Pages
 							case DebugOption.Dropdown opDrop:
 								if (!opDrop.TryGetDropdownItems(out argPresets, out currentIndex))
 								{
-									Debug.LogWarning($"DebugOptions {op.Name} is of type {nameof(DebugOption.Dropdown)} but arg presets is null or empty. This shouldn't happen");
+									Util.Debug.LogWarning($"{op.Name} is of type {nameof(DebugOption.Dropdown)} but arg presets is null or empty. This shouldn't happen", typeof(CheatMenuDebugOptionsPage));
 									CheatMenuGUI.StringField(arg, ref newArg, toggleOffset, 0.0f);
 									break;
 								}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace ODev
+namespace ODev.Debug
 {
 	public partial class DebugOption : IComparable<DebugOption>
 	{

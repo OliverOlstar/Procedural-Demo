@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace ODev.CheatMenu
@@ -9,10 +10,10 @@ namespace ODev.CheatMenu
 		public string Name { get; private set; }
 		public int Priority { get; private set; }
 		public bool HideWhenNotAvailable { get; private set; }
-		private List<CheatMenuPage> m_Pages = new();
-		private List<CheatMenuPage> m_AvailablePages = new();
+		private readonly List<CheatMenuPage> m_Pages = new();
+		private readonly List<CheatMenuPage> m_AvailablePages = new();
 		private string[] m_PageNames;
-		private Func<bool> m_IsAvaliable;
+		private readonly Func<bool> m_IsAvaliable;
 
 		public CheatMenuGroup(string name, int priority = 0, Func<bool> isAvaliable = null, bool hideWhenNotAvaliable = false)
 		{
@@ -208,11 +209,12 @@ namespace ODev.CheatMenu
 			return x.Priority.CompareTo(y.Priority);
 		}
 
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		private void Log(string message)
 		{
 			if (CheatMenu.DebugOptions.LogCheatMenu.IsSet())
 			{
-				Debug.Log($"[CheatMenu][{Name}] {message}");
+				Util.Debug.Log($"[{Name}] {message}", typeof(CheatMenuGroup));
 			}
 		}
 #endif

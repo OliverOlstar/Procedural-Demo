@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using ODev.Debug;
 
 namespace ODev.CheatMenu
 {
@@ -33,7 +34,7 @@ namespace ODev.CheatMenu
 				}
 				else
 				{
-					Debug.LogWarning($"CheatMenuGUI.Button() There is already a control registered to ID {s_NextControlID}, duplicates will not be selectable by game pad");
+					Util.Debug.LogWarning($"CheatMenuGUI.Button() There is already a control registered to ID {s_NextControlID}, duplicates will not be selectable by game pad", typeof(CheatMenuGUI));
 				}
 				s_NextControlID = null;
 			}

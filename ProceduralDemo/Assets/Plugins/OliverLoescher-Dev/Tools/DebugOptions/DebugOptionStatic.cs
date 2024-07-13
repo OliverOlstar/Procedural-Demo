@@ -1,9 +1,8 @@
 
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine;
 
-namespace ODev
+namespace ODev.Debug
 {
 	public partial class DebugOption
 	{
@@ -34,7 +33,7 @@ namespace ODev
 			{
 				return;
 			}
-			// Static constructor get's called when the game runs, but this coded is needed to reload
+			// Static constructor gets called when the game runs, but this coded is needed to reload
 			// the debug options after code compiles while out of play mode
 			foreach (System.Type type in Util.Types.GetTypesWithAttribute(typeof(DebugOptionList)))
 			{
@@ -96,7 +95,7 @@ namespace ODev
 			}
 			else
 			{
-				Debug.LogError("DebugOptionsManager.RegisterOption() " + option.Name + " is already registered");
+				Util.Debug.LogError($"DebugOptionsManager.RegisterOption() {option.Name} is already registered", typeof(DebugOption));
 			}
 		}
 
