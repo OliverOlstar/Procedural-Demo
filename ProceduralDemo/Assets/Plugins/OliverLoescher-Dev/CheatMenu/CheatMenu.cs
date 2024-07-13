@@ -4,11 +4,15 @@ using UnityEngine;
 using ODev.PlayerPrefs;
 using System.Diagnostics;
 using ODev.Debug;
+using UnityEngine.Pool;
 
 namespace ODev.CheatMenu
 {
 	public class CheatMenu : MonoBehaviourSingleton<CheatMenu>
 	{
+		[AttributeUsage(AttributeTargets.Class)]
+		public class IgnorePageAttribute : Attribute { }
+
 		[DebugOptionList]
 		public static class DebugOptions
 		{
@@ -80,25 +84,24 @@ namespace ODev.CheatMenu
 			if (m_GroupArray == null)
 			{
 				m_GroupDict = new Dictionary<string, CheatMenuGroup>();
-				// List<CheatMenuGroup> groupList = ListPool<CheatMenuGroup>.Request();
-				// foreach (Type type in TypeUtility.GetTypesDerivedFrom(typeof(CheatMenuPage)))
-				// {
-				// 	if (type.IsAbstract || type.GetCustomAttributes(typeof(IgnorePageAttribute), true).Length > 0)
-				// 	{
-				// 		continue;
-				// 	}
-				// 	CheatMenuPage page = Activator.CreateInstance(type) as CheatMenuPage;
-				// 	if (!s_GroupDict.TryGetValue(page.Group.Name, out CheatMenuGroup group))
-				// 	{
-				// 		group = page.Group;
-				// 		s_GroupDict.Add(group.Name, group);
-				// 		groupList.Add(group);
-				// 	}
-				// 	group.AddPage(page);
-				// }
-				// s_GroupArray = groupList.ToArray();
-				// ListPool<CheatMenuGroup>.Return(groupList);
-				m_GroupArray = new CheatMenuGroup[0];
+				List<CheatMenuGroup> groupList = ListPool<CheatMenuGroup>.Get();
+				foreach (Type type in Util.Types.GetTypesDerivedFrom(typeof(CheatMenuPage)))
+				{
+					if (type.IsAbstract || type.GetCustomAttributes(typeof(IgnorePageAttribute), true).Length > 0)
+					{
+						continue;
+					}
+					CheatMenuPage page = Activator.CreateInstance(type) as CheatMenuPage;
+					if (!m_GroupDict.TryGetValue(page.Group.Name, out CheatMenuGroup group))
+					{
+						group = page.Group;
+						m_GroupDict.Add(group.Name, group);
+						groupList.Add(group);
+					}
+					group.AddPage(page);
+				}
+				m_GroupArray = groupList.ToArray();
+				ListPool<CheatMenuGroup>.Release(groupList);
 				Array.Sort(m_GroupArray, ComparePageGroupsByPriority);
 			}
 
@@ -220,9 +223,11 @@ namespace ODev.CheatMenu
 
 			if (m_HeaderStyle == null)
 			{
-				m_HeaderStyle = new GUIStyle(GUI.skin.label);
-				m_HeaderStyle.alignment = TextAnchor.LowerCenter;
-				m_HeaderStyle.fontStyle = FontStyle.Bold;
+				m_HeaderStyle = new GUIStyle(GUI.skin.label)
+				{
+					alignment = TextAnchor.LowerCenter,
+					fontStyle = FontStyle.Bold
+				};
 			}
 
 			CheatMenuGUI.ResetControls();

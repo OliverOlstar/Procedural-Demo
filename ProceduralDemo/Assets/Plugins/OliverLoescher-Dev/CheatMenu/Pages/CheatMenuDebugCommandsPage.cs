@@ -53,7 +53,6 @@ namespace ODev.CheatMenu.Pages
 					Util.Debug.DevException(e, typeof(CheatMenuDebugCommandsPage));
 				}
 			}
-			Util.Debug.DevException(new NotImplementedException(), typeof(CheatMenuDebugCommandsPage));
 		}
 
 		public override void DrawGUI()
