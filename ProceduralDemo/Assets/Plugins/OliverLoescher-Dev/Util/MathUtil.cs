@@ -171,14 +171,16 @@ namespace ODev.Util
 		public static bool DistanceXZEqualLessThan(this Vector3 pA, Vector3 pB, float pDistance) =>
 			Horizontal2D(pA - pB).sqrMagnitude <= Mathf.Pow(pDistance, 2);
 
+
+		public static bool IsNearZero(this float pValue) => pValue <= NEARZERO;
+		public static bool IsNearZero(this int pValue) => pValue <= NEARZERO;
+		public static bool IsNearZero(this Vector2 pVector) => pVector.sqrMagnitude <= NEARZERO;
 		public static bool IsNearZero(this Vector3 pVector) => pVector.sqrMagnitude <= NEARZERO;
-		public static bool NotNearZero(this Vector3 pVector) => pVector.sqrMagnitude > NEARZERO;
 		public static bool IsNearZeroXZ(this Vector3 pVector)
 		{
 			pVector.y = 0.0f;
 			return pVector.sqrMagnitude <= NEARZERO;
 		}
-		public static bool NotNearZeroXZ(this Vector3 pVector) => !IsNearZeroXZ(pVector);
 		#endregion Compare
 	}
 }

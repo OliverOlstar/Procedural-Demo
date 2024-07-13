@@ -27,12 +27,10 @@ namespace ODev
 		private Transform m_LookTransform = null;
         [SerializeField, MinMaxSlider(-90, 90, true)] 
 		private Vector2 m_LookYClamp = new(-40, 50);
-        [SerializeField]
-		private float m_SensitivityDelta = 1.0f;
-        [SerializeField]
-		private float m_SensitivityUpdate = 1.0f;
-		
-        private Vector2 m_LookInput = new();
+		[SerializeField]
+		private Vector2 m_LookDampening = Vector2.one;
+
+		private Vector2 m_LookInput = new();
 
         [Header("Zoom")]
         [SerializeField]
@@ -65,7 +63,8 @@ namespace ODev
             DoFollow();
 
             m_CurrZoom = m_ChildOffset.magnitude;
-            CameraTransform.localPosition = m_ChildOffset;
+			m_TargetEuler = m_LookTransform.eulerAngles;
+			CameraTransform.localPosition = m_ChildOffset;
 
             if (m_Input != null)
 			{
@@ -86,10 +85,11 @@ namespace ODev
         {
             DoFollow();
             
-            if (m_LookInput != Vector2.zero)
+            if (!m_LookInput.IsNearZero())
             {
-                RotateCamera(pDeltaTime * m_SensitivityUpdate * m_LookInput);
+				ApplyRotateInput(pDeltaTime * m_LookInput);
             }
+			RotateCamera(pDeltaTime);
 
             DoZoomUpdate(pDeltaTime);
             DoCollision();
@@ -109,18 +109,33 @@ namespace ODev
 			transform.position = position;
 		}
 
-		private void RotateCamera(Vector2 pInput)
-        {
-            if (m_LookTransform == null)
+		private Vector2 m_TargetEuler = new();
+		private void RotateCamera(float pDeltaTime)
+		{
+			if (m_LookTransform == null)
 			{
-                return;
+				return;
 			}
-            Vector3 euler = m_LookTransform.eulerAngles;
-            euler.x = Mathf.Clamp(Func.SafeAngle(euler.x - pInput.y), m_LookYClamp.x, m_LookYClamp.y);
-            euler.y = euler.y + pInput.x;
-            euler.z = 0.0f;
-            m_LookTransform.rotation = Quaternion.Euler(euler);
-        }
+			Vector3 euler = m_LookTransform.eulerAngles;
+			euler.x = LookAngleDampening(euler.x, m_TargetEuler.x, m_LookDampening.x, pDeltaTime);
+			euler.y = LookAngleDampening(euler.y, m_TargetEuler.y, m_LookDampening.y, pDeltaTime);
+			euler.z = 0.0f;
+			m_LookTransform.rotation = Quaternion.Euler(euler);
+		}
+		private float LookAngleDampening(float pValue, float pTarget, float pDampening, float pDeltaTime)
+		{
+			if (Math.IsNearZero(pDampening))
+			{
+				return pTarget;
+			}
+			return Mathf.LerpAngle(pValue, pTarget, pDampening * pDeltaTime);
+		}
+
+		private void ApplyRotateInput(Vector2 pInput)
+		{
+			m_TargetEuler.x = Mathf.Clamp(Func.SafeAngle(m_TargetEuler.x - pInput.y), m_LookYClamp.x, m_LookYClamp.y);
+			m_TargetEuler.y += pInput.x;
+		}
 
         private void DoZoom(float pInput)
         {
@@ -152,7 +167,7 @@ namespace ODev
 
         public void OnLookDelta(Vector2 pInput)
         {
-            RotateCamera(pInput * m_SensitivityDelta);
+			ApplyRotateInput(pInput);
         }
 
         public void OnZoom(float pInput)
