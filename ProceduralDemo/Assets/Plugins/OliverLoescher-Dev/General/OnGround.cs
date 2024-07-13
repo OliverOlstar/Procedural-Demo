@@ -100,8 +100,7 @@ namespace ODev
 		public UnityEvent OnExitEvent;
 
 		private readonly TransformFollower m_Follower = new();
-		private CharacterController m_Controller;
-		private Rigidbody m_Rigidbody;
+		private TransformFollower.IMotionReciver m_MotionReciever;
 
 		private void Start()
 		{
@@ -109,10 +108,7 @@ namespace ODev
 			{
 				m_Transform = transform;
 			}
-			if (!m_Transform.TryGetComponent(out m_Rigidbody))
-			{
-				m_Transform.TryGetComponent(out m_Controller);
-			}
+			m_Transform.TryGetComponent(out m_MotionReciever);
 			m_Updateable.Register(Tick);
 		}
 
@@ -238,19 +234,7 @@ namespace ODev
 			{
 				return;
 			}
-
-			if (m_Rigidbody)
-			{
-				m_Follower.Start(pTarget, m_Rigidbody, GetAveragePoint(), null, false, m_Updateable.Type, m_Updateable.Priority, this);
-			}
-			else if (m_Controller)
-			{
-				m_Follower.Start(pTarget, m_Controller, GetAveragePoint(), null, false, m_Updateable.Type, m_Updateable.Priority, this);
-			}
-			else
-			{
-				m_Follower.Start(pTarget, m_Transform, GetAveragePoint(), null, false, m_Updateable.Type, m_Updateable.Priority, this);
-			}
+			m_Follower.Start(pTarget, m_MotionReciever, GetAveragePoint(), false, m_Updateable.Type, m_Updateable.Priority, this);
 		}
 
 		private void OnExit()

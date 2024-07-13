@@ -4,7 +4,7 @@ using ODev.Util;
 using ODev.Cue;
 using ODev.Picker;
 
-public class TestSpear : MonoBehaviour
+public class TestSpear : MonoBehaviour, TransformFollower.IMotionReciver
 {
 	[SerializeField]
 	private float Force = 5.0f;
@@ -56,6 +56,8 @@ public class TestSpear : MonoBehaviour
 	private readonly TransformFollower follower = new();
 
 	private Vector3 CharacterStandPoint => transform.position + (0.5f * transform.localScale.y * Vector3.up) + (0.45f * transform.localScale.z * -transform.forward);
+
+	Transform TransformFollower.IMotionReciver.Transform => transform;
 
 	private Vector3 SpearBack() => transform.position - (0.5f * transform.localScale.z * transform.forward);
 	private Vector3 SpearBack(Vector3 pPosition) => pPosition - (0.5f * transform.localScale.z * transform.forward);
@@ -220,7 +222,7 @@ public class TestSpear : MonoBehaviour
 				// transform.SetPositionAndRotation(hit.point - (0.4f * transform.localScale.z * transform.forward), Quaternion.LookRotation(-hit.normal));
 				trigger.enabled = true;
 
-				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, ODev.Util.Mono.Type.Default, ODev.Util.Mono.Priorities.CharacterController, this);
+				follower.Start(hit.transform, this, hit.point, true, ODev.Util.Mono.Type.Default, ODev.Util.Mono.Priorities.CharacterController, this);
 			}
 			SOCue.Play(hitCue, new CueContext(hit.point));
 			return;
@@ -234,18 +236,20 @@ public class TestSpear : MonoBehaviour
 			Velocity.y += Gravity * Time.deltaTime;
 		}
 		transform.position += Velocity * Time.deltaTime;
-		if (Velocity.NotNearZero())
+		if (!Velocity.IsNearZero())
 		{
 			transform.rotation = Quaternion.LookRotation(Velocity);
 		}
 	}
 
-	private void OnAttachedMoved(Vector3 pDeltaPosition)
+	void TransformFollower.IMotionReciver.AddMovement(Vector3 pMovement, Quaternion pRotation)
 	{
+		transform.position += pMovement;
+		transform.rotation *= pRotation;
 		if (character != null && !isAnimating)
 		{
 			character.transform.position = CharacterStandPoint;
-			StartPosition += pDeltaPosition;
+			StartPosition += pMovement;
 		}
 	}
 

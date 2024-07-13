@@ -3,7 +3,7 @@ using ODev;
 using ODev.Util;
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 {
 	[SerializeField]
 	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Early, ODev.Util.Mono.Priorities.CharacterController);
@@ -35,6 +35,8 @@ public class CharacterMovement : MonoBehaviour
 	private Vector3 m_AccelerationMovement;
 	private Vector3 m_AccelerationGravity;
 	private Vector3 Acceleration => m_AccelerationMovement + m_AccelerationGravity;
+
+	Transform TransformFollower.IMotionReciver.Transform => transform;
 
 	private Coroutine m_VelocityYRoutine = null;
 
@@ -69,7 +71,8 @@ public class CharacterMovement : MonoBehaviour
 		// 	m_Velocity *= hit.distance / distance;
 		// 	m_Velocity.y = y;
 		// }
-		m_Controller.Move(Acceleration * pDeltaTime);
+		m_Controller.Move((Acceleration * pDeltaTime) + m_RecivedMovement);
+		m_RecivedMovement = Vector3.zero;
 	}
 
 	private void MoveTick(float pDeltaTime)
@@ -99,7 +102,8 @@ public class CharacterMovement : MonoBehaviour
 			{
 				StopCoroutine(m_VelocityYRoutine);
 			}
-			m_VelocityYRoutine = StartCoroutine(VelocityYCoroutine(m_JumpVelocityCurve, m_JumpVelocitySalar, m_JumpVelocitySeconds, () =>
+			m_VelocityYRoutine = StartCoroutine(VelocityYCoroutine(m_JumpVelocityCurve, m_JumpVelocitySalar, m_JumpVelocitySeconds,
+			() =>
 			{
 				m_VelocityYRoutine = StartCoroutine(VelocityYCoroutine(m_FallVelocityCurve, m_FallVelocitySalar, m_FallVelocitySeconds, null));
 			}));
@@ -141,5 +145,12 @@ public class CharacterMovement : MonoBehaviour
 		Gizmos.color = Color.yellow;
 		Vector3 start = transform.position + m_Controller.center;
 		Gizmos.DrawLine(start, start + m_AccelerationGravity);
+	}
+
+	private Vector3 m_RecivedMovement = Vector3.zero;
+	void TransformFollower.IMotionReciver.AddMovement(Vector3 pMovement, Quaternion pRotation)
+	{
+		m_RecivedMovement += pMovement;
+		transform.rotation *= pRotation;
 	}
 }

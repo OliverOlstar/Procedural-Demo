@@ -13,18 +13,21 @@ namespace ODev
 			public Vector3 Rotate = new();
 			public float Seconds = 1.0f;
 			public float Delay = 0.0f;
-			public Easing.EaseParams Ease = new(Easing.Method.Sine, Easing.Direction.InOut);
+			public Easing.EaseParams PointEase = new(Easing.Method.Sine, Easing.Direction.InOut);
+			public Easing.EaseParams RotateEase = new(Easing.Method.Sine, Easing.Direction.InOut);
 
-			public void Play(Transform pTransform, Vector3 pToPoint, Vector3 pOffset, System.Action pOnComplete)
+			public void Play(Transform pTransform, Vector3 pToPoint, Vector3 pPointOffset, Vector3 pToEuler, Quaternion pRotationOffset, System.Action pOnComplete)
 			{
-				Anim.Play(Ease, Seconds,
-				(float pProgress) => // OnTick
+				Anim.Play2D(PointEase, RotateEase, Seconds,
+				(Vector2 pProgress) => // OnTick
 				{
-					pTransform.position = Vector3.LerpUnclamped(Point, pToPoint, pProgress) + pOffset;
+					pTransform.SetPositionAndRotation(
+						Vector3.LerpUnclamped(Point, pToPoint, pProgress.x) + pPointOffset, 
+						Quaternion.Euler(Vector3.LerpUnclamped(Rotate, pToEuler, pProgress.y)) * pRotationOffset);
 				},
 				(_) => // OnComplete
 				{
-					pTransform.position = pToPoint + pOffset;
+					pTransform.position = pToPoint + pPointOffset;
 					pOnComplete.Invoke();
 				}, Delay);
 			}
@@ -36,10 +39,12 @@ namespace ODev
 		private Transform m_MoveTransform = null;
 
 		private Vector3 m_InitalPosition = new();
+		private Quaternion m_InitalRotation = new();
 
 		private void Start()
 		{
 			m_InitalPosition = transform.position;
+			m_InitalRotation = transform.rotation;
 			m_MoveTransform.position = m_Points[0].Point + m_InitalPosition;
 			PlayPoint(0);
 		}
@@ -47,7 +52,7 @@ namespace ODev
 		private void PlayPoint(int pIndex)
 		{
 			int nextIndex = Math.Loop(pIndex + 1, m_Points.Length);
-			m_Points[pIndex].Play(m_MoveTransform, m_Points[nextIndex].Point, m_InitalPosition, () => PlayPoint(nextIndex));
+			m_Points[pIndex].Play(m_MoveTransform, m_Points[nextIndex].Point, m_InitalPosition, m_Points[nextIndex].Rotate, m_InitalRotation, () => PlayPoint(nextIndex));
 		}
 
 		private void Reset()

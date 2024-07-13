@@ -146,6 +146,18 @@ namespace ODev.Util
 		public static void GetOrAddComponent<T>(this GameObject pObject, out T pComponent) where T : Component
 			=> pComponent = pObject.GetOrAddComponent<T>();
 
+		public static bool TryGetComponentInChildren<T>(this GameObject pObject, out T pComponent) where T : Component
+		{
+			pComponent = pObject.GetComponentInChildren<T>();
+			return pComponent != null;
+		}
+
+		public static bool TryGetComponentInParent<T>(this GameObject pObject, out T pComponent) where T : Component
+		{
+			pComponent = pObject.GetComponentInParent<T>();
+			return pComponent != null;
+		}
+
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(this T[] pElements, int pStartAtIndex, T pElement = null) where T : class
 			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => pItem == pElement);

@@ -8,48 +8,42 @@ namespace ODev
 	/// </summary>
 	public class TransformFollower
 	{
+		public interface IMotionReciver
+		{
+			public Transform Transform { get; }
+			public void AddMovement(Vector3 pMovement, Quaternion pRotation);
+		}
+
+		private class TransformMotionReciver : IMotionReciver
+		{
+			private readonly Transform m_Transform;
+			Transform IMotionReciver.Transform => m_Transform;
+
+			public TransformMotionReciver(Transform transform) => m_Transform = transform;
+
+			void IMotionReciver.AddMovement(Vector3 pMovement, Quaternion pRotation)
+			{
+				m_Transform.position += pMovement;
+				m_Transform.rotation *= pRotation;
+			}
+		}
+
 		private Util.Mono.Updateable m_Updateable = new();
 		private Transform m_Parent;
-		private Transform m_Child;
-		private CharacterController m_ChildController;
-		private Rigidbody m_ChildRigidbody;
+		private IMotionReciver m_Child;
 		private Object m_DebugObject;
-		private System.Action<Vector3> m_OnMoved;
 		private bool m_RotateChild;
 
+		private Transform m_MathTransform = null;
 		private Vector3 m_LastPosition = Vector3.zero;
 		private Quaternion m_LastRotation = Quaternion.identity;
-		private Vector3 m_LocalPosition;
+		private Vector3 m_LocalPosition = Vector3.zero;
 
 		public bool IsStarted => m_Updateable.IsRegistered;
 		public Transform ParentTransform => m_Parent;
-		public Transform ChildTransform => m_Child;
+		public Transform ChildTransform => m_Child.Transform;
 
-		public void Start(Transform pParent, Rigidbody pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
-		{
-			m_DebugObject = pDebugParent;
-			if (pChild == null)
-			{
-				Util.Debug.DevException("pChild (Rigidbody) is null", m_DebugObject);
-				return;
-			}
-			m_ChildRigidbody = pChild;
-			Start(pParent, pChild.transform, pPoint, pOnMoved, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
-		}
-
-		public void Start(Transform pParent, CharacterController pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
-		{
-			m_DebugObject = pDebugParent;
-			if (pChild == null)
-			{
-				Util.Debug.DevException("pChild (CharacterController) is null", m_DebugObject);
-				return;
-			}
-			m_ChildController = pChild;
-			Start(pParent, pChild.transform, pPoint, pOnMoved, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
-		}
-
-		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, System.Action<Vector3> pOnMoved, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
+		public void Start(Transform pParent, IMotionReciver pChild, Vector3 pPoint, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
 			m_DebugObject = pDebugParent;
 			if (pChild == null)
@@ -80,7 +74,6 @@ namespace ODev
 			}
 			m_Parent = pParent;
 			m_Child = pChild;
-			m_OnMoved = pOnMoved;
 			m_RotateChild = pRotateChild;
 
 			m_LastPosition = pPoint;
@@ -91,7 +84,10 @@ namespace ODev
 			m_Updateable.Register(Tick);
 		}
 
-		public void Stop()
+		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
+			=> Start(pParent, new TransformMotionReciver(pChild), pPoint, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
+
+			public void Stop()
 		{
 			if (m_Child == null)
 			{
@@ -112,7 +108,7 @@ namespace ODev
 				return;
 			}
 			m_Parent = pParent;
-			
+
 			m_LastRotation = m_Parent.rotation;
 			m_LocalPosition = m_Parent.InverseTransformPoint(m_LastPosition);
 		}
@@ -126,41 +122,29 @@ namespace ODev
 				return;
 			}
 
-			SetControllerAcitve(false); // Disable so we can move the transform
-			m_Child.position += deltaPosition;
-			if (m_ChildRigidbody != null)
+			if (m_MathTransform == null)
 			{
-				m_ChildRigidbody.position += deltaPosition;
+				m_MathTransform = new GameObject("TransformFollower-Math").transform;
 			}
+
+			m_MathTransform.position = m_Child.Transform.position;
+			m_MathTransform.position += deltaPosition;
 			if (m_RotateChild)
 			{
 				Quaternion deltaRotation = m_LastRotation.Difference(m_Parent.rotation);
 				deltaRotation.ToAngleAxis(out float angle, out Vector3 axis);
-				m_Child.RotateAround(currPositon, axis, -angle);
+				m_MathTransform.RotateAround(currPositon, axis, -angle);
 				m_LastRotation = m_Parent.rotation;
 			}
-			SetControllerAcitve(true);
 			m_LastPosition = currPositon;
 
-			if (currPositon != m_Child.position)
+			if (currPositon != m_MathTransform.position)
 			{
-				m_LastPosition += m_Child.position - currPositon;
-				m_LocalPosition = m_Parent.InverseTransformPoint(m_Child.position);
+				m_LastPosition += m_MathTransform.position - currPositon;
+				m_LocalPosition = m_Parent.InverseTransformPoint(m_MathTransform.position);
 			}
 
-			m_OnMoved?.Invoke(deltaPosition);
-		}
-
-		private void SetControllerAcitve(bool pEnabled)
-		{
-			// if (childRigidbody)
-			// {
-			// 	childRigidbody.isKinematic = !pEnabled;
-			// }
-			if (m_ChildController)
-			{
-				m_ChildController.enabled = pEnabled;
-			}
+			m_Child.AddMovement(m_MathTransform.position - m_Child.Transform.position, Math.Difference(m_MathTransform.rotation, m_Child.Transform.rotation));
 		}
 
 		public void OnDestroy()
@@ -168,6 +152,10 @@ namespace ODev
 			if (m_Child != null)
 			{
 				Stop();
+			}
+			if (m_MathTransform != null)
+			{
+				Object.Destroy(m_MathTransform.gameObject);
 			}
 		}
 
