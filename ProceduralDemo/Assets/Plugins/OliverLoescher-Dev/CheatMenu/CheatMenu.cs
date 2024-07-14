@@ -39,6 +39,8 @@ namespace ODev.CheatMenu
 		[SerializeField]
 		private float m_VertScreenSpace = 0.95f;
 
+		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Default, Util.Mono.Priorities.Default); // Must be Default for unscaledDeltaTime
+
 		private float Ratio => Screen.width / m_ReferenceScreenWidth;
 		private float NormalizedScale => Ratio * m_ScaleGUI;
 		private float ScaledWidth => Screen.width / NormalizedScale;
@@ -75,7 +77,7 @@ namespace ODev.CheatMenu
 		protected override void Awake()
 		{
 			base.Awake();
-			
+
 			if (m_InputBlocker != null)
 			{
 				m_InputBlocker.SetActive(false);
@@ -111,6 +113,8 @@ namespace ODev.CheatMenu
 			{
 				group.OnInitialize();
 			}
+
+			m_Updateable.Register(Tick);
 			OnAwake();
 		}
 
@@ -120,6 +124,7 @@ namespace ODev.CheatMenu
 			{
 				group.OnDestroy();
 			}
+			m_Updateable.Deregister();
 			base.OnDestroy();
 		}
 
@@ -157,7 +162,7 @@ namespace ODev.CheatMenu
 			return input;
 		}
 
-		private void Update()
+		private void Tick(float pDeltaTime)
 		{
 			CheatMenuGUI.ControlInput controlInput = GetControlInput();
 			switch (controlInput)

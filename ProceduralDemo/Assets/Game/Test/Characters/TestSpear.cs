@@ -115,7 +115,7 @@ public class TestSpear : MonoBehaviour, TransformFollower.IMotionReciver
 		Vector3 recallStartPosition = transform.position;
 		isAnimating = true;
 		float seconds = Vector3.Distance(recallStartPosition, Camera.position) * RecallSeconds;
-		Anim.Play(RecallEase, Mathf.Min(seconds * 10.0f, 0.2f),
+		Anim.Play(RecallEase, Mathf.Min(seconds * 10.0f, 0.2f), Anim.Type.Visual,
 		(pProgress) => // OnTick
 		{
 			transform.position = Vector3.LerpUnclamped(recallStartPosition, Camera.position, pProgress);
@@ -262,7 +262,7 @@ public class TestSpear : MonoBehaviour, TransformFollower.IMotionReciver
 		character.SetUpdateEnabled(false);
 		Vector3 startPosition = character.transform.position;
 		isAnimating = true;
-		Anim.Play(playerSnapEase, playerSnapEaseSeconds,
+		Anim.Play(playerSnapEase, playerSnapEaseSeconds, Anim.Type.Visual,
 		(float pProgress) =>
 		{
 			if (character != null)

@@ -14996,7 +14996,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   sprintInput:
-    m_IsToggle: 0
+    m_IsToggle: 1
     m_Input: 0
     onChanged:
       m_PersistentCalls:
@@ -16710,7 +16710,7 @@ MonoBehaviour:
     m_Priority: 400
   m_Controller: {fileID: 2004640779}
   m_Player: {fileID: 82955119}
-  m_Speed:
+  Speed:
     m_BaseValue: 10
     m_CurrValue: 10
   m_SlopeAcceleration: 100

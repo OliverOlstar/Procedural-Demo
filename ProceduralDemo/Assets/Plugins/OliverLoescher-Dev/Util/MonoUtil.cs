@@ -36,6 +36,7 @@ namespace ODev.Util
 			First = int.MinValue,
 			Input = -2000,
 			UI = -1000,
+			World = -200,
 			Default = 0,
 			OnGround = 350,
 			CharacterController = 400,

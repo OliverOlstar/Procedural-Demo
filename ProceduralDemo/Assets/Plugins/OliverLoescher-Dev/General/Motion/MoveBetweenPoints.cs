@@ -18,7 +18,7 @@ namespace ODev
 
 			public void Play(Transform pTransform, Vector3 pToPoint, Vector3 pPointOffset, Vector3 pToEuler, Quaternion pRotationOffset, System.Action pOnComplete)
 			{
-				Anim.Play2D(PointEase, RotateEase, Seconds,
+				Anim.Play2D(PointEase, RotateEase, Seconds, Anim.Type.Physics,
 				(Vector2 pProgress) => // OnTick
 				{
 					pTransform.SetPositionAndRotation(

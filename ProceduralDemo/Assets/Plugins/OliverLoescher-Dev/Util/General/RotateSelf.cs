@@ -3,10 +3,22 @@
 public class RotateSelf : MonoBehaviour
 {
 	[SerializeField]
+	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Default, ODev.Util.Mono.Priorities.Default);
+	[SerializeField]
 	private Vector3 m_RotateSpeed = new(0.0f, 1.0f, 0.0f);
 
-	private void LateUpdate()
+	private void OnEnable()
 	{
-		transform.Rotate(m_RotateSpeed * Time.deltaTime, Space.Self);
+		m_Updateable.Register(Tick);
+	}
+
+	private void OnDisable()
+	{
+		m_Updateable.Deregister();
+	}
+
+	private void Tick(float pDeltaTime)
+	{
+		transform.Rotate(m_RotateSpeed * pDeltaTime, Space.Self);
 	}
 }
