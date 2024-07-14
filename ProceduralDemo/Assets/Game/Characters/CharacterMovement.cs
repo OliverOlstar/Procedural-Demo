@@ -46,12 +46,12 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		gameObject.GetOrAddComponent(out m_Controller);
 	}
 
-	private void Start()
+	private void OnEnable()
 	{
 		m_Updateable.Register(Tick);
 	}
 
-	private void OnDestroy()
+	private void OnDisable()
 	{
 		m_Updateable.Deregister();
 	}
@@ -62,14 +62,19 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		MoveTick(pDeltaTime);
 
 		Vector3 Velocity = m_VelocityXZ + (m_VelocityY * gravityDown);
-		m_Controller.Move((Velocity * pDeltaTime) + m_RecievedDisplacement);
+		m_Controller.Move((Velocity * pDeltaTime) + Math.Horizontal(m_RecievedDisplacement));
+
+		m_Controller.enabled = false;
+		transform.position += m_RecievedDisplacement.y * Vector3.up;
+		m_Controller.enabled = true;
+
 		m_RecievedDisplacement = Vector3.zero;
 	}
 
 	private void GravityTick(float pDeltaTime, out Vector3 oGravityDown)
 	{
 		m_VelocityY += m_Gravity * pDeltaTime;
-		m_VelocityY = Mathf.Max(m_VelocityY, m_Player.OnGround.IsOnGround ? -0.1f : m_TerminalGravity);
+		m_VelocityY = Mathf.Max(m_VelocityY, m_Player.OnGround.IsOnGround ? -0.5f : m_TerminalGravity);
 
 		oGravityDown = Vector3.up;
 		if (m_VelocityY < 0.0f && m_Player.OnGround.IsOnSlope)
@@ -80,7 +85,7 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	private void MoveTick(float pDeltaTime)
 	{
-		Vector3 normal = m_Player.OnGround.GetAverageNormal();
+		Vector3 normal = m_Player.OnGround.IsOnGround ? m_Player.OnGround.GetAverageNormal() : Vector3.up;
 		Vector3 input = m_Player.Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
 		input += m_Player.Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
 		input = input.normalized;

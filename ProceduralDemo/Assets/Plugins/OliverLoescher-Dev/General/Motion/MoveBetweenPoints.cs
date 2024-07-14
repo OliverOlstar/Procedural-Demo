@@ -68,12 +68,18 @@ namespace ODev
 			}
 
 			Vector3 offset = Application.isPlaying ? m_InitalPosition : transform.position;
+			Quaternion rotation = Application.isPlaying ? m_InitalRotation : transform.rotation;
 
 			Gizmos.color = Color.cyan;
 			for (int i = 0; i < m_Points.Length; i++)
 			{
-				Gizmos.DrawCube(m_Points[i].Point + offset, Vector3.one * 0.1f);
 				Gizmos.DrawLine(m_Points[i].Point + offset, m_Points[(i + 1).Loop(m_Points.Length)].Point + offset);
+				if (TryGetComponent(out MeshFilter mesh))
+				{
+					Gizmos.DrawMesh(mesh.sharedMesh, 0, m_Points[i].Point + offset, Quaternion.Euler(m_Points[i].Rotate) * rotation, transform.localScale);
+					return;
+				}
+				Gizmos.DrawCube(m_Points[i].Point + offset, Vector3.one * 0.1f);
 			}
 		}
 	}

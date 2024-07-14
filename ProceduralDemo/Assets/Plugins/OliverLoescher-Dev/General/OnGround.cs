@@ -130,14 +130,24 @@ namespace ODev
 				m_Transform = transform;
 			}
 			m_Transform.TryGetComponent(out m_MotionReciever);
-			m_Updateable.Register(Tick);
 		}
 
 		private void OnDestroy()
 		{
-			m_Updateable.Deregister();
 			m_Follower.OnDestroy();
 		}
+
+		private void OnEnable()
+		{
+			m_Updateable.Register(Tick);
+		}
+
+		private void OnDisable()
+		{
+			m_Updateable.Deregister();
+			SetState(State.None);
+		}
+
 
 		private void Tick(float pDeltaTime)
 		{
@@ -191,7 +201,6 @@ namespace ODev
 
 		private bool IsGroundValidInternal(Vector3 pNormal)
 		{
-			Util.Debug.LogWarning($"Angle {Vector3.Angle(Vector3.up, pNormal)}", this);
 			return Vector3.Angle(Vector3.up, pNormal) < m_SlopeLimit;
 		}
 
@@ -255,10 +264,8 @@ namespace ODev
 			{
 				return;
 			}
-
-			Util.Debug.Log($"Switching state from {m_State} to {pToState}", this);
-
-			switch (m_State)
+			// Util.Debug.Log($"Switching state from {m_State} to {pToState}", this);
+			switch (m_State) // EXIT
 			{
 				case State.InAir:
 					OnAirExitEvent?.Invoke();
@@ -276,10 +283,8 @@ namespace ODev
 					}
 					break;
 			}
-
 			m_State = pToState;
-
-			switch (m_State)
+			switch (m_State) // ENTER
 			{
 				case State.InAir:
 					OnAirEnterEvent?.Invoke();
@@ -293,7 +298,7 @@ namespace ODev
 					OnGroundEnterEvent?.Invoke();
 					if (m_FollowGround && TryGetFirstGroundTransform(out Transform target))
 					{
-						m_Follower.Start(target, m_MotionReciever, GetAveragePoint(), false, m_Updateable.Type, m_Updateable.Priority, this);
+						m_Follower.Start(target, m_MotionReciever, GetAveragePoint(), false, m_Updateable.Type, m_Updateable.Priority - 1, this);
 					}
 					break;
 			}

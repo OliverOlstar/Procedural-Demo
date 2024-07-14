@@ -72,11 +72,14 @@ namespace ODev
 				m_Input.LookDelta.OnChanged.AddListener(OnLookDelta);
 				m_Input.Zoom.onChanged.AddListener(OnZoom);
 			}
+		}
 
+		private void OnEnable()
+		{
 			m_Updateable.Register(Tick);
 		}
 
-		private void OnDestroy()
+		private void OnDisable()
 		{
 			m_Updateable.Deregister();
 		}

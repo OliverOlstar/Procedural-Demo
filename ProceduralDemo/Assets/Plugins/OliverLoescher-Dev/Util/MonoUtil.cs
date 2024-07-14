@@ -37,8 +37,8 @@ namespace ODev.Util
 			Input = -2000,
 			UI = -1000,
 			Default = 0,
+			OnGround = 350,
 			CharacterController = 400,
-			OnGround = 425,
 			ModelController = 500,
 			Camera = 1000,
 			Last = int.MaxValue
@@ -122,6 +122,28 @@ namespace ODev.Util
 		private static List<Updateable> s_LateUpdatables = new();
 		private static List<Updateable> s_FixedUpdatables = new();
 
+#if UNITY_EDITOR
+		public static IEnumerable<Updateable> GetAllUpdateables()
+		{
+			foreach (Updateable updateable in s_EarlyUpdatables)
+			{
+				yield return updateable;
+			}
+			foreach (Updateable updateable in s_Updatables)
+			{
+				yield return updateable;
+			}
+			foreach (Updateable updateable in s_LateUpdatables)
+			{
+				yield return updateable;
+			}
+			foreach (Updateable updateable in s_FixedUpdatables)
+			{
+				yield return updateable;
+			}
+		}
+#endif
+
 		private static void RegisterUpdate(in Updateable pUpdatable)
 		{
 			TryCreate();
@@ -130,7 +152,7 @@ namespace ODev.Util
 			int index;
 			for (index = 0; index < items.Count; index++)
 			{
-				if (items[index].Priority <= pUpdatable.Priority)
+				if (items[index].Priority > pUpdatable.Priority)
 				{
 					break;
 				}

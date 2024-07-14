@@ -35,7 +35,7 @@ namespace ODev
 		private bool m_RotateChild;
 
 		private Transform m_MathTransform = null;
-		private Vector3 m_LastPosition = Vector3.zero;
+		private Vector3 m_ParentLastPosition = Vector3.zero;
 		private Quaternion m_LastRotation = Quaternion.identity;
 		private Vector3 m_LocalPosition = Vector3.zero;
 
@@ -76,7 +76,7 @@ namespace ODev
 			m_Child = pChild;
 			m_RotateChild = pRotateChild;
 
-			m_LastPosition = pPoint;
+			m_ParentLastPosition = pPoint;
 			m_LastRotation = m_Parent.rotation;
 			m_LocalPosition = m_Parent.InverseTransformPoint(pPoint);
 
@@ -87,7 +87,7 @@ namespace ODev
 		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
 			=> Start(pParent, new TransformMotionReciver(pChild), pPoint, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
 
-			public void Stop()
+		public void Stop()
 		{
 			if (m_Child == null)
 			{
@@ -110,13 +110,18 @@ namespace ODev
 			m_Parent = pParent;
 
 			m_LastRotation = m_Parent.rotation;
-			m_LocalPosition = m_Parent.InverseTransformPoint(m_LastPosition);
+			m_LocalPosition = m_Parent.InverseTransformPoint(m_ParentLastPosition);
 		}
 
 		private void Tick(float pDeltaTime)
 		{
+			if (m_Parent == null || m_Child == null)
+			{
+				Util.Debug.LogWarning("We aren't registered, we shouldn't get here. Might be an order of operations issue", m_DebugObject);
+				return;
+			}
 			Vector3 currPositon = m_Parent.TransformPoint(m_LocalPosition);
-			Vector3 deltaPosition = currPositon - m_LastPosition;
+			Vector3 deltaPosition = currPositon - m_ParentLastPosition;
 			if (deltaPosition.IsNearZero())
 			{
 				return;
@@ -124,9 +129,9 @@ namespace ODev
 
 			if (m_MathTransform == null)
 			{
-				m_MathTransform = new GameObject("TransformFollower-Math").transform;
+				m_MathTransform = new GameObject($"{m_Child.Transform.name}-TransformFollower-Math").transform;
+				m_MathTransform.SetParent(m_Parent);
 			}
-
 			m_MathTransform.position = m_Child.Transform.position;
 			m_MathTransform.position += deltaPosition;
 			if (m_RotateChild)
@@ -136,11 +141,11 @@ namespace ODev
 				m_MathTransform.RotateAround(currPositon, axis, -angle);
 				m_LastRotation = m_Parent.rotation;
 			}
-			m_LastPosition = currPositon;
+			m_ParentLastPosition = currPositon;
 
 			if (currPositon != m_MathTransform.position)
 			{
-				m_LastPosition += m_MathTransform.position - currPositon;
+				m_ParentLastPosition += m_MathTransform.position - currPositon;
 				m_LocalPosition = m_Parent.InverseTransformPoint(m_MathTransform.position);
 			}
 

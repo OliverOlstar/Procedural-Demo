@@ -24,7 +24,7 @@ namespace ODev.Util
 
 		private static readonly List<IAnimationInternal> s_Animations = new();
 
-		private static Mono.Updateable s_Updateable = new(Mono.Type.Early, Mono.Priorities.ModelController);
+		private static Mono.Updateable s_Updateable = new(Mono.Type.Fixed, Mono.Priorities.First);
 		private static bool s_IsInitalized = false;
 
 		private static void Initalize()
