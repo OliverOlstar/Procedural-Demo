@@ -1,6 +1,7 @@
 using System.Collections;
 using ODev;
 using ODev.Util;
+using ODev.GameStats;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
@@ -13,8 +14,7 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private PlayerRoot m_Player = null;
 
 	[Header("Stats")]
-	[SerializeField]
-	private float m_Speed = 5.0f;
+	public FloatGameStat Speed = new(10.0f);
 
 	[Space, SerializeField]
 	private float m_SlopeAcceleration = 2.0f;
@@ -74,7 +74,7 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private void GravityTick(float pDeltaTime, out Vector3 oGravityDown)
 	{
 		m_VelocityY += m_Gravity * pDeltaTime;
-		m_VelocityY = Mathf.Max(m_VelocityY, m_Player.OnGround.IsOnGround ? -0.5f : m_TerminalGravity);
+		m_VelocityY = Mathf.Max(m_VelocityY, m_Player.OnGround.IsOnGround ? -1.0f : m_TerminalGravity);
 
 		oGravityDown = Vector3.up;
 		if (m_VelocityY < 0.0f && m_Player.OnGround.IsOnSlope)
@@ -96,13 +96,16 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 			float acceleration = m_Player.OnGround.IsInAir ? m_AirAcceleration : m_SlopeAcceleration;
 			float maxVelocity = m_Player.OnGround.IsInAir ? m_AirMaxVelocity : m_SlopeMaxVelocity;
 
-			maxVelocity = Mathf.Max(maxVelocity, m_VelocityXZ.magnitude);
+			if (maxVelocity > 0.0f)
+			{
+				maxVelocity = Mathf.Max(maxVelocity, m_VelocityXZ.magnitude);
+			}
 			m_VelocityXZ -= drag * pDeltaTime * m_VelocityXZ; // Drag
 			m_VelocityXZ += acceleration * pDeltaTime * input; // Acceleration
 			m_VelocityXZ = Vector3.ClampMagnitude(m_VelocityXZ, maxVelocity);
 			return;
 		}
-		m_VelocityXZ = input * m_Speed;
+		m_VelocityXZ = input * Speed.Value;
 	}
 
 	private void OnDrawGizmos()

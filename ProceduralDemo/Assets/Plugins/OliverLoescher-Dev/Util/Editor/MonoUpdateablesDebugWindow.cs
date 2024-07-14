@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections.Generic;
 
 namespace ODev.Util
 {
@@ -16,14 +15,16 @@ namespace ODev.Util
 
 		private void OnGUI()
 		{
-			Mono.Type currType = Mono.Type.Early;
-			GUILayout.Label(currType.ToString());
+			Mono.Type? currType = null;
 			foreach (Mono.Updateable updateable in Mono.GetAllUpdateables())
 			{
 				if (updateable.Type != currType)
 				{
+					if (currType.HasValue)
+					{
+						GUILayout.Space(16.0f);
+					}
 					currType = updateable.Type;
-					GUILayout.Space(16.0f);
 					GUILayout.Label(currType.ToString());
 				}
 				GUILayout.Label($"({(int)updateable.Priority})\t{updateable.Action.Target}");

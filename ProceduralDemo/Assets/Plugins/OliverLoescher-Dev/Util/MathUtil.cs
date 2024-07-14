@@ -89,6 +89,17 @@ namespace ODev.Util
 		public static Quaternion Add(this Quaternion pStart, Quaternion pDiff) => pDiff * pStart;
 		public static Quaternion UpForwardRotation(Vector3 pForward, Vector3 pUp) => Quaternion.FromToRotation(Vector3.up, pUp) * Quaternion.LookRotation(pForward);
 
+		public static float Add(this float pValue, IEnumerable<float> pDeltas)
+		{
+			foreach (float v in pDeltas)
+			{
+				pValue += v;
+			}
+			return pValue;
+		}
+		public static float Add(IEnumerable<float> pDeltas)
+		 => Add(0.0f, pDeltas);
+
 		public static float AddPercents(IEnumerable<float> pValues)
 		{
 			float value = 1;
