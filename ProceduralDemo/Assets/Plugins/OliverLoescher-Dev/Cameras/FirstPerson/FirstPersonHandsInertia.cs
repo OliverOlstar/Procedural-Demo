@@ -48,8 +48,8 @@ namespace ODev.Camera
 			{
 				return;
 			}
-			m_Grounded.OnEnterEvent.AddListener(delegate { m_DoBounce = true; });
-			m_Grounded.OnExitEvent.AddListener(delegate { m_DoBounce = false; });
+			m_Grounded.OnGroundEnterEvent.AddListener(delegate { m_DoBounce = true; });
+			m_Grounded.OnGroundExitEvent.AddListener(delegate { m_DoBounce = false; });
 		}
 
 		private void LateUpdate()

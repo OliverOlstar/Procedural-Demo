@@ -73,7 +73,7 @@ namespace ODev
 		{
 			MoveRootMotion();
 
-			if (m_Grounded.IsGrounded)
+			if (m_Grounded.IsOnGround)
 			{
 				m_Character.Move(Vector3.down * m_StepDown);
 			}

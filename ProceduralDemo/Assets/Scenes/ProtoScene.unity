@@ -14937,7 +14937,7 @@ Transform:
   m_GameObject: {fileID: 1813848487}
   serializedVersion: 2
   m_LocalRotation: {x: 0.14335178, y: 0.6508034, z: -0.12698258, w: 0.73469776}
-  m_LocalPosition: {x: -2.9199982, y: -8.900973, z: -16.539993}
+  m_LocalPosition: {x: -2.9199982, y: -8.901, z: -16.539993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14968,7 +14968,7 @@ MonoBehaviour:
   m_LookTransform: {fileID: 1813848488}
   m_LookYClamp: {x: -40, y: 50}
   m_LookDampening: {x: 12, y: 24}
-  m_ZoomSpeed: 1
+  m_ZoomSpeed: 0
   m_ZoomSmoothTime: 0.1
   m_ZoomDistanceClamp: {x: 1, y: 5}
   m_CollisionLayers:
@@ -16088,11 +16088,13 @@ MonoBehaviour:
     m_Type: 0
     m_Priority: 400
   m_Controller: {fileID: 2004640779}
-  m_Grounded: {fileID: 2004640778}
-  m_Input: {fileID: 1618059303}
+  m_Player: {fileID: 82955119}
   m_Speed: 10
-  m_AirSpeed: 6
-  m_AccelerationMovement: {x: 0, y: 0, z: 0}
+  m_AirAcceleration: 20
+  m_AirDrag: 1
+  m_AirMaxVelocity: 10
+  m_Gravity: -9.81
+  m_TerminalGravity: -9.81
 --- !u!114 &2004640778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16119,10 +16121,22 @@ MonoBehaviour:
     m_Bits: 9
   m_SlopeLimit: 45
   m_FollowGround: 1
-  OnEnterEvent:
+  OnAirEnterEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnExitEvent:
+  OnAirExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSlopeEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSlopeExitEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGroundEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGroundExitEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!143 &2004640779
@@ -17465,7 +17479,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7828349341192942329, guid: d4bfde7e0c95eec438d325b52a41adac, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.459548
+      value: 9.459521
       objectReference: {fileID: 0}
     - target: {fileID: 7828349341192942329, guid: d4bfde7e0c95eec438d325b52a41adac, type: 3}
       propertyPath: m_LocalPosition.z

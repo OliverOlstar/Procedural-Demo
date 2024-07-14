@@ -11,7 +11,7 @@ namespace ODev
 		public interface IMotionReciver
 		{
 			public Transform Transform { get; }
-			public void AddMovement(Vector3 pMovement, Quaternion pRotation);
+			public void AddDisplacement(Vector3 pMovement, Quaternion pRotation);
 		}
 
 		private class TransformMotionReciver : IMotionReciver
@@ -21,7 +21,7 @@ namespace ODev
 
 			public TransformMotionReciver(Transform transform) => m_Transform = transform;
 
-			void IMotionReciver.AddMovement(Vector3 pMovement, Quaternion pRotation)
+			void IMotionReciver.AddDisplacement(Vector3 pMovement, Quaternion pRotation)
 			{
 				m_Transform.position += pMovement;
 				m_Transform.rotation *= pRotation;
@@ -144,7 +144,7 @@ namespace ODev
 				m_LocalPosition = m_Parent.InverseTransformPoint(m_MathTransform.position);
 			}
 
-			m_Child.AddMovement(m_MathTransform.position - m_Child.Transform.position, Math.Difference(m_MathTransform.rotation, m_Child.Transform.rotation));
+			m_Child.AddDisplacement(m_MathTransform.position - m_Child.Transform.position, Math.Difference(m_MathTransform.rotation, m_Child.Transform.rotation));
 		}
 
 		public void OnDestroy()

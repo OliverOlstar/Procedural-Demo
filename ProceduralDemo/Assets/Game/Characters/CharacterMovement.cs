@@ -10,26 +10,40 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	[SerializeField]
 	private CharacterController m_Controller = null;
 	[SerializeField]
-	private OnGround m_Grounded = null;
-	[SerializeField]
-	private InputBridge_PlayerCharacter m_Input = null;
+	private PlayerRoot m_Player = null;
 
-	[Space, SerializeField]
+	[Header("Stats")]
+	[SerializeField]
 	private float m_Speed = 5.0f;
-	[SerializeField]
-	private float m_AirSpeed = 2.0f;
 
 	[Space, SerializeField]
-	private Vector3 m_AccelerationMovement;
-	private Vector3 m_AccelerationGravity;
-	private Vector3 Acceleration => m_AccelerationMovement + m_AccelerationGravity;
+	private float m_SlopeAcceleration = 2.0f;
+	[SerializeField]
+	private float m_SlopeDrag = 1.0f;
+	[SerializeField]
+	private float m_SlopeMaxVelocity = 5.0f;
+
+	[Space, SerializeField]
+	private float m_AirAcceleration = 2.0f;
+	[SerializeField]
+	private float m_AirDrag = 1.0f;
+	[SerializeField]
+	private float m_AirMaxVelocity = 20.0f;
+
+	[Space, SerializeField]
+	private float m_Gravity = -9.81f;
+	[SerializeField]
+	private float m_TerminalGravity = -9.81f;
+
+	private Vector3 m_RecievedDisplacement = Vector3.zero;
+	private Vector3 m_VelocityXZ;
+	private float m_VelocityY;
 
 	Transform TransformFollower.IMotionReciver.Transform => transform;
 
 	private void Reset()
 	{
 		gameObject.GetOrAddComponent(out m_Controller);
-		gameObject.GetOrAddComponent(out m_Grounded);
 	}
 
 	private void Start()
@@ -44,51 +58,73 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	void Tick(float pDeltaTime)
 	{
-		m_AccelerationGravity.y -= 9.81f * pDeltaTime;
-		m_AccelerationGravity.y = Mathf.Max(m_AccelerationGravity.y, m_Grounded.IsGrounded ? -0.5f : -9.81f);
-
+		GravityTick(pDeltaTime, out Vector3 gravityDown);
 		MoveTick(pDeltaTime);
-		
-		m_Controller.Move((Acceleration * pDeltaTime) + m_RecivedMovement);
-		m_RecivedMovement = Vector3.zero;
+
+		Vector3 Velocity = m_VelocityXZ + (m_VelocityY * gravityDown);
+		m_Controller.Move((Velocity * pDeltaTime) + m_RecievedDisplacement);
+		m_RecievedDisplacement = Vector3.zero;
+	}
+
+	private void GravityTick(float pDeltaTime, out Vector3 oGravityDown)
+	{
+		m_VelocityY += m_Gravity * pDeltaTime;
+		m_VelocityY = Mathf.Max(m_VelocityY, m_Player.OnGround.IsOnGround ? -0.1f : m_TerminalGravity);
+
+		oGravityDown = Vector3.up;
+		if (m_VelocityY < 0.0f && m_Player.OnGround.IsOnSlope)
+		{
+			oGravityDown = Vector3.ProjectOnPlane(Vector3.up, m_Player.OnGround.GetAverageNormal()).normalized;
+		}
 	}
 
 	private void MoveTick(float pDeltaTime)
 	{
-		Vector3 normal = m_Grounded.GetAverageNormal();
-		Vector3 input = m_Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
-		input += m_Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
+		Vector3 normal = m_Player.OnGround.GetAverageNormal();
+		Vector3 input = m_Player.Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
+		input += m_Player.Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
 		input = input.normalized;
 
-		if (!m_Grounded.IsGrounded)
+		if (!m_Player.OnGround.IsOnGround)
 		{
-			m_AccelerationMovement -= 0.99f * pDeltaTime * m_AccelerationMovement;
-			m_AccelerationMovement += m_AirSpeed * pDeltaTime * input;
+			float drag = m_Player.OnGround.IsInAir ? m_AirDrag : m_SlopeDrag;
+			float acceleration = m_Player.OnGround.IsInAir ? m_AirAcceleration : m_SlopeAcceleration;
+			float maxVelocity = m_Player.OnGround.IsInAir ? m_AirMaxVelocity : m_SlopeMaxVelocity;
+
+			maxVelocity = Mathf.Max(maxVelocity, m_VelocityXZ.magnitude);
+			m_VelocityXZ -= drag * pDeltaTime * m_VelocityXZ; // Drag
+			m_VelocityXZ += acceleration * pDeltaTime * input; // Acceleration
+			m_VelocityXZ = Vector3.ClampMagnitude(m_VelocityXZ, maxVelocity);
 			return;
 		}
-		m_AccelerationMovement = input * m_Speed;
+		m_VelocityXZ = input * m_Speed;
 	}
 
 	private void OnDrawGizmos()
 	{
 		Gizmos.color = Color.yellow;
 		Vector3 start = transform.position + m_Controller.center;
-		Gizmos.DrawLine(start, start + m_AccelerationGravity);
-	}
-
-	private Vector3 m_RecivedMovement = Vector3.zero;
-	void TransformFollower.IMotionReciver.AddMovement(Vector3 pMovement, Quaternion pRotation)
-	{
-		m_RecivedMovement += pMovement;
-		transform.rotation *= pRotation;
+		Gizmos.DrawLine(start, start + (Vector3.down * m_VelocityY));
 	}
 
 	public void AddVelocity(Vector3 pVelocity)
 	{
-		m_AccelerationGravity += pVelocity;
+		m_VelocityXZ.x += pVelocity.x;
+		m_VelocityY += pVelocity.y;
+		m_VelocityXZ.z += pVelocity.z;
 	}
-	public void SetVelocity(Vector3 pVelocity)
+	public void SetVelocityY(float pVelocity)
 	{
-		m_AccelerationGravity = pVelocity;
+		m_VelocityY = pVelocity;
+	}
+	public void SetVelocityXZ(Vector3 pVelocity)
+	{
+		m_VelocityXZ = pVelocity;
+	}
+
+	public void AddDisplacement(Vector3 pMovement, Quaternion pRotation) // IMotionReciver
+	{
+		m_RecievedDisplacement += pMovement;
+		transform.rotation *= pRotation;
 	}
 }

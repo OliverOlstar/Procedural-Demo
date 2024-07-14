@@ -35,10 +35,10 @@ public class CharacterAbilityJump : SOCharacterAbility
 
 	private void OnJumpInput()
 	{
-		if (!m_Player.OnGround.IsGrounded)
+		if (!m_Player.OnGround.IsOnGround)
 		{
 			return;
 		}
-		m_Player.Movement.SetVelocity(Vector3.up * m_JumpForce);
+		m_Player.Movement.SetVelocityY(m_JumpForce);
 	}
 }

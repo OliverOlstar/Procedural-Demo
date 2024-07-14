@@ -2,11 +2,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System;
+using ODev.Util;
 
 namespace ODev
 {
 	public class OnGround : MonoBehaviour
 	{
+		public enum State
+		{
+			None,
+			InAir,
+			OnSlope,
+			OnGround,
+		}
+
 		[Serializable]
 		private class Linecast
 		{
@@ -93,14 +102,26 @@ namespace ODev
 		[SerializeField]
 		private bool m_FollowGround = false;
 
-		public bool IsGrounded { get; private set; }
 		[FoldoutGroup("Events")]
-		public UnityEvent OnEnterEvent;
+		public UnityEvent OnAirEnterEvent;
 		[FoldoutGroup("Events")]
-		public UnityEvent OnExitEvent;
+		public UnityEvent OnAirExitEvent;
+		[FoldoutGroup("Events")]
+		public UnityEvent OnSlopeEnterEvent;
+		[FoldoutGroup("Events")]
+		public UnityEvent OnSlopeExitEvent;
+		[FoldoutGroup("Events")]
+		public UnityEvent OnGroundEnterEvent;
+		[FoldoutGroup("Events")]
+		public UnityEvent OnGroundExitEvent;
 
+		private State m_State = State.None;
 		private readonly TransformFollower m_Follower = new();
 		private TransformFollower.IMotionReciver m_MotionReciever;
+
+		public bool IsInAir => m_State == State.InAir;
+		public bool IsOnSlope => m_State == State.OnSlope;
+		public bool IsOnGround => m_State == State.OnGround;
 
 		private void Start()
 		{
@@ -120,25 +141,27 @@ namespace ODev
 
 		private void Tick(float pDeltaTime)
 		{
-			if ((CastToGrounded() && IsGroundValid()) != IsGrounded)
+			if (CastToGrounded())
 			{
-				IsGrounded = !IsGrounded;
-				if (IsGrounded)
+				if (IsGroundValid())
 				{
-					OnEnter();
+					SetState(State.OnGround);
 				}
 				else
 				{
-					OnExit();
+					SetState(State.OnSlope);
 				}
 			}
+			else
+			{
+				SetState(State.InAir);
+			}
 
-			Transform groundTransform = GetFirstGroundTransform();
-			if (!m_Follower.IsStarted || m_Follower.ParentTransform == groundTransform)
+			if (!m_Follower.IsStarted || !TryGetFirstGroundTransform(out Transform target) || m_Follower.ParentTransform == target)
 			{
 				return;
 			}
-			m_Follower.ChangeParent(groundTransform);
+			m_Follower.ChangeParent(target);
 		}
 
 		private bool CastToGrounded()
@@ -168,6 +191,7 @@ namespace ODev
 
 		private bool IsGroundValidInternal(Vector3 pNormal)
 		{
+			Util.Debug.LogWarning($"Angle {Vector3.Angle(Vector3.up, pNormal)}", this);
 			return Vector3.Angle(Vector3.up, pNormal) < m_SlopeLimit;
 		}
 
@@ -182,7 +206,7 @@ namespace ODev
 			{
 				total += sphere.HitInfo.normal;
 			}
-			if (total.sqrMagnitude < 1.0f) // If no normal was added
+			if (total.sqrMagnitude.IsNearZero()) // If no normal was added
 			{
 				return Vector3.up;
 			}
@@ -203,48 +227,76 @@ namespace ODev
 			return total / (m_Lines.Length + m_Spheres.Length);
 		}
 
-		public Transform GetFirstGroundTransform()
+		public bool TryGetFirstGroundTransform(out Transform pTransform)
 		{
 			foreach (Linecast line in m_Lines)
 			{
 				if (line.HitInfo.collider != null)
 				{
-					return line.HitInfo.transform;
+					pTransform = line.HitInfo.transform;
+					return true;
 				}
 			}
 			foreach (Spherecast sphere in m_Spheres)
 			{
 				if (sphere.HitInfo.collider != null)
 				{
-					return sphere.HitInfo.transform;
+					pTransform = sphere.HitInfo.transform;
+					return true;
 				}
 			}
-			return null;
+			pTransform = null;
+			return false;
 		}
 
-		private void OnEnter()
+		private void SetState(State pToState)
 		{
-			OnEnterEvent?.Invoke();
-			SetFollowTarget(GetFirstGroundTransform());
-		}
-
-		private void SetFollowTarget(Transform pTarget)
-		{
-			if (!m_FollowGround)
+			if (m_State == pToState)
 			{
 				return;
 			}
-			m_Follower.Start(pTarget, m_MotionReciever, GetAveragePoint(), false, m_Updateable.Type, m_Updateable.Priority, this);
-		}
 
-		private void OnExit()
-		{
-			OnExitEvent?.Invoke();
-			if (!m_FollowGround)
+			Util.Debug.Log($"Switching state from {m_State} to {pToState}", this);
+
+			switch (m_State)
 			{
-				return;
+				case State.InAir:
+					OnAirExitEvent?.Invoke();
+					break;
+
+				case State.OnSlope:
+					OnSlopeExitEvent?.Invoke();
+					break;
+
+				case State.OnGround:
+					OnGroundExitEvent?.Invoke();
+					if (m_FollowGround)
+					{
+						m_Follower.Stop();
+					}
+					break;
 			}
-			m_Follower.Stop();
+
+			m_State = pToState;
+
+			switch (m_State)
+			{
+				case State.InAir:
+					OnAirEnterEvent?.Invoke();
+					break;
+
+				case State.OnSlope:
+					OnSlopeEnterEvent?.Invoke();
+					break;
+
+				case State.OnGround:
+					OnGroundEnterEvent?.Invoke();
+					if (m_FollowGround && TryGetFirstGroundTransform(out Transform target))
+					{
+						m_Follower.Start(target, m_MotionReciever, GetAveragePoint(), false, m_Updateable.Type, m_Updateable.Priority, this);
+					}
+					break;
+			}
 		}
 
 		private void OnDrawGizmos()

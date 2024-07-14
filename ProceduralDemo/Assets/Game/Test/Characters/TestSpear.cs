@@ -242,7 +242,7 @@ public class TestSpear : MonoBehaviour, TransformFollower.IMotionReciver
 		}
 	}
 
-	void TransformFollower.IMotionReciver.AddMovement(Vector3 pMovement, Quaternion pRotation)
+	void TransformFollower.IMotionReciver.AddDisplacement(Vector3 pMovement, Quaternion pRotation)
 	{
 		transform.position += pMovement;
 		transform.rotation *= pRotation;
