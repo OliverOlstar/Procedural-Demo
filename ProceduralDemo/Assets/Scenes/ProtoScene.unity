@@ -487,6 +487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 82955118}
+  - component: {fileID: 82955119}
   m_Layer: 0
   m_Name: Player Root
   m_TagString: Untagged
@@ -512,6 +513,24 @@ Transform:
   - {fileID: 1618059302}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &82955119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82955117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b5a2197b99faa1408159abf8042138d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Input: {fileID: 1618059303}
+  m_Movement: {fileID: 2004640777}
+  m_OnGround: {fileID: 2004640778}
+  m_Abilities:
+    m_Abilities:
+    - {fileID: 11400000, guid: 45a1424d68a59be4cace99a48814b565, type: 2}
 --- !u!1 &97841467
 GameObject:
   m_ObjectHideFlags: 0
@@ -2754,7 +2773,7 @@ Transform:
   m_GameObject: {fileID: 612297836}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.11181794, z: -0, w: -0.9937287}
-  m_LocalPosition: {x: 153.3, y: -15.27, z: 120.24}
+  m_LocalPosition: {x: 153.3, y: -19.29, z: 120.24}
   m_LocalScale: {x: 12.3016, y: 15, z: 11.9192}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2964,7 +2983,7 @@ Transform:
   m_GameObject: {fileID: 620270516}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.11181794, z: -0, w: -0.9937287}
-  m_LocalPosition: {x: 149.01, y: -9.21, z: 122.93}
+  m_LocalPosition: {x: 149.01, y: -16.35, z: 122.93}
   m_LocalScale: {x: 7.2332177, y: 13.937884, z: 7.181199}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14363,6 +14382,10 @@ MonoBehaviour:
     OnChanged:
       m_PersistentCalls:
         m_Calls: []
+  jumpInput:
+    OnPerformed:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &1618059304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14529,7 +14552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5868817798301073507, guid: 82a01f1a8967b5c458d8988ac1c6fde8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.85
+      value: 6.79
       objectReference: {fileID: 0}
     - target: {fileID: 5868817798301073507, guid: 82a01f1a8967b5c458d8988ac1c6fde8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14914,7 +14937,7 @@ Transform:
   m_GameObject: {fileID: 1813848487}
   serializedVersion: 2
   m_LocalRotation: {x: 0.14335178, y: 0.6508034, z: -0.12698258, w: 0.73469776}
-  m_LocalPosition: {x: -2.9199982, y: -8.6874275, z: -16.539993}
+  m_LocalPosition: {x: -2.9199982, y: -8.900973, z: -16.539993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16067,77 +16090,8 @@ MonoBehaviour:
   m_Controller: {fileID: 2004640779}
   m_Grounded: {fileID: 2004640778}
   m_Input: {fileID: 1618059303}
-  m_JumpVelocityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0.01938441
-      outSlope: 0.01938441
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.12166667
-    - serializedVersion: 3
-      time: 0.5916461
-      value: 0.5940844
-      inSlope: -1.4909999
-      outSlope: -1.4909999
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.023984645
-      outSlope: -0.023984645
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.09833336
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_JumpVelocitySalar: 15
-  m_JumpVelocitySeconds: 0.4
-  m_FallVelocityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.05
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.38358343
-      value: 0.42906952
-      inSlope: 1.5432019
-      outSlope: 1.5432019
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.12021834
-      outWeight: 0.42932725
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_FallVelocitySalar: -9.81
-  m_FallVelocitySeconds: 0.5
   m_Speed: 10
+  m_AirSpeed: 6
   m_AccelerationMovement: {x: 0, y: 0, z: 0}
 --- !u!114 &2004640778
 MonoBehaviour:
@@ -17511,7 +17465,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7828349341192942329, guid: d4bfde7e0c95eec438d325b52a41adac, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.673094
+      value: 9.459548
       objectReference: {fileID: 0}
     - target: {fileID: 7828349341192942329, guid: d4bfde7e0c95eec438d325b52a41adac, type: 3}
       propertyPath: m_LocalPosition.z

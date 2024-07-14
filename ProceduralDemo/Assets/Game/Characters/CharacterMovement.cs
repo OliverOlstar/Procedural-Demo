@@ -14,22 +14,10 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	[SerializeField]
 	private InputBridge_PlayerCharacter m_Input = null;
 
-	[Space]
-	[SerializeField]
-	private AnimationCurve m_JumpVelocityCurve = new();
-	[SerializeField]
-	private float m_JumpVelocitySalar = 5.0f;
-	[SerializeField]
-	private float m_JumpVelocitySeconds = 2.0f;
-	[SerializeField]
-	private AnimationCurve m_FallVelocityCurve = new();
-	[SerializeField]
-	private float m_FallVelocitySalar = -5.0f;
-	[SerializeField]
-	private float m_FallVelocitySeconds = 2.0f;
-
 	[Space, SerializeField]
 	private float m_Speed = 5.0f;
+	[SerializeField]
+	private float m_AirSpeed = 2.0f;
 
 	[Space, SerializeField]
 	private Vector3 m_AccelerationMovement;
@@ -37,8 +25,6 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private Vector3 Acceleration => m_AccelerationMovement + m_AccelerationGravity;
 
 	Transform TransformFollower.IMotionReciver.Transform => transform;
-
-	private Coroutine m_VelocityYRoutine = null;
 
 	private void Reset()
 	{
@@ -49,8 +35,6 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private void Start()
 	{
 		m_Updateable.Register(Tick);
-		m_Grounded.OnEnterEvent.AddListener(OnGroundEnter);
-		m_Grounded.OnExitEvent.AddListener(OnGroundExit);
 	}
 
 	private void OnDestroy()
@@ -60,84 +44,29 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	void Tick(float pDeltaTime)
 	{
-		JumpTick();
-		MoveTick(pDeltaTime);
+		m_AccelerationGravity.y -= 9.81f * pDeltaTime;
+		m_AccelerationGravity.y = Mathf.Max(m_AccelerationGravity.y, m_Grounded.IsGrounded ? -0.5f : -9.81f);
 
-		// Vector3 center = m_Controller.transform.position + m_Controller.center;
-		// float distance = m_Velocity.magnitude * pDeltaTime;
-		// if (Physics.CapsuleCast(center + (Vector3.up * m_Controller.height), center + (Vector3.down * m_Controller.height), m_Controller.radius, m_Velocity, out RaycastHit hit, distance, m_GroundLayer))
-		// {
-		// 	float y = m_Velocity.y;
-		// 	m_Velocity *= hit.distance / distance;
-		// 	m_Velocity.y = y;
-		// }
+		MoveTick(pDeltaTime);
+		
 		m_Controller.Move((Acceleration * pDeltaTime) + m_RecivedMovement);
 		m_RecivedMovement = Vector3.zero;
 	}
 
 	private void MoveTick(float pDeltaTime)
 	{
-		if (!m_Grounded.IsGrounded)
-		{
-			m_AccelerationMovement -= 0.99f * pDeltaTime * m_AccelerationMovement;
-			return;
-		}
 		Vector3 normal = m_Grounded.GetAverageNormal();
 		Vector3 input = m_Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
 		input += m_Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
 		input = input.normalized;
 
-		m_AccelerationMovement = input * m_Speed;
-	}
-
-	private void JumpTick()
-	{
 		if (!m_Grounded.IsGrounded)
 		{
+			m_AccelerationMovement -= 0.99f * pDeltaTime * m_AccelerationMovement;
+			m_AccelerationMovement += m_AirSpeed * pDeltaTime * input;
 			return;
 		}
-		if (Input.GetKey(KeyCode.Space))
-		{
-			if (m_VelocityYRoutine != null)
-			{
-				StopCoroutine(m_VelocityYRoutine);
-			}
-			m_VelocityYRoutine = StartCoroutine(VelocityYCoroutine(m_JumpVelocityCurve, m_JumpVelocitySalar, m_JumpVelocitySeconds,
-			() =>
-			{
-				m_VelocityYRoutine = StartCoroutine(VelocityYCoroutine(m_FallVelocityCurve, m_FallVelocitySalar, m_FallVelocitySeconds, null));
-			}));
-		}
-	}
-
-	private void OnGroundEnter()
-	{
-		if (m_VelocityYRoutine != null)
-		{
-			StopCoroutine(m_VelocityYRoutine);
-			m_VelocityYRoutine = null;
-		}
-		m_AccelerationGravity.y = -1.0f;
-	}
-
-	private void OnGroundExit()
-	{
-		m_VelocityYRoutine ??= StartCoroutine(VelocityYCoroutine(m_FallVelocityCurve, m_FallVelocitySalar, m_FallVelocitySeconds, null));
-	}
-
-	private IEnumerator VelocityYCoroutine(AnimationCurve pCurve, float pScalar, float pSeconds, System.Action pOnComplete)
-	{
-		float progress01 = 0.0f;
-		float timeScale = 1 / pSeconds;
-
-		m_AccelerationGravity.y = pCurve.Evaluate(0) * pScalar;
-		while (progress01 < 1.0f)
-		{
-			yield return null;
-			m_AccelerationGravity.y = pCurve.Evaluate(progress01) * pScalar;
-			progress01 += Time.deltaTime * timeScale;
-		}
-		pOnComplete?.Invoke();
+		m_AccelerationMovement = input * m_Speed;
 	}
 
 	private void OnDrawGizmos()
@@ -152,5 +81,14 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	{
 		m_RecivedMovement += pMovement;
 		transform.rotation *= pRotation;
+	}
+
+	public void AddVelocity(Vector3 pVelocity)
+	{
+		m_AccelerationGravity += pVelocity;
+	}
+	public void SetVelocity(Vector3 pVelocity)
+	{
+		m_AccelerationGravity = pVelocity;
 	}
 }
