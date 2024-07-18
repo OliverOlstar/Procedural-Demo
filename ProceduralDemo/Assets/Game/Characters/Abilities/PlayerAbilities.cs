@@ -8,17 +8,13 @@ public class PlayerAbilities
 	[SerializeField, DisableInPlayMode, ODev.Picker.AssetNonNull]
 	private SOCharacterAbility[] m_Abilities = new SOCharacterAbility[0];
 	
-	private readonly List<SOCharacterAbility> m_AbilityInstances = new();
-
-	private PlayerRoot m_Player = null;
+	private readonly List<ICharacterAbility> m_AbilityInstances = new();
 
 	public void Initalize(PlayerRoot pPlayer)
 	{
-		m_Player = pPlayer;
 		for (int i = 0; i < m_Abilities.Length; i++)
 		{
-			m_AbilityInstances.Add(Object.Instantiate(m_Abilities[i]));
-			m_AbilityInstances[^1].Initalize(m_Player);
+			m_AbilityInstances.Add(m_Abilities[i].CreateInstance(pPlayer));
 		}
 	}
 
@@ -27,7 +23,6 @@ public class PlayerAbilities
 		for (int i = 0; i < m_AbilityInstances.Count; i++)
 		{
 			m_AbilityInstances[i].Destory();
-			Object.Destroy(m_AbilityInstances[i]);
 		}
 		m_AbilityInstances.Clear();
 	}

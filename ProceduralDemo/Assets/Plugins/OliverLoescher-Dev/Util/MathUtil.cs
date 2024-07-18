@@ -100,6 +100,17 @@ namespace ODev.Util
 		public static float Add(IEnumerable<float> pDeltas)
 		 => Add(0.0f, pDeltas);
 
+		public static int Add(this int pValue, IEnumerable<int> pDeltas)
+		{
+			foreach (int v in pDeltas)
+			{
+				pValue += v;
+			}
+			return pValue;
+		}
+		public static int Add(IEnumerable<int> pDeltas)
+		 => Add(0, pDeltas);
+
 		public static float AddPercents(IEnumerable<float> pValues)
 		{
 			float value = 1;

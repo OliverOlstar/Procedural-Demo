@@ -77,7 +77,7 @@ namespace ODev
 				if (TryGetComponent(out MeshFilter mesh))
 				{
 					Gizmos.DrawMesh(mesh.sharedMesh, 0, m_Points[i].Point + offset, Quaternion.Euler(m_Points[i].Rotate) * rotation, transform.localScale);
-					return;
+					continue;
 				}
 				Gizmos.DrawCube(m_Points[i].Point + offset, Vector3.one * 0.1f);
 			}

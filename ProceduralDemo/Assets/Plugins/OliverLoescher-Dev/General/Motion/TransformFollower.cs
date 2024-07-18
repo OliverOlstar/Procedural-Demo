@@ -130,7 +130,6 @@ namespace ODev
 			if (m_MathTransform == null)
 			{
 				m_MathTransform = new GameObject($"{m_Child.Transform.name}-TransformFollower-Math").transform;
-				m_MathTransform.SetParent(m_Parent);
 			}
 			m_MathTransform.position = m_Child.Transform.position;
 			m_MathTransform.position += deltaPosition;

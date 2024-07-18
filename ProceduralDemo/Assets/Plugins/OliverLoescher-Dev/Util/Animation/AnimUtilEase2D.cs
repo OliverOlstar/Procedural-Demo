@@ -49,14 +49,17 @@ namespace ODev.Util
 			return false;
 		}
 
-		public void Cancel()
+		public void Cancel(bool pCallOnComplete)
 		{
 			if (IsComplete)
 			{
 				return;
 			}
 			m_Progress01 = 1.0f;
-			m_OnComplete.Invoke(Vector2.one);
+			if (pCallOnComplete)
+			{
+				m_OnComplete.Invoke(Vector2.one);
+			}
 		}
 	}
 }

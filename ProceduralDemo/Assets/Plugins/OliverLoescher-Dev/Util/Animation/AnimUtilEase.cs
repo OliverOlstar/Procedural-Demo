@@ -45,14 +45,17 @@ namespace ODev.Util
 			return false;
 		}
 
-		public void Cancel()
+		public void Cancel(bool pCallOnComplete = true)
 		{
 			if (IsComplete)
 			{
 				return;
 			}
 			m_Progress01 = 1.0f;
-			m_OnComplete.Invoke(1.0f);
+			if (pCallOnComplete)
+			{
+				m_OnComplete.Invoke(1.0f);
+			}
 		}
 	}
 }

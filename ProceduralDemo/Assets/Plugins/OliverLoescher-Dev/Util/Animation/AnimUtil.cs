@@ -11,7 +11,7 @@ namespace ODev.Util
 		public interface IAnimation
 		{
 			bool IsComplete { get; }
-			void Cancel();
+			void Cancel(bool pCallOnComplete = true);
 		}
 		public interface IAnimationInternal : IAnimation
 		{
@@ -67,6 +67,7 @@ namespace ODev.Util
 				return;
 			}
 			Profiler.BeginSample($"AnimUtil.{pDebugMethodName}()");
+			Util.Debug.Log("AnimUtil.Animations", pAnimations);
 			for (int i = pAnimations.Count - 1; i >= 0; i--)
 			{
 				if (pAnimations[i].Tick(pDeltaTime))

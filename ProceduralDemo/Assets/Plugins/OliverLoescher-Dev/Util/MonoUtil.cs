@@ -41,6 +41,7 @@ namespace ODev.Util
 			OnGround = 350,
 			CharacterController = 400,
 			ModelController = 500,
+			Interactator = 700,
 			Camera = 1000,
 			Last = int.MaxValue
 		}
