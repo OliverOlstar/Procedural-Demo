@@ -132,12 +132,12 @@ namespace ODev.CheatMenu
 		{
 			if (!IsOpen)
 			{
-				if ((Application.isEditor && !Input.GetMouseButton(1)) ||
-					(Application.isMobilePlatform && Input.touchCount < 2))
-				{
-					m_OpenTimer = 0.0f;
-					return CheatMenuGUI.ControlInput.None;
-				}
+				// if ((Application.isEditor && !Input.GetMouseButton(1)) ||
+				// 	(Application.isMobilePlatform && Input.touchCount < 2))
+				// {
+				// 	m_OpenTimer = 0.0f;
+				// 	return CheatMenuGUI.ControlInput.None;
+				// }
 				if (Input.mousePosition.y < 0.75f * Screen.height)
 				{
 					m_OpenTimer = 0.0f;
@@ -226,14 +226,11 @@ namespace ODev.CheatMenu
 			GUI.skin.button = newButton;
 			GUI.skin.textField = newTextField;
 
-			if (m_HeaderStyle == null)
+			m_HeaderStyle ??= new GUIStyle(GUI.skin.label)
 			{
-				m_HeaderStyle = new GUIStyle(GUI.skin.label)
-				{
-					alignment = TextAnchor.LowerCenter,
-					fontStyle = FontStyle.Bold
-				};
-			}
+				alignment = TextAnchor.LowerCenter,
+				fontStyle = FontStyle.Bold
+			};
 
 			CheatMenuGUI.ResetControls();
 
@@ -264,21 +261,29 @@ namespace ODev.CheatMenu
 				if (hasCurrentGroup)
 				{
 					DrawGroupMenuButtons(currentGroup);
-					bool pageChanged = currentGroup.DrawPageSelection();
-					if (pageChanged)
+					using (Util.GUI.UsableScrollRect.Use(ref m_ScrollPosition, GUI.skin.box, GUILayout.ExpandWidth(false)))
 					{
-						m_ScrollPosition = Vector2.zero;
+						using (Util.GUI.UsableHorizontal.Use())
+						{
+							bool pageChanged = currentGroup.DrawPageSelection();
+							if (pageChanged)
+							{
+								m_ScrollPosition = Vector2.zero;
+							}
+							using (Util.GUI.UsableVertical.Use(/*GUI.skin.box*/))
+							{
+								currentGroup.DrawPage();
+							}
+						}
 					}
-					m_ScrollPosition = GUILayout.BeginScrollView(m_ScrollPosition, GUI.skin.box);
-					currentGroup.DrawPage();
-					GUILayout.EndScrollView();
 				}
 				else
 				{
 					DrawMenuButtons();
-					m_ScrollPosition = GUILayout.BeginScrollView(m_ScrollPosition, GUI.skin.box);
-					DrawPageSelection();
-					GUILayout.EndScrollView();
+					using (Util.GUI.UsableScrollRect.Use(ref m_ScrollPosition, GUI.skin.box))
+					{
+						DrawPageSelection();
+					}
 				}
 			}
 			GUI.skin.button = originalButton;
@@ -288,7 +293,7 @@ namespace ODev.CheatMenu
 
 		private void DrawGroupMenuButtons(CheatMenuGroup currentGroup)
 		{
-			using (Util.GUI.UsableHorizontal.Use(GUI.skin.box, GUILayout.ExpandHeight(false)))
+			using (Util.GUI.UsableHorizontal.Use(GUILayout.ExpandHeight(false)))
 			{
 				CheatMenuGUI.SetNextControlID("CheatMenu.DrawGroupMenuButtons.Back");
 				if (CheatMenuGUI.Button("Back", GUILayout.Width(85.0f)))
@@ -307,14 +312,14 @@ namespace ODev.CheatMenu
 
 		private void DrawMenuButtons()
 		{
-			using (Util.GUI.UsableHorizontal.Use(GUI.skin.box, GUILayout.ExpandHeight(false)))
+			// using (Util.GUI.UsableHorizontal.Use(GUI.skin.box, GUILayout.ExpandWidth(false)))
+			// {
+			CheatMenuGUI.SetNextControlID("CheatMenu.DrawMenuButtons.Close");
+			if (CheatMenuGUI.Button("Close"))
 			{
-				CheatMenuGUI.SetNextControlID("CheatMenu.DrawMenuButtons.Close");
-				if (CheatMenuGUI.Button("Close"))
-				{
-					Close();
-				}
+				Close();
 			}
+			// }
 		}
 
 		private void DrawPageSelection()

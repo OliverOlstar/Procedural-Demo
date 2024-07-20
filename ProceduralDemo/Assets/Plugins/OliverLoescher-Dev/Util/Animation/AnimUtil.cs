@@ -67,7 +67,6 @@ namespace ODev.Util
 				return;
 			}
 			Profiler.BeginSample($"AnimUtil.{pDebugMethodName}()");
-			Util.Debug.Log("AnimUtil.Animations", pAnimations);
 			for (int i = pAnimations.Count - 1; i >= 0; i--)
 			{
 				if (pAnimations[i].Tick(pDeltaTime))

@@ -25,7 +25,7 @@
 		{
 			if (isGlobal)
 			{
-				PlayerPrefs.GetGlobalInt(Key, value ? 1 : 0);
+				PlayerPrefs.SetGlobalInt(Key, value ? 1 : 0);
 				return;
 			}
 			PlayerPrefs.SetInt(Key, value ? 1 : 0);

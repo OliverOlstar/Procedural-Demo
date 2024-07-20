@@ -146,7 +146,7 @@ namespace ODev.CheatMenu
 				Rect r = GUILayoutUtility.GetRect(new GUIContent(), CheatMenuStyles.ExtraSmallButtonStyle);
 				int startIndex = row * itemsPerRow;
 				int endIndex = Mathf.Min(startIndex + itemsPerRow, argPresets.Length);
-				r.width = r.width / (endIndex - startIndex);
+				r.width /= endIndex - startIndex;
 				for (int i = startIndex; i < endIndex; i++)
 				{
 					if (currentIndex == i)

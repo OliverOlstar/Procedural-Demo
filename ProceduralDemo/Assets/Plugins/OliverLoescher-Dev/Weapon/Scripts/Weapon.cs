@@ -293,9 +293,9 @@ namespace ODev.Weapon
 
 		#region Helpers
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(pMessage, this, pMethodName);
+		protected void Log(string pMessage, [CallerMemberName] string pMethodName = "") => this.Log(pMessage, pMethodName);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(pMessage, this, pMethodName);
+		protected void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => this.LogError(pMessage, pMethodName);
 		#endregion
 	}
 }

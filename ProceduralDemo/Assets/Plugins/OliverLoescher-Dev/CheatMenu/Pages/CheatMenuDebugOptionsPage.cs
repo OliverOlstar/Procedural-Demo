@@ -5,39 +5,22 @@ namespace ODev.CheatMenu.Pages
 {
 	public class CheatMenuDebugOptionsPage : CheatMenuPage
 	{
-		public override CheatMenuGroup Group => CheatMenuCoreGroups.ODev;
+		public override CheatMenuGroup Group => CheatMenuODevGroups.Debug;
 		public override string Name => "Options";
 		public override int Priority => -1;
 		public override bool IsAvailable() => true;
 
 		private DebugOption m_ActiveTooltip = null;
 		private DebugOption m_ActivePresets = null;
+		private GUIStyle m_TitleStyle;
+		private GUIStyle m_ToggleStyle;
+		private GUIStyle m_ToggleTipStyle;
+		private GUIStyle m_ButtonStyle;
 
 		public override void DrawGUI()
 		{
 			TimeScaleManagerGUI();
-
-			// TODO: Move to readonly member variables
-			GUIStyle titleStyle = new(GUI.skin.label)
-			{
-				fontStyle = FontStyle.Bold
-			};
-
-			GUIStyle toggleStyle = new(GUI.skin.label)
-			{
-				fontSize = 24,
-				alignment = TextAnchor.MiddleLeft
-			};
-
-			GUIStyle toggleTipStyle = new(toggleStyle)
-			{
-				fontSize = 16
-			};
-
-			GUIStyle buttonStyle = new(GUI.skin.label)
-			{
-				alignment = TextAnchor.MiddleLeft
-			};
+			InitalizeStyles();
 
 			// Debug Options
 			foreach (string groupName in DebugOption.GetGroupNames())
@@ -47,7 +30,7 @@ namespace ODev.CheatMenu.Pages
 					continue;
 				}
 
-				GUILayout.Label(groupName, titleStyle);
+				GUILayout.Label(groupName, m_TitleStyle);
 				foreach (DebugOption op in DebugOption.GetGroupOptions(groupName))
 				{
 					if (!op.CanShow())
@@ -83,8 +66,8 @@ namespace ODev.CheatMenu.Pages
 					r1.y -= 2.0f;
 					r1.width = 16.0f;
 					r1.x += 4.0f;
-					GUI.Label(r1, set ? "\u25cf" : "\u25cb", toggleStyle);
-					float toggleOffset = r1.x + r1.width;
+					GUI.Label(r1, set ? "\u25cf" : "\u25cb", m_ToggleStyle);
+					float toggleOffset = (r1.x + r1.width) * 0.5f;
 
 					// Tooltip Button
 					if (hasTooltip)
@@ -92,7 +75,7 @@ namespace ODev.CheatMenu.Pages
 						Rect r3 = r;
 						r3.width = 20.0f;
 						r3.x += r.width;
-						if (GUI.Button(r3, isTooltipOpen ? "\u25bc" : "\u25c0", toggleTipStyle))
+						if (GUI.Button(r3, isTooltipOpen ? "\u25bc" : "\u25c0", m_ToggleTipStyle))
 						{
 							m_ActiveTooltip = isTooltipOpen ? null : op;
 							isTooltipOpen = !isTooltipOpen;
@@ -103,7 +86,7 @@ namespace ODev.CheatMenu.Pages
 					Rect r2 = r;
 					r2.x += toggleOffset;
 					r2.width -= toggleOffset;
-					GUI.Label(r2, op.Name, buttonStyle);
+					GUI.Label(r2, op.Name, m_ButtonStyle);
 
 					string arg = DebugOption.GetArg(op);
 					int intArg = DebugOption.GetInt(op);
@@ -181,6 +164,28 @@ namespace ODev.CheatMenu.Pages
 			{
 				DebugOption.Reset();
 			}
+		}
+
+		private void InitalizeStyles()
+		{
+			m_TitleStyle ??= new(GUI.skin.label)
+			{
+				fontStyle = FontStyle.Bold
+			};
+			m_ToggleStyle = new(GUI.skin.label)
+			{
+				fontSize = 24,
+				alignment = TextAnchor.MiddleLeft
+			};
+			m_ToggleTipStyle = new(GUI.skin.label)
+			{
+				fontSize = 16,
+				alignment = TextAnchor.MiddleLeft
+			};
+			m_ButtonStyle = new(GUI.skin.label)
+			{
+				alignment = TextAnchor.MiddleLeft
+			};
 		}
 
 		private static void TimeScaleManagerGUI()

@@ -9,7 +9,7 @@ namespace ODev.CheatMenu.Pages
 {
 	public class CheatMenuDebugCommandsPage : CheatMenuPage
 	{
-		public override CheatMenuGroup Group => CheatMenuCoreGroups.ODev;
+		public override CheatMenuGroup Group => CheatMenuODevGroups.Debug;
 		public override string Name => "Commands";
 
 		private string m_Category;

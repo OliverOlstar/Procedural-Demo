@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using ODev.Util;
 using System;
+using System.Linq;
 
 [RequireComponent(typeof(Collider))]
 public class CharacterInteractor : MonoBehaviour
 {
 	[SerializeField]
 	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Default, ODev.Util.Mono.Priorities.Interactator);
+	// [SerializeField]
+	// private float m_HoverLostDistance = 20.0f;
 
 	private readonly Dictionary<int, InteractableBase> m_HoveringInteractables = new();
 
@@ -35,7 +38,15 @@ public class CharacterInteractor : MonoBehaviour
 
 	private void Tick(float pDeltaTime)
 	{
-		
+		// InteractableBase[] interactablesArray = m_HoveringInteractables.Values.ToArray();
+		// foreach (InteractableBase interactable in interactablesArray)
+		// {
+		// 	if (interactable.Position.DistanceEqualGreaterThan(transform.position, m_HoverLostDistance))
+		// 	{
+		// 		interactable.HoverExit();
+		// 		m_HoveringInteractables.Remove(interactable.GetInstanceID());
+		// 	}
+		// }
 	}
 
 	private void OnTriggerEnter(Collider other)

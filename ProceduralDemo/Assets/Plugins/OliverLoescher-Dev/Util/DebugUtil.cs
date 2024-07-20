@@ -23,6 +23,16 @@ namespace ODev.Util
 #endif
 		}
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
+		public static void DevException<T>(this UnityEngine.Object pContext, T pException, [CallerMemberName] string pMethodName = "") where T : Exception
+		{
+			LogError(pException.Message, pContext, pMethodName);
+#if RELEASE
+			UnityEngine.Debug.LogException(pException);
+#else
+			throw pException;
+#endif
+		}
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void DevException<T>(T pException, Type pContext, [CallerMemberName] string pMethodName = "") where T : Exception
 		{
 			LogError(pException.Message, pContext, pMethodName);
@@ -43,22 +53,21 @@ namespace ODev.Util
 #endif
 		}
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
+		public static void DevException(this UnityEngine.Object pContext, string pMessage, [CallerMemberName] string pMethodName = "")
+		{
+#if RELEASE
+			UnityEngine.Debug.LogException(new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, pContext)), pContext);
+#else
+			throw new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, pContext));
+#endif
+		}
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		public static void DevException(string pMessage, Type pContext, [CallerMemberName] string pMethodName = "")
 		{
 #if RELEASE
 			UnityEngine.Debug.LogException(new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, pContext)));
 #else
 			throw new InvalidOperationException(CreateLogMessage(pMessage, pMethodName, pContext));
-#endif
-		}
-
-		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
-		public static void NotImplementedException()
-		{
-#if RELEASE
-			UnityEngine.Debug.LogException(new NotImplementedException());
-#else
-			throw new InvalidOperationException();
 #endif
 		}
 
@@ -74,6 +83,11 @@ namespace ODev.Util
 			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, pContext), pContext);
 		}
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		public static void Log(this UnityEngine.Object pContext, string pMessage, [CallerMemberName] string pMethodName = "")
+		{
+			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, pContext), pContext);
+		}
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void Log(string pMessage, Type pContext, [CallerMemberName] string pMethodName = "")
 		{
 			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, pContext));
@@ -85,6 +99,11 @@ namespace ODev.Util
 			UnityEngine.Debug.LogWarning(CreateLogMessage(pMessage, pMethodName, pContext), pContext);
 		}
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		public static void LogWarning(this UnityEngine.Object pContext, string pMessage, [CallerMemberName] string pMethodName = "")
+		{
+			UnityEngine.Debug.LogWarning(CreateLogMessage(pMessage, pMethodName, pContext), pContext);
+		}
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogWarning(string pMessage, Type pContext, [CallerMemberName] string pMethodName = "")
 		{
 			UnityEngine.Debug.LogWarning(CreateLogMessage(pMessage, pMethodName, pContext));
@@ -92,6 +111,11 @@ namespace ODev.Util
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		public static void LogError(string pMessage, UnityEngine.Object pContext, [CallerMemberName] string pMethodName = "")
+		{
+			UnityEngine.Debug.LogError(CreateLogMessage(pMessage, pMethodName, pContext), pContext);
+		}
+		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		public static void LogError(this UnityEngine.Object pContext, string pMessage, [CallerMemberName] string pMethodName = "")
 		{
 			UnityEngine.Debug.LogError(CreateLogMessage(pMessage, pMethodName, pContext), pContext);
 		}
@@ -173,14 +197,14 @@ namespace ODev.Util
 			{
 				return $"[].{pMethodName}() {pMessage}";
 			}
-			return ColorString($"[{pContext.GetType().FullName}]") + ColorString($"[{pContext.name}]") + $".{pMethodName}() {pMessage}";
+			return AutoColorString($"[{pContext.GetType().Name}]") + AutoColorString($"[{pContext.name}]") + $".{pMethodName}() {pMessage}";
 		}
 		private static string CreateLogMessage(string pMessage, string pMethodName, Type pContext)
 		{
-			return ColorString($"[{pContext.FullName}]") + $".{pMethodName}() {pMessage}";
+			return AutoColorString($"[{pContext.Name}]") + $".{pMethodName}() {pMessage}";
 		}
 
-		public static string ColorString(string pString)
+		public static string AutoColorString(string pString)
 		{
 #if UNITY_EDITOR
 			Color color;
@@ -201,7 +225,7 @@ namespace ODev.Util
 					color = new Color(CharToFloat01(pString[1]), CharToFloat01(pString[^2]), CharToFloat01(pString[2]));
 					break;
 			}
-			return ColorString(color, pString);
+			return ColorString(pString, color);
 #else
 			return pString;
 #endif
@@ -213,9 +237,9 @@ namespace ODev.Util
 		}
 #endif
 
-		public static string ColorString(Color pColor, string pString)
+		public static string ColorString(string pString, Color pColor)
 		{
-#if UNITY_EDITOR
+#if !RELEASE
 			s_StringBuilder.Clear();
 			s_StringBuilder.Append("<color=#");
 			s_StringBuilder.Append(ColorUtility.ToHtmlStringRGBA(pColor));

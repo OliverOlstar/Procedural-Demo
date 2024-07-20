@@ -144,7 +144,8 @@ namespace ODev.CheatMenu
 			{
 				return false;
 			}
-			using (Util.GUI.UsableVertical.Use(GUI.skin.box))
+			tabCount = 1;
+			using (Util.GUI.UsableVertical.Use(GUI.skin.box, GUILayout.Width(85.0f)))
 			{
 				CheatMenuGUI.SetNextControlID("CheatMenuGroup.SelectionGrid");
 				int index = CheatMenuGUI.SelectionGrid(m_CurrentIndex, m_PageNames, tabCount);

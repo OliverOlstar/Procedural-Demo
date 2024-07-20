@@ -31,7 +31,7 @@ public class TransformFollowerTest : MonoBehaviour, TransformFollower.IMotionRec
 
 	private void Tick(float pDeltaTime)
 	{
-		ODev.Util.Debug.Log(m_MovementRecieved.ToString(), this);
+		this.Log(m_MovementRecieved.ToString());
 		if (m_Controller != null)
 		{
 			m_Controller.Move(Math.Horizontal(m_MovementRecieved) + (1f * pDeltaTime * Vector3.down));
@@ -50,7 +50,7 @@ public class TransformFollowerTest : MonoBehaviour, TransformFollower.IMotionRec
 
 	public void AddDisplacement(Vector3 pMovement, Quaternion pRotation)
 	{
-		ODev.Util.Debug.Log(pMovement.ToString(), this);
+		this.Log(pMovement.ToString());
 		m_MovementRecieved += pMovement;
 		transform.rotation *= pRotation;
 	}

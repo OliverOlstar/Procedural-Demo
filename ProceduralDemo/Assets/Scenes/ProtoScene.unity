@@ -495,7 +495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &82955118
 Transform:
   m_ObjectHideFlags: 0
@@ -11827,7 +11827,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -15863,9 +15863,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349f3350942495040b84228021548631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ScaleGUI: 3.33
+  m_ScaleGUI: 3
   m_ReferenceScreenWidth: 1080
-  m_HorizScreenSpace: 1
+  m_HorizScreenSpace: 0.95
   m_VertScreenSpace: 0.95
   m_InputBlocker: {fileID: 0}
 --- !u!4 &1851020379
@@ -16510,7 +16510,7 @@ Transform:
   m_GameObject: {fileID: 1893166788}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 208.99, y: 36.08, z: 154.87}
+  m_LocalPosition: {x: 208.99, y: 36.08, z: 137.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16539,7 +16539,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -16560,6 +16560,11 @@ MonoBehaviour:
     Direction: 2
   m_HoverSeconds: 0.5
   m_HoverHeight: 1
+  m_StartHoverEase:
+    Method: 2
+    Direction: 1
+  m_StartHoverSeconds: 0.3
+  m_StartHoverHeight: 0.5
   m_Rigidbody: {fileID: 1893166793}
 --- !u!1 &1909103594
 GameObject:
