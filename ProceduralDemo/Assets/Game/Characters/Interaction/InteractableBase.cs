@@ -15,7 +15,7 @@ public abstract class InteractableBase : MonoBehaviour
 
 	public virtual Vector3 Position => transform.position;
 
-	public abstract void Interact();
+	public abstract void Interact(PlayerRoot pPlayer);
 	protected virtual void OnSelectEnter() { }
 	protected virtual void OnSelectExit() { }
 	protected virtual void OnHoverEnter() { }

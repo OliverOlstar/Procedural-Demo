@@ -22,7 +22,7 @@ public class InteractableDoor : InteractableBase
 		// m_Transform.position -= Vector3.up * m_UpDistance;
 	}
 
-	public override void Interact()
+	public override void Interact(PlayerRoot _)
 	{
 		this.Log(m_Up.ToString());
 		m_Up = !m_Up;

@@ -8,16 +8,6 @@ public class PlayerBuildingInventory : MonoBehaviourSingleton<PlayerBuildingInve
 {
 	private readonly Dictionary<string, (SOBuildingItem, int)> m_Items = new();
 
-	protected override void Awake()
-	{
-		base.Awake();
-	}
-
-	protected override void OnDestroy()
-	{
-		base.OnDestroy();
-	}
-
 	public void AddItem(SOBuildingItem pItem)
 	{
 		string itemName = pItem.name;

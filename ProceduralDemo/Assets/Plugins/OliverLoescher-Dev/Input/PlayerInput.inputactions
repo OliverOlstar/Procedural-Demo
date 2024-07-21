@@ -576,6 +576,17 @@
                 },
                 {
                     "name": "",
+                    "id": "49645a21-ab77-49d4-8f89-4ef140e8d17f",
+                    "path": "<Gamepad>/rightStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8b1e5e51-282e-43a9-a2c9-14db5d3335d4",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",

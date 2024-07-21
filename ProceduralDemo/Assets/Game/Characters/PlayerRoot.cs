@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using ODev;
 using UnityEngine;
 
-public class PlayerRoot : MonoBehaviour
+public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 {
+	[SerializeField]
+	private PlayerModeController m_Mode = new();
 	[SerializeField]
 	private InputBridge_PlayerCharacter m_Input = null;
 	[SerializeField]
@@ -12,13 +14,17 @@ public class PlayerRoot : MonoBehaviour
 	[SerializeField]
 	private OnGround m_OnGround = null;
 	[SerializeField]
+	private ThirdPersonCamera m_Camera = new();
+	[SerializeField]
 	private CharacterInventory m_Inventory = new();
 	[SerializeField]
 	private PlayerAbilities m_Abilities = new();
 
+	public PlayerModeController Mode => m_Mode;
 	public InputBridge_PlayerCharacter Input => m_Input;
 	public CharacterMovement Movement => m_Movement;
 	public OnGround OnGround => m_OnGround;
+	public ThirdPersonCamera Camera => m_Camera;
 	public CharacterInventory Inventory => m_Inventory;
 	public PlayerBuildingInventory Buildings => PlayerBuildingInventory.Instance;
 	public PlayerAbilities Abilities => m_Abilities;
@@ -33,5 +39,16 @@ public class PlayerRoot : MonoBehaviour
 	{
 		m_Inventory.Destroy();
 		m_Abilities.Destroy();
+	}
+
+	void PlayerModeController.IMode.DisableMode()
+	{
+		m_Input.enabled = false;
+		m_Camera.gameObject.SetActive(false);
+	}
+	void PlayerModeController.IMode.EnableMode()
+	{
+		m_Input.enabled = true;
+		m_Camera.gameObject.SetActive(true);
 	}
 }

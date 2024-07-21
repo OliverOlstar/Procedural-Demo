@@ -47,7 +47,7 @@ public class CharacterInteractor : MonoBehaviour
 	{
 		if (m_SelectedInteractable != null && m_SelectedInteractable.CanInteract())
 		{
-			m_SelectedInteractable.Interact();
+			m_SelectedInteractable.Interact(m_Player);
 		}
 	}
 

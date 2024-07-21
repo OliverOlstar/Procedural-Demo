@@ -1,15 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
-using ODev.Util;
+using ODev.Cue;
 using UnityEngine;
 
 public class InteractableItem : InteractableBase
 {
 	[SerializeField]
 	private Renderer m_Renderer = null;
+	[SerializeField, ODev.Picker.Asset]
+	private SOCue m_InteractCue = null;
+	
+	private Color m_InitialColor;
 
-	public override void Interact()
+	private void Start()
 	{
+		m_InitialColor = m_Renderer.material.GetColor("_BaseColor");
+	}
+
+	public override void Interact(PlayerRoot pPlayer)
+	{
+		if (m_InteractCue != null)
+		{
+			m_InteractCue.Play(new CueContext(transform.position));
+		}
 		Destroy(gameObject);
 	}
 
@@ -20,6 +31,6 @@ public class InteractableItem : InteractableBase
 
 	protected override void OnSelectExit()
 	{
-		m_Renderer.material.SetColor("_BaseColor", Color.grey);
+		m_Renderer.material.SetColor("_BaseColor", m_InitialColor);
 	}
 }

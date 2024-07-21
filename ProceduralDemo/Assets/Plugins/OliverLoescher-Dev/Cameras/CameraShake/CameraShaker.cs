@@ -10,7 +10,7 @@ namespace EZCameraShake
 		/// The single instance of the CameraShaker in the current scene. Do not use if you have multiple instances.
 		/// </summary>
 		public static CameraShaker s_Instance;
-		private static readonly Dictionary<string, CameraShaker> s_InstanceList = new();
+		private static readonly Dictionary<int, CameraShaker> s_InstanceList = new();
 
 		/// <summary>
 		/// The default position influcence of all shakes created by this shaker.
@@ -33,10 +33,24 @@ namespace EZCameraShake
 		private Vector3 m_RotAddShake;
 		private readonly List<CameraShakeInstance> m_CameraShakeInstances = new();
 
-		void Awake()
+		void OnEnable()
 		{
 			s_Instance = this;
-			s_InstanceList.Add(gameObject.name, this);
+			s_InstanceList.Add(gameObject.GetInstanceID(), this);
+		}
+
+		void OnDisable()
+		{
+			if (s_Instance == this)
+			{
+				s_Instance = null;
+			}
+			s_InstanceList.Remove(gameObject.GetInstanceID());
+		}
+
+		void OnDestroy()
+		{
+			s_InstanceList.Remove(gameObject.GetInstanceID());
 		}
 
 		void Update()
@@ -74,17 +88,14 @@ namespace EZCameraShake
 		/// </summary>
 		/// <param name="name">The name of the camera shaker instance.</param>
 		/// <returns></returns>
-		public static CameraShaker GetInstance(string name)
+		public static CameraShaker GetInstance(int instanceID)
 		{
-			CameraShaker c;
 
-			if (s_InstanceList.TryGetValue(name, out c))
+			if (s_InstanceList.TryGetValue(instanceID, out CameraShaker c))
 			{
 				return c;
 			}
-
-			Debug.LogError("CameraShake " + name + " not found!");
-
+			Debug.LogError($"CameraShake {instanceID} not found!");
 			return null;
 		}
 
@@ -185,10 +196,5 @@ namespace EZCameraShake
 		/// Gets a copy of the list of current camera shake instances.
 		/// </summary>
 		public List<CameraShakeInstance> ShakeInstances => new(m_CameraShakeInstances);
-
-		void OnDestroy()
-		{
-			s_InstanceList.Remove(gameObject.name);
-		}
 	}
 }

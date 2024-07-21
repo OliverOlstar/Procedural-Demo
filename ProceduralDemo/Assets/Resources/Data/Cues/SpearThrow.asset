@@ -12,25 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889639f47c956344496a415cea10090c, type: 3}
   m_Name: SpearThrow
   m_EditorClassIdentifier: 
-  Audio:
-  - IsEnabled: 1
-    Sound:
-      Clips:
-      - {fileID: 8300000, guid: 7d84a2ebc1f009147af2097162e3899b, type: 3}
-      Volume: 1
-      Pitch: {x: 0.9, y: 1.2}
-      Priority: 0
-  Particle:
-  - IsEnabled: 1
-    RandomParticles:
+  m_Audio:
+  - m_IsEnabled: 1
+    m_Sound:
+      m_Clips:
+      - {fileID: 8300000, guid: ab54f1702f51ad046aa529d2eb441a66, type: 3}
+      m_Pitch: {x: 0.9, y: 1.2}
+      m_Priority: 0
+  m_Particle:
+  - m_IsEnabled: 1
+    m_RandomParticles:
     - {fileID: 3131707097971858360, guid: 790a525fb1310d6418b1230e5e032546, type: 3}
-  CameraShake:
-  - IsEnabled: 1
-    Magnitude: 1.25
-    Roughness: 4
-    FadeInTime: 0.1
-    FadeOutTime: 0.75
-    PosInfluence: {x: 0.15, y: 0.15, z: 0.15}
-    RotInfluence: {x: 1, y: 1, z: 1}
-    InnerDistance: 9999999
-    MaxDistance: 9999999
+  m_CameraShake:
+  - m_IsEnabled: 1
+    m_Magnitude: 1
+    m_Roughness: 4
+    m_FadeInTime: 0.1
+    m_FadeOutTime: 0.75
+    m_PosInfluence: {x: 0.15, y: 0.15, z: 0.15}
+    m_RotInfluence: {x: 1, y: 1, z: 1}
+    m_InnerDistance: 0
+    m_MaxDistance: Infinity
