@@ -27,9 +27,10 @@ public class InputBridge_BuildMode : InputBridge_Base
 
 	protected override void Awake()
 	{
-		m_ExitInput.Initalize(InputSystem.Instance.BuildMode.Exit, IsValid);
-		m_PlaceInput.Initalize(InputSystem.Instance.BuildMode.Place, IsValid);
-		m_RotateInput.Initalize(InputSystem.Instance.BuildMode.Rotate, IsValid);
+		PlayerInput_Game.BuildModeActions input = InputSystem.Instance.BuildMode;
+		m_ExitInput.Initalize(input.Exit, IsValid);
+		m_PlaceInput.Initalize(input.Place, IsValid);
+		m_RotateInput.Initalize(input.Rotate, IsValid);
 
 		base.Awake();
 	}

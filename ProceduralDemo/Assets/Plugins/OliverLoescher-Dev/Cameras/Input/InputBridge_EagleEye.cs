@@ -37,11 +37,13 @@ namespace ODev
 
 		protected override void Awake()
 		{
-			m_MoveInput.Initalize(InputSystem.Instance.EagleEye.Move, IsValid);
-			m_MoveDeltaInput.Initalize(InputSystem.Instance.EagleEye.MoveDelta, InputSystem.Instance.EagleEye.MoveDeltaButton, IsValid);
-			m_ZoomInput.Initalize(InputSystem.Instance.EagleEye.Zoom, IsValid);
-			m_ZoomDeltaInput.Initalize(InputSystem.Instance.EagleEye.ZoomDelta, IsValid);
-			m_RotateInput.Initalize(InputSystem.Instance.EagleEye.Rotate, IsValid);
+			PlayerInput instace = InputSystem.Instance;
+			PlayerInput.EagleEyeActions input = InputSystem.Instance.EagleEye;
+			m_MoveInput.Initalize(input.Move, IsValid);
+			m_MoveDeltaInput.Initalize(input.MoveDelta, input.MoveDeltaButton, IsValid);
+			m_ZoomInput.Initalize(input.Zoom, IsValid);
+			m_ZoomDeltaInput.Initalize(input.ZoomDelta, IsValid);
+			m_RotateInput.Initalize(input.Rotate, IsValid);
 
 			base.Awake();
 		}

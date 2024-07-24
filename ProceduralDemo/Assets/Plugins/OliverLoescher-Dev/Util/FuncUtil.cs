@@ -11,7 +11,7 @@ namespace ODev.Util
 		private static bool s_IsApplicationQuitting = false;
 		public static bool IsApplicationQuitting => s_IsApplicationQuitting;
 
-		[RuntimeInitializeOnLoadMethod]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 		static void RunOnStart()
 		{
 			s_IsApplicationQuitting = false;

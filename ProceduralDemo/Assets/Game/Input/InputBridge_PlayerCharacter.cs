@@ -31,10 +31,11 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 
 	protected override void Awake()
 	{
-		moveInput.Initalize(InputSystem.Instance.PlayerCharacter.Move, IsValid);
-		jumpInput.Initalize(InputSystem.Instance.PlayerCharacter.Jump, IsValid);
-		sprintInput.Initalize(InputSystem.Instance.PlayerCharacter.Sprint, IsValid);
-		interactInput.Initalize(InputSystem.Instance.PlayerCharacter.Interact, IsValid);
+		PlayerInput_Game.PlayerCharacterActions input = InputSystem.Instance.PlayerCharacter;
+		moveInput.Initalize(input.Move, IsValid);
+		jumpInput.Initalize(input.Jump, IsValid);
+		sprintInput.Initalize(input.Sprint, IsValid);
+		interactInput.Initalize(input.Interact, IsValid);
 
 		base.Awake();
 	}

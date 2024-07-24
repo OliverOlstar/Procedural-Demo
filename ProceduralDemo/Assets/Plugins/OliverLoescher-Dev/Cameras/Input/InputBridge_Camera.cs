@@ -29,9 +29,10 @@ namespace ODev
 
 		protected override void Awake()
 		{
-			m_LookInput.Initalize(InputSystem.Instance.Camera.Look, IsValid);
-			m_LookDeltaInput.Initalize(InputSystem.Instance.Camera.LookDelta, IsValid);
-			m_ZoomInput.Initalize(InputSystem.Instance.Camera.Zoom, IsValid);
+			PlayerInput.CameraActions input = InputSystem.Instance.Camera;
+			m_LookInput.Initalize(input.Look, IsValid);
+			m_LookDeltaInput.Initalize(input.LookDelta, IsValid);
+			m_ZoomInput.Initalize(input.Zoom, IsValid);
 
 			base.Awake();
 		}

@@ -44,13 +44,14 @@ namespace ODev.Camera
 
 		protected override void Awake()
 		{
-			m_LookInput.Initalize(InputSystem.Instance.SpectatorCamera.Look, IsValid);
-			m_LookDeltaInput.Initalize(InputSystem.Instance.SpectatorCamera.LookDelta, IsValid);
-			m_MoveInput.Initalize(InputSystem.Instance.SpectatorCamera.MoveHorizontal, IsValid);
-			m_MoveVerticalInput.Initalize(InputSystem.Instance.SpectatorCamera.MoveVertical, IsValid);
-			m_ZoomInput.Initalize(InputSystem.Instance.SpectatorCamera.Zoom, IsValid);
-			m_ModeInput.Initalize(InputSystem.Instance.SpectatorCamera.ModeToggle, IsValid);
-			m_TargetInput.Initalize(InputSystem.Instance.SpectatorCamera.TargetToggle, IsValid);
+			PlayerInput.SpectatorCameraActions input = InputSystem.Instance.SpectatorCamera;
+			m_LookInput.Initalize(input.Look, IsValid);
+			m_LookDeltaInput.Initalize(input.LookDelta, IsValid);
+			m_MoveInput.Initalize(input.MoveHorizontal, IsValid);
+			m_MoveVerticalInput.Initalize(input.MoveVertical, IsValid);
+			m_ZoomInput.Initalize(input.Zoom, IsValid);
+			m_ModeInput.Initalize(input.ModeToggle, IsValid);
+			m_TargetInput.Initalize(input.TargetToggle, IsValid);
 
 			base.Awake();
 		}
