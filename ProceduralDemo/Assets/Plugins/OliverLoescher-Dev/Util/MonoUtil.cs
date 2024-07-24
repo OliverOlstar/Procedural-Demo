@@ -12,14 +12,10 @@ namespace ODev.Util
 	/// </summary>
 	public class Mono : MonoBehaviourSingletonAuto<Mono>
 	{
-		private void Awake()
-		{
-			DontDestroyOnLoad(this);
-		}
 		protected override void OnDestroy()
 		{
-			base.OnDestroy();
 			StopAllCoroutines();
+			base.OnDestroy();
 		}
 
 		#region Updatables

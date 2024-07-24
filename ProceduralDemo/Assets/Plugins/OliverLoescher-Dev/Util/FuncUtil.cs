@@ -223,5 +223,10 @@ namespace ODev.Util
 			}
 			return -1;
 		}
+
+		public static bool ContainsLayer(this LayerMask pLayerMask, int pLayer)
+		{
+			return (pLayerMask & (1 << pLayer)) != 0;
+		}
 	}
 }

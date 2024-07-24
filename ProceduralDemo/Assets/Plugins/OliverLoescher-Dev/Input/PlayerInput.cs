@@ -487,6 +487,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""ZoomDelta"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""6ef92e6a-28a4-4616-85a1-9d96fbc5f4c1"",
+                    ""expectedControlType"": ""Analog"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Rotate"",
                     ""type"": ""PassThrough"",
                     ""id"": ""c61cf329-0707-4a7a-bb62-4279bdba83e2"",
@@ -576,17 +585,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""29820657-fd4d-4570-8c77-51fdbfab8d2e"",
-                    ""path"": ""<Mouse>/scroll/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Zoom"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""bf233849-3c50-4761-abc0-e5516f109247"",
                     ""path"": ""<Gamepad>/dpad/y"",
                     ""interactions"": """",
@@ -653,12 +651,34 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""7c9db5c8-d257-4e5f-80f4-394814b25abd"",
+                    ""path"": ""<Gamepad>/dpad/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""faae9dc5-6e3a-48f2-bbf9-0ec904bd2b01"",
                     ""path"": ""<Gamepad>/rightStick/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29820657-fd4d-4570-8c77-51fdbfab8d2e"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ZoomDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -755,6 +775,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_EagleEye_MoveDelta = m_EagleEye.FindAction("MoveDelta", throwIfNotFound: true);
         m_EagleEye_MoveDeltaButton = m_EagleEye.FindAction("MoveDeltaButton", throwIfNotFound: true);
         m_EagleEye_Zoom = m_EagleEye.FindAction("Zoom", throwIfNotFound: true);
+        m_EagleEye_ZoomDelta = m_EagleEye.FindAction("ZoomDelta", throwIfNotFound: true);
         m_EagleEye_Rotate = m_EagleEye.FindAction("Rotate", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
@@ -988,6 +1009,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_EagleEye_MoveDelta;
     private readonly InputAction m_EagleEye_MoveDeltaButton;
     private readonly InputAction m_EagleEye_Zoom;
+    private readonly InputAction m_EagleEye_ZoomDelta;
     private readonly InputAction m_EagleEye_Rotate;
     public struct EagleEyeActions
     {
@@ -997,6 +1019,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @MoveDelta => m_Wrapper.m_EagleEye_MoveDelta;
         public InputAction @MoveDeltaButton => m_Wrapper.m_EagleEye_MoveDeltaButton;
         public InputAction @Zoom => m_Wrapper.m_EagleEye_Zoom;
+        public InputAction @ZoomDelta => m_Wrapper.m_EagleEye_ZoomDelta;
         public InputAction @Rotate => m_Wrapper.m_EagleEye_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_EagleEye; }
         public void Enable() { Get().Enable(); }
@@ -1019,6 +1042,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
+            @ZoomDelta.started += instance.OnZoomDelta;
+            @ZoomDelta.performed += instance.OnZoomDelta;
+            @ZoomDelta.canceled += instance.OnZoomDelta;
             @Rotate.started += instance.OnRotate;
             @Rotate.performed += instance.OnRotate;
             @Rotate.canceled += instance.OnRotate;
@@ -1038,6 +1064,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
+            @ZoomDelta.started -= instance.OnZoomDelta;
+            @ZoomDelta.performed -= instance.OnZoomDelta;
+            @ZoomDelta.canceled -= instance.OnZoomDelta;
             @Rotate.started -= instance.OnRotate;
             @Rotate.performed -= instance.OnRotate;
             @Rotate.canceled -= instance.OnRotate;
@@ -1145,6 +1174,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMoveDelta(InputAction.CallbackContext context);
         void OnMoveDeltaButton(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnZoomDelta(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
     }
     public interface IMenuActions

@@ -30,6 +30,10 @@ namespace ODev.Util
 			{
 				pValue -= pMax;
 			}
+			while (pValue < 0)
+			{
+				pValue += pMax;
+			}
 			return pValue;
 		}
 		public static int Clamp(this int pValue, Vector2 pClamp) => Mathf.Clamp(pValue, (int)pClamp.x, (int)pClamp.y);
@@ -193,9 +197,8 @@ namespace ODev.Util
 		public static bool DistanceXZEqualLessThan(this Vector3 pA, Vector3 pB, float pDistance) =>
 			Horizontal2D(pA - pB).sqrMagnitude <= Mathf.Pow(pDistance, 2);
 
-
-		public static bool IsNearZero(this float pValue) => pValue <= NEARZERO;
-		public static bool IsNearZero(this int pValue) => pValue <= NEARZERO;
+		public static bool IsNearZero(this float pValue) => pValue >= 0.0f ? pValue <= NEARZERO : pValue >= -NEARZERO;
+		public static bool IsNearZero(this int pValue) => pValue >= 0 ? pValue <= NEARZERO : pValue >= -NEARZERO;
 		public static bool IsNearZero(this Vector2 pVector) => pVector.sqrMagnitude <= NEARZERO;
 		public static bool IsNearZero(this Vector3 pVector) => pVector.sqrMagnitude <= NEARZERO;
 		public static bool IsNearZeroXZ(this Vector3 pVector)

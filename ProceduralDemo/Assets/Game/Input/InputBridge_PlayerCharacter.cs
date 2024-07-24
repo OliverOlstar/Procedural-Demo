@@ -20,7 +20,7 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 	public InputModule_Toggle Sprint => sprintInput;
 	public InputModule_Trigger Interact => interactInput;
 
-	public override InputActionMap Actions => InputSystem.Instance.PlayerCharacter.Get();
+	public override InputActionMap Actions => InputSystem.Instance?.PlayerCharacter.Get();
 	public override IEnumerable<IInputModule> GetAllInputModules()
 	{
 		yield return moveInput;

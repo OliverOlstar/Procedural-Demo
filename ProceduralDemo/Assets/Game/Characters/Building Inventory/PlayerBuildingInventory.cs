@@ -6,28 +6,61 @@ using UnityEngine;
 
 public class PlayerBuildingInventory : MonoBehaviourSingleton<PlayerBuildingInventory>
 {
-	private readonly Dictionary<string, (SOBuildingItem, int)> m_Items = new();
+	public struct Item
+	{
+		public SOBuildingItem Data { get; internal set; }
+		public int Count { get; internal set; }
+
+		public Item(SOBuildingItem pData, int pCount)
+		{
+			Data = pData;
+			Count = pCount;
+		}
+	}
+
+	private readonly Dictionary<string, Item> m_Items = new();
 
 	public void AddItem(SOBuildingItem pItem)
 	{
 		string itemName = pItem.name;
-		if (!m_Items.TryGetValue(itemName, out (SOBuildingItem, int) value))
+		if (!m_Items.TryGetValue(itemName, out Item value))
 		{
-			value.Item1 = pItem;
+			value.Data = pItem;
 		}
-		value.Item2++;
+		value.Count++;
 		m_Items[pItem.name] = value;
+	}
+
+	/// <returns>Remaining count of the item</returns>
+	public int RemoveItem(SOBuildingItem pItem)
+	{
+		string itemName = pItem.name;
+		if (!m_Items.TryGetValue(itemName, out Item value))
+		{
+			return 0;
+		}
+		value.Count = Mathf.Max(0, value.Count - 1);
+		m_Items[itemName] = value;
+		return value.Count;
 	}
 
 	public bool HasItem(SOBuildingItem pItem, out int oCount)
 	{
 		string itemName = pItem.name;
-		if (!m_Items.TryGetValue(itemName, out (SOBuildingItem, int) value))
+		if (!m_Items.TryGetValue(itemName, out Item value))
 		{
 			oCount = 0;
 			return false;
 		}
-		oCount = value.Item2;
+		oCount = value.Count;
 		return true;
+	}
+
+	public IEnumerable<Item> GetItems()
+	{
+		foreach (Item item in m_Items.Values)
+		{
+			yield return item;
+		}
 	}
 }

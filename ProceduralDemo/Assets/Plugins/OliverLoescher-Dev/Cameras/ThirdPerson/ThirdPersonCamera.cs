@@ -70,7 +70,7 @@ namespace ODev
 			{
 				m_Input.Look.OnChanged.AddListener(OnLook);
 				m_Input.LookDelta.OnChanged.AddListener(OnLookDelta);
-				m_Input.Zoom.onChanged.AddListener(OnZoom);
+				m_Input.Zoom.OnChanged.AddListener(OnZoom);
 			}
 		}
 

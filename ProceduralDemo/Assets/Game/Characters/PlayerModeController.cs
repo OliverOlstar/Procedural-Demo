@@ -20,6 +20,8 @@ public class PlayerModeController : MonoBehaviour
 
 	private void Awake()
 	{
+		(m_BuildMode as IMode).DisableMode();
+		(m_PlayerMode as IMode).EnableMode();
 		m_CurrMode = m_PlayerMode;
 	}
 

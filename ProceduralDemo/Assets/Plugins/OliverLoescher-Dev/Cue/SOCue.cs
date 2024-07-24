@@ -35,6 +35,5 @@ namespace ODev.Cue
 				module.Play(pContext, pCue);
 			}
 		}
-		public void Play(in CueContext pContext) => Play(this, pContext);
 	}
 }

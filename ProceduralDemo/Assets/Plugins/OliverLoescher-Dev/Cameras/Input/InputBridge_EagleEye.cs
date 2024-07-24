@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ODev.Input;
+using ODev.Util;
 
 namespace ODev
 {
@@ -14,11 +15,14 @@ namespace ODev
 		[SerializeField]
 		private InputModule_Scroll m_ZoomInput = new();
 		[SerializeField]
+		private InputModule_Scroll m_ZoomDeltaInput = new();
+		[SerializeField]
 		private InputModule_Scroll m_RotateInput = new();
 
 		public InputModule_Vector2 Move => m_MoveInput;
 		public InputModule_ToggledInput<InputModule_Vector2> MoveDelta => m_MoveDeltaInput;
 		public InputModule_Scroll Zoom => m_ZoomInput;
+		public InputModule_Scroll ZoomDelta => m_ZoomDeltaInput;
 		public InputModule_Scroll Rotate => m_RotateInput;
 
 		public override InputActionMap Actions => InputSystem.Instance.EagleEye.Get();
@@ -27,6 +31,7 @@ namespace ODev
 			yield return m_MoveInput;
 			yield return m_MoveDeltaInput;
 			yield return m_ZoomInput;
+			yield return m_ZoomDeltaInput;
 			yield return m_RotateInput;
 		}
 
@@ -35,23 +40,20 @@ namespace ODev
 			m_MoveInput.Initalize(InputSystem.Instance.EagleEye.Move, IsValid);
 			m_MoveDeltaInput.Initalize(InputSystem.Instance.EagleEye.MoveDelta, InputSystem.Instance.EagleEye.MoveDeltaButton, IsValid);
 			m_ZoomInput.Initalize(InputSystem.Instance.EagleEye.Zoom, IsValid);
+			m_ZoomDeltaInput.Initalize(InputSystem.Instance.EagleEye.ZoomDelta, IsValid);
 			m_RotateInput.Initalize(InputSystem.Instance.EagleEye.Rotate, IsValid);
 
 			base.Awake();
 		}
 
-		protected override void OnEnable()
+		protected override void OnEnabled()
 		{
-			Cursor.lockState = CursorLockMode.Confined;
-
-			base.OnEnable();
+			Input.Cursor.AddConfined();
 		}
 
-		protected override void OnDisable()
+		protected override void OnDisabled()
 		{
-			Cursor.lockState = CursorLockMode.None;
-
-			base.OnDisable();
+			Input.Cursor.RemoveConfined();
 		}
 	}
 }

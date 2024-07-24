@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -14,14 +15,26 @@ namespace ODev
 		{
 			get
 			{
+				if (Util.Func.IsApplicationQuitting)
+				{
+					return null;
+				}
 				if (s_Instance == null)
 				{
 					s_Instance = new T();
 					s_InstanceInterface = (s_Instance is ISingleton i) ? i : null;
+					Application.quitting += OnDestroy;
 				}
 				s_InstanceInterface?.OnAccessed();
 				return s_Instance;
 			}
+		}
+
+		private static void OnDestroy()
+		{
+			s_Instance = null;
+			s_InstanceInterface = null;
+			Application.quitting -= OnDestroy;
 		}
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
@@ -31,6 +44,8 @@ namespace ODev
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		protected static void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(pMessage, typeof(T), pMethodName);
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
-		protected static void LogExeception(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.DevException(pMessage, typeof(T), pMethodName);
+		protected static void DevException(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.DevException(pMessage, typeof(T), pMethodName);
+		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
+		protected static void DevException<TException>(TException pException, [CallerMemberName] string pMethodName = "") where TException : Exception => Util.Debug.DevException<TException>(pException, typeof(T), pMethodName);
 	}
 }

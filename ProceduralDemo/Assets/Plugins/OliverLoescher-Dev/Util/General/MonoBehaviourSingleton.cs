@@ -9,6 +9,8 @@ namespace ODev
         private static T s_Instance = null;
         private static ISingleton s_InstanceInterface = null;
 		
+		protected virtual new bool DontDestroyOnLoad => false;
+
         public static T Instance
         {
             get
@@ -29,7 +31,10 @@ namespace ODev
 				return;
 			}
 			s_Instance = this as T;
-			DontDestroyOnLoad(gameObject);
+			if (s_Instance.DontDestroyOnLoad)
+			{
+				DontDestroyOnLoad(gameObject);
+			}
 		}
 
 		protected virtual void OnDestroy()

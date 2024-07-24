@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 {
 	[SerializeField]
-	private PlayerModeController m_Mode = new();
+	private PlayerModeController m_Mode = null;
 	[SerializeField]
 	private InputBridge_PlayerCharacter m_Input = null;
 	[SerializeField]
@@ -14,7 +14,7 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 	[SerializeField]
 	private OnGround m_OnGround = null;
 	[SerializeField]
-	private ThirdPersonCamera m_Camera = new();
+	private ThirdPersonCamera m_Camera = null;
 	[SerializeField]
 	private CharacterInventory m_Inventory = new();
 	[SerializeField]
@@ -43,12 +43,12 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 
 	void PlayerModeController.IMode.DisableMode()
 	{
-		m_Input.enabled = false;
+		m_Input.gameObject.SetActive(false);
 		m_Camera.gameObject.SetActive(false);
 	}
 	void PlayerModeController.IMode.EnableMode()
 	{
-		m_Input.enabled = true;
+		m_Input.gameObject.SetActive(true);
 		m_Camera.gameObject.SetActive(true);
 	}
 }

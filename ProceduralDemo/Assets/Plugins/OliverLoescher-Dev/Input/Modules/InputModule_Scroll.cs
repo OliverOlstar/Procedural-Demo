@@ -14,7 +14,7 @@ namespace ODev.Input
 
 		// Events
 		[BoxGroup]
-		public UnityEventsUtil.FloatEvent onChanged;
+		public UnityEventsUtil.FloatEvent OnChanged;
 
 		public override void Initalize(InputAction pInputAction, Func<bool> pIsValid)
 		{
@@ -38,7 +38,7 @@ namespace ODev.Input
 				return;
 			}
 			m_Input = ctx.ReadValue<float>();
-			onChanged?.Invoke(m_Input);
+			OnChanged?.Invoke(m_Input);
 		}
 	}
 }

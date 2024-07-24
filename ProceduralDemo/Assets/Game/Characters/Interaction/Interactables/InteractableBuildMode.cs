@@ -7,7 +7,6 @@ public class InteractableBuildMode : InteractableBase
 {
 	public override void Interact(PlayerRoot pPlayer)
 	{
-		this.Log("");
 		pPlayer.Mode.SwitchToBuild();
 	}
 }

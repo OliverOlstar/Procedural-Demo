@@ -465,6 +465,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ZoomDelta",
+                    "type": "PassThrough",
+                    "id": "6ef92e6a-28a4-4616-85a1-9d96fbc5f4c1",
+                    "expectedControlType": "Analog",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Rotate",
                     "type": "PassThrough",
                     "id": "c61cf329-0707-4a7a-bb62-4279bdba83e2",
@@ -554,17 +563,6 @@
                 },
                 {
                     "name": "",
-                    "id": "29820657-fd4d-4570-8c77-51fdbfab8d2e",
-                    "path": "<Mouse>/scroll/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Zoom",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "bf233849-3c50-4761-abc0-e5516f109247",
                     "path": "<Gamepad>/dpad/y",
                     "interactions": "",
@@ -631,12 +629,34 @@
                 },
                 {
                     "name": "",
+                    "id": "7c9db5c8-d257-4e5f-80f4-394814b25abd",
+                    "path": "<Gamepad>/dpad/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "faae9dc5-6e3a-48f2-bbf9-0ec904bd2b01",
                     "path": "<Gamepad>/rightStick/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29820657-fd4d-4570-8c77-51fdbfab8d2e",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ZoomDelta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

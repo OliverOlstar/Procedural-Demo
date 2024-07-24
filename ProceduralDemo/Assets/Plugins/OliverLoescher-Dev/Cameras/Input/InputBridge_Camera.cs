@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ODev.Input;
+using ODev.Util;
 
 namespace ODev
 {
@@ -35,18 +36,14 @@ namespace ODev
 			base.Awake();
 		}
 
-		protected override void OnEnable()
+		protected override void OnEnabled()
 		{
-			Cursor.lockState = CursorLockMode.Locked;
-
-			base.OnEnable();
+			Input.Cursor.AddLocked();
 		}
 
-		protected override void OnDisable()
+		protected override void OnDisabled()
 		{
-			Cursor.lockState = CursorLockMode.None;
-
-			base.OnDisable();
+			Input.Cursor.RemoveLocked();
 		}
 	}
 }

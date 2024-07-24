@@ -12,3 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e779ed692a1206d42b47a2567c06e400, type: 3}
   m_Name: SampleBuilding
   m_EditorClassIdentifier: 
+  m_Prefab: {fileID: 193579723006383537, guid: 7bf45bb76017d5141a1c07f660b27300, type: 3}
+  m_ModelPrefab: {fileID: 3624082427227758387, guid: 3f65b0c95de8a8f4daf21bdb6a729e99, type: 3}
+  m_Header: Sample Building 1
+  m_Body: This building is a sample building
+  m_Icon: {fileID: 0}
+  m_RotateToNormal: 1
+  m_MaxAngle: 90
+  m_MinAngle: 45
+  CanPlaceOnTerrain: 1
+  CanPlaceOnObject: 1

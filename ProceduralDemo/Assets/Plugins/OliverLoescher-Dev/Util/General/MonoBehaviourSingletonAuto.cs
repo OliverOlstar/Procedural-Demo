@@ -8,8 +8,10 @@ namespace ODev
     {
         private static T s_Instance = null;
         private static ISingleton s_InstanceInterface = null;
-		
-        public static T Instance
+
+		protected virtual new bool DontDestroyOnLoad => true;
+
+		public static T Instance
         {
             get
             {
@@ -29,7 +31,10 @@ namespace ODev
 			}
 
 			s_Instance = new GameObject().AddComponent<T>();
-			DontDestroyOnLoad(s_Instance.gameObject);
+			if (s_Instance.DontDestroyOnLoad)
+			{
+				DontDestroyOnLoad(s_Instance.gameObject);
+			}
 			s_InstanceInterface = (s_Instance is ISingleton i) ? i : null;
 			if (!Util.Func.IsRelease())
 			{

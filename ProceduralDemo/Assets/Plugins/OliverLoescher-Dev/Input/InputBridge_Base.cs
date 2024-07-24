@@ -30,17 +30,27 @@ namespace ODev.Input
 			PauseSystem.s_OnPause -= ClearInputs;
 		}
 
-		protected virtual void OnEnable()
+		private void OnEnable()
 		{
-			Actions.Enable();
+			if (!Util.Func.IsApplicationQuitting)
+			{
+				Actions.Enable();
+			}
 			m_Updateable.Register(Tick);
+			OnEnabled();
 		}
+		protected virtual void OnEnabled() { }
 
-		protected virtual void OnDisable()
+		private void OnDisable()
 		{
-			Actions.Disable();
+			if (!Util.Func.IsApplicationQuitting)
+			{
+				Actions.Disable();
+			}
 			m_Updateable.Deregister();
+			OnDisabled();
 		}
+		protected virtual void OnDisabled() { }
 
 		public virtual void Tick(float pDeltaTime)
 		{

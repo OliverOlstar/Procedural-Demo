@@ -83,7 +83,7 @@ namespace ODev.Util
 			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, pContext), pContext);
 		}
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		public static void Log(this UnityEngine.Object pContext, string pMessage, [CallerMemberName] string pMethodName = "")
+		public static void Log(this UnityEngine.Object pContext, string pMessage = "", [CallerMemberName] string pMethodName = "")
 		{
 			UnityEngine.Debug.Log(CreateLogMessage(pMessage, pMethodName, pContext), pContext);
 		}

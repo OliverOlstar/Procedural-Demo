@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e779ed692a1206d42b47a2567c06e400, type: 3}
+  m_Name: SampleBuilding2
+  m_EditorClassIdentifier: 
+  m_Prefab: {fileID: 193579723006383537, guid: a6a6ac1c30014214b90d62f852838af5, type: 3}
+  m_ModelPrefab: {fileID: 596275161530771379, guid: 60d59480ca5e22e45b3089ee71417f9a, type: 3}
+  m_Header: Sample Building 2
+  m_Body: 
+  m_Icon: {fileID: 0}
+  m_RotateToNormal: 0
+  m_MaxAngle: 45
+  m_MinAngle: 0
+  CanPlaceOnTerrain: 1
+  CanPlaceOnObject: 0

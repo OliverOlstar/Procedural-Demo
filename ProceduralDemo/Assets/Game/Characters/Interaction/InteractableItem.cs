@@ -17,10 +17,7 @@ public class InteractableItem : InteractableBase
 
 	public override void Interact(PlayerRoot pPlayer)
 	{
-		if (m_InteractCue != null)
-		{
-			m_InteractCue.Play(new CueContext(transform.position));
-		}
+		SOCue.Play(m_InteractCue, new CueContext(transform.position));
 		Destroy(gameObject);
 	}
 

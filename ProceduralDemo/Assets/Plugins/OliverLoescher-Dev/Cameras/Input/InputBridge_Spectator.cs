@@ -55,18 +55,14 @@ namespace ODev.Camera
 			base.Awake();
 		}
 
-		protected override void OnEnable()
+		protected override void OnEnabled()
 		{
-			base.OnEnable();
-
-			Cursor.lockState = CursorLockMode.Locked;
+			Input.Cursor.AddLocked();
 		}
 
-		protected override void OnDisable()
+		protected override void OnDisabled()
 		{
-			base.OnDisable();
-
-			Cursor.lockState = CursorLockMode.None;
+			Input.Cursor.RemoveLocked();
 		}
 	}
 }

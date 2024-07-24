@@ -198,6 +198,151 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""BuildMode"",
+            ""id"": ""409d26c8-cef8-4d2a-8183-804ea0926aa2"",
+            ""actions"": [
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""560289ab-8826-444d-ab7e-aff89665b780"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Place"",
+                    ""type"": ""Button"",
+                    ""id"": ""316aaa5e-11ea-48d2-9be9-8962f7b90469"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""752d7bbd-1e10-452b-98b5-5d20daa53dd8"",
+                    ""expectedControlType"": ""Analog"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""c0ab9733-14ce-43d6-a0e8-6e02fc76f810"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9706fa24-13c7-4264-b92b-5f42e4ec1ac6"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f79c0f5-8c1d-46da-8c8f-9c302a3c15c4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74e1b4f0-e87f-4b98-b2b9-dd9f6cea1ad8"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""ZX"",
+                    ""id"": ""5504be14-5217-40f2-b5f4-27d804874cb6"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""d3414c8a-98f9-4e6e-8365-97880a2477b2"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""95b8e305-8be2-4c91-899b-06f7a61016e8"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Bumpers"",
+                    ""id"": ""31471a08-1a14-4f7a-890b-8a64876cd318"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""439186cc-ed1b-4038-bd49-98b66bc928df"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""8204304b-443c-4fb0-a5e8-05682e72e060"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -236,6 +381,11 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         m_PlayerCharacter_Jump = m_PlayerCharacter.FindAction("Jump", throwIfNotFound: true);
         m_PlayerCharacter_Sprint = m_PlayerCharacter.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerCharacter_Interact = m_PlayerCharacter.FindAction("Interact", throwIfNotFound: true);
+        // BuildMode
+        m_BuildMode = asset.FindActionMap("BuildMode", throwIfNotFound: true);
+        m_BuildMode_Exit = m_BuildMode.FindAction("Exit", throwIfNotFound: true);
+        m_BuildMode_Place = m_BuildMode.FindAction("Place", throwIfNotFound: true);
+        m_BuildMode_Rotate = m_BuildMode.FindAction("Rotate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -363,6 +513,68 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         }
     }
     public PlayerCharacterActions @PlayerCharacter => new PlayerCharacterActions(this);
+
+    // BuildMode
+    private readonly InputActionMap m_BuildMode;
+    private List<IBuildModeActions> m_BuildModeActionsCallbackInterfaces = new List<IBuildModeActions>();
+    private readonly InputAction m_BuildMode_Exit;
+    private readonly InputAction m_BuildMode_Place;
+    private readonly InputAction m_BuildMode_Rotate;
+    public struct BuildModeActions
+    {
+        private @PlayerInput_Game m_Wrapper;
+        public BuildModeActions(@PlayerInput_Game wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Exit => m_Wrapper.m_BuildMode_Exit;
+        public InputAction @Place => m_Wrapper.m_BuildMode_Place;
+        public InputAction @Rotate => m_Wrapper.m_BuildMode_Rotate;
+        public InputActionMap Get() { return m_Wrapper.m_BuildMode; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BuildModeActions set) { return set.Get(); }
+        public void AddCallbacks(IBuildModeActions instance)
+        {
+            if (instance == null || m_Wrapper.m_BuildModeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_BuildModeActionsCallbackInterfaces.Add(instance);
+            @Exit.started += instance.OnExit;
+            @Exit.performed += instance.OnExit;
+            @Exit.canceled += instance.OnExit;
+            @Place.started += instance.OnPlace;
+            @Place.performed += instance.OnPlace;
+            @Place.canceled += instance.OnPlace;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
+        }
+
+        private void UnregisterCallbacks(IBuildModeActions instance)
+        {
+            @Exit.started -= instance.OnExit;
+            @Exit.performed -= instance.OnExit;
+            @Exit.canceled -= instance.OnExit;
+            @Place.started -= instance.OnPlace;
+            @Place.performed -= instance.OnPlace;
+            @Place.canceled -= instance.OnPlace;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
+        }
+
+        public void RemoveCallbacks(IBuildModeActions instance)
+        {
+            if (m_Wrapper.m_BuildModeActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IBuildModeActions instance)
+        {
+            foreach (var item in m_Wrapper.m_BuildModeActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_BuildModeActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public BuildModeActions @BuildMode => new BuildModeActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -387,5 +599,11 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+    }
+    public interface IBuildModeActions
+    {
+        void OnExit(InputAction.CallbackContext context);
+        void OnPlace(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
 }

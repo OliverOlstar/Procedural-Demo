@@ -21,6 +21,8 @@ namespace ODev.Camera
 		private float m_MoveSpeed = 1.0f;
 		[SerializeField]
 		private float m_MoveDeltaSpeed = 1.0f;
+		[SerializeField]
+		private float m_MoveDampening = 10.0f;
 
 		[Header("Look")]
 		[SerializeField]
@@ -32,7 +34,11 @@ namespace ODev.Camera
 		[SerializeField]
 		private float m_ZoomSpeed = 1.0f;
 		[SerializeField]
+		private float m_ZoomDeltaSpeed = 0.01f;
+		[SerializeField]
 		private Vector2 m_ZoomDistanceClamp = new(1.0f, 5.0f);
+		[SerializeField]
+		private float m_ZoomDampening = 13.0f;
 
 		[Header("Collision")]
 		[SerializeField]
@@ -66,7 +72,7 @@ namespace ODev.Camera
 			if (m_Input != null)
 			{
 				m_Input.MoveDelta.Value.OnChanged.AddListener(OnMoveDelta);
-				m_Input.Zoom.onChanged.AddListener(OnZoom);
+				m_Input.ZoomDelta.OnChanged.AddListener(OnZoomDelta);
 			}
 
 			m_Updateable.Register(Tick);
@@ -80,6 +86,7 @@ namespace ODev.Camera
 		private void Tick(float pDeltaTime)
 		{
 			Move(m_MoveSpeed * pDeltaTime * m_Input.Move.Input);
+			Zoom(m_ZoomSpeed * pDeltaTime * m_Input.Zoom.Input);
 			DoMoveUpdate(pDeltaTime);
 			DoZoomUpdate(pDeltaTime);
 			RotateCamera(RotateInput * m_RotateSpeed * pDeltaTime);
@@ -88,21 +95,30 @@ namespace ODev.Camera
 
 		private void DoMoveUpdate(in float pDeltaTime)
 		{
-			m_LookTransform.position = Vector3.Lerp(m_LookTransform.position, m_TargetPosition, pDeltaTime * 10.0f);
+			m_LookTransform.position = Vector3.Lerp(m_LookTransform.position, m_TargetPosition, pDeltaTime * m_MoveDampening);
 		}
 
 		private void Move(Vector2 pInput)
 		{
-			if (pInput.sqrMagnitude > Math.NEARZERO)
+			if (pInput.IsNearZero())
 			{
-				m_TargetPosition += pInput.x * Math.Horizontalize(CameraTransform.right);
-				m_TargetPosition += pInput.y * Math.Horizontalize(CameraTransform.forward);
+				return;
+			}
+			m_TargetPosition += pInput.x * Math.Horizontalize(CameraTransform.right);
+			m_TargetPosition += pInput.y * Math.Horizontalize(CameraTransform.forward);
+		}
+
+		private void Zoom(float pInput)
+		{
+			if (!pInput.IsNearZero())
+			{
+				currZoom = Mathf.Clamp(currZoom + pInput, m_ZoomDistanceClamp.x, m_ZoomDistanceClamp.y);
 			}
 		}
 
 		private void DoZoomUpdate(in float pDeltaTime)
 		{
-			CameraTransform.localPosition = Vector3.Lerp(CameraTransform.localPosition, m_ChildOffset.normalized * currZoom, pDeltaTime * 13.0f);
+			CameraTransform.localPosition = Vector3.Lerp(CameraTransform.localPosition, m_ChildOffset.normalized * currZoom, pDeltaTime * m_ZoomDampening);
 		}
 
 		private void RotateCamera(float pInput)
@@ -133,10 +149,9 @@ namespace ODev.Camera
 			Move((1 + currZoom - m_ZoomDistanceClamp.x) * m_MoveDeltaSpeed * pInput);
 		}
 
-		public void OnZoom(float pInput)
+		public void OnZoomDelta(float pInput)
 		{
-			currZoom += pInput * m_ZoomSpeed;
-			currZoom = Mathf.Clamp(currZoom, m_ZoomDistanceClamp.x, m_ZoomDistanceClamp.y);
+			Zoom(pInput * m_ZoomDeltaSpeed);
 		}
 		#endregion
 
