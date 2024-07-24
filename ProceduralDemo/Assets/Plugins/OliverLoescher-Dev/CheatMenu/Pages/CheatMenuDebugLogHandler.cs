@@ -35,7 +35,6 @@ namespace ODev.CheatMenu.Pages
 		[RuntimeInitializeOnLoadMethod]
 		public static void Initalize()
 		{
-			Util.Debug.Log("", typeof(CheatMenuDebugLogPage));
 			Application.logMessageReceived += HandleLog;
 
 			Enabled = new PlayerPrefsBool("CheatMenu.Logs.Enabled", false, true);
@@ -59,10 +58,10 @@ namespace ODev.CheatMenu.Pages
 			{
 				return;
 			}
-			if (!IsFilterValid(pLogString, pType))
-			{
-				return;
-			}
+			// if (!IsFilterValid(pLogString, pType))
+			// {
+			// 	return;
+			// }
 			if (!CallStackEnabled.Value)
 			{
 				pStackTrace = string.Empty;
@@ -99,14 +98,37 @@ namespace ODev.CheatMenu.Pages
 			AddData(pLogString, pStackTrace);
 		}
 
-		private static bool IsFilterValid(string pLogString, LogType pType)
+		private static bool IsFilterValid(CheatMenuDebugLogStruct pLog)
 		{
-			if (pType == LogType.Exception || !LogsFilterEnabled.Value || string.IsNullOrEmpty(LogsFilter.Value))
+			switch (pLog.Type)
+			{
+				case LogType.Log:
+					if (!BasicLogsEnabled.Value)
+					{
+						return false;
+					}
+					break;
+				case LogType.Warning:
+					if (!WarningsEnabled.Value)
+					{
+						return false;
+					}
+					break;
+				case LogType.Assert:
+				case LogType.Error:
+				case LogType.Exception:
+					if (!ErrorsEnabled.Value)
+					{
+						return false;
+					}
+					break;
+			}
+			
+			if (pLog.Type == LogType.Exception || !LogsFilterEnabled.Value || string.IsNullOrEmpty(LogsFilter.Value))
 			{
 				return true;
 			}
-
-			if ( !string.Equals(m_SourceFilters, LogsFilter.Value)) // Filter value changed
+			if (!string.Equals(m_SourceFilters, LogsFilter.Value)) // Filter value changed
 			{
 				m_Filters = LogsFilter.Value.Split(SPLIT, StringSplitOptions.RemoveEmptyEntries);
 				for (int i = 0; i < m_Filters.Length; i++)
@@ -118,7 +140,7 @@ namespace ODev.CheatMenu.Pages
 
 			for (int i = 0; i < m_Filters.Length; i++)
 			{
-				if (pLogString.Contains(m_Filters[i]))
+				if (pLog.Message.Contains(m_Filters[i]))
 				{
 					return true;
 				}

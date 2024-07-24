@@ -23,7 +23,6 @@ namespace ODev.CheatMenu
 		private const float MAX_BUTTON_WIDTH = 99.0f;
 		private const int SPACE_PRIORITY_THRESHOLD = 1000;
 		private const string CHEAT_MENU_GROUP_PREF = "CHEAT_MENU_GROUP";
-
 		private const float OPEN_TIME = 0.5f;
 
 		[SerializeField, Tooltip("Increase or decrease the scale of the cheat menu GUI. " +
@@ -41,6 +40,7 @@ namespace ODev.CheatMenu
 
 		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Default, Util.Mono.Priorities.Default); // Must be Default for unscaledDeltaTime
 
+		protected override bool DontDestroyOnLoad => true;
 		private float Ratio => Screen.width / m_ReferenceScreenWidth;
 		private float NormalizedScale => Ratio * m_ScaleGUI;
 		private float ScaledWidth => Screen.width / NormalizedScale;
@@ -132,12 +132,12 @@ namespace ODev.CheatMenu
 		{
 			if (!IsOpen)
 			{
-				// if ((Application.isEditor && !Input.GetMouseButton(1)) ||
-				// 	(Application.isMobilePlatform && Input.touchCount < 2))
-				// {
-				// 	m_OpenTimer = 0.0f;
-				// 	return CheatMenuGUI.ControlInput.None;
-				// }
+				if ((Application.isEditor && !Input.GetMouseButton(1)) ||
+					(Application.isMobilePlatform && Input.touchCount < 2))
+				{
+					m_OpenTimer = 0.0f;
+					return CheatMenuGUI.ControlInput.None;
+				}
 				if (Input.mousePosition.y < 0.75f * Screen.height)
 				{
 					m_OpenTimer = 0.0f;
