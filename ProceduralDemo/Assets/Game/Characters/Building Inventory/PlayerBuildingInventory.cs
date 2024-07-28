@@ -29,6 +29,7 @@ public class PlayerBuildingInventory : MonoBehaviourSingleton<PlayerBuildingInve
 		}
 		value.Count++;
 		m_Items[pItem.name] = value;
+		Log($"{value.Data.name} count is now {value.Count}");
 	}
 
 	/// <returns>Remaining count of the item</returns>
@@ -41,6 +42,7 @@ public class PlayerBuildingInventory : MonoBehaviourSingleton<PlayerBuildingInve
 		}
 		value.Count = Mathf.Max(0, value.Count - 1);
 		m_Items[itemName] = value;
+		Log($"{value.Data.name} count is now {value.Count}");
 		return value.Count;
 	}
 

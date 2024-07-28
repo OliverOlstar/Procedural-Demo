@@ -56,5 +56,5 @@ public class BuildModeDisplayer : MonoBehaviour
 		m_ModelInstance.transform.SetPositionAndRotation(pContext.Point, m_Rotation);
 	}
 
-	public bool IsOverlapping => m_ModelInstance.IsOverlapping;
+	public bool IsOverlapping => m_ModelInstance.IsOverlapping; // TODO Remove or use
 }

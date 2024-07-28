@@ -213,9 +213,18 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Place"",
+                    ""name"": ""Positive"",
                     ""type"": ""Button"",
                     ""id"": ""316aaa5e-11ea-48d2-9be9-8962f7b90469"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Negative"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf62ca67-caea-478f-ac7a-4708adb26416"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -261,7 +270,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Place"",
+                    ""action"": ""Positive"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -272,7 +281,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Place"",
+                    ""action"": ""Positive"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -341,6 +350,28 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4dcaaad6-ab39-4325-af94-05c35ca3fa94"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Negative"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40fc0449-d213-45c8-8352-3442c90a2514"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Negative"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -384,7 +415,8 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         // BuildMode
         m_BuildMode = asset.FindActionMap("BuildMode", throwIfNotFound: true);
         m_BuildMode_Exit = m_BuildMode.FindAction("Exit", throwIfNotFound: true);
-        m_BuildMode_Place = m_BuildMode.FindAction("Place", throwIfNotFound: true);
+        m_BuildMode_Positive = m_BuildMode.FindAction("Positive", throwIfNotFound: true);
+        m_BuildMode_Negative = m_BuildMode.FindAction("Negative", throwIfNotFound: true);
         m_BuildMode_Rotate = m_BuildMode.FindAction("Rotate", throwIfNotFound: true);
     }
 
@@ -518,14 +550,16 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_BuildMode;
     private List<IBuildModeActions> m_BuildModeActionsCallbackInterfaces = new List<IBuildModeActions>();
     private readonly InputAction m_BuildMode_Exit;
-    private readonly InputAction m_BuildMode_Place;
+    private readonly InputAction m_BuildMode_Positive;
+    private readonly InputAction m_BuildMode_Negative;
     private readonly InputAction m_BuildMode_Rotate;
     public struct BuildModeActions
     {
         private @PlayerInput_Game m_Wrapper;
         public BuildModeActions(@PlayerInput_Game wrapper) { m_Wrapper = wrapper; }
         public InputAction @Exit => m_Wrapper.m_BuildMode_Exit;
-        public InputAction @Place => m_Wrapper.m_BuildMode_Place;
+        public InputAction @Positive => m_Wrapper.m_BuildMode_Positive;
+        public InputAction @Negative => m_Wrapper.m_BuildMode_Negative;
         public InputAction @Rotate => m_Wrapper.m_BuildMode_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_BuildMode; }
         public void Enable() { Get().Enable(); }
@@ -539,9 +573,12 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
-            @Place.started += instance.OnPlace;
-            @Place.performed += instance.OnPlace;
-            @Place.canceled += instance.OnPlace;
+            @Positive.started += instance.OnPositive;
+            @Positive.performed += instance.OnPositive;
+            @Positive.canceled += instance.OnPositive;
+            @Negative.started += instance.OnNegative;
+            @Negative.performed += instance.OnNegative;
+            @Negative.canceled += instance.OnNegative;
             @Rotate.started += instance.OnRotate;
             @Rotate.performed += instance.OnRotate;
             @Rotate.canceled += instance.OnRotate;
@@ -552,9 +589,12 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
-            @Place.started -= instance.OnPlace;
-            @Place.performed -= instance.OnPlace;
-            @Place.canceled -= instance.OnPlace;
+            @Positive.started -= instance.OnPositive;
+            @Positive.performed -= instance.OnPositive;
+            @Positive.canceled -= instance.OnPositive;
+            @Negative.started -= instance.OnNegative;
+            @Negative.performed -= instance.OnNegative;
+            @Negative.canceled -= instance.OnNegative;
             @Rotate.started -= instance.OnRotate;
             @Rotate.performed -= instance.OnRotate;
             @Rotate.canceled -= instance.OnRotate;
@@ -603,7 +643,8 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
     public interface IBuildModeActions
     {
         void OnExit(InputAction.CallbackContext context);
-        void OnPlace(InputAction.CallbackContext context);
+        void OnPositive(InputAction.CallbackContext context);
+        void OnNegative(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
     }
 }

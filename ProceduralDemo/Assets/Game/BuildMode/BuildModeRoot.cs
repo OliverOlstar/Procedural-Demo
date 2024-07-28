@@ -30,6 +30,7 @@ public class BuildModeRoot : MonoBehaviour, PlayerModeController.IMode
 		{
 			screen.Close();
 		}
+		m_Controller.OnNegativeInput();
 	}
 
 	void PlayerModeController.IMode.EnableMode()

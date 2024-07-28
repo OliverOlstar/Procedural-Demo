@@ -15,9 +15,13 @@ public class BuildModeScreen : ScreenBase
 	[SerializeField]
 	private Button m_OpenCloseButton = null;
 	[SerializeField]
+	private Button m_CloseButton = null;
+	[SerializeField]
 	private TMP_Text m_OpenCloseText = null;
 	[SerializeField]
 	private float m_DistanceToMoveOffScreen = 200.0f;
+	[SerializeField]
+	private Transform m_Panel = null;
 
 	private readonly List<BuildingWidget> m_WidgetPool = new();
 	private Vector3 m_InitalPosition;
@@ -27,7 +31,7 @@ public class BuildModeScreen : ScreenBase
 	private void Start()
 	{
 		m_WidgetPool.Add(m_Widget);
-		m_InitalPosition = transform.position;
+		m_InitalPosition = m_Panel.localPosition;
 		SlideClose();
 
 		m_OpenCloseButton.onClick.AddListener(
@@ -42,6 +46,7 @@ public class BuildModeScreen : ScreenBase
 					SlideOpen();
 				}
 			});
+		m_CloseButton.onClick.AddListener(() => SlideClose());
 	}
 
 	protected override void OnOpen()
@@ -65,7 +70,7 @@ public class BuildModeScreen : ScreenBase
 			return;
 		}
 		m_IsSlideOpen = false;
-		transform.position = m_InitalPosition + new Vector3(-m_DistanceToMoveOffScreen, 0.0f);
+		m_Panel.localPosition = m_InitalPosition + new Vector3(-m_DistanceToMoveOffScreen, 0.0f);
 		m_OpenCloseText.text = ">>";
 	}
 
@@ -76,7 +81,7 @@ public class BuildModeScreen : ScreenBase
 			return;
 		}
 		m_IsSlideOpen = true;
-		transform.position = m_InitalPosition;
+		m_Panel.localPosition = m_InitalPosition;
 		m_OpenCloseText.text = "<<";
 	}
 

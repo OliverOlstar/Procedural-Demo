@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e779ed692a1206d42b47a2567c06e400, type: 3}
   m_Name: SampleBuilding2
   m_EditorClassIdentifier: 
-  m_Prefab: {fileID: 193579723006383537, guid: a6a6ac1c30014214b90d62f852838af5, type: 3}
+  m_Prefab: {fileID: 2425875364998883684, guid: a6a6ac1c30014214b90d62f852838af5, type: 3}
   m_ModelPrefab: {fileID: 596275161530771379, guid: 60d59480ca5e22e45b3089ee71417f9a, type: 3}
   m_Header: Sample Building 2
   m_Body: 

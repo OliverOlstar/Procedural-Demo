@@ -2,43 +2,37 @@ using System;
 using ODev;
 using ODev.Util;
 using UnityEngine;
+using IConstaints = IBuildModeRaycasterConstaints;
 
 public class BuildModeRaycaster : MonoBehaviour
 {
-	public interface IConstaints
-	{
-		public bool RotateToNormal { get; }
-		public float MaxAngle { get; }
-		public float MinAngle { get; }
-		public bool CanPlaceOnTerrain { get; }
-		public bool CanPlaceOnObject { get; }
-	}
-
 	public struct Result
 	{
 		public Vector3 Origin;
 		public Vector3 Point;
 		public Quaternion Rotation;
 		public bool IsValid;
+		public BuildModeInstance Other;
 
-		public Result(Vector3 pOrigin, Vector3 pPoint, Quaternion pRotation, bool pIsValid)
+		public Result(Vector3 pOrigin, Vector3 pPoint, Quaternion pRotation, bool pIsValid, BuildModeInstance pOther = null)
 		{
 			Origin = pOrigin;
 			Point = pPoint;
 			Rotation = pRotation;
 			IsValid = pIsValid;
+			Other = pOther;
 		}
 	}
 
 	[SerializeField]
 	private LayerMask m_TerrainLayer = new();
 	[SerializeField]
-	private LayerMask m_ObjectLayer = new();
+	private LayerMask m_BuildingLayer = new();
 
 	private float m_RotationYOffset = 0.0f;
 	private IConstaints m_Constaints = null;
 
-	public void SetBuilding(IConstaints pConstaints)
+	public void SetConstraints(IConstaints pConstaints)
 	{
 		if (pConstaints == null)
 		{
@@ -52,15 +46,16 @@ public class BuildModeRaycaster : MonoBehaviour
 	{
 		if (m_Constaints == null)
 		{
-			this.LogError($"Must call {nameof(SetBuilding)} first");
+			this.LogError($"Must call {nameof(SetConstraints)} first");
 			return new Result(default, default, default, false);
 		}
 
 		Ray ray = MainCamera.Camera.ScreenPointToRay(Input.mousePosition);
-		if (!Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, m_TerrainLayer | m_ObjectLayer))
+		if (!Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, m_TerrainLayer | m_BuildingLayer))
 		{
 			return new Result(hit.point, ray.origin, Quaternion.identity, false);
 		}
+		BuildModeInstance otherBuilding = hit.collider.gameObject.GetComponentInParent<BuildModeInstance>();
 
 		Quaternion rotation = Quaternion.identity;
 		if (m_Constaints.RotateToNormal)
@@ -68,7 +63,8 @@ public class BuildModeRaycaster : MonoBehaviour
 			rotation *= Quaternion.FromToRotation(Vector3.up, hit.normal);
 		}
 		rotation *= Quaternion.Euler(0.0f, MainCamera.Rotation.eulerAngles.y + m_RotationYOffset, 0.0f);
-		return new Result(ray.origin, hit.point, rotation, IsValidHit(hit));
+
+		return new Result(ray.origin, hit.point, rotation, IsValidHit(hit), otherBuilding);
 	}
 
 	private bool IsValidHit(in RaycastHit pHit)
@@ -88,7 +84,7 @@ public class BuildModeRaycaster : MonoBehaviour
 			// this.Log($"Invalid on terrain");
 			return false;
 		}
-		if (!m_Constaints.CanPlaceOnObject && m_ObjectLayer.ContainsLayer(pHit.collider.gameObject.layer))
+		if (!m_Constaints.CanPlaceOnBuilding && m_BuildingLayer.ContainsLayer(pHit.collider.gameObject.layer))
 		{
 			// this.Log($"Invalid on object");
 			return false;

@@ -22,20 +22,35 @@ namespace ODev
 				if (s_Instance == null)
 				{
 					s_Instance = new T();
+					if (s_Instance is Singleton<T> instance)
+					{
+						instance.OnStart();
+					}
 					s_InstanceInterface = (s_Instance is ISingleton i) ? i : null;
-					Application.quitting += OnDestroy;
+					Application.quitting += Destroy;
 				}
 				s_InstanceInterface?.OnAccessed();
 				return s_Instance;
 			}
 		}
 
-		private static void OnDestroy()
+		private static void Destroy()
 		{
+			if (s_Instance == null)
+			{
+				return;
+			}
+			if (s_Instance is Singleton<T> instance)
+			{
+				instance.OnDestroy();
+			}
 			s_Instance = null;
 			s_InstanceInterface = null;
-			Application.quitting -= OnDestroy;
+			Application.quitting -= Destroy;
 		}
+
+		protected virtual void OnStart() { }
+		protected virtual void OnDestroy() { }
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 		protected static void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(pMessage, typeof(T), pMethodName);

@@ -4,10 +4,10 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "New Building Item", menuName = "Scriptable Object/Buildings/Item", order = 0)]
-public class SOBuildingItem : ScriptableObject, BuildModeRaycaster.IConstaints
+public class SOBuildingItem : ScriptableObject, IBuildModeRaycasterConstaints
 {
 	[SerializeField]
-	private GameObject m_Prefab = null;
+	private BuildModeInstance m_Prefab = null;
 	[SerializeField]
 	private BuildModePlacementMesh m_ModelPrefab = null;
 
@@ -29,18 +29,18 @@ public class SOBuildingItem : ScriptableObject, BuildModeRaycaster.IConstaints
 	[SerializeField]
 	private bool CanPlaceOnTerrain = true;
 	[SerializeField]
-	private bool CanPlaceOnObject = false;
+	private bool CanPlaceOnBuilding = false;
 
-	public GameObject Prefab => m_Prefab;
+	public BuildModeInstance Prefab => m_Prefab;
 	public BuildModePlacementMesh ModelPrefab => m_ModelPrefab;
 
 	public string Header => m_Header;
 	public string Body => m_Body;
 	public Sprite Icon => m_Icon;
 
-	bool BuildModeRaycaster.IConstaints.RotateToNormal => m_RotateToNormal;
-	float BuildModeRaycaster.IConstaints.MaxAngle => m_MaxAngle;
-	float BuildModeRaycaster.IConstaints.MinAngle => m_MinAngle;
-	bool BuildModeRaycaster.IConstaints.CanPlaceOnTerrain => CanPlaceOnTerrain;
-	bool BuildModeRaycaster.IConstaints.CanPlaceOnObject => CanPlaceOnObject;
+	bool IBuildModeRaycasterConstaints.RotateToNormal => m_RotateToNormal;
+	float IBuildModeRaycasterConstaints.MaxAngle => m_MaxAngle;
+	float IBuildModeRaycasterConstaints.MinAngle => m_MinAngle;
+	bool IBuildModeRaycasterConstaints.CanPlaceOnTerrain => CanPlaceOnTerrain;
+	bool IBuildModeRaycasterConstaints.CanPlaceOnBuilding => CanPlaceOnBuilding;
 }
