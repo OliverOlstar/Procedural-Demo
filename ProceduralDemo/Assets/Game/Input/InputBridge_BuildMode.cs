@@ -9,14 +9,14 @@ public class InputBridge_BuildMode : InputBridge_Base
 	[SerializeField]
 	private InputModule_Trigger m_ExitInput = new();
 	[SerializeField]
-	private InputModule_Trigger m_PositiveInput = new();
+	private InputModule_Toggle m_PositiveInput = new();
 	[SerializeField]
 	private InputModule_Trigger m_NegativeInput = new();
 	[SerializeField]
 	private InputModule_Scroll m_RotateInput = new();
 
 	public InputModule_Trigger Exit => m_ExitInput;
-	public InputModule_Trigger Positive => m_PositiveInput;
+	public InputModule_Toggle Positive => m_PositiveInput;
 	public InputModule_Trigger Negative => m_NegativeInput;
 	public InputModule_Scroll Rotate => m_RotateInput;
 

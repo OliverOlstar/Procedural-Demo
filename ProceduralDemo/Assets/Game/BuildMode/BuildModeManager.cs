@@ -32,7 +32,8 @@ public class BuildModeManager : Singleton<BuildModeManager>
 		}
 	}
 
-	public static void PlaceNewItem(SOBuildingItem pItem, in Vector3 pPosition, in Quaternion pRotation)
+	/// <returns>If inventory has more of the same building left</returns>
+	public static bool PlaceNewItem(SOBuildingItem pItem, in Vector3 pPosition, in Quaternion pRotation)
 		=> Instance.PlaceNewItemInternal(pItem, pPosition, pRotation);
 	public static void MoveItem(int pId, in Vector3 pPosition, in Quaternion pRotation)
 		=> Instance.MoveItemInternal(pId, pPosition, pRotation);
@@ -41,23 +42,38 @@ public class BuildModeManager : Singleton<BuildModeManager>
 	public static void Save() => Instance.SaveInternal();
 	public static void Load() => Instance.LoadInternal();
 
-	private void PlaceNewItemInternal(SOBuildingItem pItem, in Vector3 pPosition, in Quaternion pRotation)
+	/// <returns>If inventory has more of the same building left</returns>
+	private bool PlaceNewItemInternal(SOBuildingItem pItem, in Vector3 pPosition, in Quaternion pRotation)
 	{
 		BuildModeInstance instance = Object.Instantiate(pItem.Prefab);
 		int id = m_LastId;
 		m_LastId++;
-		instance.Initalize(id, pPosition, pRotation);
-		Instance.m_Instances.Add(id, instance);
+		instance.Initalize(id, pItem, pPosition, pRotation);
+		m_Instances.Add(id, instance);
+
+		int remainingCount = PlayerBuildingInventory.Instance.RemoveItem(pItem);
+		return remainingCount > 0;
 	}
 
 	private void RemoveItemInternal(int pId)
 	{
-
+		if (!m_Instances.TryGetValue(pId, out BuildModeInstance instance))
+		{
+			DevException($"Building instance of id {pId} could not be found");
+			return;
+		}
+		PlayerBuildingInventory.Instance.AddItem(instance.Data);
+		Object.Destroy(instance.gameObject);
 	}
 
 	private void MoveItemInternal(int pId, in Vector3 pPosition, in Quaternion pRotation)
 	{
-
+		if (!m_Instances.TryGetValue(pId, out BuildModeInstance instance))
+		{
+			DevException($"Building instance of id {pId} could not be found");
+			return;
+		}
+		instance.Move(pPosition, pRotation);
 	}
 
 	private void ClearInternal()

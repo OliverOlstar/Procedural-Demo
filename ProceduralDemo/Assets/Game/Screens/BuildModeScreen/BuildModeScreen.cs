@@ -47,6 +47,14 @@ public class BuildModeScreen : ScreenBase
 				}
 			});
 		m_CloseButton.onClick.AddListener(() => SlideClose());
+
+		PlayerBuildingInventory.OnInventoryChanged.AddListener(OnInventoryChanged);
+	}
+
+	protected override void OnDestroy()
+	{
+		PlayerBuildingInventory.OnInventoryChanged.RemoveListener(OnInventoryChanged);
+		base.OnDestroy();
 	}
 
 	protected override void OnOpen()
@@ -60,6 +68,14 @@ public class BuildModeScreen : ScreenBase
 		if (pContext is BuildModeScreenContext context)
 		{
 			m_Context = context;
+		}
+	}
+
+	private void OnInventoryChanged()
+	{
+		if (IsOpen)
+		{
+			SetupWidgets();
 		}
 	}
 

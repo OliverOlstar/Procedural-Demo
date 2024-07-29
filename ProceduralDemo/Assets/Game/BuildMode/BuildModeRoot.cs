@@ -30,7 +30,7 @@ public class BuildModeRoot : MonoBehaviour, PlayerModeController.IMode
 		{
 			screen.Close();
 		}
-		m_Controller.OnNegativeInput();
+		m_Controller.OnExitingMode();
 	}
 
 	void PlayerModeController.IMode.EnableMode()
@@ -38,7 +38,7 @@ public class BuildModeRoot : MonoBehaviour, PlayerModeController.IMode
 		gameObject.SetActive(true);
 		if (ScreenManager.TryGet(out BuildModeScreen screen))
 		{
-			screen.Open(new BuildModeScreenContext(m_Controller.SetSelectedItem));
+			screen.Open(new BuildModeScreenContext(m_Controller.SwitchToStatePlacing));
 		}
 	}
 }

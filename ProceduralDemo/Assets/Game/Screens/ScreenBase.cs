@@ -48,7 +48,7 @@ public abstract class ScreenBase : MonoBehaviour
 		gameObject.SetActive(false);
 	}
 
-	private void OnDestroy()
+	protected virtual void OnDestroy()
 	{
 		ScreenManager.DeregisterScreen(this);
 	}

@@ -17,28 +17,28 @@ namespace ODev.Input
 
 		// Events
 		[BoxGroup]
-		public UnityEventsUtil.BoolEvent onChanged;
+		public UnityEventsUtil.BoolEvent OnChanged;
 		[BoxGroup]
-		public UnityEvent onPerformed;
+		public UnityEvent OnPerformed;
 		[BoxGroup]
-		public UnityEvent onCanceled;
+		public UnityEvent OnCanceled;
 
 		public override void Enable()
 		{
-			m_InputAction.performed += OnPerformed;
-			m_InputAction.canceled += OnCanceled;
+			m_InputAction.performed += OnPerformedEvent;
+			m_InputAction.canceled += OnCanceledEvent;
 		}
 		public override void Disable()
 		{
-			m_InputAction.performed -= OnPerformed;
-			m_InputAction.canceled -= OnCanceled;
+			m_InputAction.performed -= OnPerformedEvent;
+			m_InputAction.canceled -= OnCanceledEvent;
 		}
 		public override void Clear()
 		{
 			Set(false);
 		}
 
-		private void OnPerformed(InputAction.CallbackContext ctx)
+		private void OnPerformedEvent(InputAction.CallbackContext ctx)
 		{
 			if (!m_IsValid.Invoke())
 			{
@@ -48,7 +48,7 @@ namespace ODev.Input
 			// False if toggle && currently pressed
 			Set(!m_IsToggle || !m_Input);
 		}
-		private void OnCanceled(InputAction.CallbackContext ctx)
+		private void OnCanceledEvent(InputAction.CallbackContext ctx)
 		{
 			if (!m_IsValid.Invoke())
 			{
@@ -67,14 +67,14 @@ namespace ODev.Input
 				m_Input = pValue;
 
 				// Events
-				onChanged.Invoke(m_Input);
+				OnChanged.Invoke(m_Input);
 				if (m_Input)
 				{
-					onPerformed?.Invoke();
+					OnPerformed?.Invoke();
 				}
 				else
 				{
-					onCanceled?.Invoke();
+					OnCanceled?.Invoke();
 				}
 			}
 		}

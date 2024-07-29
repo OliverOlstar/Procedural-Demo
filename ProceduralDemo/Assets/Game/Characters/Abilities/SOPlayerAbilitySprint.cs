@@ -18,12 +18,12 @@ public class PlayerAbilitySprint : CharacterAbility<SOPlayerAbilitySprint>
 
 	public override void Initalize()
 	{
-		Player.Input.Sprint.onChanged.AddListener(OnSprintInput);
+		Player.Input.Sprint.OnChanged.AddListener(OnSprintInput);
 	}
 
 	public override void Destroy()
 	{
-		Player.Input.Sprint.onChanged.RemoveListener(OnSprintInput);
+		Player.Input.Sprint.OnChanged.RemoveListener(OnSprintInput);
 	}
 
 	private void OnSprintInput(bool pPerformed)

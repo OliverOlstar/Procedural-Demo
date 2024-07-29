@@ -25,8 +25,8 @@ namespace ODev.Input
 		{
 			m_Toggle.Enable();
 
-			m_Toggle.onPerformed.AddListener(EnableValue);
-			m_Toggle.onCanceled.AddListener(DisableValue);
+			m_Toggle.OnPerformed.AddListener(EnableValue);
+			m_Toggle.OnCanceled.AddListener(DisableValue);
 		}
 
 		public void Disable() // IInputModule
@@ -34,8 +34,8 @@ namespace ODev.Input
 			m_Toggle.Disable();
 			m_Value.Disable();
 
-			m_Toggle.onPerformed.RemoveListener(EnableValue);
-			m_Toggle.onCanceled.RemoveListener(DisableValue);
+			m_Toggle.OnPerformed.RemoveListener(EnableValue);
+			m_Toggle.OnCanceled.RemoveListener(DisableValue);
 		}
 
 		public void Clear() // IInputModule

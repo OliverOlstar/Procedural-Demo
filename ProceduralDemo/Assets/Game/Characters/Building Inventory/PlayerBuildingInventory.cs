@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ODev;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerBuildingInventory : MonoBehaviourSingleton<PlayerBuildingInventory>
 {
@@ -19,6 +20,7 @@ public class PlayerBuildingInventory : MonoBehaviourSingleton<PlayerBuildingInve
 	}
 
 	private readonly Dictionary<string, Item> m_Items = new();
+	public readonly static UnityEvent OnInventoryChanged = new();
 
 	public void AddItem(SOBuildingItem pItem)
 	{
@@ -30,6 +32,7 @@ public class PlayerBuildingInventory : MonoBehaviourSingleton<PlayerBuildingInve
 		value.Count++;
 		m_Items[pItem.name] = value;
 		Log($"{value.Data.name} count is now {value.Count}");
+		OnInventoryChanged.Invoke();
 	}
 
 	/// <returns>Remaining count of the item</returns>
@@ -43,6 +46,7 @@ public class PlayerBuildingInventory : MonoBehaviourSingleton<PlayerBuildingInve
 		value.Count = Mathf.Max(0, value.Count - 1);
 		m_Items[itemName] = value;
 		Log($"{value.Data.name} count is now {value.Count}");
+		OnInventoryChanged.Invoke();
 		return value.Count;
 	}
 

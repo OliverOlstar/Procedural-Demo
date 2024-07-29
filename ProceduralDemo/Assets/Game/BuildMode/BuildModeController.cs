@@ -5,27 +5,39 @@ using UnityEngine;
 
 public class BuildModeController : MonoBehaviour
 {
-	private readonly BuildModeRaycasterConstaints m_SelectingConstraints = new(pCanPlaceOnTerrain: false);
+	public abstract class StateBase
+	{
+		private BuildModeRoot m_Root;
+		protected BuildModeRoot Root => m_Root;
+
+		internal void Initalize(BuildModeRoot pRoot) => m_Root = pRoot;
+
+		internal abstract void Tick(float pDeltaTime);
+		internal abstract void Disable();
+		internal virtual void OnPositiveInput() { }
+		internal virtual void OnNegativeInput() { }
+	}
+
+	private enum State
+	{
+		Selecting,
+		Placing,
+		Moving
+	}
+
+	[SerializeField]
+	private BuildModeControllerSelecting m_SelectingState = new();
+	[SerializeField]
+	private BuildModeControllerPlacing m_PlacingState = new();
+	[SerializeField]
+	private BuildModeControllerMoving m_MovingState = new();
+
+	private StateBase m_CurrentState = null;
 
 	[SerializeField]
 	private BuildModeRoot m_Root = null;
 	[SerializeField]
 	private ODev.Util.Mono.Updateable m_Updateable = new();
-
-	[Space, SerializeField]
-	private float m_RotationSpeed = 0.0f;
-
-	[Header("Cues")]
-	[SerializeField, ODev.Picker.Asset]
-	private SOCue m_InvalidNoSelect = null;
-	[SerializeField, ODev.Picker.Asset]
-	private SOCue m_InvalidPlacement = null;
-	[SerializeField, ODev.Picker.Asset]
-	private SOCue m_PlacedBuilding = null;
-
-	private SOBuildingItem m_SelectedItem = null;
-	private BuildModeInstance m_SelectedBuilding = null;
-	private BuildModeRaycaster.Result m_LastResult;
 
 	private void OnEnable()
 	{
@@ -41,6 +53,11 @@ public class BuildModeController : MonoBehaviour
 		m_Root.Input.Exit.OnPerformed.AddListener(ExitMode);
 		m_Root.Input.Positive.OnPerformed.AddListener(OnPositiveInput);
 		m_Root.Input.Negative.OnPerformed.AddListener(OnNegativeInput);
+
+		m_SelectingState.Initalize(m_Root);
+		m_PlacingState.Initalize(m_Root);
+		m_MovingState.Initalize(m_Root);
+		SwitchToStateSelecting();
 	}
 	private void OnDestroy()
 	{
@@ -49,101 +66,28 @@ public class BuildModeController : MonoBehaviour
 		m_Root.Input.Negative.OnPerformed.RemoveListener(OnNegativeInput);
 	}
 
-	private void Tick(float pDeltaTime)
+	public void OnExitingMode()
 	{
-		if (m_SelectedItem == null)
+		if (m_CurrentState != null && m_CurrentState != m_SelectingState)
 		{
-			SelectingTick(pDeltaTime);
-		}
-		else
-		{
-			PlacingTick(pDeltaTime);
+			SwitchToStateSelecting();
 		}
 	}
 
-	private void SelectingTick(float _)
-	{
-		BuildModeRaycaster.Result result = m_Root.Raycaster.DoRaycast();
-		SetSelectedBuilding(result.Other);
-	}
-
-	private void SetSelectedBuilding(BuildModeInstance pBuilding)
-	{
-		if (pBuilding == m_SelectedBuilding)
-		{
-			return;
-		}
-
-		if (m_SelectedBuilding != null)
-		{
-			m_SelectedBuilding.OnHoverExit();
-		}
-		m_SelectedBuilding = pBuilding;
-		if (m_SelectedBuilding != null)
-		{
-			m_SelectedBuilding.OnHoverEnter();
-		}
-	}
-
-	private void PlacingTick(float pDeltaTime)
-	{
-		if (!m_Root.Input.Rotate.Input.IsNearZero())
-		{
-			m_Root.Raycaster.Rotate(m_Root.Input.Rotate.Input * m_RotationSpeed * pDeltaTime);
-		}
-		BuildModeRaycaster.Result result = m_Root.Raycaster.DoRaycast();
-		m_Root.Displayer.UpdateVisuals(result, pDeltaTime);
-		m_LastResult = result;
-	}
+	private void Tick(float pDeltaTime) => m_CurrentState?.Tick(pDeltaTime);
 
 	private void ExitMode() => m_Root.Mode.SwitchToPlayer();
+	private void OnPositiveInput() => m_CurrentState?.OnPositiveInput();
+	private void OnNegativeInput() => m_CurrentState?.OnNegativeInput();
 
-	private void OnPositiveInput()
+	private void SetState(StateBase pState, Action pEnableAction)
 	{
-		if (m_SelectedBuilding != null)
-		{
-			m_SelectedBuilding.Pickup();
-			return;
-		}
-		else if (m_SelectedItem != null)
-		{
-			if (!m_LastResult.IsValid)
-			{
-				SOCue.Play(m_InvalidPlacement, new CueContext(m_LastResult.Point));
-				return;
-			}
-			BuildModeManager.PlaceNewItem(m_SelectedItem, m_LastResult.Point, m_LastResult.Rotation);
-			int remainingCount = PlayerBuildingInventory.Instance.RemoveItem(m_SelectedItem);
-			if (remainingCount < 1)
-			{
-				SetSelectedItem(null);
-			}
-			SOCue.Play(m_PlacedBuilding, new CueContext(m_LastResult.Point));
-			return;
-		}
-		SOCue.Play(m_InvalidNoSelect, new CueContext(m_LastResult.Point));
-	}
 
-	public void SetSelectedItem(SOBuildingItem pItem)
-	{
-		m_SelectedItem = pItem;
-		if (pItem == null)
-		{
-			m_Root.Raycaster.SetConstraints(m_SelectingConstraints);
-			m_Root.Displayer.SetModel(null);
-			return;
-		}
-		m_Root.Raycaster.SetConstraints(pItem);
-		m_Root.Displayer.SetModel(pItem.ModelPrefab);
-		SetSelectedBuilding(null);
+		m_CurrentState?.Disable();
+		m_CurrentState = pState;
+		pEnableAction?.Invoke();
 	}
-	public void OnNegativeInput()
-	{
-		if (m_SelectedBuilding != null)
-		{
-			m_SelectedBuilding.OpenDetailPanel();
-			return;
-		}
-		SetSelectedItem(null);
-	}
+	public void SwitchToStateSelecting() => SetState(m_SelectingState, m_SelectingState.Enable);
+	public void SwitchToStatePlacing(SOBuildingItem pItem) => SetState(m_PlacingState, () => m_PlacingState.Enable(pItem));
+	public void SwitchToStateMoving(BuildModeInstance pBuilding) => SetState(m_MovingState, () => m_MovingState.Enable(pBuilding));
 }
