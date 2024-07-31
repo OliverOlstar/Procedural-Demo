@@ -35,6 +35,7 @@ namespace ODev.Util
 			World = -200,
 			Default = 0,
 			OnGround = 350,
+			CharacterAbility = 375,
 			CharacterController = 400,
 			ModelController = 500,
 			Interactator = 700,

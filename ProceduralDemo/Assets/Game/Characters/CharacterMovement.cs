@@ -3,9 +3,13 @@ using ODev;
 using ODev.Util;
 using ODev.GameStats;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 {
+	public readonly UnityEvent<float> PreCharacterMove = new();
+	public readonly UnityEvent<float> PostCharacterMove = new();
+
 	[SerializeField]
 	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Early, ODev.Util.Mono.Priorities.CharacterController);
 	[SerializeField]
@@ -39,11 +43,20 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private Vector3 m_VelocityXZ;
 	private float m_VelocityY;
 
+	public Vector3 VelocityXZ => m_VelocityXZ;
+	public float VelocityY => m_VelocityY;
+	public Vector3 Velocity => new(m_VelocityXZ.x, m_VelocityXZ.y + m_VelocityY, m_VelocityXZ.z);
 	Transform TransformFollower.IMotionReciver.Transform => transform;
 
 	private void Reset()
 	{
 		gameObject.GetOrAddComponent(out m_Controller);
+	}
+
+	private void Start()
+	{
+		m_Controller.enableOverlapRecovery = true;
+		m_Controller.providesContacts = false;
 	}
 
 	private void OnEnable()
@@ -58,6 +71,8 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	void Tick(float pDeltaTime)
 	{
+		PreCharacterMove.Invoke(pDeltaTime);
+
 		GravityTick(pDeltaTime, out Vector3 gravityDown);
 		MoveTick(pDeltaTime);
 
@@ -69,6 +84,8 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		m_Controller.enabled = true;
 
 		m_RecievedDisplacement = Vector3.zero;
+
+		PostCharacterMove.Invoke(pDeltaTime);
 	}
 
 	private void GravityTick(float pDeltaTime, out Vector3 oGravityDown)
@@ -88,9 +105,9 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		Vector3 normal = m_Player.OnGround.IsOnGround ? m_Player.OnGround.GetAverageNormal() : Vector3.up;
 		Vector3 input = m_Player.Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
 		input += m_Player.Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
-		input = input.normalized;
+		input.Normalize();
 
-		if (!m_Player.OnGround.IsOnGround)
+		if (!m_Player.OnGround.IsOnGround /*|| m_VelocityY > Math.NEARZERO*/)
 		{
 			float drag = m_Player.OnGround.IsInAir ? m_AirDrag : m_SlopeDrag;
 			float acceleration = m_Player.OnGround.IsInAir ? m_AirAcceleration : m_SlopeAcceleration;
@@ -120,6 +137,10 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		m_VelocityXZ.x += pVelocity.x;
 		m_VelocityY += pVelocity.y;
 		m_VelocityXZ.z += pVelocity.z;
+	}
+	public void AddVelocityXZ(Vector3 pVelocity)
+	{
+		m_VelocityXZ += pVelocity;
 	}
 	public void SetVelocityY(float pVelocity)
 	{

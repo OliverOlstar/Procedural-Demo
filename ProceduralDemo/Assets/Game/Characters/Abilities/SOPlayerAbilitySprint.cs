@@ -18,12 +18,12 @@ public class PlayerAbilitySprint : CharacterAbility<SOPlayerAbilitySprint>
 
 	public override void Initalize()
 	{
-		Player.Input.Sprint.OnChanged.AddListener(OnSprintInput);
+		Root.Input.Sprint.OnChanged.AddListener(OnSprintInput);
 	}
 
 	public override void Destroy()
 	{
-		Player.Input.Sprint.OnChanged.RemoveListener(OnSprintInput);
+		Root.Input.Sprint.OnChanged.RemoveListener(OnSprintInput);
 	}
 
 	private void OnSprintInput(bool pPerformed)
@@ -32,20 +32,20 @@ public class PlayerAbilitySprint : CharacterAbility<SOPlayerAbilitySprint>
 		{
 			if (m_ModifyKey.HasValue)
 			{
-				ODev.Util.Debug.DevException("Tried adding modify when we already have one added", Player);
+				ODev.Util.Debug.DevException("Tried adding modify when we already have one added", Root);
 				return;
 			}
-			m_ModifyKey = Player.Movement.Speed.AddPercentModify(Data.m_SprintPercent);
+			m_ModifyKey = Root.Movement.Speed.AddPercentModify(Data.m_SprintPercent);
 			return;
 		}
 		if (!m_ModifyKey.HasValue)
 		{
-			ODev.Util.Debug.DevException("Tried removing modify when don't have one", Player);
+			ODev.Util.Debug.DevException("Tried removing modify when don't have one", Root);
 			return;
 		}
-		if (!Player.Movement.Speed.TryRemovePercentModify(m_ModifyKey.Value))
+		if (!Root.Movement.Speed.TryRemovePercentModify(m_ModifyKey.Value))
 		{
-			ODev.Util.Debug.DevException("Failed to remove modify", Player);
+			ODev.Util.Debug.DevException("Failed to remove modify", Root);
 		}
 		m_ModifyKey = null;
 	}

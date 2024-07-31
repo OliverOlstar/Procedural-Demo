@@ -14,6 +14,8 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 	[SerializeField]
 	private OnGround m_OnGround = null;
 	[SerializeField]
+	private CharacterOnWall m_OnWall = null;
+	[SerializeField]
 	private ThirdPersonCamera m_Camera = null;
 	[SerializeField]
 	private CharacterInventory m_Inventory = new();
@@ -24,6 +26,7 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 	public InputBridge_PlayerCharacter Input => m_Input;
 	public CharacterMovement Movement => m_Movement;
 	public OnGround OnGround => m_OnGround;
+	public CharacterOnWall OnWall => m_OnWall;
 	public ThirdPersonCamera Camera => m_Camera;
 	public CharacterInventory Inventory => m_Inventory;
 	public PlayerBuildingInventory Buildings => PlayerBuildingInventory.Instance;

@@ -16,14 +16,14 @@ public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 
 	public override void Initalize()
 	{
-		Player.Input.Jump.OnPerformed.AddListener(OnJumpInput);
+		Root.Input.Jump.OnPerformed.AddListener(OnJumpInput);
 		// m_Player.OnGround.OnEnterEvent.AddListener(OnGroundEnter);
 		// m_Player.OnGround.OnExitEvent.AddListener(OnGroundExit);
 	}
 
 	public override void Destroy()
 	{
-		Player.Input.Jump.OnPerformed.RemoveListener(OnJumpInput);
+		Root.Input.Jump.OnPerformed.RemoveListener(OnJumpInput);
 		// m_Player.OnGround.OnEnterEvent.RemoveListener(OnGroundEnter);
 		// m_Player.OnGround.OnExitEvent.RemoveListener(OnGroundExit);
 	}
@@ -33,10 +33,10 @@ public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 
 	private void OnJumpInput()
 	{
-		if (!Player.OnGround.IsOnGround)
+		if (!Root.OnGround.IsOnGround)
 		{
 			return;
 		}
-		Player.Movement.SetVelocityY(Data.JumpForce);
+		Root.Movement.SetVelocityY(Data.JumpForce);
 	}
 }

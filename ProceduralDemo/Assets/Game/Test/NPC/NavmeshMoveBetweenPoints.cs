@@ -18,7 +18,7 @@ public class NavmeshMoveBetweenPoints : MonoBehaviour
 
 			pAgent.SetDestination(pToPoint + pPointOffset);
 
-			while ((pAgent.transform.position - (pToPoint + pPointOffset)).sqrMagnitude > 1.5f * 1.5f)
+			while ((pAgent.transform.position - (pToPoint + pPointOffset)).sqrMagnitude > 1.0f)
 			{
 				yield return new WaitForSeconds(0.5f);
 			}

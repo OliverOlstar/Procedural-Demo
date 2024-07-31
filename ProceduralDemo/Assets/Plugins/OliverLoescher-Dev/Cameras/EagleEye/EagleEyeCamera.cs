@@ -5,7 +5,7 @@ using ODev.Util;
 namespace ODev.Camera
 {
 	public class EagleEyeCamera : MonoBehaviour
-    {
+	{
 		[SerializeField]
 		private InputBridge_EagleEye m_Input = null;
 		[SerializeField, DisableInPlayMode]
@@ -74,11 +74,13 @@ namespace ODev.Camera
 				m_Input.MoveDelta.Value.OnChanged.AddListener(OnMoveDelta);
 				m_Input.ZoomDelta.OnChanged.AddListener(OnZoomDelta);
 			}
-
-			m_Updateable.Register(Tick);
 		}
 
-		private void OnDestroy()
+		private void OnEnable()
+		{
+			m_Updateable.Register(Tick);
+		}
+		private void OnDisable()
 		{
 			m_Updateable.Deregister();
 		}
