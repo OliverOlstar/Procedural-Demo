@@ -5,11 +5,12 @@ using Sirenix.OdinInspector;
 [System.Serializable]
 public class PlayerAbilities
 {
+	[SerializeField]
+	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Fixed, ODev.Util.Mono.Priorities.CharacterAbility);
 	[SerializeField, DisableInPlayMode, ODev.Picker.AssetNonNull]
 	private SOCharacterAbility[] m_Abilities = new SOCharacterAbility[0];
-	
+
 	private readonly List<ICharacterAbility> m_AbilityInstances = new();
-	private PlayerRoot m_Root;
 
 	public void Initalize(PlayerRoot pRoot)
 	{
@@ -17,36 +18,38 @@ public class PlayerAbilities
 		{
 			m_AbilityInstances.Add(m_Abilities[i].CreateInstance(pRoot));
 		}
-		m_Root = pRoot;
-		m_Root.Movement.PreCharacterMove.AddListener(PreCharacterTick);
-		m_Root.Movement.PostCharacterMove.AddListener(PostCharacterTick);
-	}
-
-	public void PreCharacterTick(float pDeltaTime)
-	{
-		for (int i = 0; i < m_AbilityInstances.Count; i++)
-		{
-			m_AbilityInstances[i].PreCharacterTick(pDeltaTime);
-		}
-	}
-
-	public void PostCharacterTick(float pDeltaTime)
-	{
-		for (int i = 0; i < m_AbilityInstances.Count; i++)
-		{
-			m_AbilityInstances[i].PostCharacterTick(pDeltaTime);
-		}
+		m_Updateable.Register(Tick);
 	}
 
 	public void Destroy()
 	{
-		m_Root.Movement.PreCharacterMove.RemoveListener(PreCharacterTick);
-		m_Root.Movement.PostCharacterMove.RemoveListener(PostCharacterTick);
-
 		for (int i = 0; i < m_AbilityInstances.Count; i++)
 		{
 			m_AbilityInstances[i].Destory();
 		}
 		m_AbilityInstances.Clear();
+		m_Updateable.Deregister();
+	}
+
+	private void Tick(float pDeltaTime)
+	{
+		for (int i = 0; i < m_AbilityInstances.Count; i++)
+		{
+			if (m_AbilityInstances[i].IsActive || m_AbilityInstances[i].TryActivate())
+			{
+				m_AbilityInstances[i].ActiveTick(pDeltaTime);
+			}
+		}
+	}
+
+	public void CancelAllAbilities()
+	{
+		for (int i = 0; i < m_AbilityInstances.Count; i++)
+		{
+			if (m_AbilityInstances[i].IsActive)
+			{
+				m_AbilityInstances[i].Deactivate();
+			}
+		}
 	}
 }

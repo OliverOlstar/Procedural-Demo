@@ -7,51 +7,70 @@ using UnityEngine;
 public class SOPlayerAbilityClimb : SOCharacterAbility
 {
 	[SerializeField]
-	private float m_ClimbForce = 20.0f;
-	[SerializeField]
-	private ODev.Util.Mono.Type m_UpdateType = ODev.Util.Mono.Type.Fixed;
-	[SerializeField]
-	private ODev.Util.Mono.Priorities m_UpdatePriority = ODev.Util.Mono.Priorities.CharacterAbility;
+	private float m_Force = 20.0f;
+	[SerializeField, Range(-1.0f, 1.0f)]
+	private float m_MinDot = 0.75f;
+	[SerializeField, Range(0.0f, 1.0f)]
+	private float m_InputDeadZone01 = 0.2f;
 
-	public float ClimbForce => m_ClimbForce;
-	public ODev.Util.Mono.Type UpdateType => m_UpdateType;
-	public ODev.Util.Mono.Priorities UpdatePriority => m_UpdatePriority;
+	public float Force => m_Force;
+	public float MinDot => m_MinDot;
+	public float InputDeadZone01 => m_InputDeadZone01;
 
 	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer) => new PlayerAbilityClimb(pPlayer, this);
 }
 
 public class PlayerAbilityClimb : CharacterAbility<SOPlayerAbilityClimb>
 {
-	[SerializeField]
-	private ODev.Util.Mono.Updateable m_Updateable = new();
-	
 	public PlayerAbilityClimb(PlayerRoot pPlayer, SOPlayerAbilityClimb pData) : base(pPlayer, pData) { }
 
-	public override void Initalize()
-	{
-		m_Updateable.SetProperties(Data.UpdateType, Data.UpdatePriority);
-		m_Updateable.Register(Tick);
-	}
+	protected override void Initalize() { }
+	protected override void DestroyInternal() { }
 
-	public override void Destroy()
-	{
-		m_Updateable.Deregister();
-	}
-
-	private void Tick(float pDeltaTime)
+	protected override bool CanActivate()
 	{
 		if (Root.OnGround.IsOnGround || !Root.OnWall.IsOnWall)
 		{
-			return;
+			return false;
 		}
-
-		Vector3 input = Root.Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(Vector3.up);
-		input += Root.Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(Vector3.up);
-		if (Vector3.Dot(input, -Root.OnWall.HitInfo.normal.Horizontal()) < 0.75f)
+		if (Root.Input.Move.Input.sqrMagnitude > Data.InputDeadZone01)
 		{
-			return;
+			Vector3 input = Root.Input.Move.Input.y * MainCamera.Camera.transform.forward.Horizontal();
+			input += Root.Input.Move.Input.x * MainCamera.Camera.transform.right.Horizontal();
+			if (Vector3.Dot(input, -Root.OnWall.HitInfo.normal.Horizontal()) < Data.MinDot)
+			{
+				return false;
+			}
 		}
 		
-		Root.Movement.SetVelocityY(Data.ClimbForce);
+		return true;
+	}
+
+	public override void ActiveTick(float pDeltaTime)
+	{
+		if (!CanActivate())
+		{
+			Deactivate();
+			return;
+		}
+		bool isInputing = Root.Input.Move.Input.sqrMagnitude > Data.InputDeadZone01;
+		if (isInputing)
+		{
+			Root.Movement.SetVelocityY(Data.Force);
+		}
+		else
+		{
+			Root.Movement.SetVelocityY(0.0f);
+			Root.Movement.SetVelocityXZ(Vector3.zero);
+		}
+	}
+
+	protected override void ActivateInternal()
+	{
+
+	}
+	protected override void DeactivateInternal()
+	{
+		
 	}
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using ODev.Util;
 
 [CreateAssetMenu(fileName = "New Sprint Ability", menuName = "Character/Ability/Player Sprint")]
 public class SOPlayerAbilitySprint : SOCharacterAbility
@@ -16,12 +17,11 @@ public class PlayerAbilitySprint : CharacterAbility<SOPlayerAbilitySprint>
 
 	public PlayerAbilitySprint(PlayerRoot pPlayer, SOPlayerAbilitySprint pData) : base(pPlayer, pData) { }
 
-	public override void Initalize()
+	protected override void Initalize()
 	{
 		Root.Input.Sprint.OnChanged.AddListener(OnSprintInput);
 	}
-
-	public override void Destroy()
+	protected override void DestroyInternal()
 	{
 		Root.Input.Sprint.OnChanged.RemoveListener(OnSprintInput);
 	}
@@ -30,22 +30,32 @@ public class PlayerAbilitySprint : CharacterAbility<SOPlayerAbilitySprint>
 	{
 		if (pPerformed)
 		{
-			if (m_ModifyKey.HasValue)
-			{
-				ODev.Util.Debug.DevException("Tried adding modify when we already have one added", Root);
-				return;
-			}
-			m_ModifyKey = Root.Movement.Speed.AddPercentModify(Data.m_SprintPercent);
+			Activate();
 			return;
 		}
+		Deactivate();
+	}
+
+	protected override void ActivateInternal()
+	{
+		if (m_ModifyKey.HasValue)
+		{
+			Root.DevException("Tried adding modify when we already have one added");
+			return;
+		}
+		m_ModifyKey = Root.Movement.Speed.AddPercentModify(Data.m_SprintPercent);
+	}
+
+	protected override void DeactivateInternal()
+	{
 		if (!m_ModifyKey.HasValue)
 		{
-			ODev.Util.Debug.DevException("Tried removing modify when don't have one", Root);
+			Root.DevException("Tried removing modify when don't have one");
 			return;
 		}
 		if (!Root.Movement.Speed.TryRemovePercentModify(m_ModifyKey.Value))
 		{
-			ODev.Util.Debug.DevException("Failed to remove modify", Root);
+			Root.DevException("Failed to remove modify");
 		}
 		m_ModifyKey = null;
 	}

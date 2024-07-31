@@ -14,7 +14,7 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 {
 	public PlayerAbilityGlide(PlayerRoot pPlayer, SOPlayerAbilityGlide pData) : base(pPlayer, pData) { }
 
-	public override void Initalize()
+	protected override void Initalize()
 	{
 		// Player.Input.Glide.OnPerformed.AddListener(OnGlideInput);
 		// m_Player.OnGround.OnEnterEvent.AddListener(OnGroundEnter);
@@ -22,7 +22,7 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		throw new System.NotImplementedException();
 	}
 
-	public override void Destroy()
+	protected override void DestroyInternal()
 	{
 		// Player.Input.Glide.OnPerformed.RemoveListener(OnGlideInput);
 		// m_Player.OnGround.OnEnterEvent.RemoveListener(OnGroundEnter);
@@ -30,15 +30,16 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		throw new System.NotImplementedException();
 	}
 
+	protected override void ActivateInternal()
+	{
+		throw new System.NotImplementedException();
+	}
+
+	protected override void DeactivateInternal()
+	{
+		throw new System.NotImplementedException();
+	}
+
 	// private void OnGroundEnter()
 	// private void OnGroundExit()
-
-	private void OnGlideInput()
-	{
-		if (!Root.OnGround.IsOnGround)
-		{
-			return;
-		}
-		Root.Movement.SetVelocityY(Data.GlideForce);
-	}
 }

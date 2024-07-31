@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a30947084fda154986c7df7a2e4790e, type: 3}
   m_Name: PlayerClimb
   m_EditorClassIdentifier: 
-  m_ClimbForce: 6
-  m_UpdateType: 3
-  m_UpdatePriority: 400
+  LogSelf: 0
+  m_Force: 5
+  m_MinDot01: 0.75

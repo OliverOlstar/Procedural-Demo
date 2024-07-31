@@ -19,24 +19,29 @@ public class PlayerAbilityWallJump : CharacterAbility<SOPlayerAbilityWallJump>
 {
 	public PlayerAbilityWallJump(PlayerRoot pPlayer, SOPlayerAbilityWallJump pData) : base(pPlayer, pData) { }
 
-	public override void Initalize()
+	protected override void Initalize()
 	{
 		Root.Input.Jump.OnPerformed.AddListener(OnJumpInput);
 	}
-
-	public override void Destroy()
+	protected override void DestroyInternal()
 	{
 		Root.Input.Jump.OnPerformed.RemoveListener(OnJumpInput);
 	}
 
 	private void OnJumpInput()
 	{
-		if (Root.OnGround.IsOnGround || !Root.OnWall.IsOnWall)
+		if (!Root.OnGround.IsOnGround && Root.OnWall.IsOnWall)
 		{
-			return;
+			Activate();
 		}
+	}
+
+	protected override void ActivateInternal()
+	{
 		Root.Movement.SetVelocityY(Data.JumpForce);
 		Vector3 direction = Vector3.Reflect(Root.Movement.VelocityXZ, Root.OnWall.HitInfo.normal);
 		Root.Movement.SetVelocityXZ(direction.Horizontalize() * Data.PushOffForce);
+		Deactivate();
 	}
+	protected override void DeactivateInternal() { }
 }
