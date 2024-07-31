@@ -703,11 +703,13 @@ MonoBehaviour:
   m_OnWall: {fileID: 2004640780}
   m_Camera: {fileID: 1813848490}
   m_Abilities:
+    m_Updateable:
+      m_Type: 3
+      m_Priority: 375
     m_Abilities:
     - {fileID: 11400000, guid: 45a1424d68a59be4cace99a48814b565, type: 2}
     - {fileID: 11400000, guid: 5a1aae85de20d62458e9c3613bdbd6b5, type: 2}
     - {fileID: 11400000, guid: 4df49c86a85e10149ae56ad86a41dc97, type: 2}
-    - {fileID: 11400000, guid: ad0d3834366db6b4f8148286fddedc21, type: 2}
 --- !u!114 &82955120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21706,17 +21708,29 @@ MonoBehaviour:
     m_Priority: 400
   m_Controller: {fileID: 2004640779}
   m_Player: {fileID: 82955119}
+  MovementEnabled: 1
   Speed:
     m_BaseValue: 10
     m_CurrValue: 10
   m_SlopeAcceleration: 100
   m_SlopeDrag: 20
   m_SlopeMaxVelocity: 5
-  m_AirAcceleration: 20
-  m_AirDrag: 1
-  m_AirMaxVelocity: 10
-  m_Gravity: -19.62
-  m_TerminalGravity: -30
+  AirAcceleration:
+    m_BaseValue: 20
+    m_CurrValue: 20
+  AirDrag:
+    m_BaseValue: 1
+    m_CurrValue: 1
+  AirMaxVelocity:
+    m_BaseValue: 10
+    m_CurrValue: 10
+  GravityEnabled: 1
+  Gravity:
+    m_BaseValue: -19.62
+    m_CurrValue: -19.62
+  TerminalGravity:
+    m_BaseValue: -30
+    m_CurrValue: -30
 --- !u!114 &2004640778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21808,7 +21822,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4194377
   m_MaxSlope: 25
-  m_Offset: 1
+  m_Offset: 0.75
   m_Radius: 0.5
   m_Height: 1.5
 --- !u!1 &2009130281

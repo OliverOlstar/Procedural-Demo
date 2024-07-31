@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f5a91afecb52d4abb1cf3acc25f703, type: 3}
   m_Name: PlayerSprint
   m_EditorClassIdentifier: 
-  m_SprintPercent: 0.5
+  LogSelf: 0
+  m_Modifier:
+    m_Type: 1
+    m_Add: 0
+    m_Percent: 0.5

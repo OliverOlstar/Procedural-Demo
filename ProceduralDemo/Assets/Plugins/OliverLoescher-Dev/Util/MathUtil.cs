@@ -19,6 +19,9 @@ namespace ODev.Util
 
 		public static Vector3 ProjectOnPlane(this Vector3 pVector, Vector3 pUp) => Vector3.ProjectOnPlane(pVector, pUp);
 
+		public static Vector3 Left(this Vector3 pVector, Vector3 pAxis) => Vector3.Cross(pVector, pAxis);
+		public static Vector3 Right(this Vector3 pVector, Vector3 pAxis) => -Vector3.Cross(pVector, pAxis);
+
 		public static Vector3 Inverse(in Vector3 pVector) => new(1.0f / pVector.x, 1.0f / pVector.y, 1.0f / pVector.z);
 
 		public static float Clamp(this float pValue, Vector2 pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);

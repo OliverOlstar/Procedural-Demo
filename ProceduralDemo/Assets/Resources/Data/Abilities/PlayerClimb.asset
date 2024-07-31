@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: PlayerClimb
   m_EditorClassIdentifier: 
   LogSelf: 0
-  m_Force: 5
-  m_MinDot01: 0.75
+  m_Force: 30
+  m_MinDot: 0
+  m_InputDeadZone01: 0.2
+  m_AccelerationPercentModify: 0.5
+  m_DragPercentModify: 1

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9e604eb7ee0ab40a152f2ad4f9a1ff, type: 3}
   m_Name: PlayerWallJump
   m_EditorClassIdentifier: 
-  m_JumpForce: 12
-  m_PushOffForce: 20
+  LogSelf: 0
+  m_JumpForce: 9
+  m_PushOffForce: 15
