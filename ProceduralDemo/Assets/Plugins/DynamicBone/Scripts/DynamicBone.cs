@@ -1,12 +1,12 @@
-﻿#if UNITY_WEBGL || (UNITY_2022_1_OR_NEWER && PLATFORM_ANDROID && ENABLE_IL2CPP)
-// No multithread
-#else
-#define ENABLE_MULTITHREAD
-#endif
+﻿// #if UNITY_WEBGL || (UNITY_2022_1_OR_NEWER && ENABLE_IL2CPP)
+// // No multithread
+// #else
+// #define ENABLE_MULTITHREAD
+// #endif
 
 using UnityEngine;
 using System.Collections.Generic;
-using System.Threading;
+// using System.Threading;
 
 [AddComponentMenu("Dynamic Bone/Dynamic Bone")]
 public class DynamicBone : MonoBehaviour
@@ -17,19 +17,17 @@ public class DynamicBone : MonoBehaviour
     public Transform m_Root = null;
     public List<Transform> m_Roots = null;
 
-#if UNITY_5_3_OR_NEWER
-    [Tooltip("Internal physics simulation rate.")]
-#endif
-    public float m_UpdateRate = 60.0f;
+    // public enum UpdateMode
+    // {
+    //     Normal,
+    //     AnimatePhysics,
+    //     UnscaledTime,
+    //     Default
+    // }
+    // public UpdateMode m_UpdateMode = UpdateMode.Default;
 
-    public enum UpdateMode
-    {
-        Normal,
-        AnimatePhysics,
-        UnscaledTime,
-        Default
-    }
-    public UpdateMode m_UpdateMode = UpdateMode.Default;
+	[SerializeField]
+	private float m_ScaledTime = 0.0f;
 
 #if UNITY_5_3_OR_NEWER
     [Tooltip("How much the bones slowed down.")]
@@ -123,14 +121,13 @@ public class DynamicBone : MonoBehaviour
     public Transform m_ReferenceObject = null;
     public float m_DistanceToObject = 20;
 
-    [HideInInspector]
-    public bool m_Multithread = true;
+    // [HideInInspector]
+    // public bool m_Multithread = true;
 
     Vector3 m_ObjectMove;
     Vector3 m_ObjectPrevPosition;
     float m_ObjectScale;
 
-    float m_Time = 0;
     float m_Weight = 1.0f;
     bool m_DistantDisabled = false;
     int m_PreUpdateCount = 0;
@@ -168,13 +165,13 @@ public class DynamicBone : MonoBehaviour
         public Vector3 m_LocalGravity;
         public Matrix4x4 m_RootWorldToLocalMatrix;
         public float m_BoneTotalLength;
-        public List<Particle> m_Particles = new();
+        public List<Particle> m_Particles = new List<Particle>();
 
         // prepare data
         public Vector3 m_RestGravity;
     }
 
-    List<ParticleTree> m_ParticleTrees = new();
+    List<ParticleTree> m_ParticleTrees = new List<ParticleTree>();
 
     // prepare data
     float m_DeltaTime;
@@ -183,8 +180,8 @@ public class DynamicBone : MonoBehaviour
 #if ENABLE_MULTITHREAD
     // multithread
     bool m_WorkAdded = false;
-    static List<DynamicBone> s_PendingWorks = new();
-    static List<DynamicBone> s_EffectiveWorks = new();
+    static List<DynamicBone> s_PendingWorks = new List<DynamicBone>();
+    static List<DynamicBone> s_EffectiveWorks = new List<DynamicBone>();
     static AutoResetEvent s_AllWorksDoneEvent;
     static int s_RemainWorkCount;
     static Semaphore s_WorkQueueSemaphore;
@@ -199,34 +196,35 @@ public class DynamicBone : MonoBehaviour
         SetupParticles();
     }
 
+//     void FixedUpdate()
+//     {
+//         if (m_UpdateMode == UpdateMode.AnimatePhysics)
+//         {
+//             PreUpdate();
+//         }
+//     }
+
+//     void Update()
+//     {
+//         if (m_UpdateMode != UpdateMode.AnimatePhysics)
+//         {
+//             PreUpdate();
+//         }
+
+// #if ENABLE_MULTITHREAD
+//         if (m_PreUpdateCount > 0 && m_Multithread)
+//         {
+//             AddPendingWork(this);
+//             m_WorkAdded = true;
+//         }
+// #endif
+//         ++s_UpdateCount;
+//     }
+
     void FixedUpdate()
-    {
-        if (m_UpdateMode == UpdateMode.AnimatePhysics)
-        {
-            PreUpdate();
-        }
-    }
-
-    void Update()
-    {
-        if (m_UpdateMode != UpdateMode.AnimatePhysics)
-        {
-            PreUpdate();
-        }
-
-#if ENABLE_MULTITHREAD
-        if (m_PreUpdateCount > 0 && m_Multithread)
-        {
-            AddPendingWork(this);
-            m_WorkAdded = true;
-        }
-#endif
-        ++s_UpdateCount;
-    }
-
-    void LateUpdate()
-    {
-        if (m_PreUpdateCount == 0)
+	{
+		PreUpdate();
+		if (m_PreUpdateCount == 0)
 		{
 			return;
 		}
@@ -252,7 +250,7 @@ public class DynamicBone : MonoBehaviour
             if (IsNeedUpdate())
             {
                 Prepare();
-                UpdateParticles();
+                UpdateParticles(Time.fixedDeltaTime * m_ScaledTime);
                 ApplyParticlesToTransforms();
             }
         }
@@ -262,18 +260,6 @@ public class DynamicBone : MonoBehaviour
 
     void Prepare()
     {
-        m_DeltaTime = Time.deltaTime;
-#if UNITY_5_3_OR_NEWER
-        if (m_UpdateMode == UpdateMode.UnscaledTime)
-        {
-            m_DeltaTime = Time.unscaledDeltaTime;
-        }
-        else if (m_UpdateMode == UpdateMode.AnimatePhysics)
-        {
-            m_DeltaTime = Time.fixedDeltaTime * m_PreUpdateCount;
-        }
-#endif
-
         m_ObjectScale = Mathf.Abs(transform.lossyScale.x);
         m_ObjectMove = transform.position - m_ObjectPrevPosition;
         m_ObjectPrevPosition = transform.position;
@@ -295,10 +281,7 @@ public class DynamicBone : MonoBehaviour
             }
         }
 
-        if (m_EffectiveColliders != null)
-        {
-            m_EffectiveColliders.Clear();
-        }
+        m_EffectiveColliders?.Clear();
 
         if (m_Colliders != null)
         {
@@ -307,10 +290,7 @@ public class DynamicBone : MonoBehaviour
                 DynamicBoneColliderBase c = m_Colliders[i];
                 if (c != null && c.enabled)
                 {
-                    if (m_EffectiveColliders == null)
-                    {
-                        m_EffectiveColliders = new List<DynamicBoneColliderBase>();
-                    }
+                    m_EffectiveColliders ??= new List<DynamicBoneColliderBase>();
                     m_EffectiveColliders.Add(c);
 
                     if (c.PrepareFrame != s_PrepareFrame)       // colliders used by many dynamic bones only prepares once
@@ -377,7 +357,6 @@ public class DynamicBone : MonoBehaviour
 
     void OnValidate()
     {
-        m_UpdateRate = Mathf.Max(m_UpdateRate, 0);
         m_Damping = Mathf.Clamp01(m_Damping);
         m_Elasticity = Mathf.Clamp01(m_Elasticity);
         m_Stiffness = Mathf.Clamp01(m_Stiffness);
@@ -401,7 +380,7 @@ public class DynamicBone : MonoBehaviour
 
     bool IsRootChanged()
     {
-		List<Transform> roots = new List<Transform>();
+        var roots = new List<Transform>();
         if (m_Root != null)
         {
             roots.Add(m_Root);
@@ -409,7 +388,7 @@ public class DynamicBone : MonoBehaviour
 
         if (m_Roots != null)
         {
-            foreach (Transform root in m_Roots)
+            foreach (var root in m_Roots)
             {
                 if (root != null && !roots.Contains(root))
                 {
@@ -498,57 +477,16 @@ public class DynamicBone : MonoBehaviour
         return m_Weight;
     }
 
-    void UpdateParticles()
+    void UpdateParticles(float pDeltaTime)
     {
         if (m_ParticleTrees.Count <= 0)
 		{
 			return;
 		}
 
-		int loop = 1;
-        float timeVar = 1;
-        float dt = m_DeltaTime;
-
-        if (m_UpdateMode == UpdateMode.Default)
-        {
-            if (m_UpdateRate > 0)
-            {
-                timeVar = dt * m_UpdateRate;
-            }
-        }
-        else
-        {
-            if (m_UpdateRate > 0)
-            {
-                float frameTime = 1.0f / m_UpdateRate;
-                m_Time += dt;
-                loop = 0;
-
-                while (m_Time >= frameTime)
-                {
-                    m_Time -= frameTime;
-                    if (++loop >= 3)
-                    {
-                        m_Time = 0;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (loop > 0)
-        {
-            for (int i = 0; i < loop; ++i)
-            {
-                UpdateParticles1(timeVar, i);
-                UpdateParticles2(timeVar);
-            }
-        }
-        else
-        {
-            SkipUpdateParticles();
-        }
-    }
+		UpdateParticles1(pDeltaTime, 0);
+		UpdateParticles2(pDeltaTime);
+	}
 
     public void SetupParticles()
     {
@@ -598,20 +536,24 @@ public class DynamicBone : MonoBehaviour
 			return;
 		}
 
-		ParticleTree pt = new ParticleTree();
-        pt.m_Root = root;
-        pt.m_RootWorldToLocalMatrix = root.worldToLocalMatrix;
-        m_ParticleTrees.Add(pt);
+		var pt = new ParticleTree
+		{
+			m_Root = root,
+			m_RootWorldToLocalMatrix = root.worldToLocalMatrix
+		};
+		m_ParticleTrees.Add(pt);
     }
 
     void AppendParticles(ParticleTree pt, Transform b, int parentIndex, float boneLength)
     {
-		Particle p = new Particle();
-        p.m_Transform = b;
-        p.m_TransformNotNull = b != null;
-        p.m_ParentIndex = parentIndex;
+		var p = new Particle
+		{
+			m_Transform = b,
+			m_TransformNotNull = b != null,
+			m_ParentIndex = parentIndex
+		};
 
-        if (b != null)
+		if (b != null)
         {
             p.m_Position = p.m_PrevPosition = b.position;
             p.m_InitLocalPosition = b.localPosition;
@@ -762,9 +704,8 @@ public class DynamicBone : MonoBehaviour
             Particle p = pt.m_Particles[i];
             if (p.m_TransformNotNull)
             {
-                p.m_Transform.localPosition = p.m_InitLocalPosition;
-                p.m_Transform.localRotation = p.m_InitLocalRotation;
-            }
+                p.m_Transform.SetLocalPositionAndRotation(p.m_InitLocalPosition, p.m_InitLocalRotation);
+			}
         }
     }
 
@@ -853,7 +794,7 @@ public class DynamicBone : MonoBehaviour
 
     void UpdateParticles2(ParticleTree pt, float timeVar)
     {
-		Plane movePlane = new Plane();
+        var movePlane = new Plane();
 
         for (int i = 1; i < pt.m_Particles.Count; ++i)
         {
@@ -1128,7 +1069,7 @@ public class DynamicBone : MonoBehaviour
 
         for (int i = 0; i < threadCount; ++i)
         {
-			Thread t = new Thread(ThreadProc);
+            var t = new Thread(ThreadProc);
             t.IsBackground = true;
             t.Start();
         }
@@ -1137,11 +1078,9 @@ public class DynamicBone : MonoBehaviour
     static void ExecuteWorks()
     {
         if (s_PendingWorks.Count <= 0)
-		{
-			return;
-		}
+            return;
 
-		s_EffectiveWorks.Clear();
+        s_EffectiveWorks.Clear();
 
         for (int i = 0; i < s_PendingWorks.Count; ++i)
         {
@@ -1158,11 +1097,9 @@ public class DynamicBone : MonoBehaviour
 
         s_PendingWorks.Clear();
         if (s_EffectiveWorks.Count <= 0)
-		{
-			return;
-		}
+            return;
 
-		if (s_AllWorksDoneEvent == null)
+        if (s_AllWorksDoneEvent == null)
         {
             InitThreadPool();
         }
