@@ -30,11 +30,11 @@ public class PlayerAbilitySprint : CharacterAbility<SOPlayerAbilitySprint>
 
 	protected override void ActivateInternal()
 	{
-		m_ModifierInstance.Apply(Root.Movement.Speed);
+		m_ModifierInstance.Apply(Root.Movement.MaxVelocity);
 	}
 	protected override void DeactivateInternal()
 	{
-		m_ModifierInstance.Remove(Root.Movement.Speed);
+		m_ModifierInstance.Remove(Root.Movement.MaxVelocity);
 	}
 
 	private void OnSprintInput(bool pPerformed)

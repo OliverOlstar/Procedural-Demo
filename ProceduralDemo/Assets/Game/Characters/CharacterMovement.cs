@@ -1,9 +1,7 @@
-using System.Collections;
 using ODev;
 using ODev.Util;
 using ODev.GameStats;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 {
@@ -16,7 +14,10 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	[Header("Stats")]
 	public bool MovementEnabled = true;
-	public FloatGameStat Speed = new(10.0f);
+	// public FloatGameStat Speed = new(10.0f);
+	public FloatGameStat Acceleration = new(20.0f);
+	public FloatGameStat Drag = new(1.0f);
+	public FloatGameStat MaxVelocity = new(10.0f);
 
 	[Space, SerializeField]
 	private float m_SlopeAcceleration = 2.0f;
@@ -38,10 +39,12 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private Vector3 m_RecievedDisplacement = Vector3.zero;
 	private Vector3 m_VelocityXZ;
 	private float m_VelocityY;
+	private Vector3 m_LastAcceleration;
 
 	public Vector3 VelocityXZ => m_VelocityXZ;
 	public float VelocityY => m_VelocityY;
 	public Vector3 Velocity => new(m_VelocityXZ.x, m_VelocityXZ.y + m_VelocityY, m_VelocityXZ.z);
+	public Vector3 LastAcceleration => m_LastAcceleration;
 	Transform TransformFollower.IMotionReciver.Transform => transform;
 
 	private void Reset()
@@ -106,22 +109,38 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 			input.Normalize();
 		}
 
-		if (!m_Player.OnGround.IsOnGround /*|| m_VelocityY > Math.NEARZERO*/)
+		GetStats(out float acceleration, out float drag, out float maxVelocity);
+		if (maxVelocity > 0.0f)
 		{
-			float drag = m_Player.OnGround.IsInAir ? AirDrag.Value : m_SlopeDrag;
-			float acceleration = m_Player.OnGround.IsInAir ? AirAcceleration.Value : m_SlopeAcceleration;
-			float maxVelocity = m_Player.OnGround.IsInAir ? AirMaxVelocity.Value : m_SlopeMaxVelocity;
+			maxVelocity = Mathf.Max(maxVelocity, m_VelocityXZ.magnitude);
+		}
+		m_LastAcceleration = Vector3.zero;
+		m_LastAcceleration -= drag * pDeltaTime * m_VelocityXZ; // Drag
+		m_LastAcceleration += acceleration * pDeltaTime * input; // Acceleration
+		m_VelocityXZ += m_LastAcceleration;
+		m_VelocityXZ = Vector3.ClampMagnitude(m_VelocityXZ, maxVelocity);
+		return;
+	}
 
-			if (maxVelocity > 0.0f)
-			{
-				maxVelocity = Mathf.Max(maxVelocity, m_VelocityXZ.magnitude);
-			}
-			m_VelocityXZ -= drag * pDeltaTime * m_VelocityXZ; // Drag
-			m_VelocityXZ += acceleration * pDeltaTime * input; // Acceleration
-			m_VelocityXZ = Vector3.ClampMagnitude(m_VelocityXZ, maxVelocity);
+	private void GetStats(out float oAcceleration, out float oDrag, out float oMaxVelocity)
+	{
+		if (m_Player.OnGround.IsOnGround)
+		{
+			oAcceleration = Acceleration.Value;
+			oDrag = Drag.Value;
+			oMaxVelocity = MaxVelocity.Value;
 			return;
 		}
-		m_VelocityXZ = input * Speed.Value;
+		else if (m_Player.OnGround.IsInAir)
+		{
+			oAcceleration = AirAcceleration.Value;
+			oDrag = AirDrag.Value;
+			oMaxVelocity = AirMaxVelocity.Value;
+			return;
+		}
+		oAcceleration = m_SlopeAcceleration;
+		oDrag = m_SlopeDrag;
+		oMaxVelocity = m_SlopeMaxVelocity;
 	}
 
 	private void OnDrawGizmos()
