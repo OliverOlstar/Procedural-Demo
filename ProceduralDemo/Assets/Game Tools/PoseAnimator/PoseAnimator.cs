@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using ODev.Picker;
 using UnityEngine;
 
 namespace ODev.PoseAnimator
@@ -9,11 +7,21 @@ namespace ODev.PoseAnimator
 	{
 		[SerializeField]
 		private Transform m_Root = null;
-		[SerializeField, Asset]
-		private SOPoseAnimation m_Animation = new();
+
+		private SOPoseAnimation m_Animation = null;
+
+		public void Add(SOPoseAnimation pAnimation)
+		{
+			m_Animation = pAnimation;
+		}
 
 		protected override void Tick(float pDeltaTime)
 		{
+			if (m_Animation == null)
+			{
+				return;
+			}
+
 			Queue<Transform> transforms = new();
 			int index = 0;
 
