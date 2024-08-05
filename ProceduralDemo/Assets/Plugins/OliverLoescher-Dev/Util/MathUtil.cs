@@ -23,6 +23,7 @@ namespace ODev.Util
 		public static Vector3 Right(this Vector3 pVector, Vector3 pAxis) => -Vector3.Cross(pVector, pAxis);
 
 		public static Vector3 Inverse(in Vector3 pVector) => new(1.0f / pVector.x, 1.0f / pVector.y, 1.0f / pVector.z);
+		public static Vector3 Inverse(this Vector3 pVector) => pVector *= -1.0f;
 
 		public static float Clamp(this float pValue, Vector2 pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
 		public static float ClampMax(this float pValue, float pMax) => Mathf.Min(pValue, pMax);
@@ -95,6 +96,7 @@ namespace ODev.Util
 		public static Quaternion Difference(this Quaternion pTo, Quaternion pFrom) => pTo * Quaternion.Inverse(pFrom);
 		public static Quaternion Add(this Quaternion pStart, Quaternion pDiff) => pDiff * pStart;
 		public static Quaternion UpForwardRotation(Vector3 pForward, Vector3 pUp) => Quaternion.FromToRotation(Vector3.up, pUp) * Quaternion.LookRotation(pForward);
+		public static Quaternion Inverse(this Quaternion pRotation) => Quaternion.Inverse(pRotation);
 
 		public static float Add(this float pValue, IEnumerable<float> pDeltas)
 		{
