@@ -9,12 +9,13 @@ namespace ODev.PoseAnimator
 		[SerializeField, AssetNonNull]
 		private SOPoseClip[] m_Clips = new SOPoseClip[2];
 
-		[SerializeField, Range(-1.0f, 2.0f)]
-		private float m_Progress = 0.0f;
+		// [SerializeField, Range(-1.0f, 2.0f)]
+		// private float m_Progress = 0.0f;
 		[SerializeField, Range(0.0f, 1.0f)]
 		private float m_Progress01 = 0.0f;
 
-		private float Progress01 => m_Progress01 + m_Progress;
+		public SOPoseClip[] Clips => m_Clips;
+		private float Progress01 => m_Progress01 /*+ m_Progress*/;
 
 		public void Apply(Transform pBone, int pIndex)
 		{

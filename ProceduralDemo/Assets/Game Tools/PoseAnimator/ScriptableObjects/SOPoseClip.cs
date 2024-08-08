@@ -1,5 +1,4 @@
 using ODev.Util;
-using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,31 +7,13 @@ namespace ODev.PoseAnimator
 	[CreateAssetMenu(fileName = "New Pose Clip", menuName = "PoseAnimator/Clip", order = 0)]
 	public class SOPoseClip : ScriptableObject
 	{
-		[System.Serializable]
-		public struct PoseKey
-		{
-			public Vector3 Position;
-			public Quaternion Rotation;
-			public Vector3 Scale;
-
-			public PoseKey(Vector3 pPosition, Quaternion pRotation, Vector3 pScale)
-			{
-				Position = pPosition;
-				Rotation = pRotation;
-				Scale = pScale;
-			}
-
-			public override readonly string ToString()
-			{
-				return $"[PoseKey] Position {Position}, Rotation {Rotation}, Scale {Scale}";
-			}
-		}
-
 		[SerializeField]
 		private PoseKey[] m_Keys;
 
 		[SerializeField]
 		private bool m_Mirror = false;
+
+		public int KeyCount => m_Keys.Length;
 
 		public void SetKeys(PoseKey[] pKeys)
 		{
@@ -54,7 +35,7 @@ namespace ODev.PoseAnimator
 			return key;
 		}
 
-		public void Apply(Transform pBone, int pIndex)
+		public void Apply(Transform pBone, int pIndex) // TODO Remove
 		{
 			pBone.SetLocalPositionAndRotation(m_Keys[pIndex].Position, m_Keys[pIndex].Rotation);
 			pBone.localScale = m_Keys[pIndex].Scale;
