@@ -64,13 +64,34 @@ namespace ODev.PoseAnimator
 
 		private readonly float GetClips(float pProgress01, PoseAnimation pAnimation, out int oClipA, out int oClipB)
 		{
-			float scaledProgress = pProgress01 * (pAnimation.ClipCount - 1);
-			oClipA = Mathf.FloorToInt(scaledProgress);
-			oClipA = Mathf.Clamp(oClipA, 0, pAnimation.ClipCount - 2);
-			scaledProgress -= oClipA;
-			oClipA += pAnimation.ClipsStartIndex;
-			oClipB = oClipA + 1;
-			return scaledProgress;
+			float scaledProgress;
+			switch (pAnimation.PlayType)
+			{
+				case PoseAnimationType.Linear:
+					scaledProgress = pProgress01 * (pAnimation.ClipCount - 1);
+					oClipA = Mathf.FloorToInt(scaledProgress);
+					oClipA = Mathf.Clamp(oClipA, 0, pAnimation.ClipCount - 2);
+					scaledProgress -= oClipA;
+					oClipA += pAnimation.ClipsStartIndex;
+					oClipB = oClipA + 1;
+					return scaledProgress;
+
+				case PoseAnimationType.Circular:
+					scaledProgress = pProgress01 * pAnimation.ClipCount;
+					oClipA = Mathf.FloorToInt(scaledProgress);
+					oClipA = oClipA.Loop(pAnimation.ClipCount);
+					scaledProgress = scaledProgress.Loop(1.0f);
+					oClipA += pAnimation.ClipsStartIndex;
+					oClipB = oClipA + 1;
+					if (oClipB == pAnimation.ClipCount + pAnimation.ClipsStartIndex)
+					{
+						oClipB = pAnimation.ClipsStartIndex;
+					}
+					return scaledProgress;
+
+				default:
+					throw new System.NotImplementedException();
+			}
 		}
 	}
 }

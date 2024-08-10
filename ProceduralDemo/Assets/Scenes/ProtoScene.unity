@@ -4172,6 +4172,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &311135915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5529,9 +5534,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100050, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 752309544}
-    - targetCorrespondingSourceObject: {fileID: 100050, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 752309542}
     - targetCorrespondingSourceObject: {fileID: 100050, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 752309545}
@@ -8183,6 +8185,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &569980502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8999,6 +9006,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &651538973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10044,6 +10056,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &734829641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10083,27 +10100,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 400050, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
   m_PrefabInstance: {fileID: 352132048}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &752309542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752309540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c68934126fd1a0468ba5ab5f50fd2be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Updateable:
-    m_Type: 0
-    m_Priority: 0
-  m_Animator: {fileID: 752309544}
-  m_Animation: {fileID: 11400000, guid: 32b84010a2a143d40986d262af954154, type: 2}
-  m_TargetProgress01: 0
-  m_Weight01: 1
-  m_Spring: 100
-  m_Damper: 10
 --- !u!114 &752309544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10134,11 +10130,16 @@ MonoBehaviour:
     m_Type: 0
     m_Priority: 0
   m_Animator: {fileID: 752309544}
-  m_Animation: {fileID: 11400000, guid: 043d54bfd2b2be642a04919c13c165d7, type: 2}
+  m_Animation: {fileID: 11400000, guid: 32b84010a2a143d40986d262af954154, type: 2}
   m_TargetProgress01: 0
   m_Weight01: 1
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 1
+  m_Ease:
+    Method: 1
+    Direction: 2
+  m_UseSpring: 0
 --- !u!1 &753653792
 GameObject:
   m_ObjectHideFlags: 0
@@ -17968,6 +17969,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &904508024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18401,6 +18407,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &948777725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18566,6 +18577,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &956972242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22185,6 +22201,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &1137688680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22245,6 +22266,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &1161114278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22376,6 +22402,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &1182744847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23694,6 +23725,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &1307890011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25640,6 +25676,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &1406739150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27519,6 +27560,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &1462055020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36972,6 +37018,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!114 &2057000297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39595,6 +39646,11 @@ MonoBehaviour:
   m_Weight01: 0
   m_Spring: 100
   m_Damper: 10
+  m_Speed: 0.1
+  m_Ease:
+    Method: 0
+    Direction: 0
+  m_UseSpring: 0
 --- !u!1 &2139620318
 GameObject:
   m_ObjectHideFlags: 0

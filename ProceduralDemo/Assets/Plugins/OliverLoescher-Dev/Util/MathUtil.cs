@@ -30,7 +30,7 @@ namespace ODev.Util
 		public static float ClampMin(this float pValue, float pMin) => Mathf.Min(pValue, pMin);
 		public static float Loop(this float pValue, float pMax)
 		{
-			while (pValue > pMax)
+			while (pValue >= pMax)
 			{
 				pValue -= pMax;
 			}
@@ -51,6 +51,10 @@ namespace ODev.Util
 			while (pValue >= pMax)
 			{
 				pValue -= pMax;
+			}
+			while (pValue < 0)
+			{
+				pValue += pMax;
 			}
 			return pValue;
 		}

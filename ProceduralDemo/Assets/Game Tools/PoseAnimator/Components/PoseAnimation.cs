@@ -9,12 +9,13 @@ namespace ODev.PoseAnimator
 	{
 		public int ClipsStartIndex;
 		public int ClipCount;
-		// public AnimationPlayType Type = AnimationPlayType.Linear;
+		public PoseAnimationType PlayType;
 
 		public PoseAnimation(SOPoseAnimation pSource, int pStartIndex)
 		{
 			ClipsStartIndex = pStartIndex;
 			ClipCount = pSource.Clips.Length;
+			PlayType = pSource.PlayType;
 		}
 	}
 }

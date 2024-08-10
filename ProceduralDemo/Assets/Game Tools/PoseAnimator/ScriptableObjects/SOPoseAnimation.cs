@@ -9,5 +9,9 @@ namespace ODev.PoseAnimator
 		[SerializeField, AssetNonNull]
 		private SOPoseClip[] m_Clips = new SOPoseClip[2];
 		public SOPoseClip[] Clips => m_Clips;
+
+		[SerializeField]
+		private PoseAnimationType m_Type = PoseAnimationType.Linear;
+		public PoseAnimationType PlayType => m_Type;
     }
 }
