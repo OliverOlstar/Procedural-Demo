@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using ODev.Picker;
 using ODev.Util;
 using Unity.Collections;
@@ -11,8 +12,8 @@ namespace ODev.PoseAnimator
 {
 	public class PoseAnimator : MonoBehaviour
 	{
-		private readonly Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.PoseAnimator);
-		private readonly Mono.Updateable m_UpdateableComplete = new(Mono.Type.Fixed, Mono.Priorities.PoseAnimator + 1);
+		private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.PoseAnimator);
+		private Mono.Updateable m_UpdateableComplete = new(Mono.Type.Fixed, Mono.Priorities.PoseAnimator + 1);
 
 		[SerializeField]
 		private Transform m_Root = null;
@@ -22,9 +23,10 @@ namespace ODev.PoseAnimator
 		// Data
 		private NativeArray<PoseKey> m_SkeletonKeys;
 		private NativeArray<PoseAnimation> m_Animations;
+		private NativeArray<PoseWeight> m_Weights;
 		private NativeArray<PoseKey> m_PoseKeys;
 
-		// Dynamic Data
+		// Context
 		private TransformAccessArray m_AccessArray;
 		private NativeArray<PoseKey> m_NextPose;
 
@@ -35,13 +37,11 @@ namespace ODev.PoseAnimator
 		{
 			m_Updateable.Register(Tick);
 			m_UpdateableComplete.Register(TickComplete);
-			this.Log();
 		}
 		private void OnDisable()
 		{
 			m_Updateable.Deregister();
 			m_UpdateableComplete.Deregister();
-			this.Log();
 		}
 
 		private void Initalize()
@@ -64,50 +64,28 @@ namespace ODev.PoseAnimator
 				m_AccessArray.Add(bone.Transform);
 				index++;
 			}
-			this.Log();
 		}
 		private void Start() => Initalize();
-
-		public void Add(SOPoseAnimation pAnimation)
-		{
-			Initalize();
-
-			List<PoseKey> PoseKeys = new();
-			foreach (SOPoseClip clip in pAnimation.Clips)
-			{
-				for (int i = 0; i < clip.KeyCount; i++)
-				{
-					PoseKey key = clip.GetKey(i);
-					PoseKeys.Add(new PoseKey() { Position = key.Position, Rotation = key.Rotation, Scale = key.Scale });
-				}
-			}
-
-			PoseAnimation[] animations = new PoseAnimation[1] { new() { ClipIndexA = 0, ClipIndexB = 1, ClipIndexC = 2 } };
-			m_Animations = new NativeArray<PoseAnimation>(animations, Allocator.Persistent);
-			m_PoseKeys = new NativeArray<PoseKey>(PoseKeys.ToArray(), Allocator.Persistent);
-			this.Log();
-		}
 
 		void OnDestroy()
 		{
 			m_Handle.Complete();
 			m_SkeletonKeys.Dispose();
 			m_Animations.Dispose();
+			m_Weights.Dispose();
 			m_PoseKeys.Dispose();
 			m_AccessArray.Dispose();
 			m_NextPose.Dispose();
-			this.Log();
 		}
 
 		private void Tick(float pDeltaTime)
 		{
-			m_Animations[0].ModifyProgress(pDeltaTime * 0.1f);
-			
 			PoseBoneSystem poseBoneSystem = new()
 			{
 				SkeletonKeys = m_SkeletonKeys,
 				SkeletonLength = m_SkeletonKeys.Length,
 				Animations = m_Animations,
+				Weights = m_Weights,
 				PoseKeys = m_PoseKeys,
 
 				NextPose = m_NextPose, // Modify
@@ -124,6 +102,40 @@ namespace ODev.PoseAnimator
 		private void TickComplete(float pDeltaTime)
 		{
 			m_Handle.Complete();
+		}
+
+
+		public int Add(SOPoseAnimation pAnimation)
+		{
+			Initalize();
+
+			PoseAnimation animation = new(pAnimation, Mathf.FloorToInt(m_PoseKeys.Length / m_SkeletonKeys.Length));
+			PoseUtil.AppendNative(ref m_Animations, animation);
+			PoseUtil.AppendNative(ref m_Weights, new PoseWeight());
+
+			List<PoseKey> PoseKeys = ListPool<PoseKey>.Get();
+			foreach (SOPoseClip clip in pAnimation.Clips)
+			{
+				for (int i = 0; i < clip.KeyCount; i++)
+				{
+					PoseKey key = clip.GetKey(i);
+					PoseKeys.Add(new PoseKey() { Position = key.Position, Rotation = key.Rotation, Scale = key.Scale });
+				}
+			}
+			PoseUtil.AppendNative(ref m_PoseKeys, PoseKeys);
+			ListPool<PoseKey>.Release(PoseKeys);
+
+			this.Log($"m_Animations {m_Animations.Length} | m_Weights {m_Weights.Length} | m_PoseKeys {m_PoseKeys.Length}");
+			return m_Animations.Length - 1;
+		}
+
+		public void SetWeight(int pIndex, float pProgress01, float pWeight01 = 1.0f)
+		{
+			m_Weights[pIndex] = new PoseWeight()
+			{
+				Progress01 = pProgress01,
+				Weight01 = pWeight01
+			};
 		}
 	}
 }

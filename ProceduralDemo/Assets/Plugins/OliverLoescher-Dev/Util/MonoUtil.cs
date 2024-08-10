@@ -40,6 +40,7 @@ namespace ODev.Util
 			ModelController = 500,
 			Interactator = 700,
 			Camera = 1000,
+			PoseAnimator = 5000,
 			Last = int.MaxValue
 		}
 

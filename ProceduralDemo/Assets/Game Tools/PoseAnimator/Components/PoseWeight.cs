@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace ODev.PoseAnimator
 {
@@ -8,5 +5,6 @@ namespace ODev.PoseAnimator
     public struct PoseWeight
 	{
 		public float Weight01;
+		public float Progress01;
 	}
 }

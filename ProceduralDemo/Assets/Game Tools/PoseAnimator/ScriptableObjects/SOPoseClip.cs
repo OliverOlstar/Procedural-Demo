@@ -34,11 +34,5 @@ namespace ODev.PoseAnimator
 			}
 			return key;
 		}
-
-		public void Apply(Transform pBone, int pIndex) // TODO Remove
-		{
-			pBone.SetLocalPositionAndRotation(m_Keys[pIndex].Position, m_Keys[pIndex].Rotation);
-			pBone.localScale = m_Keys[pIndex].Scale;
-		}
 	}
 }

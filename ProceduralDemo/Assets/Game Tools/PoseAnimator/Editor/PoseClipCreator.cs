@@ -20,55 +20,6 @@ namespace ODev.PoseAnimator
 		private Transform m_Root = null;
 
 		[Button]
-		private void CopyRootPoseToClipNoSkel()
-		{
-			Stack<Transform> transforms = new();
-			List<PoseKey> keys = new();
-
-			transforms.Push(m_Root);
-			while (transforms.Count > 0)
-			{
-				Transform t = transforms.Pop();
-				for (int i = 0; i < t.childCount; i++)
-				{
-					transforms.Push(t.GetChild(i));
-				}
-
-				keys.Add(new PoseKey(t.localPosition, t.localRotation, t.localScale));
-				this.Log(keys[^1].ToString());
-			}
-
-			m_Clip.SetKeys(keys.ToArray());
-			EditorUtility.SetDirty(m_Clip);
-			AssetDatabase.SaveAssetIfDirty(m_Clip);
-		}
-
-		[Button]
-		private void ApplyClipToRootNoSkel()
-		{
-			Queue<Transform> transforms = new();
-			int index = 0;
-
-			transforms.Enqueue(m_Root);
-			while (transforms.Count > 0)
-			{
-				// Current
-				Transform t = transforms.Dequeue();
-				m_Clip.Apply(t, index);
-				t.localScale = Vector3.one;
-
-				// Next
-				for (int i = 0; i < t.childCount; i++)
-				{
-					transforms.Enqueue(t.GetChild(i));
-				}
-
-				index++;
-			}
-		}
-
-
-		[Button]
 		private void CopyRootPoseToClip()
 		{
 			PoseKey[] keys = new PoseKey[m_Skeleton.BoneCount];
@@ -78,7 +29,7 @@ namespace ODev.PoseAnimator
 				PoseKey skeletonKey = m_Skeleton.GetBone(bone.Index).Key;
 				var key = new PoseKey(
 					bone.Transform.localPosition - skeletonKey.Position,
-					skeletonKey.Rotation.Difference(bone.Transform.localRotation),
+					bone.Transform.localRotation.Difference(skeletonKey.Rotation),
 					bone.Transform.localScale - skeletonKey.Scale);
 				keys[bone.Index] = key;
 				this.Log(key.ToString());
@@ -98,9 +49,24 @@ namespace ODev.PoseAnimator
 				PoseKey key = m_Clip.GetKey(bone.Index);
 
 				bone.Transform.SetLocalPositionAndRotation(
-					skeletonKey.Position + key.Position, 
-					skeletonKey.Rotation * key.Rotation);
+					skeletonKey.Position + key.Position,
+					skeletonKey.Rotation.Add(key.Rotation));
 				bone.Transform.localScale = skeletonKey.Scale + key.Scale;
+			}
+		}
+
+		[Button]
+		private void ApplySkeletonToRoot()
+		{
+			foreach (PoseUtil.Bone bone in PoseUtil.GetAllBones(m_Skeleton, m_Root))
+			{
+				this.Log(bone.ToString());
+				PoseKey skeletonKey = m_Skeleton.GetBone(bone.Index).Key;
+
+				bone.Transform.SetLocalPositionAndRotation(
+					skeletonKey.Position,
+					skeletonKey.Rotation);
+				bone.Transform.localScale = skeletonKey.Scale;
 			}
 		}
 	}

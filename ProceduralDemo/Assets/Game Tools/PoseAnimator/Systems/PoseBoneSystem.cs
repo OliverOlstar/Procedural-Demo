@@ -1,3 +1,4 @@
+using ODev.Util;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
@@ -13,35 +14,63 @@ namespace ODev.PoseAnimator
 		[ReadOnly]
 		public NativeArray<PoseAnimation> Animations;
 		[ReadOnly]
+		public NativeArray<PoseWeight> Weights;
+		[ReadOnly]
 		public NativeArray<PoseKey> PoseKeys;
 
 		public NativeArray<PoseKey> NextPose;
 
 		public void Execute(int pIndex)
 		{
-			float progress01 = Animations[0].Progress;
-			progress01 = GetClips(progress01, 3, out int clipAIndex, out int clipBIndex);
-			PoseKey keyA = PoseKeys[(clipAIndex * SkeletonLength) + pIndex];
-			PoseKey keyB = PoseKeys[(clipBIndex * SkeletonLength) + pIndex];
+			Vector3 position = Vector3.zero;
+			Quaternion rotation = Quaternion.identity;
+			Vector3 scale = Vector3.zero;
+			for (int i = 0; i < Animations.Length; i++)
+			{
+				CalculateAnimationKey(pIndex, i, ref position, ref rotation, ref scale);
+			}
+			ApplySkeletonKey(pIndex, ref position, ref rotation, ref scale);
+			NextPose[pIndex] = NextPose[pIndex].Set(position, rotation, scale);
+		}
+
+		private void ApplySkeletonKey(int pIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
+		{
+			rPosition += SkeletonKeys[pIndex].Position;
+			rRotation = SkeletonKeys[pIndex].Rotation.Add(rRotation);
+			rScale += SkeletonKeys[pIndex].Scale;
+		}
+
+		private void CalculateAnimationKey(int pIndex, int pAnimationIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
+		{
+			float weight01 = Weights[pAnimationIndex].Weight01;
+			if (weight01.IsNearZero())
+			{
+				return;
+			}
+
+			float progress01 = Weights[pAnimationIndex].Progress01;
+			progress01 = GetClips(progress01, Animations[pAnimationIndex], out int clipIndexA, out int clipIndexB);
+			PoseKey keyA = PoseKeys[(clipIndexA * SkeletonLength) + pIndex];
+			PoseKey keyB = PoseKeys[(clipIndexB * SkeletonLength) + pIndex];
 
 			Vector3 position = Vector3.LerpUnclamped(keyA.Position, keyB.Position, progress01);
 			Quaternion rotation = Quaternion.LerpUnclamped(keyA.Rotation, keyB.Rotation, progress01);
 			Vector3 scale = Vector3.LerpUnclamped(keyA.Scale, keyB.Scale, progress01);
 
-			position += SkeletonKeys[pIndex].Position;
-			rotation = SkeletonKeys[pIndex].Rotation * rotation;
-			scale += SkeletonKeys[pIndex].Scale;
-
-			NextPose[pIndex] = NextPose[pIndex].Set(position, rotation, scale);
+			rPosition = Vector3.LerpUnclamped(rPosition, position, weight01);
+			rRotation = Quaternion.LerpUnclamped(rRotation, rotation, weight01);
+			rScale = Vector3.LerpUnclamped(rScale, scale, weight01);
 		}
 
-		private readonly float GetClips(float pProgress01, int pClipCount, out int oClipA, out int oClipB)
+		private readonly float GetClips(float pProgress01, PoseAnimation pAnimation, out int oClipA, out int oClipB)
 		{
-			float scaledProgress = pProgress01 * (pClipCount - 1);
+			float scaledProgress = pProgress01 * (pAnimation.ClipCount - 1);
 			oClipA = Mathf.FloorToInt(scaledProgress);
-			oClipA = Mathf.Clamp(oClipA, 0, pClipCount - 2);
+			oClipA = Mathf.Clamp(oClipA, 0, pAnimation.ClipCount - 2);
+			scaledProgress -= oClipA;
+			oClipA += pAnimation.ClipsStartIndex;
 			oClipB = oClipA + 1;
-			return scaledProgress - oClipA;
+			return scaledProgress;
 		}
 	}
 }

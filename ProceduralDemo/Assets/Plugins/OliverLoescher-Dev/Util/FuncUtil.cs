@@ -35,35 +35,30 @@ namespace ODev.Util
 
 		public static float SpringDamper(this float pFrom, float pTo, ref float rVelocity, float pSpring, float pDamper, float pDeltaTime)
 		{
-			float differance = pFrom - pTo;
-			float magnitude = Mathf.Abs(differance);
-			if (magnitude > Math.NEARZERO)
+			float differance = pTo - pFrom;
+			if (differance > Math.NEARZERO || differance < -Math.NEARZERO)
 			{
-				float force = magnitude * pSpring;
-				float direction = differance / magnitude;
-				rVelocity += (-force * direction) - (rVelocity * pDamper);
+				float force = differance * pSpring;
+				rVelocity += (force - (rVelocity * pDamper)) * pDeltaTime;
 			}
 			else
 			{
-				rVelocity -= rVelocity * pDamper;
+				rVelocity -= rVelocity * pDamper * pDeltaTime;
 			}
 			pFrom += rVelocity * pDeltaTime;
 			return pFrom;
 		}
 		public static Vector2 SpringDamper(this Vector2 pFrom, Vector2 pTo, ref Vector2 rVelocity, float pSpring, float pDamper, float pDeltaTime)
 		{
-			Vector2 differance = pFrom - pTo;
+			Vector2 differance = pTo - pFrom;
 			if (differance.sqrMagnitude > Math.NEARZERO)
 			{
-				float magnitude = differance.magnitude;
-				float force = magnitude * pSpring;
-				Vector2 direction = differance / magnitude;
-
-				rVelocity += (-force * direction) - (rVelocity * pDamper);
+				Vector2 force = differance * pSpring;
+				rVelocity += (force - (rVelocity * pDamper)) * pDeltaTime;
 			}
 			else
 			{
-				rVelocity -= rVelocity * pDamper;
+				rVelocity -= pDamper * pDeltaTime * rVelocity;
 			}
 			if (rVelocity.sqrMagnitude > Math.NEARZERO)
 			{
@@ -73,18 +68,15 @@ namespace ODev.Util
 		}
 		public static Vector3 SpringDamper(this Vector3 pFrom, Vector3 pTo, ref Vector3 rVelocity, float pSpring, float pDamper, float pDeltaTime)
 		{
-			Vector3 differance = pFrom - pTo;
+			Vector3 differance = pTo - pFrom;
 			if (differance.sqrMagnitude > Math.NEARZERO)
 			{
-				float magnitude = differance.magnitude;
-				float force = magnitude * pSpring;
-				Vector3 direction = differance / magnitude;
-
-				rVelocity += (-force * direction) - (rVelocity * pDamper);
+				Vector3 force = differance * pSpring;
+				rVelocity += (force - (rVelocity * pDamper)) * pDeltaTime;
 			}
 			else
 			{
-				rVelocity -= rVelocity * pDamper;
+				rVelocity -= pDamper * pDeltaTime * rVelocity;
 			}
 			if (rVelocity.sqrMagnitude > Math.NEARZERO)
 			{

@@ -7,27 +7,14 @@ namespace ODev.PoseAnimator
 	[System.Serializable]
 	public struct PoseAnimation
 	{
-		public int ClipIndexA;
-		public int ClipIndexB;
-		public int ClipIndexC;
-		public int ClipIndexD;
-		public int ClipIndexE;
-
-		public int WeightIndex;
+		public int ClipsStartIndex;
+		public int ClipCount;
 		// public AnimationPlayType Type = AnimationPlayType.Linear;
 
-		public float Progress; // TODO be set from outside, should be it's own component?
-
-		public PoseAnimation ModifyProgress(float pDelta)
+		public PoseAnimation(SOPoseAnimation pSource, int pStartIndex)
 		{
-			Progress += pDelta;
-			return this;
-		}
-
-		public PoseAnimation SetProgress(float pProgress)
-		{
-			Progress = pProgress;
-			return this;
+			ClipsStartIndex = pStartIndex;
+			ClipCount = pSource.Clips.Length;
 		}
 	}
 }
