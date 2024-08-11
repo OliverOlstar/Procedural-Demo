@@ -56,15 +56,15 @@ public class CardinalWheel : UpdateableMonoBehaviour
 		for (int i = 0; i < 4; i++)
 		{
 			Vector3 direction = Quaternion.AngleAxis((i * 90.0f) + m_Angle, m_Target.right) * forward;
-			Vector3 pointA = m_Target.position + (direction * m_Radius);
-			Vector3 pointB = pointA + (direction * 0.5f);
+			Vector3 pointA = m_Target.position;
+			Vector3 pointB = m_Target.position + (direction * m_Radius);
 			Gizmos.DrawLine(pointA, pointB);
 		}
 		for (int i = 0; i < 4; i++)
 		{
 			Vector3 direction = Quaternion.AngleAxis((i * 90.0f) + 45.0f + m_Angle, m_Target.right) * forward;
-			Vector3 pointA = m_Target.position + (direction * m_Radius);
-			Vector3 pointB = pointA + (direction * 0.25f);
+			Vector3 pointA = m_Target.position + (direction * (m_Radius - 0.5f));
+			Vector3 pointB = m_Target.position + (direction * m_Radius);
 			Gizmos.DrawLine(pointA, pointB);
 		}
 	}
