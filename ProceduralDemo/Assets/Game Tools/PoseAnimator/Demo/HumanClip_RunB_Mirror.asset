@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7034938a26189084bb96ab77da3a06e0, type: 3}
-  m_Name: HumanClip_RunB
+  m_Name: HumanClip_RunB_Mirror
   m_EditorClassIdentifier: 
   m_Keys:
   - Position: {x: 0, y: 0, z: 0}
@@ -29,13 +29,13 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.00000005415233, y: -0.00000008431525, z: -0.0000006367919, w: 1.0000001}
+    Rotation: {x: -0.000000042121698, y: -0.00000006323704, z: 0.7071067, w: 0.7071069}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.09259125, y: 0.7009442, z: -0.092856124, w: 0.70105785}
+    Rotation: {x: -0.56113446, y: 0.42977402, z: -0.56136143, w: 0.43046007}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0.00000010872928, y: -0.000000012713561, z: 0.60876167, w: 0.79335314}
+    Rotation: {x: 0.00000010872928, y: -0.000000012713561, z: 0.60876167, w: 0.7933532}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
@@ -92,13 +92,13 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.00000030699604, y: -0.00000012656272, z: 0.00000009860027, w: 1.0000001}
+    Rotation: {x: -0.00000030699604, y: -0.00000012656272, z: -0.00000023857453, w: 1.0000001}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0.13858823, y: -0.6176606, z: -0.16958761, w: 0.75533354}
+    Rotation: {x: 0.13858826, y: -0.6176606, z: -0.16958733, w: 0.75533354}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.0000000746072, y: 0.0000000667386, z: 0.7132009, w: 0.7009597}
+    Rotation: {x: -0.0000000746072, y: 0.00000006673859, z: 0.71320087, w: 0.7009597}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1.0000001}
@@ -149,22 +149,22 @@ MonoBehaviour:
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0.014689946, y: 0.000020463045, z: 0.24733694, w: 0.9688182}
+    Rotation: {x: 0.0077386964, y: 0.000010960284, z: 0.1302976, w: 0.99144477}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0.00000029503315, y: -0.0000036125907, z: 0.79335326, w: 0.6087616}
-    Scale: {x: 0, y: 0, z: 0}
-  - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Rotation: {x: -0.00000021538422, y: -0.0000002604641, z: 0.13052607, w: 0.99144495}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.007738732, y: -0.00000983797, z: 0.13029625, w: 0.991445}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: -0.000000036786545, y: 0.000000737598, z: 0.13052632, w: 0.9914449}
+    Rotation: {x: -0.015344794, y: -0.000019459227, z: 0.2583636, w: 0.96592593}
+    Scale: {x: 0, y: 0, z: 0}
+  - Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0.00000012264098, y: 0.0000062796844, z: 0.7933533, w: 0.6087614}
     Scale: {x: 0, y: 0, z: 0}
   - Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}

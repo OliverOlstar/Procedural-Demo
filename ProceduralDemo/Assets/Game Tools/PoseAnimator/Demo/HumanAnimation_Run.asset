@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1ffd52b4b8f6ee4bbd2e54022dbcbda, type: 3}
-  m_Name: New Pose Animation Linear
+  m_Name: HumanAnimation_Run
   m_EditorClassIdentifier: 
   m_Clips:
-  - {fileID: 11400000, guid: 0468fbf9328896d4db4f34f427724f75, type: 2}
-  - {fileID: 11400000, guid: 199e7f32eb706a44a9fb72713e25baf9, type: 2}
-  - {fileID: 11400000, guid: 383f47f3399cda54992f31454ef9a806, type: 2}
+  - {fileID: 11400000, guid: 390f484debdc3a34498c2579ade9586c, type: 2}
+  - {fileID: 11400000, guid: ef1335bb9b742b84fafdbda177ffe6eb, type: 2}
+  - {fileID: 11400000, guid: 2fbce020013d9dc45811051c18b6bc69, type: 2}
+  - {fileID: 11400000, guid: 9809457b869cbe84893cb4674d819d14, type: 2}
+  m_Type: 1

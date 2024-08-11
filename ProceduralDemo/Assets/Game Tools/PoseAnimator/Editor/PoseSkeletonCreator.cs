@@ -15,6 +15,9 @@ namespace ODev.PoseAnimator
 		[SerializeField]
 		private Transform m_Root = null;
 
+		public SOPoseSkeleton Skeleton => m_Skeleton;
+		public Transform Root => m_Root;
+
 		[Button]
 		private void CopyRootPoseToClip()
 		{

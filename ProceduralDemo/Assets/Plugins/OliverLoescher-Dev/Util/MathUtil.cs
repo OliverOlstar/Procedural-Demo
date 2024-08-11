@@ -89,6 +89,13 @@ namespace ODev.Util
 			return new Vector3(pXZ.x, pY, pXZ.y);
 		}
 
+		public static Vector3 Scale(this Vector3 pVector, float pScalarX, float pScalarY, float pScalarZ)
+		{
+			pVector.x *= pScalarX;
+			pVector.y *= pScalarY;
+			pVector.z *= pScalarZ;
+			return pVector;
+		}
 		public static Vector3 Scale(this Vector3 pVector, float pScalarXZ, float pScalarY)
 		{
 			pVector.x *= pScalarXZ;
