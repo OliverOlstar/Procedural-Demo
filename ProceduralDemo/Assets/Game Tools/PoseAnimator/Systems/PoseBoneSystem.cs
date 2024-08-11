@@ -25,10 +25,22 @@ namespace ODev.PoseAnimator
 			Vector3 position = Vector3.zero;
 			Quaternion rotation = Quaternion.identity;
 			Vector3 scale = Vector3.zero;
-			for (int i = 0; i < Animations.Length; i++)
+			
+			int firstAnimationIndex = 0;
+			for (int i = Animations.Length - 1; i >= 0; i--)
+			{
+				if (Weights[i].Weight01.ApproximatelyOrGreaterThan(1.0f)) // Weight is max, anything before it will be covered anyways so skip them
+				{
+					firstAnimationIndex = i;
+					break;
+				}
+			}
+			
+			for (int i = firstAnimationIndex; i < Animations.Length; i++)
 			{
 				CalculateAnimationKey(pIndex, i, ref position, ref rotation, ref scale);
 			}
+
 			ApplySkeletonKey(pIndex, ref position, ref rotation, ref scale);
 			NextPose[pIndex] = NextPose[pIndex].Set(position, rotation, scale);
 		}
