@@ -75,6 +75,11 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	[SerializeField]
 	private float m_WalkVelocity = 1.0f;
 
+	[SerializeField]
+	private float m_WeightDampening = 1.0f;
+
+	private float m_CurrWeight = 0.0f;
+
 	protected override void Tick(float pDeltaTime)
 	{
 		// if (m_UseSpring)
@@ -89,23 +94,12 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 		// 	m_Animator.SetWeight(m_AnimationIndex, progress, m_Weight01);
 		// }
 		m_Animator.ModifyWeight(m_IdleHandle, m_IdleAnimationSpeed * pDeltaTime);
-		if (m_Root.Movement.VelocityXZ.sqrMagnitude > m_RunVelocity * m_RunVelocity)
-		{
-			m_RunWeight01 = 1.0f;
-			m_Wheel.SetRadius(2.0f);
-		}
-		else if (m_Root.Movement.VelocityXZ.sqrMagnitude > m_WalkVelocity * m_WalkVelocity)
-		{
-			m_RunWeight01 = 0.0f;
-			m_WalkWeight01 = 1.0f;
-			m_Wheel.SetRadius(1.0f);
-		}
-		else
-		{
-			m_RunWeight01 = 0.0f;
-			m_WalkWeight01 = 0.0f;
-			m_CenterOfMass.transform.localPosition = Vector3.zero;
-		}
+
+		float nextWeight = Func.SmoothStep(m_WalkVelocity, m_RunVelocity, m_Root.Movement.VelocityXZ.magnitude);
+		m_CurrWeight = Mathf.Lerp(m_CurrWeight, nextWeight, pDeltaTime * m_WeightDampening);
+		m_RunWeight01 = m_CurrWeight;
+		m_WalkWeight01 = m_Root.Movement.VelocityXZ.IsNearZero() ? 0.0f : 1.0f;
+		m_Wheel.SetRadius(Mathf.Lerp(1.0f, 2.0f, m_CurrWeight));
 	}
 
 	[SerializeField]

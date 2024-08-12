@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: HumanAnimation_Walk
   m_EditorClassIdentifier: 
   m_Clips:
-  - {fileID: 11400000, guid: 5f4854fc1ffe08f41b0e7d43ed7bf57c, type: 2}
-  - {fileID: 11400000, guid: ff22e6e8c69107a4583e9b8acd4f1a35, type: 2}
   - {fileID: 11400000, guid: 5cd97bdbe26ef6d4ab87132f9127eb24, type: 2}
   - {fileID: 11400000, guid: fbf086cd6b4e8834ea143c59a388056a, type: 2}
+  - {fileID: 11400000, guid: 5f4854fc1ffe08f41b0e7d43ed7bf57c, type: 2}
+  - {fileID: 11400000, guid: ff22e6e8c69107a4583e9b8acd4f1a35, type: 2}
   m_Type: 1
