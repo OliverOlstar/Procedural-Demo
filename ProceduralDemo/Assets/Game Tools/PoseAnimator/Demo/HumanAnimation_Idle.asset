@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1ffd52b4b8f6ee4bbd2e54022dbcbda, type: 3}
+  m_Name: HumanAnimation_Idle
+  m_EditorClassIdentifier: 
+  m_Clips:
+  - {fileID: 11400000, guid: 7f52174a83352ec4dbaccebac1eb04a6, type: 2}
+  - {fileID: 11400000, guid: 36cb13c6c7600b440a2746032c95542f, type: 2}
+  - {fileID: 11400000, guid: 74d5e7d6f54e90a4197b72fce89f3312, type: 2}
+  m_Type: 1

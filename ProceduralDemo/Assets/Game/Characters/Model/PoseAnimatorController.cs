@@ -11,13 +11,23 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 {
 	[SerializeField]
 	private PoseAnimator m_Animator = null;
-	// [SerializeField, AssetNonNull]
-	// private SOPoseAnimation m_WalkAnimation = null;
+	[SerializeField]
+	private PlayerRoot m_Root = null;
+
+	[SerializeField, AssetNonNull]
+	private SOPoseAnimation m_IdleAnimation = null;
+	[SerializeField, AssetNonNull]
+	private SOPoseAnimation m_WalkAnimation = null;
 	[SerializeField, AssetNonNull]
 	private SOPoseAnimation m_RunAnimation = null;
+	[SerializeField]
+	private float m_IdleAnimationSpeed = 0.1f;
 
 	[SerializeField]
 	private CardinalWheel m_Wheel = null;
+
+	[SerializeField]
+	private Transform m_CenterOfMass = null;
 
 
 	// [Header("Spring")]
@@ -39,13 +49,19 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	// [SerializeField]
 	// private bool m_UseSpring = false;
 
-	private int m_RunHandle;
+	private int m_IdleHandle = -1;
+	private int m_WalkHandle = -1;
+	private int m_RunHandle = -1;
+	private float m_RunWeight01 = 0.0f;
+	private float m_WalkWeight01 = 0.0f;
 	// private float m_Progress;
 	// private float m_ProgressVelocity = 0.0f;
 
 	private void Start()
 	{
 		m_Wheel.OnAngleChanged.AddListener(OnMoveAngleChanged);
+		m_IdleHandle = m_Animator.Add(m_IdleAnimation);
+		m_WalkHandle = m_Animator.Add(m_WalkAnimation);
 		m_RunHandle = m_Animator.Add(m_RunAnimation);
 	}
 	
@@ -53,6 +69,11 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	{
 		m_Wheel.OnAngleChanged.RemoveListener(OnMoveAngleChanged);
 	}
+
+	[SerializeField]
+	private float m_RunVelocity = 10.0f;
+	[SerializeField]
+	private float m_WalkVelocity = 1.0f;
 
 	protected override void Tick(float pDeltaTime)
 	{
@@ -67,12 +88,37 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 		// 	float progress = Easing.Ease(m_Ease, (m_Progress * 2.0f)) * 0.5f;
 		// 	m_Animator.SetWeight(m_AnimationIndex, progress, m_Weight01);
 		// }
+		m_Animator.ModifyWeight(m_IdleHandle, m_IdleAnimationSpeed * pDeltaTime);
+		if (m_Root.Movement.VelocityXZ.sqrMagnitude > m_RunVelocity * m_RunVelocity)
+		{
+			m_RunWeight01 = 1.0f;
+			m_Wheel.SetRadius(2.0f);
+		}
+		else if (m_Root.Movement.VelocityXZ.sqrMagnitude > m_WalkVelocity * m_WalkVelocity)
+		{
+			m_RunWeight01 = 0.0f;
+			m_WalkWeight01 = 1.0f;
+			m_Wheel.SetRadius(1.0f);
+		}
+		else
+		{
+			m_RunWeight01 = 0.0f;
+			m_WalkWeight01 = 0.0f;
+			m_CenterOfMass.transform.localPosition = Vector3.zero;
+		}
 	}
 
+	[SerializeField]
+	private float m_BounceHeight = 0.25f;
 
 	private void OnMoveAngleChanged(float pAngle)
 	{
-		float progress = (pAngle % 180.0f) / 180.0f;
-		m_Animator.SetWeight(m_RunHandle, progress, 1.0f);
+		float progress = pAngle / 180.0f;
+		m_Animator.SetWeight(m_WalkHandle, progress, m_WalkWeight01);
+		m_Animator.SetWeight(m_RunHandle, progress, m_RunWeight01);
+
+		float x = (pAngle % 90.0f) / 90.0f;
+		float y = Mathf.Abs(Mathf.Sin(x * Mathf.PI)) * m_BounceHeight / m_Wheel.Radius;
+		m_CenterOfMass.transform.localPosition = new Vector3(0.0f, y, 0.0f);
 	}
 }

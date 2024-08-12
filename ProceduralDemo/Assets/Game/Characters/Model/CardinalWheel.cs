@@ -19,6 +19,13 @@ public class CardinalWheel : UpdateableMonoBehaviour
 	private float m_Angle = 0.0f;
 	private Vector3 m_LastPosition = Vector3.zero;
 
+	public float Radius => m_Radius;
+
+	public void SetRadius(float pRadius)
+	{
+		m_Radius = pRadius;
+	}
+
 	private void Start()
 	{
 		m_LastPosition = transform.position;

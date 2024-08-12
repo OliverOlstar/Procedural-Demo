@@ -39,12 +39,10 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private Vector3 m_RecievedDisplacement = Vector3.zero;
 	private Vector3 m_VelocityXZ;
 	private float m_VelocityY;
-	private Vector3 m_LastAcceleration;
 
 	public Vector3 VelocityXZ => m_VelocityXZ;
 	public float VelocityY => m_VelocityY;
 	public Vector3 Velocity => new(m_VelocityXZ.x, m_VelocityXZ.y + m_VelocityY, m_VelocityXZ.z);
-	public Vector3 LastAcceleration => m_LastAcceleration;
 	Transform TransformFollower.IMotionReciver.Transform => transform;
 
 	private void Reset()
@@ -110,14 +108,12 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		}
 
 		GetStats(out float acceleration, out float drag, out float maxVelocity);
+		m_VelocityXZ -= drag * pDeltaTime * m_VelocityXZ; // Drag
 		if (maxVelocity > 0.0f)
 		{
 			maxVelocity = Mathf.Max(maxVelocity, m_VelocityXZ.magnitude);
 		}
-		m_LastAcceleration = Vector3.zero;
-		m_LastAcceleration -= drag * pDeltaTime * m_VelocityXZ; // Drag
-		m_LastAcceleration += acceleration * pDeltaTime * input; // Acceleration
-		m_VelocityXZ += m_LastAcceleration;
+		m_VelocityXZ += acceleration * pDeltaTime * input; // Acceleration
 		m_VelocityXZ = Vector3.ClampMagnitude(m_VelocityXZ, maxVelocity);
 		return;
 	}

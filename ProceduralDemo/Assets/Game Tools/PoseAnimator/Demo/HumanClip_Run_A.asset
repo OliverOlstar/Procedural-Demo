@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7034938a26189084bb96ab77da3a06e0, type: 3}
-  m_Name: HumanClip_RunA
+  m_Name: HumanClip_Run_A
   m_EditorClassIdentifier: 
   m_Keys:
   - Position: {x: 0.0000000099258495, y: -4.6325738e-10, z: -0.0000066031935}

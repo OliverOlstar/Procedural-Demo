@@ -107,11 +107,16 @@ namespace ODev.PoseAnimator
 
 		public int Add(SOPoseAnimation pAnimation)
 		{
+			if (pAnimation == null)
+			{
+				this.DevException("Cannot add null animations");
+			}
+
 			Initalize();
 
 			PoseAnimation animation = new(pAnimation, Mathf.FloorToInt(m_PoseKeys.Length / m_SkeletonKeys.Length));
 			PoseUtil.AppendNative(ref m_Animations, animation);
-			PoseUtil.AppendNative(ref m_Weights, new PoseWeight());
+			PoseUtil.AppendNative(ref m_Weights, new PoseWeight(1.0f));
 
 			List<PoseKey> PoseKeys = ListPool<PoseKey>.Get();
 			foreach (SOPoseClip clip in pAnimation.Clips)
@@ -134,6 +139,16 @@ namespace ODev.PoseAnimator
 			m_Weights[pIndex] = new PoseWeight()
 			{
 				Progress01 = pProgress01,
+				Weight01 = pWeight01
+			};
+		}
+
+		public void ModifyWeight(int pIndex, float pProgressDelta, float pWeight01 = 1.0f)
+		{
+			float progress = m_Weights[pIndex].Progress01 + pProgressDelta;
+			m_Weights[pIndex] = new PoseWeight()
+			{
+				Progress01 = progress,
 				Weight01 = pWeight01
 			};
 		}
