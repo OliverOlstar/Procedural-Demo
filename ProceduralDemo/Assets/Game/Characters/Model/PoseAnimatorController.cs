@@ -78,8 +78,6 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	[SerializeField]
 	private float m_WeightDampening = 1.0f;
 
-	private float m_CurrWeight = 0.0f;
-
 	protected override void Tick(float pDeltaTime)
 	{
 		// if (m_UseSpring)
@@ -96,10 +94,11 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 		m_Animator.ModifyWeight(m_IdleHandle, m_IdleAnimationSpeed * pDeltaTime);
 
 		float nextWeight = Func.SmoothStep(m_WalkVelocity, m_RunVelocity, m_Root.Movement.VelocityXZ.magnitude);
-		m_CurrWeight = Mathf.Lerp(m_CurrWeight, nextWeight, pDeltaTime * m_WeightDampening);
-		m_RunWeight01 = m_CurrWeight;
-		m_WalkWeight01 = m_Root.Movement.VelocityXZ.IsNearZero() ? 0.0f : 1.0f;
-		m_Wheel.SetRadius(Mathf.Lerp(1.0f, 2.0f, m_CurrWeight));
+		m_RunWeight01 = Mathf.Lerp(m_RunWeight01, nextWeight, pDeltaTime * m_WeightDampening);
+		m_Wheel.SetRadius(Mathf.Lerp(1.0f, 2.0f, m_RunWeight01));
+
+		nextWeight = Func.SmoothStep(0.0f, m_WalkVelocity, m_Root.Movement.VelocityXZ.magnitude);
+		m_WalkWeight01 = Mathf.Lerp(m_WalkWeight01, nextWeight, pDeltaTime * m_WeightDampening);
 	}
 
 	[SerializeField]
@@ -113,6 +112,6 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 
 		float x = (pAngle % 90.0f) / 90.0f;
 		float y = Mathf.Abs(Mathf.Sin(x * Mathf.PI)) * m_BounceHeight / m_Wheel.Radius;
-		m_CenterOfMass.transform.localPosition = new Vector3(0.0f, y, 0.0f);
+		m_CenterOfMass.transform.localPosition = new Vector3(0.0f, y * m_WalkWeight01, 0.0f);
 	}
 }

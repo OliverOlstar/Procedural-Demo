@@ -37144,7 +37144,7 @@ MonoBehaviour:
     m_BaseValue: 8
     m_CurrValue: 1
   MaxVelocity:
-    m_BaseValue: 6
+    m_BaseValue: 7
     m_CurrValue: 10
   m_SlopeAcceleration: 100
   m_SlopeDrag: 20
@@ -40875,8 +40875,8 @@ MonoBehaviour:
   m_Wheel: {fileID: 2134169962}
   m_CenterOfMass: {fileID: 1429430995}
   m_RunVelocity: 9
-  m_WalkVelocity: 2
-  m_WeightDampening: 1
+  m_WalkVelocity: 4
+  m_WeightDampening: 10
   m_BounceHeight: 0.4
 --- !u!114 &2134169962
 MonoBehaviour:
