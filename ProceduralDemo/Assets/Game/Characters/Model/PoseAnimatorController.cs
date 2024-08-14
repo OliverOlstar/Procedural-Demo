@@ -20,6 +20,8 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	private SOPoseAnimation m_WalkAnimation = null;
 	[SerializeField, AssetNonNull]
 	private SOPoseAnimation m_RunAnimation = null;
+	[SerializeField, AssetNonNull]
+	private SOPoseAnimation m_JumpAnimation = null;
 	[SerializeField]
 	private float m_IdleAnimationSpeed = 0.1f;
 
@@ -52,8 +54,10 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	private int m_IdleHandle = -1;
 	private int m_WalkHandle = -1;
 	private int m_RunHandle = -1;
+	private int m_JumpHandle = -1;
 	private float m_RunWeight01 = 0.0f;
 	private float m_WalkWeight01 = 0.0f;
+	private float m_JumpWeight01 = 0.0f;
 	// private float m_Progress;
 	// private float m_ProgressVelocity = 0.0f;
 
@@ -63,6 +67,7 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 		m_IdleHandle = m_Animator.Add(m_IdleAnimation);
 		m_WalkHandle = m_Animator.Add(m_WalkAnimation);
 		m_RunHandle = m_Animator.Add(m_RunAnimation);
+		m_JumpHandle = m_Animator.Add(m_JumpAnimation);
 	}
 	
 	private void OnDestroy()
@@ -99,6 +104,11 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 
 		nextWeight = Func.SmoothStep(0.0f, m_WalkVelocity, m_Root.Movement.VelocityXZ.magnitude);
 		m_WalkWeight01 = Mathf.Lerp(m_WalkWeight01, nextWeight, pDeltaTime * m_WeightDampening);
+
+		float jumpProgress = 0.5f - (m_Root.Movement.VelocityY * 0.15f);
+		float jumpWeight = m_Root.OnGround.IsInAir ? 1.0f : 0.0f;
+		m_JumpWeight01 = Mathf.Lerp(m_JumpWeight01, jumpWeight, pDeltaTime * m_WeightDampening);
+		m_Animator.SetWeight(m_JumpHandle, jumpProgress.Clamp01(), m_JumpWeight01);
 	}
 
 	[SerializeField]
