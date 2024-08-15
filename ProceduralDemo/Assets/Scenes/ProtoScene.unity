@@ -27860,7 +27860,9 @@ MonoBehaviour:
   m_Leaning:
     m_Max01: 0.5
     m_MaxAcceleration: 2
-    m_Dampening: 9
+    m_Spring: 40
+    m_Damper: 20
+    m_Scalar: 4
 --- !u!4 &1436590993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400206, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
