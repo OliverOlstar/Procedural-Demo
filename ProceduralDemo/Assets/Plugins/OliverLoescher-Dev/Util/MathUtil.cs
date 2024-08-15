@@ -26,9 +26,9 @@ namespace ODev.Util
 		public static Vector3 Inverse(this Vector3 pVector) => pVector *= -1.0f;
 
 		public static float Clamp(this float pValue, Vector2 pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
-		public static float ClampMax(this float pValue, float pMax) => Mathf.Min(pValue, pMax);
-		public static float ClampMin(this float pValue, float pMin) => Mathf.Min(pValue, pMin);
 		public static float Clamp01(this float pValue) => Mathf.Clamp01(pValue);
+		public static float ClampMax(this float pValue, float pMax) => Mathf.Min(pValue, pMax);
+		public static float ClampMin(this float pValue, float pMin) => Mathf.Max(pValue, pMin);
 		public static float Loop(this float pValue, float pMax)
 		{
 			while (pValue >= pMax)

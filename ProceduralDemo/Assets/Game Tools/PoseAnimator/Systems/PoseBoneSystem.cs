@@ -62,6 +62,7 @@ namespace ODev.PoseAnimator
 
 			float progress01 = Weights[pAnimationIndex].Progress01;
 			progress01 = GetClips(progress01, Animations[pAnimationIndex], out int clipIndexA, out int clipIndexB);
+			progress01 = Easing.Ease(Animations[pAnimationIndex].Easing, progress01);
 			PoseKey keyA = PoseKeys[(clipIndexA * SkeletonLength) + pIndex];
 			PoseKey keyB = PoseKeys[(clipIndexB * SkeletonLength) + pIndex];
 

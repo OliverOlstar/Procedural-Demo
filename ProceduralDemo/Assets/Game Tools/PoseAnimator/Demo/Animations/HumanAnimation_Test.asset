@@ -16,3 +16,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0468fbf9328896d4db4f34f427724f75, type: 2}
   - {fileID: 11400000, guid: 199e7f32eb706a44a9fb72713e25baf9, type: 2}
   - {fileID: 11400000, guid: 383f47f3399cda54992f31454ef9a806, type: 2}
+  m_AnimationClips:
+  - Progress01: 0
+    Easing:
+      Method: 0
+      Direction: 0
+    Clip: {fileID: 11400000, guid: 199e7f32eb706a44a9fb72713e25baf9, type: 2}
+  - Progress01: 0.5
+    Easing:
+      Method: 0
+      Direction: 0
+    Clip: {fileID: 11400000, guid: 0468fbf9328896d4db4f34f427724f75, type: 2}
+  - Progress01: 1
+    Easing:
+      Method: 0
+      Direction: 0
+    Clip: {fileID: 11400000, guid: 383f47f3399cda54992f31454ef9a806, type: 2}
+  m_Type: 0
+  m_AutoSetProgress: 1

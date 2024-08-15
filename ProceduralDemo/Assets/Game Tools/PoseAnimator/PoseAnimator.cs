@@ -119,11 +119,11 @@ namespace ODev.PoseAnimator
 			PoseUtil.AppendNative(ref m_Weights, new PoseWeight(1.0f));
 
 			List<PoseKey> PoseKeys = ListPool<PoseKey>.Get();
-			foreach (SOPoseClip clip in pAnimation.Clips)
+			foreach (SOPoseAnimation.AnimationClip clip in pAnimation.Clips)
 			{
-				for (int i = 0; i < clip.KeyCount; i++)
+				for (int i = 0; i < clip.Clip.KeyCount; i++)
 				{
-					PoseKey key = clip.GetKey(i);
+					PoseKey key = clip.Clip.GetKey(i);
 					PoseKeys.Add(new PoseKey() { Position = key.Position, Rotation = key.Rotation, Scale = key.Scale });
 				}
 			}

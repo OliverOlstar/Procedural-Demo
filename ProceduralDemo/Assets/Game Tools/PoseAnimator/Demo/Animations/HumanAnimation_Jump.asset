@@ -15,4 +15,16 @@ MonoBehaviour:
   m_Clips:
   - {fileID: 11400000, guid: 0060042b4567dc643bdc1530f42015ee, type: 2}
   - {fileID: 11400000, guid: 451638c49e2f1a24d91579143a2fbd6b, type: 2}
+  m_AnimationClips:
+  - Progress01: 0
+    Easing:
+      Method: 0
+      Direction: 0
+    Clip: {fileID: 11400000, guid: 0060042b4567dc643bdc1530f42015ee, type: 2}
+  - Progress01: 1
+    Easing:
+      Method: 0
+      Direction: 0
+    Clip: {fileID: 11400000, guid: 451638c49e2f1a24d91579143a2fbd6b, type: 2}
   m_Type: 0
+  m_AutoSetProgress: 1
