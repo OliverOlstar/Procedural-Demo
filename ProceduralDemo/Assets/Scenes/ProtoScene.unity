@@ -4168,17 +4168,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 311135916}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &311135915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9394,17 +9401,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 569980503}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &569980502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10217,17 +10231,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 651538974}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &651538973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11269,17 +11290,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 734829642}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &734829641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19159,17 +19187,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 904508025}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &904508024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19599,17 +19634,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 948777726}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &948777725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19771,17 +19813,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 956972243}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &956972242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23442,17 +23491,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 1137688681}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &1137688680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23509,17 +23565,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 1161114279}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &1161114278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23647,17 +23710,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 1182744848}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &1182744847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24972,17 +25042,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 1307890012}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &1307890011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26925,17 +27002,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 1406739151}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &1406739150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28811,17 +28895,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 1462055021}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &1462055020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38313,17 +38404,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 2057000298}
   m_Root: {fileID: 0}
-  m_IdleAnimation: {fileID: 0}
-  m_WalkAnimation: {fileID: 0}
-  m_RunAnimation: {fileID: 0}
-  m_JumpAnimation: {fileID: 0}
-  m_IdleAnimationSpeed: 0.1
-  m_Wheel: {fileID: 0}
-  m_CenterOfMass: {fileID: 0}
-  m_RunVelocity: 10
-  m_WalkVelocity: 1
-  m_WeightDampening: 1
-  m_BounceHeight: 0.25
+  m_Idle:
+    m_IdleAnimation: {fileID: 0}
+    m_IdleAnimationSpeed: 0.1
+  m_Locomotion:
+    m_Wheel: {fileID: 0}
+    m_CenterOfMass: {fileID: 0}
+    m_WalkAnimation: {fileID: 0}
+    m_RunAnimation: {fileID: 0}
+    m_RunVelocity: 10
+    m_WalkVelocity: 1
+    m_WeightDampening: 1
+    m_BounceHeight: 0.25
+  m_Jump:
+    m_JumpAnimation: {fileID: 0}
+    m_WeightDampening: 1
+    m_ProgressDampening: 10
+    m_ProgressScale: 0.15
+    m_ProgressOffset: 0.5
 --- !u!114 &2057000297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40928,17 +41026,24 @@ MonoBehaviour:
     m_Priority: 0
   m_Animator: {fileID: 2134169959}
   m_Root: {fileID: 82955119}
-  m_IdleAnimation: {fileID: 11400000, guid: 557b458cf25aa9b4db41e3c03516eb1f, type: 2}
-  m_WalkAnimation: {fileID: 11400000, guid: f9a26ef3b4f0a634fb45223d215d0d48, type: 2}
-  m_RunAnimation: {fileID: 11400000, guid: 32b84010a2a143d40986d262af954154, type: 2}
-  m_JumpAnimation: {fileID: 11400000, guid: cff443a179087cf4a984b5e43a5ab153, type: 2}
-  m_IdleAnimationSpeed: 0.4
-  m_Wheel: {fileID: 2134169962}
-  m_CenterOfMass: {fileID: 1429430995}
-  m_RunVelocity: 9
-  m_WalkVelocity: 4
-  m_WeightDampening: 10
-  m_BounceHeight: 0.4
+  m_Idle:
+    m_IdleAnimation: {fileID: 11400000, guid: 557b458cf25aa9b4db41e3c03516eb1f, type: 2}
+    m_IdleAnimationSpeed: 0.4
+  m_Locomotion:
+    m_Wheel: {fileID: 2134169962}
+    m_CenterOfMass: {fileID: 1429430995}
+    m_WalkAnimation: {fileID: 11400000, guid: f9a26ef3b4f0a634fb45223d215d0d48, type: 2}
+    m_RunAnimation: {fileID: 11400000, guid: 32b84010a2a143d40986d262af954154, type: 2}
+    m_RunVelocity: 9
+    m_WalkVelocity: 4
+    m_WeightDampening: 10
+    m_BounceHeight: 0.4
+  m_Jump:
+    m_JumpAnimation: {fileID: 11400000, guid: cff443a179087cf4a984b5e43a5ab153, type: 2}
+    m_WeightDampening: 9
+    m_ProgressDampening: 2
+    m_ProgressScale: 0.1
+    m_ProgressOffset: 0.1
 --- !u!114 &2134169962
 MonoBehaviour:
   m_ObjectHideFlags: 0
