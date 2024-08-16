@@ -55,6 +55,15 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Crouch"",
+                    ""type"": ""Button"",
+                    ""id"": ""3c17cfb6-f386-467d-9ff5-547304758c91"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""3aacb9cb-1405-4e94-bb11-75f3ad51ac70"",
@@ -194,6 +203,39 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""003cb473-fc71-4b33-9136-af7a51e96c07"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ff81d71-9f44-4407-a2c1-e2e2b764e94f"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""888507c3-1512-4845-a0b4-a63e32b0df51"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -411,6 +453,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         m_PlayerCharacter_Move = m_PlayerCharacter.FindAction("Move", throwIfNotFound: true);
         m_PlayerCharacter_Jump = m_PlayerCharacter.FindAction("Jump", throwIfNotFound: true);
         m_PlayerCharacter_Sprint = m_PlayerCharacter.FindAction("Sprint", throwIfNotFound: true);
+        m_PlayerCharacter_Crouch = m_PlayerCharacter.FindAction("Crouch", throwIfNotFound: true);
         m_PlayerCharacter_Interact = m_PlayerCharacter.FindAction("Interact", throwIfNotFound: true);
         // BuildMode
         m_BuildMode = asset.FindActionMap("BuildMode", throwIfNotFound: true);
@@ -482,6 +525,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCharacter_Move;
     private readonly InputAction m_PlayerCharacter_Jump;
     private readonly InputAction m_PlayerCharacter_Sprint;
+    private readonly InputAction m_PlayerCharacter_Crouch;
     private readonly InputAction m_PlayerCharacter_Interact;
     public struct PlayerCharacterActions
     {
@@ -490,6 +534,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerCharacter_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerCharacter_Jump;
         public InputAction @Sprint => m_Wrapper.m_PlayerCharacter_Sprint;
+        public InputAction @Crouch => m_Wrapper.m_PlayerCharacter_Crouch;
         public InputAction @Interact => m_Wrapper.m_PlayerCharacter_Interact;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCharacter; }
         public void Enable() { Get().Enable(); }
@@ -509,6 +554,9 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @Crouch.started += instance.OnCrouch;
+            @Crouch.performed += instance.OnCrouch;
+            @Crouch.canceled += instance.OnCrouch;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -525,6 +573,9 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @Crouch.started -= instance.OnCrouch;
+            @Crouch.performed -= instance.OnCrouch;
+            @Crouch.canceled -= instance.OnCrouch;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -638,6 +689,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
     }
     public interface IBuildModeActions

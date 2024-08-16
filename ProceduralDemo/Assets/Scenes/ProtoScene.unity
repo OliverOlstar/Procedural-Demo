@@ -846,6 +846,9 @@ MonoBehaviour:
     OnAbilityActivated:
       m_PersistentCalls:
         m_Calls: []
+    OnAbilityDeactivated:
+      m_PersistentCalls:
+        m_Calls: []
     m_Updateable:
       m_Type: 3
       m_Priority: 375
@@ -853,6 +856,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 45a1424d68a59be4cace99a48814b565, type: 2}
     - {fileID: 11400000, guid: 5a1aae85de20d62458e9c3613bdbd6b5, type: 2}
     - {fileID: 11400000, guid: 4df49c86a85e10149ae56ad86a41dc97, type: 2}
+    - {fileID: 11400000, guid: faf59d0f22843734d90fdbe7c80efd9e, type: 2}
 --- !u!114 &82955120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31163,7 +31167,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   crouchInput:
-    m_IsToggle: 0
+    m_IsToggle: 1
     m_Input: 0
     OnChanged:
       m_PersistentCalls:

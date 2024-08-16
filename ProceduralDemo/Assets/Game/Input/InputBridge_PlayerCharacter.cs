@@ -13,11 +13,14 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 	[SerializeField]
 	private InputModule_Toggle sprintInput = new();
 	[SerializeField]
+	private InputModule_Toggle crouchInput = new();
+	[SerializeField]
 	private InputModule_Trigger interactInput = new();
 
 	public InputModule_Vector2 Move => moveInput;
 	public InputModule_Trigger Jump => jumpInput;
 	public InputModule_Toggle Sprint => sprintInput;
+	public InputModule_Toggle Crouch => crouchInput;
 	public InputModule_Trigger Interact => interactInput;
 
 	public override InputActionMap Actions => InputSystem.Instance?.PlayerCharacter.Get();
@@ -26,6 +29,7 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 		yield return moveInput;
 		yield return jumpInput;
 		yield return sprintInput;
+		yield return crouchInput;
 		yield return interactInput;
 	}
 
@@ -35,6 +39,7 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 		moveInput.Initalize(input.Move, IsValid);
 		jumpInput.Initalize(input.Jump, IsValid);
 		sprintInput.Initalize(input.Sprint, IsValid);
+		crouchInput.Initalize(input.Crouch, IsValid);
 		interactInput.Initalize(input.Interact, IsValid);
 
 		base.Awake();

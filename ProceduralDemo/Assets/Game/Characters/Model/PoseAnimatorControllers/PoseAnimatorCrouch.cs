@@ -50,6 +50,7 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 		m_WalkHandle = Animator.Add(m_WalkAnimation);
 
 		Root.Abilities.OnAbilityActivated.AddListener(OnAbilityActivated);
+		Root.Abilities.OnAbilityDeactivated.AddListener(OnAbilityDeactivated);
 		Root.OnGround.OnGroundEnterEvent.AddListener(OnGroundEnter);
 		m_Wheel.OnAngleChanged.AddListener(OnMoveAngleChanged);
 	}
@@ -57,6 +58,7 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 	public override void Destroy()
 	{
 		Root.Abilities.OnAbilityActivated.RemoveListener(OnAbilityActivated);
+		Root.Abilities.OnAbilityDeactivated.RemoveListener(OnAbilityDeactivated);
 		Root.OnGround.OnGroundEnterEvent.RemoveListener(OnGroundEnter);
 		m_Wheel.OnAngleChanged.RemoveListener(OnMoveAngleChanged);
 	}
@@ -97,6 +99,18 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 		if (pAbilityReferenceType == typeof(SOPlayerAbilityJump) || pAbilityReferenceType == typeof(SOPlayerAbilityWallJump))
 		{
 			m_WeightVelocity += m_JumpForce;
+		}
+		else if (pAbilityReferenceType == typeof(SOPlayerAbilityCrouch))
+		{
+			m_IsCrouching = true;
+		}
+	}
+
+	private void OnAbilityDeactivated(Type pAbilityReferenceType)
+	{
+		if (pAbilityReferenceType == typeof(SOPlayerAbilityCrouch))
+		{
+			m_IsCrouching = false;
 		}
 	}
 

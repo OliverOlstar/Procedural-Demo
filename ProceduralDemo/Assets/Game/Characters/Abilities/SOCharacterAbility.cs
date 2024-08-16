@@ -86,6 +86,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		m_IsActive = false;
 		LogMethod();
 		DeactivateInternal();
+		m_Root.Abilities.OnAbilityDeactivated?.Invoke(typeof(TData));
 	}
 
 #region Helpers
