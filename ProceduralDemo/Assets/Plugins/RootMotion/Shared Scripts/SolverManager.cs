@@ -32,6 +32,7 @@ namespace RootMotion
 		protected virtual void UpdateSolver() {}
 		protected virtual void FixTransforms() {}
 		
+		private ODev.PoseAnimator.PoseAnimator poseAnimator;
 		private Animator animator;
 		private Animation legacy;
 		private bool updateFrame;
@@ -53,6 +54,11 @@ namespace RootMotion
 
 		private bool animatePhysics {
 			get {
+				if (poseAnimator != null)
+				{
+					return true;
+				}
+
 				if (animator != null)
 				{
 					return animator.updateMode == AnimatorUpdateMode.AnimatePhysics;
@@ -110,6 +116,7 @@ namespace RootMotion
 			}
 
 
+			t.TryGetComponent(out poseAnimator);
 			animator = t.GetComponent<Animator>();
 			legacy = t.GetComponent<Animation>();
 
@@ -118,6 +125,10 @@ namespace RootMotion
 				return;
 			}
 
+			if (poseAnimator == null && findInChildren)
+			{
+				poseAnimator = t.GetComponentInChildren<ODev.PoseAnimator.PoseAnimator>();
+			}
 
 			if (animator == null && findInChildren)
 			{
@@ -138,7 +149,7 @@ namespace RootMotion
 
 		private bool isAnimated {
 			get {
-				return animator != null || legacy != null;
+				return poseAnimator != null || animator != null || legacy != null;
 			}
 		}
 
