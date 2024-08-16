@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 {
 	[SerializeField]
-	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Early, ODev.Util.Mono.Priorities.CharacterController);
+	private Mono.Updateable m_Updateable = new(Mono.Type.Early, Mono.Priorities.CharacterController);
 	[SerializeField]
 	private CharacterController m_Controller = null;
 	[SerializeField]

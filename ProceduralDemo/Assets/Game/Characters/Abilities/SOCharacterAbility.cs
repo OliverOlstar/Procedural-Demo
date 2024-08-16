@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using ODev.Util;
 using UnityEngine;
@@ -12,9 +13,9 @@ public abstract class SOCharacterAbility : ScriptableObject
 
 public interface ICharacterAbility
 {
-	public void Destory();
-
 	public bool IsActive { get; }
+
+	public void Destory();
 	/// <summary> Calls Activate() if CanActivate() is true </summary>
 	public bool TryActivate();
 	public void Deactivate();
@@ -72,6 +73,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		m_IsActive = true;
 		LogMethod();
 		ActivateInternal();
+		m_Root.Abilities.OnAbilityActivated?.Invoke(typeof(TData));
 	}
 
 	protected void Deactivate()

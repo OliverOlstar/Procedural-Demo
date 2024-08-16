@@ -1,10 +1,14 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Sirenix.OdinInspector;
 
 [System.Serializable]
 public class PlayerAbilities
 {
+	public UnityEvent<Type> OnAbilityActivated = new();
+
 	[SerializeField]
 	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Fixed, ODev.Util.Mono.Priorities.CharacterAbility);
 	[SerializeField, DisableInPlayMode, ODev.Picker.AssetNonNull]
@@ -33,6 +37,7 @@ public class PlayerAbilities
 
 	private void Tick(float pDeltaTime)
 	{
+		ODev.Util.Debug.Log($"Update", typeof(PlayerAbilities));
 		for (int i = 0; i < m_AbilityInstances.Count; i++)
 		{
 			if (m_AbilityInstances[i].IsActive || m_AbilityInstances[i].TryActivate())
