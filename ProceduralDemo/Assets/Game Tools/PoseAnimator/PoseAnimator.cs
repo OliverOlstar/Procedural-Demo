@@ -133,6 +133,11 @@ namespace ODev.PoseAnimator
 			return m_Animations.Length - 1;
 		}
 
+		public PoseWeight GetWeight(int pIndex)
+		{
+			return m_Weights[pIndex];
+		}
+
 		public void SetWeight(int pIndex, float pProgress01, float pWeight01 = 1.0f)
 		{
 			m_Weights[pIndex] = new PoseWeight()

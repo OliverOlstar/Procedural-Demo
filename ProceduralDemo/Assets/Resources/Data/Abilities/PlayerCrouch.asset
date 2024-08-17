@@ -13,3 +13,7 @@ MonoBehaviour:
   m_Name: PlayerCrouch
   m_EditorClassIdentifier: 
   LogSelf: 0
+  m_SpeedModifier:
+    m_Type: 1
+    m_Add: 0
+    m_Percent: -0.4

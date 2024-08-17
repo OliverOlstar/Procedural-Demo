@@ -231,7 +231,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""888507c3-1512-4845-a0b4-a63e32b0df51"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",

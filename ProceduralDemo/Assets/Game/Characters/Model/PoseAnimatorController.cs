@@ -10,6 +10,8 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	private PoseAnimator m_Animator = null;
 	[SerializeField]
 	private PlayerRoot m_Root = null;
+	[SerializeField]
+	private CardinalWheel m_Wheel = null;
 
 	[Header("Controllers")]
 	[SerializeField]
@@ -20,6 +22,11 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	private PoseAnimatorJump m_Jump = new();
 	[SerializeField]
 	private PoseAnimatorCrouch m_Crouch = new();
+	[SerializeField]
+	private CardinalWheelRadius m_WheelRadius = new();
+
+	public CardinalWheel Wheel => m_Wheel;
+	public CardinalWheelRadius WheelRadius => m_WheelRadius;
 
 	private IEnumerable<PoseAnimatorControllerBase> GetControllers()
 	{
@@ -27,13 +34,14 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 		yield return m_Locomotion;
 		yield return m_Jump;
 		yield return m_Crouch;
+		yield return m_WheelRadius;
 	}
 
 	private void Start()
 	{
 		foreach (PoseAnimatorControllerBase controller in GetControllers())
 		{
-			controller.Setup(m_Root, m_Animator);
+			controller.Setup(m_Root, m_Animator, this);
 		}
 	}
 	

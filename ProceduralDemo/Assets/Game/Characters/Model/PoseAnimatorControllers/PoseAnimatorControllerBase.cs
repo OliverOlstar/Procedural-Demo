@@ -12,14 +12,18 @@ public abstract class PoseAnimatorControllerBase
 	private PoseAnimator m_Animator = null;
 	protected PoseAnimator Animator => m_Animator;
 
+	private PoseAnimatorController m_Controller = null;
+	protected PoseAnimatorController Controller => m_Controller;
+
 	protected abstract void Setup();
 	public abstract void Destroy();
 	public abstract void Tick(float pDeltaTime);
 
-	public void Setup(PlayerRoot pRoot, PoseAnimator pAnimator)
+	public void Setup(PlayerRoot pRoot, PoseAnimator pAnimator, PoseAnimatorController pController)
 	{
 		m_Root = pRoot;
 		m_Animator = pAnimator;
+		m_Controller = pController;
 		Setup();
 	}
 }

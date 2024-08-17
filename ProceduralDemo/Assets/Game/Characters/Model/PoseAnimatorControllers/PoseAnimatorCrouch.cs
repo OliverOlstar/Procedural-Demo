@@ -6,10 +6,7 @@ using UnityEngine;
 
 [System.Serializable]
 public class PoseAnimatorCrouch : PoseAnimatorControllerBase
-{
-	[SerializeField]
-	private CardinalWheel m_Wheel = null;
-	
+{	
 	[SerializeField, AssetNonNull]
 	private SOPoseAnimation m_IdleAnimation = null;
 	[SerializeField, AssetNonNull]
@@ -21,14 +18,14 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 	private float m_WalkVelocity = 10.0f;
 	[SerializeField]
 	private float m_WalkDampening = 1.0f;
+	[SerializeField]
+	private float m_WalkWheelRadius = 0.5f;
 	
 	[Header("Overall Weight")]
 	[SerializeField]
 	private float m_WeightSpring = 100.0f;
 	[SerializeField]
 	private float m_WeightDamper = 10.0f;
-	[SerializeField]
-	private bool m_IsCrouching = false;
 
 	[Header("Forces")]
 	[SerializeField]
@@ -38,6 +35,7 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 	[SerializeField, Tooltip("Multiplies m_LandForce by 1.0f - 2.0f based on where player velocity Y is between range")]
 	private Vector2 m_LandVelocitySmoothStep = new(0.5f, 5.0f);
 
+	private bool m_IsCrouching = false;
 	private int m_IdleHandle = -1;
 	private int m_WalkHandle = -1;
 	private float m_Weight01 = 0.0f;
@@ -48,11 +46,12 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 	{
 		m_IdleHandle = Animator.Add(m_IdleAnimation);
 		m_WalkHandle = Animator.Add(m_WalkAnimation);
+		Controller.WheelRadius.AddWheelRadius(m_WalkHandle, m_WalkWheelRadius);
 
 		Root.Abilities.OnAbilityActivated.AddListener(OnAbilityActivated);
 		Root.Abilities.OnAbilityDeactivated.AddListener(OnAbilityDeactivated);
 		Root.OnGround.OnGroundEnterEvent.AddListener(OnGroundEnter);
-		m_Wheel.OnAngleChanged.AddListener(OnMoveAngleChanged);
+		Controller.Wheel.OnAngleChanged.AddListener(OnMoveAngleChanged);
 	}
 
 	public override void Destroy()
@@ -60,12 +59,11 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 		Root.Abilities.OnAbilityActivated.RemoveListener(OnAbilityActivated);
 		Root.Abilities.OnAbilityDeactivated.RemoveListener(OnAbilityDeactivated);
 		Root.OnGround.OnGroundEnterEvent.RemoveListener(OnGroundEnter);
-		m_Wheel.OnAngleChanged.RemoveListener(OnMoveAngleChanged);
+		Controller.Wheel.OnAngleChanged.RemoveListener(OnMoveAngleChanged);
 	}
 
 	public override void Tick(float pDeltaTime)
 	{
-		// m_Wheel.SetRadius(1.0f);
 		WeightSpringDamper(pDeltaTime);
 		IdleProgress(pDeltaTime);
 		WalkProgress(pDeltaTime);
