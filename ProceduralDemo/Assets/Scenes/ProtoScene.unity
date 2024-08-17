@@ -4200,19 +4200,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -4233,6 +4227,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &311135915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9489,19 +9487,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -9522,6 +9514,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &569980502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10339,19 +10335,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -10372,6 +10362,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &651538973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11423,19 +11417,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -11456,6 +11444,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &734829641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19895,19 +19887,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -19928,6 +19914,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &904508024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20362,19 +20352,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -20395,6 +20379,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &948777725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20561,19 +20549,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -20594,6 +20576,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &956972242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24269,19 +24255,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -24302,6 +24282,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &1137688680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24363,19 +24347,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -24396,6 +24374,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &1161114278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24543,19 +24525,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -24576,6 +24552,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &1182744847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25915,19 +25895,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -25948,6 +25922,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &1307890011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27900,19 +27878,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -27933,6 +27905,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &1406739150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29815,19 +29791,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -29848,6 +29818,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &1462055020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39421,19 +39395,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 0}
     m_IdleAnimationSpeed: 0.1
   m_Locomotion:
-    m_CenterOfMass: {fileID: 0}
     m_WalkAnimation: {fileID: 0}
     m_RunAnimation: {fileID: 0}
     m_RunVelocity: 10
     m_WalkVelocity: 1
     m_WeightDampening: 1
-    m_BounceHeight: 0.25
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 0}
     m_WeightDampening: 1
@@ -39454,6 +39422,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: 0.5, y: 5}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 0}
+    m_Enabled: 1
+    m_BounceHeight: 0.25
 --- !u!114 &2057000297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42072,55 +42044,13 @@ MonoBehaviour:
     m_IdleAnimation: {fileID: 11400000, guid: 557b458cf25aa9b4db41e3c03516eb1f, type: 2}
     m_IdleAnimationSpeed: 0.4
   m_Locomotion:
-    m_CenterOfMass: {fileID: 1429430995}
     m_WalkAnimation: {fileID: 11400000, guid: f9a26ef3b4f0a634fb45223d215d0d48, type: 2}
     m_RunAnimation: {fileID: 11400000, guid: 32b84010a2a143d40986d262af954154, type: 2}
     m_RunVelocity: 9
     m_WalkVelocity: 4
     m_WeightDampening: 10
-    m_BounceHeight: 0.4
-    m_BounceCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0.0023052096
-        outSlope: 0.0023052096
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.23147349
-      - serializedVersion: 3
-        time: 7
-        value: 1
-        inSlope: 0.00027656704
-        outSlope: 0.00027656704
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.17063802
-      - serializedVersion: 3
-        time: 11.713892
-        value: 0.4584957
-        inSlope: -0.077427454
-        outSlope: -0.077427454
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 20
-        value: 0.1
-        inSlope: 0.0004779282
-        outSlope: 0.0004779282
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.07966423
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
+    m_WalkBounceHeight: 0.5
+    m_RunBounceHeight: 0.25
   m_Jump:
     m_JumpAnimation: {fileID: 11400000, guid: cff443a179087cf4a984b5e43a5ab153, type: 2}
     m_WeightDampening: 9
@@ -42141,6 +42071,10 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_WheelRadius:
     m_Enabled: 1
+  m_CenterOfMassBounce:
+    m_CenterOfMass: {fileID: 1429430995}
+    m_Enabled: 1
+    m_BounceHeight: 1
 --- !u!114 &2134169962
 MonoBehaviour:
   m_ObjectHideFlags: 0

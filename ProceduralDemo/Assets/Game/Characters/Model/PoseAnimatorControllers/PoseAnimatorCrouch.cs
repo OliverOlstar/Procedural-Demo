@@ -47,6 +47,7 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 		m_IdleHandle = Animator.Add(m_IdleAnimation);
 		m_WalkHandle = Animator.Add(m_WalkAnimation);
 		Controller.WheelRadius.AddWheelRadius(m_WalkHandle, m_WalkWheelRadius);
+		Controller.CenterOfMassBounce.AddBounce(m_IdleHandle, 0.0f);
 
 		Root.Abilities.OnAbilityActivated.AddListener(OnAbilityActivated);
 		Root.Abilities.OnAbilityDeactivated.AddListener(OnAbilityDeactivated);

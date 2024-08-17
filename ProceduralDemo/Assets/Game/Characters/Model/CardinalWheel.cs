@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using ODev;
 using ODev.Util;
 using UnityEngine;
@@ -19,6 +17,7 @@ public class CardinalWheel : UpdateableMonoBehaviour
 	private float m_Angle = 0.0f;
 	private Vector3 m_LastPosition = Vector3.zero;
 
+	public float Angle => m_Angle;
 	public float Radius => m_Radius;
 
 	public void SetRadius(float pRadius)

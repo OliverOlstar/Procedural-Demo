@@ -19,5 +19,5 @@ MonoBehaviour:
   - Clip: {fileID: 11400000, guid: a09191f240b51a146ba6822739266c9c, type: 2}
   m_Type: 1
   m_Easing:
-    Method: 1
+    Method: 0
     Direction: 0
