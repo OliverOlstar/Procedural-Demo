@@ -58,7 +58,7 @@ public class BuildModeControllerMoving : BuildModeController.StateBase
 			return;
 		}
 
-		BuildModeManager.MoveItem(m_SelectetBuilding.Id, m_LastResult.Point, m_LastResult.Rotation);
+		BuildModeManager.MoveItem(m_SelectetBuilding.Id, m_LastResult.Point, m_LastResult.Rotation, m_LastResult.Other);
 		Root.Contoller.SwitchToStateSelecting();
 		SOCue.Play(m_PlacedBuilding, new CueContext(m_LastResult.Point));
 	}
