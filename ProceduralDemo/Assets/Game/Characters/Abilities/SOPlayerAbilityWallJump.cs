@@ -42,7 +42,13 @@ public class PlayerAbilityWallJump : CharacterAbility<SOPlayerAbilityWallJump>
 		Root.Movement.SetVelocityY(Data.JumpForce);
 		Vector3 direction = Vector3.Reflect(Root.Movement.VelocityXZ, Root.OnWall.HitInfo.normal);
 		Root.Movement.SetVelocityXZ(direction.Horizontalize() * Data.PushOffForce);
-		Deactivate();
 	}
-	protected override void DeactivateInternal() { }
+	protected override void DeactivateInternal()
+	{
+		if (Root.Movement.VelocityY <= 0.0f)
+		{
+			return;
+		}
+		Root.Movement.SetVelocityY(Root.Movement.VelocityY * 0.25f);
+	}
 }

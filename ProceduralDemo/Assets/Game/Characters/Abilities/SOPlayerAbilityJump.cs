@@ -35,7 +35,13 @@ public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 	protected override void ActivateInternal()
 	{
 		Root.Movement.SetVelocityY(Data.JumpForce);
-		Deactivate();
 	}
-	protected override void DeactivateInternal() { }
+	protected override void DeactivateInternal()
+	{
+		if (Root.Movement.VelocityY <= 0.0f)
+		{
+			return;
+		}
+		Root.Movement.SetVelocityY(Root.Movement.VelocityY * 0.25f);
+	}
 }
