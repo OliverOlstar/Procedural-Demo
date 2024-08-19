@@ -1,5 +1,7 @@
+using ODev.Input;
 using ODev.Util;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Wall Jump Ability", menuName = "Character/Ability/Player Wall Jump")]
 public class SOPlayerAbilityWallJump : SOCharacterAbility
@@ -12,28 +14,27 @@ public class SOPlayerAbilityWallJump : SOCharacterAbility
 	public float JumpForce => m_JumpForce;
 	public float PushOffForce => m_PushOffForce;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer) => new PlayerAbilityWallJump(pPlayer, this);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityWallJump(pPlayer, this, pOnInputRecived);
 }
 
 public class PlayerAbilityWallJump : CharacterAbility<SOPlayerAbilityWallJump>
 {
-	public PlayerAbilityWallJump(PlayerRoot pPlayer, SOPlayerAbilityWallJump pData) : base(pPlayer, pData) { }
+	public PlayerAbilityWallJump(PlayerRoot pPlayer, SOPlayerAbilityWallJump pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+
+	public override InputModule_Toggle InputActivate => Root.Input.Jump;
 
 	protected override void Initalize()
 	{
-		Root.Input.Jump.OnPerformed.AddListener(OnJumpInput);
+
 	}
 	protected override void DestroyInternal()
 	{
-		Root.Input.Jump.OnPerformed.RemoveListener(OnJumpInput);
+
 	}
 
-	private void OnJumpInput()
+	protected override bool CanActivate()
 	{
-		if (!Root.OnGround.IsOnGround && Root.OnWall.IsOnWall)
-		{
-			Activate();
-		}
+		return !Root.OnGround.IsOnGround && Root.OnWall.IsOnWall;
 	}
 
 	protected override void ActivateInternal()
