@@ -2,6 +2,7 @@ using System;
 using ODev;
 using ODev.Util;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Climb Ability", menuName = "Character/Ability/Player Climb")]
 public class SOPlayerAbilityClimb : SOCharacterAbility
@@ -23,19 +24,19 @@ public class SOPlayerAbilityClimb : SOCharacterAbility
 	public float AccelerationPercentModify => m_AccelerationPercentModify;
 	public float DragPercentModify => m_DragPercentModify;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer) => new PlayerAbilityClimb(pPlayer, this);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityClimb(pPlayer, this, pOnInputRecived);
 }
 
 public class PlayerAbilityClimb : CharacterAbility<SOPlayerAbilityClimb>
 {
-	public PlayerAbilityClimb(PlayerRoot pPlayer, SOPlayerAbilityClimb pData) : base(pPlayer, pData) { }
+	public PlayerAbilityClimb(PlayerRoot pPlayer, SOPlayerAbilityClimb pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
 
 	protected override void Initalize() { }
 	protected override void DestroyInternal() { }
 
 	private bool m_IsInputing;
 
-	protected override bool CanActivate()
+	protected override bool CanActivateUpdate()
 	{
 		if (Root.OnGround.IsOnGround || !Root.OnWall.IsOnWall)
 		{
@@ -56,7 +57,7 @@ public class PlayerAbilityClimb : CharacterAbility<SOPlayerAbilityClimb>
 
 	public override void ActiveTick(float pDeltaTime)
 	{
-		if (!CanActivate())
+		if (!CanActivateUpdate())
 		{
 			Deactivate();
 			return;

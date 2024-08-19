@@ -57,7 +57,7 @@ public class BuildModeControllerPlacing : BuildModeController.StateBase
 			return;
 		}
 		
-		if (!BuildModeManager.PlaceNewItem(m_SelectedItem, m_LastResult.Point, m_LastResult.Rotation))
+		if (!BuildModeManager.PlaceNewItem(m_SelectedItem, m_LastResult.Point, m_LastResult.Rotation, m_LastResult.Other))
 		{
 			Root.Contoller.SwitchToStateSelecting();
 		}
