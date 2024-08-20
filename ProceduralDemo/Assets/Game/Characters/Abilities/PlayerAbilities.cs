@@ -24,6 +24,7 @@ public class PlayerAbilities
 	private readonly List<ICharacterAbility> m_AbilityInstances = new();
 	private readonly List<int> m_LastInputedAbilities = new(2);
 	private float m_LastInputedSeconds = 0.0f;
+	private bool m_InputActivatedThisFrame = false;
 
 	public void Initalize(PlayerRoot pRoot)
 	{
@@ -47,6 +48,8 @@ public class PlayerAbilities
 
 	private void Tick(float pDeltaTime)
 	{
+		m_InputActivatedThisFrame = false;
+
 		if (m_LastInputedSeconds > 0.0f)
 		{
 			for (int i = 0; i < m_LastInputedAbilities.Count; i++)
@@ -89,10 +92,16 @@ public class PlayerAbilities
 		// ODev.Util.Debug.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()} -> {pPerformed}", typeof(PlayerAbilities));
 		if (pPerformed)
 		{
-			if (!m_AbilityInstances[pIndex].IsActive && !m_AbilityInstances[pIndex].TryActivate())
+			if (m_AbilityInstances[pIndex].IsActive)
 			{
-				AddLastInputedAbility(pIndex);
+				return;
 			}
+			if (m_AbilityInstances[pIndex].TryActivate())
+			{
+				m_InputActivatedThisFrame = true;
+				return;
+			}
+			AddLastInputedAbility(pIndex);
 		}
 		else
 		{

@@ -6,13 +6,19 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Wall Jump Ability", menuName = "Character/Ability/Player Wall Jump")]
 public class SOPlayerAbilityWallJump : SOCharacterAbility
 {
-	[SerializeField]
-	private float m_JumpForce = 20.0f;
-	[SerializeField]
+	[Space, SerializeField]
 	private float m_PushOffForce = 20.0f;
+	[SerializeField]
+	private float m_Force = 9.0f;
+	[Space, SerializeField, Range(0.0f, 1.0f)]
+	private float m_CancelVelocityPercent = 0.5f;
+	[SerializeField]
+	private float m_CancelMinVelocity = 5.0f;
 
-	public float JumpForce => m_JumpForce;
 	public float PushOffForce => m_PushOffForce;
+	public float Force => m_Force;
+	public float CancelVelocityPercent => m_CancelVelocityPercent;
+	public float CancelMinVelocity => m_CancelMinVelocity;
 
 	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityWallJump(pPlayer, this, pOnInputRecived);
 }
@@ -39,16 +45,17 @@ public class PlayerAbilityWallJump : CharacterAbility<SOPlayerAbilityWallJump>
 
 	protected override void ActivateInternal()
 	{
-		Root.Movement.SetVelocityY(Data.JumpForce);
+		Root.Movement.SetVelocityY(Data.Force);
 		Vector3 direction = Vector3.Reflect(Root.Movement.VelocityXZ, Root.OnWall.HitInfo.normal);
 		Root.Movement.SetVelocityXZ(direction.Horizontalize() * Data.PushOffForce);
 	}
 	protected override void DeactivateInternal()
 	{
-		if (Root.Movement.VelocityY <= 0.0f)
+		if (Root.Movement.VelocityY <= Data.CancelMinVelocity)
 		{
 			return;
 		}
-		Root.Movement.SetVelocityY(Root.Movement.VelocityY * 0.25f);
+		float velocity = Mathf.Max(Root.Movement.VelocityY * Data.CancelVelocityPercent, Data.CancelMinVelocity);
+		Root.Movement.SetVelocityY(velocity);
 	}
 }

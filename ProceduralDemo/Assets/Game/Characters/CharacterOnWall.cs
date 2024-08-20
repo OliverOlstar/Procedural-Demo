@@ -65,7 +65,7 @@ public class CharacterOnWall : MonoBehaviour
 		return Physics.CapsuleCast(pointA, pointB, m_Radius, direction, out m_HitInfo, m_Distance, m_WallLayer);
 	}
 
-	public bool IsValid()
+	private bool IsValid()
 	{
 		float angle = Mathf.Abs(m_HitInfo.normal.y) * 90.0f;
 		return angle < m_MaxSlope;
