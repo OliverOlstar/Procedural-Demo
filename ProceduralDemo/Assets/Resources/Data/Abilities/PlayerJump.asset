@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: PlayerJump
   m_EditorClassIdentifier: 
   LogSelf: 0
-  m_JumpForce: 12
+  m_Force: 11
+  m_GraceSeconds: 0.25
+  m_CancelVelocityPercent: 0.5
+  m_CancelMinVelocity: 7

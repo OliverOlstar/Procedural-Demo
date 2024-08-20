@@ -56,10 +56,7 @@ public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 
 	private void OnAirEnter()
 	{
-		if (IsActive)
-		{
-			Deactivate();
-		}
+		Deactivate();
 		if (Root.Input.Crouch.IsToggle)
 		{
 			Root.Input.Crouch.Clear();

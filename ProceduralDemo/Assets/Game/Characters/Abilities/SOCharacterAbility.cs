@@ -100,7 +100,6 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	{
 		if (!m_IsActive)
 		{
-			Root.LogError("Ability is not active");
 			return;
 		}
 		m_IsActive = false;

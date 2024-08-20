@@ -51,11 +51,17 @@ public class PlayerAbilities
 		{
 			for (int i = 0; i < m_LastInputedAbilities.Count; i++)
 			{
-				if (!m_AbilityInstances[i].IsActive && m_AbilityInstances[i].TryActivate())
+				ICharacterAbility ability = m_AbilityInstances[m_LastInputedAbilities[i]];
+				if (ability.IsActive || !ability.TryActivate())
 				{
-					m_LastInputedSeconds = -1.0f;
-					break;
+					continue;
 				}
+				if (!ability.InputActivate.Input)
+				{
+					ability.Deactivate();
+				}
+				m_LastInputedSeconds = -1.0f;
+				break;
 			}
 			m_LastInputedSeconds -= pDeltaTime;
 		}
@@ -74,24 +80,21 @@ public class PlayerAbilities
 	{
 		for (int i = 0; i < m_AbilityInstances.Count; i++)
 		{
-			if (m_AbilityInstances[i].IsActive)
-			{
-				m_AbilityInstances[i].Deactivate();
-			}
+			m_AbilityInstances[i].Deactivate();
 		}
 	}
 
 	internal void OnAbilityInputRecieved(int pIndex, bool pPerformed)
 	{
-		//ODev.Util.Debug.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()} -> {pPerformed}", typeof(PlayerAbilities));
-		if (pPerformed && !m_AbilityInstances[pIndex].IsActive)
+		// ODev.Util.Debug.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()} -> {pPerformed}", typeof(PlayerAbilities));
+		if (pPerformed)
 		{
-			if (!m_AbilityInstances[pIndex].TryActivate())
+			if (!m_AbilityInstances[pIndex].IsActive && !m_AbilityInstances[pIndex].TryActivate())
 			{
 				AddLastInputedAbility(pIndex);
 			}
 		}
-		if (!pPerformed && m_AbilityInstances[pIndex].IsActive)
+		else
 		{
 			m_AbilityInstances[pIndex].Deactivate();
 		}
@@ -99,6 +102,7 @@ public class PlayerAbilities
 
 	private void AddLastInputedAbility(int pIndex)
 	{
+		// ODev.Util.Debug.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()}", typeof(PlayerAbilities));
 		if (!m_LastInputedSeconds.Approximately(m_InputBufferSeconds))
 		{
 			m_LastInputedAbilities.Clear();
