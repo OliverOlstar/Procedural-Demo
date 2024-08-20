@@ -1,6 +1,8 @@
 using System;
 using ODev.GameStats;
+using ODev.Input;
 using UnityEngine;
+using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Crouch Ability", menuName = "Character/Ability/Player Crouch")]
 public class SOPlayerAbilityCrouch : SOCharacterAbility
@@ -9,29 +11,27 @@ public class SOPlayerAbilityCrouch : SOCharacterAbility
 	public FloatGameStatModifier m_SpeedModifier = new();
 	public FloatGameStatModifier SpeedModifier => m_SpeedModifier;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer) => new PlayerAbilityCrouch(pPlayer, this);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityCrouch(pPlayer, this, pOnInputRecived);
 }
 
 public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 {
 	private FloatGameStatModifier m_ModifierInstance;
 
-	public PlayerAbilityCrouch(PlayerRoot pPlayer, SOPlayerAbilityCrouch pData) : base(pPlayer, pData) { }
+	public PlayerAbilityCrouch(PlayerRoot pPlayer, SOPlayerAbilityCrouch pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+
+	public override InputModule_Toggle InputActivate => Root.Input.Crouch;
 
 	protected override void Initalize()
 	{
 		m_ModifierInstance = FloatGameStatModifier.CreateCopy(Data.SpeedModifier);
 		
-		Root.Input.Crouch.OnPerformed.AddListener(OnCrouchInputPerformed);
-		Root.Input.Crouch.OnCanceled.AddListener(OnCrouchInputCanceled);
 		Root.OnGround.OnAirEnterEvent.AddListener(OnAirEnter);
 		Root.OnGround.OnAirExitEvent.AddListener(OnAirExit);
 	}
 
 	protected override void DestroyInternal()
 	{
-		Root.Input.Crouch.OnPerformed.RemoveListener(OnCrouchInputPerformed);
-		Root.Input.Crouch.OnCanceled.RemoveListener(OnCrouchInputCanceled);
 		Root.OnGround.OnAirEnterEvent.RemoveListener(OnAirEnter);
 		Root.OnGround.OnAirExitEvent.RemoveListener(OnAirExit);
 	}
@@ -49,20 +49,9 @@ public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 		m_ModifierInstance.Remove(Root.Movement.MaxVelocity);
 	}
 
-	private void OnCrouchInputPerformed()
+	protected override bool CanActivate()
 	{
-		if (!Root.OnGround.IsInAir)
-		{
-			Activate();
-		}
-	}
-
-	private void OnCrouchInputCanceled()
-	{
-		if (IsActive)
-		{
-			Deactivate();
-		}
+		return !Root.OnGround.IsInAir;
 	}
 
 	private void OnAirEnter()

@@ -10,7 +10,7 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	[SerializeField]
 	private CharacterController m_Controller = null;
 	[SerializeField]
-	private PlayerRoot m_Player = null;
+	private PlayerRoot m_Root = null;
 
 	[Header("Stats")]
 	public bool MovementEnabled = true;
@@ -33,7 +33,8 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	[Space]
 	public bool GravityEnabled = true;
-	public FloatGameStat Gravity = new(-19.62f);
+	public FloatGameStat UpGravity = new(-19.62f);
+	public FloatGameStat DownGravity = new(-19.62f);
 	public FloatGameStat TerminalGravity = new(-30.0f);
 
 	private Vector3 m_RecievedDisplacement = Vector3.zero;
@@ -54,6 +55,21 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	{
 		m_Controller.enableOverlapRecovery = true;
 		m_Controller.providesContacts = false;
+
+		m_Root.OnGround.OnGroundExitEvent.AddListener(OnGroundExit);
+	}
+
+	private void OnDestroy()
+	{
+		m_Root.OnGround.OnGroundExitEvent.RemoveListener(OnGroundExit);
+	}
+
+	private void OnGroundExit()
+	{
+		if (m_VelocityY.Approximately(-1.0f))
+		{
+			m_VelocityY = 1.0f;
+		}
 	}
 
 	private void OnEnable()
@@ -85,25 +101,25 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	private void GravityTick(float pDeltaTime, out Vector3 oGravityDirection)
 	{
-		m_VelocityY += Gravity.Value * pDeltaTime;
-		float maxVelocityY = GravityEnabled ? (m_Player.OnGround.IsOnGround ? -1.0f : TerminalGravity.Value) : 0.0f;
+		m_VelocityY += (m_VelocityY > 0.0f ? UpGravity.Value : DownGravity.Value) * pDeltaTime;
+		float maxVelocityY = GravityEnabled ? (m_Root.OnGround.IsOnGround ? -1.0f : TerminalGravity.Value) : 0.0f;
 		m_VelocityY = Mathf.Max(m_VelocityY, maxVelocityY);
 
 		oGravityDirection = Vector3.up;
-		if (m_VelocityY < 0.0f && m_Player.OnGround.IsOnSlope)
+		if (m_VelocityY < 0.0f && m_Root.OnGround.IsOnSlope)
 		{
-			oGravityDirection = Vector3.ProjectOnPlane(Vector3.up, m_Player.OnGround.GetAverageNormal()).normalized;
+			oGravityDirection = Vector3.ProjectOnPlane(Vector3.up, m_Root.OnGround.GetAverageNormal()).normalized;
 		}
 	}
 
 	private void MoveTick(float pDeltaTime)
 	{
-		Vector3 normal = m_Player.OnGround.IsOnGround ? m_Player.OnGround.GetAverageNormal() : Vector3.up;
+		Vector3 normal = m_Root.OnGround.IsOnGround ? m_Root.OnGround.GetAverageNormal() : Vector3.up;
 		Vector3 input = Vector3.zero;
 		if (MovementEnabled)
 		{
-			input = m_Player.Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
-			input += m_Player.Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
+			input = m_Root.Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
+			input += m_Root.Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
 			input.Normalize();
 		}
 
@@ -120,14 +136,14 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	private void GetStats(out float oAcceleration, out float oDrag, out float oMaxVelocity)
 	{
-		if (m_Player.OnGround.IsOnGround)
+		if (m_Root.OnGround.IsOnGround)
 		{
 			oAcceleration = Acceleration.Value;
 			oDrag = Drag.Value;
 			oMaxVelocity = MaxVelocity.Value;
 			return;
 		}
-		else if (m_Player.OnGround.IsInAir)
+		else if (m_Root.OnGround.IsInAir)
 		{
 			oAcceleration = AirAcceleration.Value;
 			oDrag = AirDrag.Value;
