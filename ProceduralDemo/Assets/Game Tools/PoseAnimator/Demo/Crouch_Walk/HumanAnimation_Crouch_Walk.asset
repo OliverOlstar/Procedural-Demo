@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: HumanAnimation_Crouch_Walk
   m_EditorClassIdentifier: 
   m_AnimationClips:
-  - Clip: {fileID: 11400000, guid: 21153025ed6d7a44f99ac2dd47e9818d, type: 2}
   - Clip: {fileID: 11400000, guid: 2ef9fc5de4a57a24e996a86e90b0ee79, type: 2}
-  - Clip: {fileID: 11400000, guid: 2a14b866a38fb6941b084246a08a8d5a, type: 2}
+  - Clip: {fileID: 11400000, guid: 21153025ed6d7a44f99ac2dd47e9818d, type: 2}
   - Clip: {fileID: 11400000, guid: a09191f240b51a146ba6822739266c9c, type: 2}
+  - Clip: {fileID: 11400000, guid: 2a14b866a38fb6941b084246a08a8d5a, type: 2}
   m_Type: 1
   m_Easing:
     Method: 0
