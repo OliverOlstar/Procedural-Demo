@@ -37,6 +37,10 @@ namespace ODev.UI
 			{
 				return;
 			}
+			if (m_Text == null && !TryGetComponent(out m_Text))
+			{
+				return;
+			}
 			OnValueChanged(m_Slider.value);
 		}
 
