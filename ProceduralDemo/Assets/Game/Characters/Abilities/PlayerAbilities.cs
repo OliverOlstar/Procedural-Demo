@@ -111,6 +111,10 @@ public class PlayerAbilities
 
 	private void AddLastInputedAbility(int pIndex)
 	{
+		if (m_InputActivatedThisFrame)
+		{
+			return;
+		}
 		// ODev.Util.Debug.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()}", typeof(PlayerAbilities));
 		if (!m_LastInputedSeconds.Approximately(m_InputBufferSeconds))
 		{
