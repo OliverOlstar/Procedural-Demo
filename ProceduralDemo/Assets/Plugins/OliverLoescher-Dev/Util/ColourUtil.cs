@@ -9,12 +9,11 @@ namespace ODev.Util
 		{
 			if (string.IsNullOrEmpty(pHEX))
 			{
-
 				return Color.white;
 			}
 			if (pHEX[0] == '#')
 			{
-				Debug.LogError("ColorConst.FromHex: Colour hex code doesnt start with a \'#\'.", typeof(Colour));
+				Debug.LogError(typeof(Colour), "ColorConst.FromHex: Colour hex code doesnt start with a \'#\'.");
 			}
 			ColorUtility.TryParseHtmlString(pHEX, out Color colour);
 			return colour;

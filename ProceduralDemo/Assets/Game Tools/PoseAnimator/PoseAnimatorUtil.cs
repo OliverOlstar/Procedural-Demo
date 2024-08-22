@@ -60,7 +60,7 @@ namespace ODev.PoseAnimator
 				Bone bone = m_BoneStack.Pop();
 				while (bone.Depth != pSkeleton.GetBone(skeletonIndex).Depth)
 				{
-					Util.Debug.LogError($"Skipping bone of depth {pSkeleton.GetBone(skeletonIndex).Depth}", typeof(PoseUtil));
+					Util.Debug.LogError(typeof(PoseUtil), $"Skipping bone of depth {pSkeleton.GetBone(skeletonIndex).Depth}");
 					// skeletonIndex++;
 				}
 				bone.Index = skeletonIndex;
@@ -79,7 +79,7 @@ namespace ODev.PoseAnimator
 		{
 			if (pSkeleton.Length != pSource.BoneCount)
 			{
-				Util.Debug.DevException($"The nativeArray skeleton size does not match the source skeleton", typeof(PoseUtil));
+				Util.Debug.DevException(typeof(PoseUtil), $"The nativeArray skeleton size does not match the source skeleton");
 				return;
 			}
 

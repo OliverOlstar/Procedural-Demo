@@ -18,7 +18,7 @@ namespace ODev.Util
 		{
 			if (pOnTick == null)
 			{
-				Debug.DevException("pOnTick should never be null", typeof(AnimUtilEase));
+				this.DevException("pOnTick should never be null");
 			}
 			
 			m_EaseX = pEaseX;

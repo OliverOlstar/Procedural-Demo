@@ -1,4 +1,5 @@
 ﻿using System;
+using ODev.Util;
 using UnityEngine;
 
 namespace ODev.Debug
@@ -230,8 +231,8 @@ namespace ODev.Debug
 				e = default;
 				if (throwExceptionOnParseFail)
 				{
-					Util.Debug.DevException($"Debug Option '{m_Name}' string argument cannot be empty, " +
-						$"it must be a valid entry in Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}", typeof(DebugOption));
+					this.DevException($"Debug Option '{m_Name}' string argument cannot be empty, " +
+						$"it must be a valid entry in Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}");
 				}
 				return false;
 			}
@@ -241,7 +242,7 @@ namespace ODev.Debug
 			}
 			if (throwExceptionOnParseFail)
 			{
-				Util.Debug.DevException($"Debug Option '{m_Name}' cannot parse '{arg}' to Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}", typeof(DebugOption));
+				this.DevException($"Debug Option '{m_Name}' cannot parse '{arg}' to Enum of type {typeof(T).Name}: {string.Join(", ", Enum.GetNames(typeof(T)))}");
 			}
 			return false;
 		}

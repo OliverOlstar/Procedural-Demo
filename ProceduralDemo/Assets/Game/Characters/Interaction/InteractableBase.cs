@@ -89,7 +89,7 @@ public abstract class InteractableBase : MonoBehaviour
 	{
 		if (m_LogInteractable)
 		{
-			ODev.Util.Debug.Log(pMessage, this, pMethodName);
+			ODev.Util.Debug.Log(this, pMessage, pMethodName);
 		}
 	}
 }

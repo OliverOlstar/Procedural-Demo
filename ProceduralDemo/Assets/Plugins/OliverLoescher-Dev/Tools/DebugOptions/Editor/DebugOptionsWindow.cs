@@ -147,7 +147,7 @@ namespace ODev.Debug
 					}
 					else
 					{
-						Util.Debug.LogWarning($"DebugOptions {op.Name} is of type {nameof(DebugOption.Dropdown)} but arg presets is null or empty. This shouldn't happen", typeof(DebugOptionsWindow));
+						Util.Debug.LogWarning(typeof(DebugOptionsWindow), $"DebugOptions {op.Name} is of type {nameof(DebugOption.Dropdown)} but arg presets is null or empty. This shouldn't happen");
 						newArg = EditorGUILayout.TextField(arg);
 					}
 					break;

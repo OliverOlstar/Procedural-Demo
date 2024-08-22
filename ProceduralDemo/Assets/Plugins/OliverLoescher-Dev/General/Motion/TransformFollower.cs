@@ -48,27 +48,27 @@ namespace ODev
 			m_DebugObject = pDebugParent;
 			if (pChild == null)
 			{
-				Util.Debug.DevException("pChild is null", m_DebugObject);
+				m_DebugObject.DevException("pChild is null");
 				return;
 			}
 			if (pParent == null)
 			{
-				Util.Debug.DevException("pParent is null", m_DebugObject);
+				m_DebugObject.DevException("pParent is null");
 				return;
 			}
 			if (m_Child != null) // Already started
 			{
 				if (m_Child != pChild)
 				{
-					Util.Debug.DevException("Already started but with a different child transform", m_DebugObject);
+					m_DebugObject.DevException("Already started but with a different child transform");
 				}
 				else if (pParent != m_Parent)
 				{
-					Util.Debug.DevException("Already started but with a different parent transform", m_DebugObject);
+					m_DebugObject.DevException("Already started but with a different parent transform");
 				}
 				else
 				{
-					Util.Debug.LogError("Already started", m_DebugObject);
+					m_DebugObject.LogError("Already started");
 				}
 				return;
 			}
@@ -91,7 +91,7 @@ namespace ODev
 		{
 			if (m_Child == null)
 			{
-				Util.Debug.LogWarning("Not started, please start first", m_DebugObject);
+				m_DebugObject.LogWarning("Not started, please start first");
 				return;
 			}
 			m_Parent = null;
@@ -104,7 +104,7 @@ namespace ODev
 		{
 			if (pParent == null)
 			{
-				Util.Debug.DevException("pParent is null", m_DebugObject);
+				m_DebugObject.DevException("pParent is null");
 				return;
 			}
 			m_Parent = pParent;
@@ -117,7 +117,7 @@ namespace ODev
 		{
 			if (m_Parent == null || m_Child == null)
 			{
-				Util.Debug.LogWarning("We aren't registered, we shouldn't get here. Might be an order of operations issue", m_DebugObject);
+				m_DebugObject.LogWarning("We aren't registered, we shouldn't get here. Might be an order of operations issue");
 				return;
 			}
 			Vector3 currPositon = m_Parent.TransformPoint(m_LocalPosition);

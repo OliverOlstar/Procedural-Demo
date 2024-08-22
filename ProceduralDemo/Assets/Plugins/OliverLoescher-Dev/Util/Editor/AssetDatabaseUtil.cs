@@ -129,7 +129,7 @@ namespace ODev.Util
 				}
 				if (name.EndsWith(" "))
 				{
-					Debug.LogWarning($"Core.AssetDatabaseUtil.Cache.AddAsset() '{name}' ends with a space, this will probably cause problems", typeof(AssetDatabase));
+					this.LogWarning($"Core.AssetDatabaseUtil.Cache.AddAsset() '{name}' ends with a space, this will probably cause problems");
 				}
 				m_Names.Add(name, path);
 				return true;
@@ -197,7 +197,7 @@ namespace ODev.Util
 		{
 			if (!assetType.IsSubclassOf(typeof(Object)))
 			{
-				Debug.LogWarning($"Core.AssetDatabaseUtil.FindInternal() {assetType.Name} should be a subclass of UnityEngine.Object", typeof(AssetDatabase));
+				Debug.LogWarning(typeof(AssetDatabase), $"Core.AssetDatabaseUtil.FindInternal() {assetType.Name} should be a subclass of UnityEngine.Object");
 			}
 			if (!s_SearchResults.TryGetValue(assetType, out Cache results))
 			{

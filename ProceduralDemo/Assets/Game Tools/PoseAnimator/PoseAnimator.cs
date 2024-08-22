@@ -28,6 +28,7 @@ namespace ODev.PoseAnimator
 		// Context
 		private TransformAccessArray m_AccessArray;
 		private NativeArray<PoseKey> m_NextPose;
+		private PoseMontageAnimator m_Montages = new();
 
 		private bool m_IsInitalized = false;
 		private JobHandle m_Handle;
@@ -63,12 +64,16 @@ namespace ODev.PoseAnimator
 				m_AccessArray.Add(bone.Transform);
 				index++;
 			}
+
+			m_Montages.Initalize(this);
 		}
 		private void Start() => Initalize();
 
 		void OnDestroy()
 		{
 			m_Handle.Complete();
+			m_Montages.Destroy();
+			
 			m_SkeletonKeys.Dispose();
 			m_Animations.Dispose();
 			m_Weights.Dispose();
@@ -79,17 +84,22 @@ namespace ODev.PoseAnimator
 
 		private void Tick(float pDeltaTime)
 		{
-			PoseBoneSystem poseBoneSystem = new()
+			if (!m_Montages.IsWeightFull())
 			{
-				SkeletonKeys = m_SkeletonKeys,
-				SkeletonLength = m_SkeletonKeys.Length,
-				Animations = m_Animations,
-				Weights = m_Weights,
-				PoseKeys = m_PoseKeys,
+				PoseBoneSystem poseBoneSystem = new()
+				{
+					SkeletonKeys = m_SkeletonKeys,
+					SkeletonLength = m_SkeletonKeys.Length,
+					Animations = m_Animations,
+					Weights = m_Weights,
+					PoseKeys = m_PoseKeys,
 
-				NextPose = m_NextPose, // Modify
-			};
-			m_Handle = poseBoneSystem.Schedule(poseBoneSystem.SkeletonLength, poseBoneSystem.SkeletonLength);
+					NextPose = m_NextPose, // Modify
+				};
+				m_Handle = poseBoneSystem.Schedule(poseBoneSystem.SkeletonLength, poseBoneSystem.SkeletonLength, m_Handle);
+			}
+			
+			m_Handle = m_Montages.TickSchedule(m_SkeletonKeys, m_NextPose, m_Handle);
 
 			ApplyTransformSystem applyTransformSystem = new()
 			{
@@ -101,6 +111,7 @@ namespace ODev.PoseAnimator
 		private void TickComplete(float pDeltaTime)
 		{
 			m_Handle.Complete();
+			m_Handle = default;
 		}
 
 

@@ -28,7 +28,7 @@ namespace ODev.Util
 			Assembly[] assemblies = null;
 			if (AppDomain.CurrentDomain == null)
 			{
-				Debug.LogError("CurrentDomaing is null", typeof(Types));
+				Debug.LogError(typeof(Types), "CurrentDomaing is null");
 				return;
 			}
 			try
@@ -37,7 +37,7 @@ namespace ODev.Util
 			}
 			catch (Exception e)
 			{
-				Debug.DevException($"Constructor had exception: {e} could not get assemblies", typeof(Types));
+				Debug.DevException(typeof(Types), $"Constructor had exception: {e} could not get assemblies");
 			}
 			if (assemblies == null)
 			{
@@ -48,7 +48,7 @@ namespace ODev.Util
 			{
 				if (assembly == null)
 				{
-					Debug.LogError("Contains a null assembly", typeof(Types));
+					Debug.LogError(typeof(Types), "Contains a null assembly");
 					continue;
 				}
 				try
@@ -59,8 +59,8 @@ namespace ODev.Util
 				{
 					int initalCount = s_Types.Count;
 					s_Types.AddRange(e.Types.Where(t => t != null));
-					Debug.LogError($"Constructor had exception on the assembly '{assembly.FullName}'. " +
-						$"We gather {s_Types.Count - initalCount} types from the assembly out of the possible {e.Types.Length}\n{e}", typeof(Types));
+					Debug.LogError(typeof(Types), $"Constructor had exception on the assembly '{assembly.FullName}'. " +
+						$"We gather {s_Types.Count - initalCount} types from the assembly out of the possible {e.Types.Length}\n{e}");
 				}
 			}
 		}
@@ -172,7 +172,7 @@ namespace ODev.Util
 				debugMessage.Append(t.Name);
 				debugMessage.Append(", ");
 			}
-			Debug.LogWarning(debugMessage.ToString(), typeof(Types));
+			Debug.LogWarning(typeof(Types), debugMessage.ToString());
 		}
 	}
 }

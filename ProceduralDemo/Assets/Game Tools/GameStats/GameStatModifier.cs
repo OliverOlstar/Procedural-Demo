@@ -1,3 +1,4 @@
+using ODev.Util;
 using UnityEngine;
 
 namespace ODev.GameStats
@@ -28,7 +29,7 @@ namespace ODev.GameStats
 		{
 			if (m_ModifyKey.HasValue)
 			{
-				Util.Debug.LogError("Tried adding modify when we already have one added", GetType());
+				this.LogError("Tried adding modify when we already have one added");
 				return;
 			}
 			switch (m_Type)
@@ -40,7 +41,7 @@ namespace ODev.GameStats
 					m_ModifyKey = pStat.AddPercentModify(m_Percent);
 					break;
 				default:
-					Util.Debug.DevException(new System.NotImplementedException(m_Type.ToString()), GetType());
+					this.DevException(new System.NotImplementedException(m_Type.ToString()));
 					return;
 			}
 		}
@@ -49,7 +50,7 @@ namespace ODev.GameStats
 		{
 			if (!m_ModifyKey.HasValue)
 			{
-				Util.Debug.LogError("Tried removing modify when don't have one", GetType());
+				this.LogError("Tried removing modify when don't have one");
 				return;
 			}
 			bool success;
@@ -62,12 +63,12 @@ namespace ODev.GameStats
 					success = pStat.TryRemovePercentModify(m_ModifyKey.Value);
 					break;
 				default:
-					Util.Debug.DevException(new System.NotImplementedException(m_Type.ToString()), GetType());
+					this.DevException(new System.NotImplementedException(m_Type.ToString()));
 					return;
 			}
 			if (!success)
 			{
-				Util.Debug.LogError("Failed to remove modify", GetType());
+				this.LogError("Failed to remove modify");
 			}
 			m_ModifyKey = null;
 		}

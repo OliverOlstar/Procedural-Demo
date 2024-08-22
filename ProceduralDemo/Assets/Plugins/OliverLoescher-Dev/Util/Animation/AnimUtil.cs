@@ -90,7 +90,7 @@ namespace ODev.Util
 					s_VisualAnimations.Add(pAnim);
 					break;
 				default:
-					Debug.DevException(new NotImplementedException(), typeof(Anim));
+					Debug.DevException(typeof(Anim), new NotImplementedException());
 					break;
 			}
 			return pAnim;

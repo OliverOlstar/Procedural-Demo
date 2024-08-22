@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using ODev.Util;
 using UnityEngine;
 
 namespace ODev.Debug
@@ -41,7 +42,7 @@ namespace ODev.Debug
 				}
 				catch (System.Exception e)
 				{
-					Util.Debug.DevException(e, typeof(DebugCommandGUI));
+					this.DevException(e);
 				}
 			}
 			m_Categories = new string[m_Methods.Count];
@@ -71,9 +72,9 @@ namespace ODev.Debug
 			{
 				bool enabled = Application.isPlaying;
 				GUIContent content = new(method.Item1.Label, enabled ? method.Item1.Tooltip : "Editor must be in playing");
-				GUI.enabled = enabled;
+				UnityEngine.GUI.enabled = enabled;
 				bool pressed = GUILayout.Button(content);
-				GUI.enabled = true;
+				UnityEngine.GUI.enabled = true;
 
 				if (pressed)
 				{

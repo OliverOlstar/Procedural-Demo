@@ -53,14 +53,14 @@ namespace ODev
 		protected virtual void OnDestroy() { }
 
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected static void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(pMessage, typeof(T), pMethodName);
+		protected static void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(typeof(T), pMessage, pMethodName);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected static void LogWarning(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogWarning(pMessage, typeof(T), pMethodName);
+		protected static void LogWarning(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogWarning(typeof(T), pMessage, pMethodName);
 		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-		protected static void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(pMessage, typeof(T), pMethodName);
+		protected static void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(typeof(T), pMessage, pMethodName);
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
-		protected static void DevException(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.DevException(pMessage, typeof(T), pMethodName);
+		protected static void DevException(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.DevException(typeof(T), pMessage, pMethodName);
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
-		protected static void DevException<TException>(TException pException, [CallerMemberName] string pMethodName = "") where TException : Exception => Util.Debug.DevException<TException>(pException, typeof(T), pMethodName);
+		protected static void DevException<TException>(TException pException, [CallerMemberName] string pMethodName = "") where TException : Exception => Util.Debug.DevException(typeof(T), pException, pMethodName);
 	}
 }

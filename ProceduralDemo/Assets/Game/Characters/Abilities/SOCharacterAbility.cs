@@ -113,7 +113,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	{
 		if (Data.LogSelf)
 		{
-			ODev.Util.Debug.Log("", GetType(), pMethodName);
+			GetType().Log("", pMethodName);
 		}
 	}
 	#endregion Helpers

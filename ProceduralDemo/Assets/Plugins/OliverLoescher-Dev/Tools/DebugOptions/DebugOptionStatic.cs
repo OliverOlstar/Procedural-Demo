@@ -95,7 +95,7 @@ namespace ODev.Debug
 			}
 			else
 			{
-				Util.Debug.LogError($"DebugOptionsManager.RegisterOption() {option.Name} is already registered", typeof(DebugOption));
+				Util.Debug.LogError(typeof(DebugOption), $"DebugOptionsManager.RegisterOption() {option.Name} is already registered");
 			}
 		}
 

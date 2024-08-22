@@ -27,7 +27,7 @@ namespace ODev.Util
 		{
 			if (pClip == null)
 			{
-				Debug.LogWarning("Clip cannot be null", typeof(Audio));
+				Debug.LogWarning(typeof(Audio), "Clip cannot be null");
 				return;
 			}
 			AudioSource source = AudioPool.Instance.GetFreeSource();
@@ -44,7 +44,7 @@ namespace ODev.Util
 		{
 			if (pClip == null)
 			{
-				Debug.LogWarning("Clip is null", typeof(Audio));
+				Debug.LogWarning(typeof(Audio), "Clip is null");
 				return;
 			}
 			AudioSource source = AudioPool.Instance.GetFreeSource();
