@@ -16,6 +16,9 @@ public class SOPlayerAbilityMantle : SOCharacterAbility
 	[SerializeField]
 	private AnimationCurve m_YCurve = new();
 
+	[Space, SerializeField]
+	private float m_CompleteVelocity = 0.0f;
+
 	[Header("Raycast")]
 	[SerializeField]
 	private float m_ForwardDistance = 1.0f;
@@ -33,11 +36,10 @@ public class SOPlayerAbilityMantle : SOCharacterAbility
 	public SOPoseMontage Montage => m_Montage;
 	public AnimationCurve XZCurve => m_XZCurve;
 	public AnimationCurve YCurve => m_YCurve;
-
+	public float CompleteVelocity => m_CompleteVelocity;
 	public float ForwardDistance => m_ForwardDistance;
 	public float MaxUpDistance => m_MaxUpDistance;
 	public LayerMask HitLayers => m_GroundLayers;
-
 	public float TopSlopeMin => m_TopSlopeMin;
 	public Vector2 SideSlopeLimit => m_SideSlopeLimit;
 
@@ -74,14 +76,12 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 		{
 			return false;
 		}
-		m_Direction = -Root.OnWall.HitInfo.normal.Horizontalize();
-		if (!Physics.Raycast(Transform.position + (m_Direction * Data.ForwardDistance) + (Vector3.up * Data.MaxUpDistance), Vector3.down, out m_Hit, Data.MaxUpDistance, Data.HitLayers))
+		if (Root.OnWall.HitInfo.normal.y < Data.SideSlopeLimit.x || Root.OnWall.HitInfo.normal.y > Data.SideSlopeLimit.y)
 		{
 			return false;
 		}
-		this.Log($"SideAngle {Root.OnWall.HitInfo.normal.y}");
-		this.Log($"TopAngle {m_Hit.normal.y}");
-		if (Root.OnWall.HitInfo.normal.y < Data.SideSlopeLimit.x || Root.OnWall.HitInfo.normal.y > Data.SideSlopeLimit.y)
+		m_Direction = -Root.OnWall.HitInfo.normal.Horizontalize();
+		if (!Physics.Raycast(Transform.position + (m_Direction * Data.ForwardDistance) + (Vector3.up * Data.MaxUpDistance), Vector3.down, out m_Hit, Data.MaxUpDistance, Data.HitLayers))
 		{
 			return false;
 		}
@@ -106,14 +106,15 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 	public override void ActiveTick(float pDeltaTime)
 	{
 		m_TimeElapsed += pDeltaTime;
-		if (m_TimeElapsed >= Data.Montage.TotalSeconds)
+		float seconds = Data.Montage.TotalSeconds - Data.Montage.FadeOutSeconds;
+		if (m_TimeElapsed >= seconds)
 		{
 			Transform.position = m_ToPosition;
 			Deactivate();
 			return;
 		}
 
-		float progress01 = m_TimeElapsed / Data.Montage.TotalSeconds;
+		float progress01 = m_TimeElapsed / seconds;
 		float xzProgress = Data.XZCurve.Evaluate(progress01);
 		float yProgress = Data.YCurve.Evaluate(progress01);
 
@@ -126,5 +127,9 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 	protected override void DeactivateInternal()
 	{
 		Root.Movement.enabled = true;
+		if (!Root.Input.Move.Input.IsNearZero())
+		{
+			Root.Movement.AddVelocityXZ((m_ToPosition - m_FromPosition).Horizontalize() * Data.CompleteVelocity);
+		}
 	}
 }

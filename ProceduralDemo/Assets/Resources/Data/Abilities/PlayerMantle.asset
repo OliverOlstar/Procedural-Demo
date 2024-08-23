@@ -27,14 +27,23 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.5637521
-      value: 0.49059203
-      inSlope: 2.229678
-      outSlope: 2.229678
+      time: 0.2893898
+      value: 0.19916561
+      inSlope: 2.003825
+      outSlope: 2.003825
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.42932725
+      outWeight: 0.06814195
+    - serializedVersion: 3
+      time: 0.8637153
+      value: 0.6038243
+      inSlope: 2.2032695
+      outSlope: 2.2032695
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09984976
+      outWeight: 0.09666858
     - serializedVersion: 3
       time: 1
       value: 1
@@ -60,8 +69,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.331985
-      value: 0.119977966
+      time: 0.55808973
+      value: 0.16477777
       inSlope: 1.044711
       outSlope: 1.044711
       tangentMode: 0
@@ -69,13 +78,13 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.120331205
     - serializedVersion: 3
-      time: 0.7622705
-      value: 0.88074124
-      inSlope: 1.580016
-      outSlope: 1.580016
+      time: 0.8904675
+      value: 0.9208386
+      inSlope: 2.3354352
+      outSlope: 2.3354352
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.08823391
+      inWeight: 0.065572225
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
@@ -89,6 +98,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_CompleteVelocity: 12
   m_ForwardDistance: 1.1
   m_MaxUpDistance: 1.5
   m_GroundLayers:
