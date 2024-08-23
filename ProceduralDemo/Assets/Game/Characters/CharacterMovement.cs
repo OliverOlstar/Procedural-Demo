@@ -75,11 +75,13 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private void OnEnable()
 	{
 		m_Updateable.Register(Tick);
+		m_Controller.enabled = true;
 	}
 
 	private void OnDisable()
 	{
 		m_Updateable.Deregister();
+		m_Controller.enabled = false;
 		m_VelocityXZ = Vector3.zero;
 		m_VelocityY = 0.0f;
 	}

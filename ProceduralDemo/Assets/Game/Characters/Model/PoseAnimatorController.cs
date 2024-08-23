@@ -64,4 +64,7 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 			controller.Tick(pDeltaTime);
 		}
 	}
+
+	public int PlayMontage(SOPoseMontage pMontage) => m_Animator.PlayMontage(pMontage);
+	public void CancelMontage(int pIndex) => m_Animator.CancelMontage(pIndex);
 }

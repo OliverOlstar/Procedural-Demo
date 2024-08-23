@@ -12,5 +12,10 @@ namespace ODev.PoseAnimator
 			Weight01 = pWeight01;
 			Progress01 = pProgress01;
 		}
+
+		public override readonly string ToString()
+		{
+			return $"{nameof(PoseWeight)} [Weight {Weight01}, Progress {Progress01}]";
+		}
 	}
 }

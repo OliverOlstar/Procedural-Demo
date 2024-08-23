@@ -149,5 +149,19 @@ namespace ODev.PoseAnimator
 			pArray.Dispose();
 			pArray = newArray;
 		}
+
+		internal static void CopyNative<T>(ref NativeArray<T> pArray, List<T> pItems, int pStartIndex) where T : struct
+		{
+			// if (!pArray.IsCreated)
+			// {
+			// 	pArray = new NativeArray<T>(pItems.ToArray(), Allocator.Persistent);
+			// 	return;
+			// }
+
+			for (int i = 0; i < pItems.Count; i++)
+			{
+				pArray[i + pStartIndex] = pItems[i];
+			}
+		}
 	}
 }

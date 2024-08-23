@@ -17,6 +17,8 @@ namespace ODev.PoseAnimator
 		public NativeArray<PoseWeight> Weights;
 		[ReadOnly]
 		public NativeArray<PoseKey> PoseKeys;
+		[ReadOnly]
+		public bool UseNextPoseAsTheBase;
 
 		public NativeArray<PoseKey> NextPose;
 
@@ -25,7 +27,14 @@ namespace ODev.PoseAnimator
 			Vector3 position = Vector3.zero;
 			Quaternion rotation = Quaternion.identity;
 			Vector3 scale = Vector3.zero;
-			
+			if (UseNextPoseAsTheBase)
+			{
+				position = NextPose[pIndex].Position;
+				rotation = NextPose[pIndex].Rotation;
+				scale = NextPose[pIndex].Scale;
+				RemoveSkeletonKey(pIndex, ref position, ref rotation, ref scale);
+			}
+
 			int firstAnimationIndex = 0;
 			for (int i = Animations.Length - 1; i >= 0; i--)
 			{
@@ -52,6 +61,13 @@ namespace ODev.PoseAnimator
 			rScale += SkeletonKeys[pIndex].Scale;
 		}
 
+		private void RemoveSkeletonKey(int pIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
+		{
+			rPosition -= SkeletonKeys[pIndex].Position;
+			rRotation = SkeletonKeys[pIndex].Rotation.Inverse().Add(rRotation);
+			rScale -= SkeletonKeys[pIndex].Scale;
+		}
+
 		private void CalculateAnimationKey(int pIndex, int pAnimationIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
 		{
 			float weight01 = Weights[pAnimationIndex].Weight01;
@@ -67,7 +83,8 @@ namespace ODev.PoseAnimator
 			PoseKey keyB = PoseKeys[(clipIndexB * SkeletonLength) + pIndex];
 
 			Vector3 position = Vector3.LerpUnclamped(keyA.Position, keyB.Position, progress01);
-			Quaternion rotation = Quaternion.LerpUnclamped(keyA.Rotation, keyB.Rotation, progress01);
+			// this.Log($"ClipA {clipIndexA}, ClipB {clipIndexB}, Progress {progress01}, Weight {weight01}");
+			Quaternion rotation = Quaternion.LerpUnclamped(keyA.Rotation, keyB.Rotation.normalized, progress01);
 			Vector3 scale = Vector3.LerpUnclamped(keyA.Scale, keyB.Scale, progress01);
 
 			rPosition = Vector3.LerpUnclamped(rPosition, position, weight01);

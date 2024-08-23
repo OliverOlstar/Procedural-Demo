@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ODev.Picker;
 using ODev.Util;
@@ -28,6 +29,7 @@ namespace ODev.PoseAnimator
 		// Context
 		private TransformAccessArray m_AccessArray;
 		private NativeArray<PoseKey> m_NextPose;
+		[SerializeField]
 		private PoseMontageAnimator m_Montages = new();
 
 		private bool m_IsInitalized = false;
@@ -65,7 +67,7 @@ namespace ODev.PoseAnimator
 				index++;
 			}
 
-			m_Montages.Initalize(this);
+			m_Montages.Initalize(m_Skeleton.BoneCount);
 		}
 		private void Start() => Initalize();
 
@@ -84,7 +86,9 @@ namespace ODev.PoseAnimator
 
 		private void Tick(float pDeltaTime)
 		{
-			if (!m_Montages.IsWeightFull())
+			m_Montages.Tick(pDeltaTime);
+
+			// if (!m_Montages.IsWeightFull())
 			{
 				PoseBoneSystem poseBoneSystem = new()
 				{
@@ -93,12 +97,13 @@ namespace ODev.PoseAnimator
 					Animations = m_Animations,
 					Weights = m_Weights,
 					PoseKeys = m_PoseKeys,
+					UseNextPoseAsTheBase = false,
 
 					NextPose = m_NextPose, // Modify
 				};
 				m_Handle = poseBoneSystem.Schedule(poseBoneSystem.SkeletonLength, poseBoneSystem.SkeletonLength, m_Handle);
 			}
-			
+
 			m_Handle = m_Montages.TickSchedule(m_SkeletonKeys, m_NextPose, m_Handle);
 
 			ApplyTransformSystem applyTransformSystem = new()
@@ -167,5 +172,8 @@ namespace ODev.PoseAnimator
 				Weight01 = pWeight01
 			};
 		}
+
+		public int PlayMontage(SOPoseMontage pMontage) => m_Montages.PlayMontage(pMontage);
+		public void CancelMontage(int pIndex) => m_Montages.CancelMontage(pIndex);
 	}
 }
