@@ -8,9 +8,30 @@ using System.Diagnostics;
 
 public abstract class SOCharacterAbility : ScriptableObject
 {
-	// TODO Cooldown
-	// TODO Buffer
-	public bool LogSelf = false;
+	private enum CooldownTrigger
+	{
+		OnActivate,
+		OnDeactive,
+		Both
+	}
+
+	[SerializeField]
+	private bool m_LogSelf = false;
+	[SerializeField]
+	private float m_Cooldown = 0.0f;
+	[SerializeField]
+	private CooldownTrigger m_CooldownTrigger = CooldownTrigger.OnActivate;
+
+	public bool LogSelf => m_LogSelf;
+	public float Cooldown => m_Cooldown;
+	public bool IsCooldownTrigger(bool pOnActive) => m_CooldownTrigger switch
+	{
+		CooldownTrigger.OnActivate => pOnActive,
+		CooldownTrigger.OnDeactive => !pOnActive,
+		CooldownTrigger.Both => true,
+		_ => throw new NotImplementedException(),
+	};
+
 	public abstract ICharacterAbility CreateInstance(PlayerRoot pRoot, UnityAction<bool> pOnInputRecived);
 }
 
@@ -24,6 +45,7 @@ public interface ICharacterAbility
 	public bool TryActivateUpdate();
 	public void Deactivate();
 	public void ActiveTick(float pDeltaTime);
+	public void SystemsTick(float pDeltaTime);
 	public void Destory();
 }
 
@@ -33,6 +55,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	private readonly TData m_Data = null;
 	private readonly UnityAction<bool> m_OnInputRecieved;
 	private bool m_IsActive = false;
+	private float m_CooldownTime = 0.0f;
 
 	public PlayerRoot Root => m_Root;
 	public TData Data => m_Data;
@@ -46,19 +69,13 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		m_OnInputRecieved = pOnInputRecived;
 		LogMethod();
 		InputActivate?.OnChanged.AddListener(m_OnInputRecieved);
-		
+
 		Initalize();
 	}
 
-	void ICharacterAbility.Destory()
-	{
-		LogMethod();
-		InputActivate?.OnChanged.RemoveListener(m_OnInputRecieved);
-		DestroyInternal();
-	}
 	bool ICharacterAbility.TryActivate()
 	{
-		if (!CanActivate())
+		if (!CanSystemsCanActive() || !CanActivate())
 		{
 			return false;
 		}
@@ -67,7 +84,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	}
 	bool ICharacterAbility.TryActivateUpdate()
 	{
-		if (!CanActivateUpdate())
+		if (!CanSystemsCanActive() || !CanActivateUpdate())
 		{
 			return false;
 		}
@@ -75,6 +92,16 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		return true;
 	}
 	void ICharacterAbility.Deactivate() => Deactivate();
+	void ICharacterAbility.SystemsTick(float pDeltaTime)
+	{
+		m_CooldownTime -= pDeltaTime;
+	}
+	void ICharacterAbility.Destory()
+	{
+		LogMethod();
+		InputActivate?.OnChanged.RemoveListener(m_OnInputRecieved);
+		DestroyInternal();
+	}
 
 	public virtual void ActiveTick(float pDeltaTime) { }
 	protected virtual bool CanActivate() { return false; }
@@ -83,6 +110,11 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	protected abstract void DestroyInternal();
 	protected abstract void ActivateInternal();
 	protected abstract void DeactivateInternal();
+
+	private bool CanSystemsCanActive()
+	{
+		return m_CooldownTime <= 0.0f;
+	}
 
 	protected void Activate()
 	{
@@ -93,7 +125,9 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		}
 		m_IsActive = true;
 		LogMethod();
+
 		ActivateInternal();
+		TriggerCooldown(true);
 		m_Root.Abilities.OnAbilityActivated?.Invoke(typeof(TData));
 	}
 
@@ -105,8 +139,19 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		}
 		m_IsActive = false;
 		LogMethod();
+
 		DeactivateInternal();
+		TriggerCooldown(false);
 		m_Root.Abilities.OnAbilityDeactivated?.Invoke(typeof(TData));
+	}
+
+	protected void TriggerCooldown(bool pOnActive)
+	{
+		if (Data.IsCooldownTrigger(pOnActive))
+		{
+			LogMethod();
+			m_CooldownTime = Data.Cooldown;
+		}
 	}
 
 	#region Helpers

@@ -88,7 +88,7 @@ namespace ODev.PoseAnimator
 		{
 			m_Montages.Tick(pDeltaTime);
 
-			// if (!m_Montages.IsWeightFull())
+			if (!m_Montages.IsWeightFull())
 			{
 				PoseBoneSystem poseBoneSystem = new()
 				{

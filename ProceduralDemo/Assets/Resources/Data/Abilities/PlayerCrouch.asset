@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d612e5a307062340884fb3811f0fda8, type: 3}
   m_Name: PlayerCrouch
   m_EditorClassIdentifier: 
-  LogSelf: 0
+  m_LogSelf: 1
+  m_Cooldown: 0
+  m_CooldownTrigger: 0
   m_SpeedModifier:
     m_Type: 1
     m_Add: 0

@@ -8,7 +8,7 @@ using ODev.Util;
 // TODO: Abilities canceling other abilities
 // TODO: Abilities blocking other abilities
 
-[System.Serializable]
+[Serializable]
 public class PlayerAbilities
 {
 	public UnityEvent<Type> OnAbilityActivated = new();
@@ -72,6 +72,7 @@ public class PlayerAbilities
 		for (int i = 0; i < m_AbilityInstances.Count; i++)
 		{
 			ICharacterAbility ability = m_AbilityInstances[i];
+			ability.SystemsTick(pDeltaTime);
 			if (ability.IsActive || ability.TryActivateUpdate())
 			{
 				ability.ActiveTick(pDeltaTime);
@@ -89,7 +90,7 @@ public class PlayerAbilities
 
 	internal void OnAbilityInputRecieved(int pIndex, bool pPerformed)
 	{
-		// ODev.Util.Debug.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()} -> {pPerformed}", typeof(PlayerAbilities));
+		// this.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()} -> {pPerformed}");
 		if (pPerformed)
 		{
 			if (m_AbilityInstances[pIndex].IsActive)
@@ -115,7 +116,7 @@ public class PlayerAbilities
 		{
 			return;
 		}
-		// ODev.Util.Debug.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()}", typeof(PlayerAbilities));
+		// this.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()}");
 		if (!m_LastInputedSeconds.Approximately(m_InputBufferSeconds))
 		{
 			m_LastInputedAbilities.Clear();

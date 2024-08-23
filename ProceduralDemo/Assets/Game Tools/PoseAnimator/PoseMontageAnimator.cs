@@ -60,7 +60,7 @@ namespace ODev.PoseAnimator
 		{
 			if (pMontage == null)
 			{
-				this.Log("Cannot play a null montage");
+				this.LogWarning("Cannot play a null montage");
 			}
 
 			m_Animations[0] = new(pMontage.Animation, 0);
@@ -84,7 +84,7 @@ namespace ODev.PoseAnimator
 				Time = 0
 			};
 
-			this.Log(pMontage.name);
+			// this.Log(pMontage.name);
 			return 0;
 		}
 

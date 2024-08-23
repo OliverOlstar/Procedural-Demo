@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37363a6ae986faa4baf7c95caab0f258, type: 3}
   m_Name: PlayerMantle
   m_EditorClassIdentifier: 
-  LogSelf: 0
+  m_LogSelf: 0
+  m_Cooldown: 0.25
+  m_CooldownTrigger: 1
   m_Montage: {fileID: 11400000, guid: b548655b609b9af4a90b3eaf369c7562, type: 2}
   m_XZCurve:
     serializedVersion: 2
