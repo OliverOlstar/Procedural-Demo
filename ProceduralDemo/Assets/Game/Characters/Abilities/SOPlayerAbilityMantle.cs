@@ -50,7 +50,6 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 {
 	public PlayerAbilityMantle(PlayerRoot pPlayer, SOPlayerAbilityMantle pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
 
-	public override InputModule_Toggle InputActivate => Root.Input.Jump;
 	private Transform Transform => Root.Movement.transform;
 
 	protected override void Initalize()

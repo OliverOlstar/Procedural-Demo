@@ -4,6 +4,7 @@ using ODev.Util;
 using ODev.Input;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Diagnostics;
 
 public abstract class SOCharacterAbility : ScriptableObject
 {
@@ -109,6 +110,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	}
 
 	#region Helpers
+	[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
 	private void LogMethod([CallerMemberName] string pMethodName = "")
 	{
 		if (Data.LogSelf)
