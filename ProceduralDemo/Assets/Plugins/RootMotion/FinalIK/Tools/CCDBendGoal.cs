@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
 
-    /// <summary>
-    /// Bend goal object for CCDIK. Add this to a GameObject you wish CCD to bend towards.
-    /// </summary>
-    public class CCDBendGoal : MonoBehaviour
+	/// <summary>
+	/// Bend goal object for CCDIK. Add this to a GameObject you wish CCD to bend towards.
+	/// </summary>
+	public class CCDBendGoal : MonoBehaviour
     {
 
         public CCDIK ik;
@@ -21,24 +19,37 @@ namespace RootMotion.FinalIK
 
         private void BeforeIK()
         {
-            if (!enabled) return;
-            float w = ik.solver.IKPositionWeight * weight;
-            if (w <= 0f) return;
+            if (!enabled)
+			{
+				return;
+			}
 
-            Vector3 firstBonePos = ik.solver.bones[0].transform.position;
-            Vector3 lastBonePos = ik.solver.bones[ik.solver.bones.Length - 1].transform.position;
+			float w = ik.solver.IKPositionWeight * weight;
+            if (w <= 0f)
+			{
+				return;
+			}
+
+			Vector3 firstBonePos = ik.solver.bones[0].transform.position;
+            Vector3 lastBonePos = ik.solver.bones[^1].transform.position;
 
             // Rotating the CCD chain towards this gameobject before it solves so it rolls in from that direction
             Quaternion f = Quaternion.FromToRotation(lastBonePos - firstBonePos, transform.position - firstBonePos);
             
-            if (w < 1f) f = Quaternion.Slerp(Quaternion.identity, f, w);
+            if (w < 1f)
+			{
+				f = Quaternion.Slerp(Quaternion.identity, f, w);
+			}
 
-            ik.solver.bones[0].transform.rotation = f * ik.solver.bones[0].transform.rotation;
+			ik.solver.bones[0].transform.rotation = f * ik.solver.bones[0].transform.rotation;
         }
 
         private void OnDestroy()
         {
-            if (ik != null) ik.solver.OnPreUpdate -= BeforeIK;
-        }
+            if (ik != null)
+			{
+				ik.solver.OnPreUpdate -= BeforeIK;
+			}
+		}
     }
 }

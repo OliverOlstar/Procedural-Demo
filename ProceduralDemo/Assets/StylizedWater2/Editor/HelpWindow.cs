@@ -7,13 +7,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace StylizedWater2
 {
-    public class HelpWindow : EditorWindow
+	public class HelpWindow : EditorWindow
     {
         //Window properties
         private static int width = 600;
@@ -32,7 +31,7 @@ namespace StylizedWater2
         [MenuItem("Window/Stylized Water 2/Hub Window", false, 1001)]
         public static void ShowWindow()
         {
-            HelpWindow editorWindow = EditorWindow.GetWindow<HelpWindow>(true, AssetInfo.ASSET_NAME, true);
+            HelpWindow editorWindow = GetWindow<HelpWindow>(true, AssetInfo.ASSET_NAME, true);
 
             //Open somewhat in the center of the screen
             editorWindow.position = new Rect((Screen.currentResolution.width / 2f) - (width * 0.5f), (Screen.currentResolution.height / 2f) - (height * 0.5f), (width * 2), height);
@@ -57,7 +56,7 @@ namespace StylizedWater2
             public readonly GUIStyle sectionScrollView = "PreferencesSectionBox";
             public readonly GUIStyle sectionElement = "PreferencesSection";
             public readonly GUIStyle selected = "OL SelectedRow";
-            public readonly GUIStyle sectionHeader = new GUIStyle(EditorStyles.largeLabel);
+            public readonly GUIStyle sectionHeader = new(EditorStyles.largeLabel);
 
             public Constants()
             {
@@ -69,10 +68,14 @@ namespace StylizedWater2
                 sectionHeader.margin.top = 10;
                 sectionHeader.margin.left += 1;
                 if (!EditorGUIUtility.isProSkin)
-                    sectionHeader.normal.textColor = new Color(0.4f, 0.4f, 0.4f, 1.0f);
-                else
-                    sectionHeader.normal.textColor = new Color(0.7f, 0.7f, 0.7f, 1.0f);
-            }
+				{
+					sectionHeader.normal.textColor = new Color(0.4f, 0.4f, 0.4f, 1.0f);
+				}
+				else
+				{
+					sectionHeader.normal.textColor = new Color(0.7f, 0.7f, 0.7f, 1.0f);
+				}
+			}
         }
         
         static Constants constants = null;
@@ -124,10 +127,14 @@ namespace StylizedWater2
             {
                 _selectedSectionIndex = value;
                 if (_selectedSectionIndex >= sections.Count)
-                    _selectedSectionIndex = 0;
-                else if (_selectedSectionIndex < 0)
-                    _selectedSectionIndex = sections.Count - 1;
-            }
+				{
+					_selectedSectionIndex = 0;
+				}
+				else if (_selectedSectionIndex < 0)
+				{
+					_selectedSectionIndex = sections.Count - 1;
+				}
+			}
         }
         private Section selectedSection => sections[_selectedSectionIndex];
 
@@ -139,10 +146,17 @@ namespace StylizedWater2
             EditorGUIUtility.labelWidth = width / 4f;
             defaultColor = GUI.contentColor;
 
-            if (constants == null) constants = new Constants();
-            if (changelog == null) changelog = new Changelog();
-            
-            if (EditorApplication.isCompiling)
+            if (constants == null)
+			{
+				constants = new Constants();
+			}
+
+			if (changelog == null)
+			{
+				changelog = new Changelog();
+			}
+
+			if (EditorApplication.isCompiling)
             {
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField(new GUIContent(" Compiling scripts...", EditorGUIUtility.FindTexture("cs Script Icon")), UI.Styles.H1);
@@ -169,20 +183,23 @@ namespace StylizedWater2
             GUILayout.Space(4f);
             #endif
             
-            if(sections == null) OnEnable();
-            
-            #if !URP
+            if(sections == null)
+			{
+				OnEnable();
+			}
+
+#if !URP
             UI.DrawNotification("The Universal Render Pipeline package isn't installed", MessageType.Error);
-            #endif
-            
-            GUILayout.BeginHorizontal(); 
+#endif
+
+			GUILayout.BeginHorizontal(); 
             {
                 menuScrollPos = GUILayout.BeginScrollView(menuScrollPos, constants.sectionScrollView, GUILayout.Width(120f)); 
                 {
                     //GUILayout.Space(40f);
                     for (int i = 0; i < sections.Count; i++)
                     {
-                        var section = sections[i];
+						Section section = sections[i];
 
                         Rect elementRect = GUILayoutUtility.GetRect(section.content, constants.sectionElement, GUILayout.ExpandWidth(true));
 
@@ -339,10 +356,10 @@ namespace StylizedWater2
                     }
                 }
                 
-                UI.DrawNotification(AssetInfo.compatibleVersion == false, "This version of Unity is not compatible." + 
+                UI.DrawNotification(!AssetInfo.compatibleVersion, "This version of Unity is not compatible." + 
                                                                             "\n\nPlease upgrade to at least Unity " + AssetInfo.MIN_UNITY_VERSION, MessageType.Error);
 
-                UI.DrawNotification(AssetInfo.supportedVersion == false, "This version of Unity is no longer supported. Any errors or issues will need to be resolved locally." + 
+                UI.DrawNotification(!AssetInfo.supportedVersion, "This version of Unity is no longer supported. Any errors or issues will need to be resolved locally." + 
                                                                              "\n\nPlease upgrade to at least Unity " + AssetInfo.MIN_UNITY_VERSION, MessageType.Warning);
 
                 UI.DrawNotification(AssetInfo.alphaVersion, "Only release Unity versions are subject to support and fixes. You may run into issues at own risk.", MessageType.Warning);
@@ -385,8 +402,12 @@ namespace StylizedWater2
 
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.textField))
                 {
-                    if (StylizedWaterEditor.DWP2Installed) GUI.contentColor = UI.GreenColor;
-                    EditorGUILayout.LabelField(StylizedWaterEditor.DWP2Installed ? "Installed" : "Not Installed", GUILayout.MaxWidth((75f)));
+                    if (StylizedWaterEditor.DWP2Installed)
+					{
+						GUI.contentColor = UI.GreenColor;
+					}
+
+					EditorGUILayout.LabelField(StylizedWaterEditor.DWP2Installed ? "Installed" : "Not Installed", GUILayout.MaxWidth((75f)));
                     GUI.contentColor = defaultColor;
 
                     GUILayout.FlexibleSpace();
@@ -410,8 +431,12 @@ namespace StylizedWater2
 
                 using (new EditorGUILayout.HorizontalScope(EditorStyles.textField))
                 {
-                    if (StylizedWaterEditor.CurvedWorldInstalled(out var _)) GUI.contentColor = UI.GreenColor;
-                    EditorGUILayout.LabelField(StylizedWaterEditor.CurvedWorldInstalled(out var _) ? "Installed" : "Not Installed", GUILayout.MaxWidth((75f)));
+                    if (StylizedWaterEditor.CurvedWorldInstalled(out string _))
+					{
+						GUI.contentColor = UI.GreenColor;
+					}
+
+					EditorGUILayout.LabelField(StylizedWaterEditor.CurvedWorldInstalled(out string _) ? "Installed" : "Not Installed", GUILayout.MaxWidth((75f)));
                     GUI.contentColor = defaultColor;
 
                     GUILayout.FlexibleSpace();
@@ -429,17 +454,23 @@ namespace StylizedWater2
 
             foreach (ShaderConfigurator.Fog.Integration integration in ShaderConfigurator.Fog.Integrations)
             {
-                if(integration.asset == ShaderConfigurator.Fog.Assets.None || integration.asset == ShaderConfigurator.Fog.Assets.UnityFog) continue;
-                
-                UI.DrawIntegration(integration);
+                if(integration.asset == ShaderConfigurator.Fog.Assets.None || integration.asset == ShaderConfigurator.Fog.Assets.UnityFog)
+				{
+					continue;
+				}
+
+				UI.DrawIntegration(integration);
                 EditorGUILayout.Space();
                 
-                if (underwaterExtensionInstalled && (integration.underwaterCompatible == false))
+                if (underwaterExtensionInstalled && (!integration.underwaterCompatible))
                 {
                     UI.DrawNotification("Editing of shader files for this asset is required to incorporate support for the Underwater Rendering extension. (See documentation section called \"Transparent Materials\")", MessageType.Warning);
                     
-                    if(integration.asset == ShaderConfigurator.Fog.Assets.COZY) UI.DrawNotification("For COZY version 3.0+, an integration package comes with the asset, which must be unpacked. This contains pre-edited shader files.");
-                }
+                    if(integration.asset == ShaderConfigurator.Fog.Assets.COZY)
+					{
+						UI.DrawNotification("For COZY version 3.0+, an integration package comes with the asset, which must be unpacked. This contains pre-edited shader files.");
+					}
+				}
             }
             
             EditorGUILayout.Space();
@@ -513,9 +544,12 @@ namespace StylizedWater2
 
             EditorGUILayout.Space();
             
-            if (projectDetails == null) projectDetails = GetProjectDetails();
+            if (projectDetails == null)
+			{
+				projectDetails = GetProjectDetails();
+			}
 
-            using (new EditorGUILayout.HorizontalScope())
+			using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Project details", EditorStyles.boldLabel);
                 if (GUILayout.Button("Refresh", EditorStyles.miniButton))
@@ -541,7 +575,7 @@ namespace StylizedWater2
         
         private static string GetProjectDetails()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
             
             stringBuilder.AppendLine($"Version: v{AssetInfo.INSTALLED_VERSION}");
             stringBuilder.AppendLine($"Install location: {AssetInfo.GetRootFolder()}");
@@ -630,7 +664,7 @@ namespace StylizedWater2
             
             if (shaderMessages != null)
             {
-                foreach (var t in shaderMessages)
+                foreach (ShaderMessage t in shaderMessages)
                 {
                     stringBuilder.AppendLine($"• {t.message} {t.file}:{t.line} ({t.platform})");
                 }
@@ -652,9 +686,12 @@ namespace StylizedWater2
                 string changelogPath = AssetDatabase.GUIDToAssetPath("f07fbdad38458814a87e9b627e287ccb");
                 TextAsset textAsset = ((TextAsset)AssetDatabase.LoadAssetAtPath(changelogPath, typeof(TextAsset)));
 
-                if (textAsset == null) return;
+                if (textAsset == null)
+				{
+					return;
+				}
 
-                changelogContent = textAsset.text;
+				changelogContent = textAsset.text;
 
                 //Format version header
                 changelogContent = Regex.Replace(changelogContent, @"^[0-9].*", "<size=18><b>Version $0</b></size>", RegexOptions.Multiline);

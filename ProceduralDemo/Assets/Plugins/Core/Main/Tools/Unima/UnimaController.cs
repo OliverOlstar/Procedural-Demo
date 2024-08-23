@@ -1,8 +1,6 @@
 ﻿
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Events;
-using System.Collections;
 using UnityEngine.Serialization;
 
 public enum UnimaControllerMode
@@ -47,13 +45,13 @@ public class UnimaController : IUpdatable
 	public string AlphaID => m_AlphaID;
 
 	[SerializeField]
-	private UnimaSet m_Animations = new UnimaSet();
+	private UnimaSet m_Animations = new();
 	[SerializeField]
-	private List<UnimaEvent> m_AnimationEvents = new List<UnimaEvent>();
+	private List<UnimaEvent> m_AnimationEvents = new();
 	[SerializeField]
-	private UnimaAdvanced m_AdvancedSettings = new UnimaAdvanced();
+	private UnimaAdvanced m_AdvancedSettings = new();
 
-	private List<UnimaAction> m_EventsRegisteredPreinitialize = new List<UnimaAction>();
+	private List<UnimaAction> m_EventsRegisteredPreinitialize = new();
 	private List<IUnimaPlayer> m_Players = null;
 
 	private bool m_Playing = false;
@@ -64,9 +62,9 @@ public class UnimaController : IUpdatable
 
 	private GameObject m_GameObject = null;
 
-	private List<IUnimaControllerSource> m_BetaSources = new List<IUnimaControllerSource>();
+	private List<IUnimaControllerSource> m_BetaSources = new();
 	[System.NonSerialized] // prevents a cyclical reference problem in Unity 
-	private List<UnimaController> m_BetaControllers = new List<UnimaController>();
+	private List<UnimaController> m_BetaControllers = new();
 
 	private bool m_EditorDirty = false;
 	public void EditorSetDirty() { m_EditorDirty = true; }
@@ -256,7 +254,7 @@ public class UnimaController : IUpdatable
 	public void RegisterActionOnEnd(System.Action action) { RegisterAction(action, -1.0f); }
 	public void RegisterAction(System.Action action, float startTime)
 	{
-		UnimaAction unimaAction = new UnimaAction(startTime, action);
+		UnimaAction unimaAction = new(startTime, action);
 		if (IsValid()) // Code might try to register an action before we've been initialized
 		{
 			m_Players.Add(unimaAction);

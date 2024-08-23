@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -47,7 +45,7 @@ namespace Core
 
 			// Create a new Stringbuilder to collect the bytes
 			// and create a string.
-			StringBuilder sBuilder = new StringBuilder();
+			StringBuilder sBuilder = new();
 
 			// Loop through each byte of the hashed data 
 			// and format each one as a hexadecimal string.

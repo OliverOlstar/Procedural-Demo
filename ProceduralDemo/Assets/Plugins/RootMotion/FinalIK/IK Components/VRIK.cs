@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
 	/// <summary>
 	/// A full-body IK solver designed specifically for a VR HMD and hand controllers.
 	/// </summary>
@@ -125,9 +124,12 @@ namespace RootMotion.FinalIK {
 						pelvis == null ||
 						spine == null ||
 						head == null
-					) return false;
+					)
+					{
+						return false;
+					}
 
-                    bool noArmBones =
+					bool noArmBones =
                         leftUpperArm == null &&
                         leftForearm == null &&
                         leftHand == null &&
@@ -160,11 +162,18 @@ namespace RootMotion.FinalIK {
                         rightCalf == null ||
                         rightFoot == null;
 
-                    if (atLeastOneLegBoneMissing && !noLegBones) return false;
-                    if (atLeastOneArmBoneMissing && !noArmBones) return false;
+                    if (atLeastOneLegBoneMissing && !noLegBones)
+					{
+						return false;
+					}
 
-                    // Shoulder, toe and neck bones are optional
-                    return true;
+					if (atLeastOneArmBoneMissing && !noArmBones)
+					{
+						return false;
+					}
+
+					// Shoulder, toe and neck bones are optional
+					return true;
 				}
 			}
 
@@ -196,7 +205,10 @@ namespace RootMotion.FinalIK {
 						rightCalf != null ||
 						rightFoot != null ||
 						rightToes != null
-					) return false;
+					)
+					{
+						return false;
+					}
 
 					return true;
 				}
@@ -208,7 +220,7 @@ namespace RootMotion.FinalIK {
 			public static bool AutoDetectReferences(Transform root, out References references) {
 				references = new References();
 
-				var animator = root.GetComponentInChildren<Animator>();
+				Animator animator = root.GetComponentInChildren<Animator>();
 				if (animator == null || !animator.isHuman) {
 					Debug.LogWarning("VRIK needs a Humanoid Animator to auto-detect biped references. Please assign references manually.");
 					return false;
@@ -264,13 +276,13 @@ namespace RootMotion.FinalIK {
         /// </summary>
         [ContextMenuItem("Auto-detect References", "AutoDetectReferences")]
 		[Tooltip("Bone mapping. Right-click on the component header and select 'Auto-detect References' of fill in manually if not a Humanoid character. Chest, neck, shoulder and toe bones are optional. VRIK also supports legless characters. If you do not wish to use legs, leave all leg references empty.")]
-		public References references = new References();
+		public References references = new();
 		
 		/// <summary>
 		/// The solver.
 		/// </summary>
 		[Tooltip("The VRIK solver.")]
-		public IKSolverVR solver = new IKSolverVR();
+		public IKSolverVR solver = new();
 
 		/// <summary>
 		/// Auto-detects bone references for this VRIK. Works with a Humanoid Animator on the gameobject only.
@@ -293,8 +305,15 @@ namespace RootMotion.FinalIK {
 		}
 
 		protected override void InitiateSolver() {
-			if (references.isEmpty) AutoDetectReferences();
-			if (references.isFilled) solver.SetToReferences(references);
+			if (references.isEmpty)
+			{
+				AutoDetectReferences();
+			}
+
+			if (references.isFilled)
+			{
+				solver.SetToReferences(references);
+			}
 
 			base.InitiateSolver();
 		}

@@ -52,7 +52,7 @@ public class UnimateScaleXYZ : UnimateTween<UnimateScaleXYZ, UnimateScaleXYZ.Pla
 
 		protected override void OnUpdateTween(float normalizedTime, float loopingTime)
 		{
-			Vector3 scale = new Vector3(
+			Vector3 scale = new(
 				Animation.m_XScaleCurve.Evaluate(normalizedTime) * Animation.m_ScaleFactor.x,
 				Animation.m_YScaleCurve.Evaluate(normalizedTime) * Animation.m_ScaleFactor.y,
 				Animation.m_ZScaleCurve.Evaluate(normalizedTime) * Animation.m_ScaleFactor.z);

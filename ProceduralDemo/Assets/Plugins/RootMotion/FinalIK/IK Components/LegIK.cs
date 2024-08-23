@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
-    /// <summary>
-    /// Leg %IK solver component.
-    /// </summary>
-    [HelpURL("http://www.root-motion.com/finalikdox/html/page11.html")]
+	/// <summary>
+	/// Leg %IK solver component.
+	/// </summary>
+	[HelpURL("http://www.root-motion.com/finalikdox/html/page11.html")]
 	[AddComponentMenu("Scripts/RootMotion.FinalIK/IK/Leg IK")]
 	public class LegIK : IK {
 
@@ -37,7 +37,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The Leg %IK solver.
 		/// </summary>
-		public IKSolverLeg solver = new IKSolverLeg();
+		public IKSolverLeg solver = new();
 		
 		public override IKSolver GetIKSolver() {
 			return solver as IKSolver;

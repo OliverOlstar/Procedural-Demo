@@ -50,10 +50,16 @@ namespace StylizedWater2
                 requirements |= ScriptableRenderPassInput.Color | ScriptableRenderPassInput.Depth;
             }
             
-            if(settings.displacementPrePassSettings.enable) cmd.EnableShaderKeyword(DisplacementPrePass.KEYWORD);
-            else cmd.DisableShaderKeyword(DisplacementPrePass.KEYWORD);
-            
-            cmd.SetGlobalInt(_WaterSSREnabled, settings.screenSpaceReflectionSettings.enable ? 1 : 0);
+            if(settings.displacementPrePassSettings.enable)
+			{
+				cmd.EnableShaderKeyword(DisplacementPrePass.KEYWORD);
+			}
+			else
+			{
+				cmd.DisableShaderKeyword(DisplacementPrePass.KEYWORD);
+			}
+
+			cmd.SetGlobalInt(_WaterSSREnabled, settings.screenSpaceReflectionSettings.enable ? 1 : 0);
             cmd.SetGlobalInt(_WaterDisplacementPrePassAvailable, settings.displacementPrePassSettings.enable ? 1 : 0);
             
             ConfigureInput(requirements);

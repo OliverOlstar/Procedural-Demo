@@ -1,7 +1,7 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// The hinge rotation limit limits the rotation to 1 degree of freedom around Axis. This rotation limit is additive which means the limits can exceed 360 degrees.
@@ -67,13 +67,19 @@ namespace RootMotion.FinalIK {
 		 * */
 		private Quaternion LimitHinge(Quaternion rotation) {
 			// If limit is zero return rotation fixed to axis
-			if (min == 0 && max == 0 && useLimits) return Quaternion.AngleAxis(0, axis);
-			
+			if (min == 0 && max == 0 && useLimits)
+			{
+				return Quaternion.AngleAxis(0, axis);
+			}
+
 			// Get 1 degree of freedom rotation along axis
 			Quaternion free1DOF = Limit1DOF(rotation, axis);
-            if (!useLimits) return free1DOF;
+            if (!useLimits)
+			{
+				return free1DOF;
+			}
 
-            Quaternion workingSpace = Quaternion.Inverse(Quaternion.AngleAxis(lastAngle, axis) * Quaternion.LookRotation(secondaryAxis, axis));
+			Quaternion workingSpace = Quaternion.Inverse(Quaternion.AngleAxis(lastAngle, axis) * Quaternion.LookRotation(secondaryAxis, axis));
             Vector3 d = workingSpace * free1DOF * secondaryAxis;
             float deltaAngle = Mathf.Atan2(d.x, d.z) * Mathf.Rad2Deg;
 

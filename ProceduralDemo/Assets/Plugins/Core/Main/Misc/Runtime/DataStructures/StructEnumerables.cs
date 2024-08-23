@@ -12,7 +12,7 @@ namespace Core
 	// }
 	namespace StructEnumerable
 	{
-		public struct List<T>
+		public readonly struct List<T>
 		{
 			private readonly System.Collections.Generic.List<T> m_Enumerable;
 
@@ -26,10 +26,10 @@ namespace Core
 				return m_Enumerable.GetEnumerator();
 			}
 
-			public static implicit operator List<T>(System.Collections.Generic.List<T> enumerable) => new List<T>(enumerable);
+			public static implicit operator List<T>(System.Collections.Generic.List<T> enumerable) => new(enumerable);
 		}
 
-		public struct Queue<T>
+		public readonly struct Queue<T>
 		{
 			private readonly System.Collections.Generic.Queue<T> m_Enumerable;
 
@@ -43,10 +43,10 @@ namespace Core
 				return m_Enumerable.GetEnumerator();
 			}
 
-			public static implicit operator Queue<T>(System.Collections.Generic.Queue<T> enumerable) => new Queue<T>(enumerable);
+			public static implicit operator Queue<T>(System.Collections.Generic.Queue<T> enumerable) => new(enumerable);
 		}
 
-		public struct HashSet<T>
+		public readonly struct HashSet<T>
 		{
 			private readonly System.Collections.Generic.HashSet<T> m_Enumerable;
 
@@ -60,10 +60,10 @@ namespace Core
 				return m_Enumerable.GetEnumerator();
 			}
 
-			public static implicit operator HashSet<T>(System.Collections.Generic.HashSet<T> enumerable) => new HashSet<T>(enumerable);
+			public static implicit operator HashSet<T>(System.Collections.Generic.HashSet<T> enumerable) => new(enumerable);
 		}
 
-		public struct Dictionary<K, V>
+		public readonly struct Dictionary<K, V>
 		{
 			private readonly System.Collections.Generic.Dictionary<K, V> m_Enumerable;
 
@@ -77,10 +77,10 @@ namespace Core
 				return m_Enumerable.GetEnumerator();
 			}
 
-			public static implicit operator Dictionary<K, V>(System.Collections.Generic.Dictionary<K, V> enumerable) => new Dictionary<K, V>(enumerable);
+			public static implicit operator Dictionary<K, V>(System.Collections.Generic.Dictionary<K, V> enumerable) => new(enumerable);
 		}
 
-		public struct DictionaryKeys<K, V>
+		public readonly struct DictionaryKeys<K, V>
 		{
 			private readonly System.Collections.Generic.Dictionary<K, V>.KeyCollection m_Enumerable;
 
@@ -95,10 +95,10 @@ namespace Core
 			}
 
 			public static implicit operator DictionaryKeys<K, V>(System.Collections.Generic.Dictionary<K, V>.KeyCollection enumerable) => 
-				new DictionaryKeys<K, V>(enumerable);
+				new(enumerable);
 		}
 
-		public struct DictionaryValues<K, V>
+		public readonly struct DictionaryValues<K, V>
 		{
 			private readonly System.Collections.Generic.Dictionary<K, V>.ValueCollection m_Enumerable;
 
@@ -113,7 +113,7 @@ namespace Core
 			}
 
 			public static implicit operator DictionaryValues<K, V>(System.Collections.Generic.Dictionary<K, V>.ValueCollection enumerable) => 
-				new DictionaryValues<K, V>(enumerable);
+				new(enumerable);
 		}
 	}
 }

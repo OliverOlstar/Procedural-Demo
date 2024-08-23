@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ namespace Core
 {
 	public class MonoPool<T> where T : Component
 	{
-		private List<T> m_Pooled = new List<T>(10);
+		private List<T> m_Pooled = new(10);
 
 		private Transform m_PooledParent = null;
 
@@ -54,9 +53,8 @@ namespace Core
 			{
 				return obj;
 			}
-			GameObject go = new GameObject(typeof(T).Name);
-			go.transform.position = position;
-			go.transform.rotation = rotation;
+			GameObject go = new(typeof(T).Name);
+			go.transform.SetPositionAndRotation(position, rotation);
 			return go.AddComponent<T>();
 		}
 
@@ -78,7 +76,7 @@ namespace Core
 			{
 				return obj;
 			}
-			GameObject go = GameObject.Instantiate(prefab, position, rotation);
+			GameObject go = Object.Instantiate(prefab, position, rotation);
 			return go.GetComponent<T>();
 		}
 
@@ -93,8 +91,7 @@ namespace Core
 				}
 				m_Pooled[i] = null;
 				obj = o;
-				obj.transform.position = position;
-				obj.transform.rotation = rotation;
+				obj.transform.SetPositionAndRotation(position, rotation);
 				obj.gameObject.SetActive(true);
 				return true;
 			}

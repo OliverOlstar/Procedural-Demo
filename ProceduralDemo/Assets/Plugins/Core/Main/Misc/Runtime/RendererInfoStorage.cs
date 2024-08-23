@@ -7,7 +7,7 @@ namespace Core
 	{
 		public string[] m_ShaderNames = new string[0];
 		public int m_LightmapIndex = -1;
-		public Vector4 m_LightmapScaleOffset = new Vector4(1.0f, 1.0f, 0.0f, 0.0f);
+		public Vector4 m_LightmapScaleOffset = new(1.0f, 1.0f, 0.0f, 0.0f);
 		public Color[] m_VertexColors = new Color[0];
 
 		public static void StoreLightmapInfo<T>(Transform transform) where T : Renderer
@@ -19,12 +19,11 @@ namespace Core
 
 			foreach (T renderer in transform.GetComponentsInChildren<T>())
 			{
-				RendererInfoStorage rendererInfo = renderer.gameObject.GetComponent<RendererInfoStorage>();
-
-				if (rendererInfo == null)
+				
+				if (!renderer.gameObject.TryGetComponent<RendererInfoStorage>(out RendererInfoStorage rendererInfo))
 				{
 					rendererInfo = renderer.gameObject.AddComponent<RendererInfoStorage>();
-					Debug.Log(string.Format("RendererInfoStorage.StoreLightmapInfo: Added a RendererInfoStorage component to {0}.", Core.DebugUtil.GetScenePath(renderer.gameObject)));
+					Debug.Log(string.Format("RendererInfoStorage.StoreLightmapInfo: Added a RendererInfoStorage component to {0}.", DebugUtil.GetScenePath(renderer.gameObject)));
 				}
 
 				rendererInfo.m_LightmapIndex = renderer.lightmapIndex;
@@ -41,12 +40,11 @@ namespace Core
 
 			foreach (T renderer in transform.GetComponentsInChildren<T>())
 			{
-				RendererInfoStorage rendererInfo = renderer.gameObject.GetComponent<RendererInfoStorage>();
-
-				if (rendererInfo == null)
+				
+				if (!renderer.gameObject.TryGetComponent<RendererInfoStorage>(out RendererInfoStorage rendererInfo))
 				{
 					rendererInfo = renderer.gameObject.AddComponent<RendererInfoStorage>();
-					Debug.Log(string.Format("RendererInfoStorage.StoreLightmapInfo: Added a RendererInfoStorage component to {0}.", Core.DebugUtil.GetScenePath(renderer.gameObject)));
+					Debug.Log(string.Format("RendererInfoStorage.StoreLightmapInfo: Added a RendererInfoStorage component to {0}.", DebugUtil.GetScenePath(renderer.gameObject)));
 				}
 
 				rendererInfo.m_ShaderNames = new string[renderer.sharedMaterials.Length];
@@ -54,7 +52,7 @@ namespace Core
 				{
 					if (renderer.sharedMaterials[i] == null)
 					{
-						Debug.LogError("RendererInfoStorage.StoreShaderInfo: MeshRenderer on GameObject " + Core.DebugUtil.GetScenePath(renderer.gameObject) + " has a null material.");
+						Debug.LogError("RendererInfoStorage.StoreShaderInfo: MeshRenderer on GameObject " + DebugUtil.GetScenePath(renderer.gameObject) + " has a null material.");
 						continue;
 					}
 					rendererInfo.m_ShaderNames[i] = renderer.sharedMaterials[i].shader.name;
@@ -83,12 +81,11 @@ namespace Core
 					continue;
 				}
 
-				RendererInfoStorage rendererInfo = renderer.gameObject.GetComponent<RendererInfoStorage>();
-
-				if (rendererInfo == null)
+				
+				if (!renderer.gameObject.TryGetComponent<RendererInfoStorage>(out RendererInfoStorage rendererInfo))
 				{
 					rendererInfo = renderer.gameObject.AddComponent<RendererInfoStorage>();
-					Debug.Log(string.Format("RendererInfoStorage.StoreLightmapInfo: Added a RendererInfoStorage component to {0}.", Core.DebugUtil.GetScenePath(renderer.gameObject)));
+					Debug.Log(string.Format("RendererInfoStorage.StoreLightmapInfo: Added a RendererInfoStorage component to {0}.", DebugUtil.GetScenePath(renderer.gameObject)));
 				}
 
 				rendererInfo.m_VertexColors = meshFilter.sharedMesh.colors;
@@ -97,14 +94,12 @@ namespace Core
 
 		public void SetupMeshColliders()
 		{
-			MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
-			if (meshFilter == null)
+			if (!gameObject.TryGetComponent<MeshFilter>(out MeshFilter meshFilter))
 			{
 				return;
 			}
 
-			MeshCollider meshCollider = gameObject.GetComponent<MeshCollider>();
-			if (meshCollider == null)
+			if (!gameObject.TryGetComponent<MeshCollider>(out MeshCollider meshCollider))
 			{
 				return;
 			}
@@ -114,8 +109,7 @@ namespace Core
 
 		public void SetupVertexColors()
 		{
-			MeshFilter filter = gameObject.GetComponent<MeshFilter>();
-			if (filter == null)
+			if (!gameObject.TryGetComponent<MeshFilter>(out MeshFilter filter))
 			{
 				return;
 			}
@@ -125,8 +119,7 @@ namespace Core
 
 		public void SetupShaders()
 		{
-			Renderer renderer = gameObject.GetComponent<Renderer>();
-			if (renderer == null)
+			if (!gameObject.TryGetComponent<Renderer>(out Renderer renderer))
 			{
 				return;
 			}

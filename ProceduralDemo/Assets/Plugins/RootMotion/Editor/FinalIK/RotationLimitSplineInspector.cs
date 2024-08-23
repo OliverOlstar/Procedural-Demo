@@ -1,15 +1,14 @@
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 using System;
 
 namespace RootMotion.FinalIK
 {
 
-    /*
+	/*
 	 * Custom inspector for RotationLimitSpline
 	 * */
-    [CustomEditor(typeof(RotationLimitSpline))]
+	[CustomEditor(typeof(RotationLimitSpline))]
     [CanEditMultipleObjects]
     public class RotationLimitSplineInspector : RotationLimitInspector
     {
@@ -92,17 +91,20 @@ namespace RootMotion.FinalIK
 
             script.twistLimit = Mathf.Clamp(script.twistLimit, 0, 180);
 
-            if (GUI.changed) EditorUtility.SetDirty(script);
-        }
+            if (GUI.changed)
+			{
+				EditorUtility.SetDirty(script);
+			}
+		}
 
         /*
 		 * Make sure the keyframes and tangents are valid
 		 * */
         private void ValidateKeyframes(Keyframe[] keys)
         {
-            keys[keys.Length - 1].value = keys[0].value;
-            keys[keys.Length - 1].time = keys[0].time + 360;
-            keys[keys.Length - 1].inTangent = keys[0].inTangent;
+            keys[^1].value = keys[0].value;
+            keys[^1].time = keys[0].time + 360;
+            keys[^1].inTangent = keys[0].inTangent;
         }
 
         #endregion Inspector
@@ -116,11 +118,18 @@ namespace RootMotion.FinalIK
             Keyframe[] keys = script.spline.keys;
 
             // Set defaultLocalRotation so that the initial local rotation will be the zero point for the rotation limit
-            if (!Application.isPlaying && !script.defaultLocalRotationOverride) script.defaultLocalRotation = script.transform.localRotation;
-            if (script.axis == Vector3.zero) return;
+            if (!Application.isPlaying && !script.defaultLocalRotationOverride)
+			{
+				script.defaultLocalRotation = script.transform.localRotation;
+			}
 
-            // Make the curve loop
-            script.spline.postWrapMode = WrapMode.Loop;
+			if (script.axis == Vector3.zero)
+			{
+				return;
+			}
+
+			// Make the curve loop
+			script.spline.postWrapMode = WrapMode.Loop;
             script.spline.preWrapMode = WrapMode.Loop;
 
             DrawRotationSphere(script.transform.position);
@@ -144,9 +153,16 @@ namespace RootMotion.FinalIK
 
             if (Inspector.Button("Rotate 90 degrees", "Rotate rotation limit around axis.", script, GUILayout.Width(220)))
             {
-                if (!Application.isPlaying) Undo.RecordObject(script, "Handle Value");
-                for (int i = 0; i < keys.Length; i++) keys[i].time += 90;
-            }
+                if (!Application.isPlaying)
+				{
+					Undo.RecordObject(script, "Handle Value");
+				}
+
+				for (int i = 0; i < keys.Length; i++)
+				{
+					keys[i].time += 90;
+				}
+			}
 
             // Cloning values from another RotationLimitSpline
             EditorGUILayout.BeginHorizontal();
@@ -183,8 +199,12 @@ namespace RootMotion.FinalIK
                             inputValue = Mathf.Clamp(Inspector.ScaleValueHandleSphere(inputValue, position, Quaternion.identity, 0.5f, 0), 0.01f, 180);
                             if (keys[i].value != inputValue)
                             {
-                                if (!Application.isPlaying) Undo.RecordObject(script, "Handle Value");
-                                keys[i].value = inputValue;
+                                if (!Application.isPlaying)
+								{
+									Undo.RecordObject(script, "Handle Value");
+								}
+
+								keys[i].value = inputValue;
                             }
                             break;
                         case ScaleMode.Angle:
@@ -192,8 +212,12 @@ namespace RootMotion.FinalIK
                             inputTime = Inspector.ScaleValueHandleSphere(inputTime, position, Quaternion.identity, 0.5f, 0);
                             if (keys[i].time != inputTime)
                             {
-                                if (!Application.isPlaying) Undo.RecordObject(script, "Handle Angle");
-                                keys[i].time = inputTime;
+                                if (!Application.isPlaying)
+								{
+									Undo.RecordObject(script, "Handle Angle");
+								}
+
+								keys[i].time = inputTime;
                             }
                             break;
                     }
@@ -226,35 +250,54 @@ namespace RootMotion.FinalIK
                     float inTangent = keys[i].inTangent;
                     inTangent = Inspector.ScaleValueHandleSphere(inTangent, position + toPrev, Quaternion.identity, 0.2f, 0);
 
-                    if (outTangent != keys[i].outTangent || inTangent != keys[i].inTangent) selectedHandle = i;
+                    if (outTangent != keys[i].outTangent || inTangent != keys[i].inTangent)
+					{
+						selectedHandle = i;
+					}
 
-                    // Make the other tangent match the dragged tangent (if in "Smooth" TangentMode)
-                    switch (tangentMode)
+					// Make the other tangent match the dragged tangent (if in "Smooth" TangentMode)
+					switch (tangentMode)
                     {
                         case TangentMode.Smooth:
                             if (outTangent != keys[i].outTangent)
                             {
-                                if (!Application.isPlaying) Undo.RecordObject(script, "Tangents");
-                                keys[i].outTangent = outTangent;
+                                if (!Application.isPlaying)
+								{
+									Undo.RecordObject(script, "Tangents");
+								}
+
+								keys[i].outTangent = outTangent;
                                 keys[i].inTangent = outTangent;
                             }
                             else if (inTangent != keys[i].inTangent)
                             {
-                                if (!Application.isPlaying) Undo.RecordObject(script, "Tangents");
-                                keys[i].outTangent = inTangent;
+                                if (!Application.isPlaying)
+								{
+									Undo.RecordObject(script, "Tangents");
+								}
+
+								keys[i].outTangent = inTangent;
                                 keys[i].inTangent = inTangent;
                             }
                             break;
                         case TangentMode.Independent:
                             if (outTangent != keys[i].outTangent)
                             {
-                                if (!Application.isPlaying) Undo.RecordObject(script, "Tangents");
-                                keys[i].outTangent = outTangent;
+                                if (!Application.isPlaying)
+								{
+									Undo.RecordObject(script, "Tangents");
+								}
+
+								keys[i].outTangent = outTangent;
                             }
                             else if (inTangent != keys[i].inTangent)
                             {
-                                if (!Application.isPlaying) Undo.RecordObject(script, "Tangents");
-                                keys[i].inTangent = inTangent;
+                                if (!Application.isPlaying)
+								{
+									Undo.RecordObject(script, "Tangents");
+								}
+
+								keys[i].inTangent = inTangent;
                             }
                             break;
                     }
@@ -284,8 +327,11 @@ namespace RootMotion.FinalIK
                     {
                         deleteHandle = selectedHandle;
                     }
-                    else if (!Warning.logged) script.LogWarning("Spline Rotation Limit should have at least 3 handles");
-                }
+                    else if (!Warning.logged)
+					{
+						script.LogWarning("Spline Rotation Limit should have at least 3 handles");
+					}
+				}
                 if (Inspector.Button("Add Handle", "Add a new handle next to this one", script))
                 {
                     addHandle = selectedHandle;
@@ -293,20 +339,36 @@ namespace RootMotion.FinalIK
 
                 // Clamp the key angles to previous and next handle angles
                 float prevTime = 0, nextTime = 0;
-                if (selectedHandle < keys.Length - 2) nextTime = keys[selectedHandle + 1].time;
-                else nextTime = keys[0].time + 360;
+                if (selectedHandle < keys.Length - 2)
+				{
+					nextTime = keys[selectedHandle + 1].time;
+				}
+				else
+				{
+					nextTime = keys[0].time + 360;
+				}
 
-                if (selectedHandle == 0) prevTime = keys[keys.Length - 2].time - 360;
-                else prevTime = keys[selectedHandle - 1].time;
+				if (selectedHandle == 0)
+				{
+					prevTime = keys[^2].time - 360;
+				}
+				else
+				{
+					prevTime = keys[selectedHandle - 1].time;
+				}
 
-                // Angles
-                float inputTime = keys[selectedHandle].time;
+				// Angles
+				float inputTime = keys[selectedHandle].time;
                 inputTime = Mathf.Clamp(EditorGUILayout.FloatField(new GUIContent("Angle", "Angle of the point (0-360)."), inputTime), prevTime, nextTime);
 
                 if (keys[selectedHandle].time != inputTime)
                 {
-                    if (!Application.isPlaying) Undo.RecordObject(script, "Handle Angle");
-                    keys[selectedHandle].time = inputTime;
+                    if (!Application.isPlaying)
+					{
+						Undo.RecordObject(script, "Handle Angle");
+					}
+
+					keys[selectedHandle].time = inputTime;
                 }
 
                 // Limits
@@ -314,8 +376,12 @@ namespace RootMotion.FinalIK
                 inputValue = Mathf.Clamp(EditorGUILayout.FloatField(new GUIContent("Limit", "Max angular limit from Axis at this angle"), inputValue), 0, 180);
                 if (keys[selectedHandle].value != inputValue)
                 {
-                    if (!Application.isPlaying) Undo.RecordObject(script, "Handle Limit");
-                    keys[selectedHandle].value = inputValue;
+                    if (!Application.isPlaying)
+					{
+						Undo.RecordObject(script, "Handle Limit");
+					}
+
+					keys[selectedHandle].value = inputValue;
                 }
 
                 // In Tangents
@@ -323,8 +389,12 @@ namespace RootMotion.FinalIK
                 inputInTangent = EditorGUILayout.FloatField(new GUIContent("In Tangent", "In tangent of the handle point on the spline"), inputInTangent);
                 if (keys[selectedHandle].inTangent != inputInTangent)
                 {
-                    if (!Application.isPlaying) Undo.RecordObject(script, "Handle In Tangent");
-                    keys[selectedHandle].inTangent = inputInTangent;
+                    if (!Application.isPlaying)
+					{
+						Undo.RecordObject(script, "Handle In Tangent");
+					}
+
+					keys[selectedHandle].inTangent = inputInTangent;
                 }
 
                 // Out tangents
@@ -332,8 +402,12 @@ namespace RootMotion.FinalIK
                 inputOutTangent = EditorGUILayout.FloatField(new GUIContent("Out Tangent", "Out tangent of the handle point on the spline"), inputOutTangent);
                 if (keys[selectedHandle].outTangent != inputOutTangent)
                 {
-                    if (!Application.isPlaying) Undo.RecordObject(script, "Handle Out Tangent");
-                    keys[selectedHandle].outTangent = inputOutTangent;
+                    if (!Application.isPlaying)
+					{
+						Undo.RecordObject(script, "Handle Out Tangent");
+					}
+
+					keys[selectedHandle].outTangent = inputOutTangent;
                 }
 
                 GUILayout.EndArea();
@@ -366,16 +440,22 @@ namespace RootMotion.FinalIK
                 Vector3 limitPoint = script.transform.position + Direction(evaluatedDirection);
 
                 Handles.color = color;
-                if (i == 0) zeroPoint = limitPoint;
+                if (i == 0)
+				{
+					zeroPoint = limitPoint;
+				}
 
-                Handles.DrawLine(script.transform.position, limitPoint);
+				Handles.DrawLine(script.transform.position, limitPoint);
 
                 if (i > 0)
                 {
                     Handles.color = isValid ? colorDefault : colorInvalid;
                     Handles.DrawLine(limitPoint, lastPoint);
-                    if (i == 358) Handles.DrawLine(limitPoint, zeroPoint);
-                }
+                    if (i == 358)
+					{
+						Handles.DrawLine(limitPoint, zeroPoint);
+					}
+				}
 
                 lastPoint = limitPoint;
             }
@@ -396,8 +476,11 @@ namespace RootMotion.FinalIK
             }
 
             Handles.color = Color.white;
-            if (GUI.changed) EditorUtility.SetDirty(script);
-        }
+            if (GUI.changed)
+			{
+				EditorUtility.SetDirty(script);
+			}
+		}
 
         private Vector3 lastPoint, zeroPoint;
 
@@ -417,8 +500,12 @@ namespace RootMotion.FinalIK
 		 * */
         private Vector3 Direction(Vector3 v)
         {
-            if (script.transform.parent == null) return script.defaultLocalRotation * v;
-            return script.transform.parent.rotation * (script.defaultLocalRotation * v);
+            if (script.transform.parent == null)
+			{
+				return script.defaultLocalRotation * v;
+			}
+
+			return script.transform.parent.rotation * (script.defaultLocalRotation * v);
         }
 
         /*
@@ -434,7 +521,7 @@ namespace RootMotion.FinalIK
                 if (i != p)
                 {
                     Array.Resize(ref newKeys, newKeys.Length + 1);
-                    newKeys[newKeys.Length - 1] = keys[i];
+                    newKeys[^1] = keys[i];
                 }
             }
 
@@ -449,20 +536,32 @@ namespace RootMotion.FinalIK
             Keyframe[] keys = script.spline.keys;
             Keyframe[] newKeys = new Keyframe[keys.Length + 1];
 
-            for (int i = 0; i < p + 1; i++) newKeys[i] = keys[i];
+            for (int i = 0; i < p + 1; i++)
+			{
+				newKeys[i] = keys[i];
+			}
 
-            float nextTime = 0;
-            if (p < keys.Length - 1) nextTime = keys[p + 1].time;
-            else nextTime = keys[0].time;
+			float nextTime = 0;
+            if (p < keys.Length - 1)
+			{
+				nextTime = keys[p + 1].time;
+			}
+			else
+			{
+				nextTime = keys[0].time;
+			}
 
-            float newTime = Mathf.Lerp(keys[p].time, nextTime, 0.5f);
+			float newTime = Mathf.Lerp(keys[p].time, nextTime, 0.5f);
             float newValue = script.spline.Evaluate(newTime);
 
             newKeys[p + 1] = new Keyframe(newTime, newValue);
 
-            for (int i = p + 2; i < newKeys.Length; i++) newKeys[i] = keys[i - 1];
+            for (int i = p + 2; i < newKeys.Length; i++)
+			{
+				newKeys[i] = keys[i - 1];
+			}
 
-            script.spline.keys = newKeys;
+			script.spline.keys = newKeys;
         }
 
         /*
@@ -470,8 +569,12 @@ namespace RootMotion.FinalIK
 		 * */
         private void CloneLimit()
         {
-            if (clone == null) return;
-            if (clone == script)
+            if (clone == null)
+			{
+				return;
+			}
+
+			if (clone == script)
             {
                 script.LogWarning("Can't clone from self.");
                 return;

@@ -35,7 +35,7 @@ namespace Core
 			}
 		}
 		
-		List<DependencyData> m_Objects = new List<DependencyData>();
+		List<DependencyData> m_Objects = new();
 		string m_RootPath = string.Empty;
 		Vector2 m_ScrollPos1 = Vector2.zero;
 		SortType m_SortType = SortType.FileName;
@@ -43,7 +43,7 @@ namespace Core
 		[MenuItem("Assets/Open in Dependencies Window", false, 51)]
 		static void Menu()
 		{
-			DependencyWindow window = EditorWindow.GetWindow<DependencyWindow>(true, "Dependenices");
+			DependencyWindow window = GetWindow<DependencyWindow>(true, "Dependenices");
 			string path = AssetDatabase.GetAssetPath(Selection.activeObject);
 			window.Init(path);
 		}
@@ -71,7 +71,7 @@ namespace Core
 				if (dependencyPath.Length < m_RootPath.Length ||
 				    dependencyPath.Substring(0, m_RootPath.Length) != m_RootPath)
 				{
-					DependencyData data = new DependencyData(dependencyPath);
+					DependencyData data = new(dependencyPath);
 					m_Objects.Add(data);
 				}
 			}
@@ -109,7 +109,7 @@ namespace Core
 			}
 
 			bool selectAll = Selection.objects.Length > 0;
-			List<Object> allObjects = new List<Object>(m_Objects.Count);
+			List<Object> allObjects = new(m_Objects.Count);
 			foreach (DependencyData data in m_Objects)
 			{
 				if (data.obj != null)
@@ -135,7 +135,7 @@ namespace Core
 
 			m_ScrollPos1 = GUILayout.BeginScrollView(m_ScrollPos1);
 			bool dirty = false;
-			List<Object> objs = new List<Object>(Selection.objects.Length);
+			List<Object> objs = new(Selection.objects.Length);
 			foreach (DependencyData data in m_Objects)
 			{
 				if (data.obj != null)
@@ -151,7 +151,7 @@ namespace Core
 					{
 						GUILayout.Label(data.label, EditorStyles.boldLabel, GUILayout.Width(0.55f * position.width));
 						GUILayout.Label(
-							data.size > 0 ? Core.UIUtil.BytesToString(data.size) : Core.Str.EMPTY,
+							data.size > 0 ? UIUtil.BytesToString(data.size) : Str.EMPTY,
 							EditorStyles.boldLabel,
 							GUILayout.Width(0.1f * position.width));
 					}
@@ -159,7 +159,7 @@ namespace Core
 					{
 						GUILayout.Label(data.label, GUILayout.Width(0.55f * position.width));
 						GUILayout.Label(
-							data.size > 0 ? Core.UIUtil.BytesToString(data.size) : Core.Str.EMPTY,
+							data.size > 0 ? UIUtil.BytesToString(data.size) : Str.EMPTY,
 							GUILayout.Width(0.1f * position.width));
 					}
 					if (GUILayout.Toggle(selected, "") != selected)

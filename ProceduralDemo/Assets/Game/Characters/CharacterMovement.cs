@@ -1,146 +1,191 @@
-using System.Collections;
-using System.Collections.Generic;
-using OliverLoescher;
-using OliverLoescher.Util;
+using ODev;
+using ODev.Util;
+using ODev.GameStats;
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 {
 	[SerializeField]
-	private OliverLoescher.Util.Mono.Updateable m_Updateable = new(OliverLoescher.Util.Mono.Type.Early, OliverLoescher.Util.Mono.Priorities.CharacterController);
+	private Mono.Updateable m_Updateable = new(Mono.Type.Early, Mono.Priorities.CharacterController);
 	[SerializeField]
 	private CharacterController m_Controller = null;
 	[SerializeField]
-	private OnGround m_Grounded = null;
+	private PlayerRoot m_Root = null;
+
+	[Header("Stats")]
+	public bool MovementEnabled = true;
+	// public FloatGameStat Speed = new(10.0f);
+	public FloatGameStat Acceleration = new(20.0f);
+	public FloatGameStat Drag = new(1.0f);
+	public FloatGameStat MaxVelocity = new(10.0f);
+
+	[Space, SerializeField]
+	private float m_SlopeAcceleration = 2.0f;
 	[SerializeField]
-	private InputBridge_PlayerCharacter m_Input = null;
+	private float m_SlopeDrag = 1.0f;
+	[SerializeField]
+	private float m_SlopeMaxVelocity = 5.0f;
 
 	[Space]
-	[SerializeField]
-	private AnimationCurve m_JumpVelocityCurve = new();
-	[SerializeField]
-	private float m_JumpVelocitySalar = 5.0f;
-	[SerializeField]
-	private float m_JumpVelocitySeconds = 2.0f;
-	[SerializeField]
-	private AnimationCurve m_FallVelocityCurve = new();
-	[SerializeField]
-	private float m_FallVelocitySalar = -5.0f;
-	[SerializeField]
-	private float m_FallVelocitySeconds = 2.0f;
+	public FloatGameStat AirAcceleration = new(20.0f);
+	public FloatGameStat AirDrag = new(1.0f);
+	public FloatGameStat AirMaxVelocity = new(10.0f);
 
-	[Space, SerializeField]
-	private float m_Speed = 5.0f;
+	[Space]
+	public bool GravityEnabled = true;
+	public FloatGameStat UpGravity = new(-19.62f);
+	public FloatGameStat DownGravity = new(-19.62f);
+	public FloatGameStat TerminalGravity = new(-30.0f);
 
-	[Space, SerializeField]
-	private Vector3 m_AccelerationMovement;
-	private Vector3 m_AccelerationGravity;
-	private Vector3 Acceleration => m_AccelerationMovement + m_AccelerationGravity;
+	private Vector3 m_RecievedDisplacement = Vector3.zero;
+	private Vector3 m_VelocityXZ;
+	private float m_VelocityY;
 
-	private Coroutine m_VelocityYRoutine = null;
+	public Vector3 VelocityXZ => m_VelocityXZ;
+	public float VelocityY => m_VelocityY;
+	public Vector3 Velocity => new(m_VelocityXZ.x, m_VelocityXZ.y + m_VelocityY, m_VelocityXZ.z);
+	Transform TransformFollower.IMotionReciver.Transform => transform;
 
 	private void Reset()
 	{
 		gameObject.GetOrAddComponent(out m_Controller);
-		gameObject.GetOrAddComponent(out m_Grounded);
 	}
 
 	private void Start()
 	{
-		m_Updateable.Register(Tick);
-		m_Grounded.OnEnterEvent.AddListener(OnGroundEnter);
-		m_Grounded.OnExitEvent.AddListener(OnGroundExit);
+		m_Controller.enableOverlapRecovery = true;
+		m_Controller.providesContacts = false;
+
+		m_Root.OnGround.OnGroundExitEvent.AddListener(OnGroundExit);
 	}
 
 	private void OnDestroy()
 	{
-		m_Updateable.Deregister();
-	}
-
-	void Tick(float pDeltaTime)
-	{
-		JumpTick();
-		MoveTick(pDeltaTime);
-
-		// Vector3 center = m_Controller.transform.position + m_Controller.center;
-		// float distance = m_Velocity.magnitude * pDeltaTime;
-		// if (Physics.CapsuleCast(center + (Vector3.up * m_Controller.height), center + (Vector3.down * m_Controller.height), m_Controller.radius, m_Velocity, out RaycastHit hit, distance, m_GroundLayer))
-		// {
-		// 	float y = m_Velocity.y;
-		// 	m_Velocity *= hit.distance / distance;
-		// 	m_Velocity.y = y;
-		// }
-		m_Controller.Move(Acceleration * pDeltaTime);
-	}
-
-	private void MoveTick(float pDeltaTime)
-	{
-		if (!m_Grounded.IsGrounded)
-		{
-			m_AccelerationMovement -= 0.99f * pDeltaTime * m_AccelerationMovement;
-			return;
-		}
-		Vector3 normal = m_Grounded.GetAverageNormal();
-		Vector3 input = m_Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
-		input += m_Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
-		input = input.normalized;
-
-		m_AccelerationMovement = input * m_Speed;
-	}
-
-	private void JumpTick()
-	{
-		if (!m_Grounded.IsGrounded)
-		{
-			return;
-		}
-		if (Input.GetKey(KeyCode.Space))
-		{
-			if (m_VelocityYRoutine != null)
-			{
-				StopCoroutine(m_VelocityYRoutine);
-			}
-			m_VelocityYRoutine = StartCoroutine(VelocityYCoroutine(m_JumpVelocityCurve, m_JumpVelocitySalar, m_JumpVelocitySeconds, () =>
-			{
-				m_VelocityYRoutine = StartCoroutine(VelocityYCoroutine(m_FallVelocityCurve, m_FallVelocitySalar, m_FallVelocitySeconds, null));
-			}));
-		}
-	}
-
-	private void OnGroundEnter()
-	{
-		if (m_VelocityYRoutine != null)
-		{
-			StopCoroutine(m_VelocityYRoutine);
-			m_VelocityYRoutine = null;
-		}
-		m_AccelerationGravity.y = -1.0f;
+		m_Root.OnGround.OnGroundExitEvent.RemoveListener(OnGroundExit);
 	}
 
 	private void OnGroundExit()
 	{
-		m_VelocityYRoutine ??= StartCoroutine(VelocityYCoroutine(m_FallVelocityCurve, m_FallVelocitySalar, m_FallVelocitySeconds, null));
+		if (m_VelocityY.Approximately(-1.0f))
+		{
+			m_VelocityY = 1.0f;
+		}
 	}
 
-	private IEnumerator VelocityYCoroutine(AnimationCurve pCurve, float pScalar, float pSeconds, System.Action pOnComplete)
+	private void OnEnable()
 	{
-		float progress01 = 0.0f;
-		float timeScale = 1 / pSeconds;
+		m_Updateable.Register(Tick);
+		m_Controller.enabled = true;
+	}
 
-		m_AccelerationGravity.y = pCurve.Evaluate(0) * pScalar;
-		while (progress01 < 1.0f)
+	private void OnDisable()
+	{
+		m_Updateable.Deregister();
+		m_Controller.enabled = false;
+		m_VelocityXZ = Vector3.zero;
+		m_VelocityY = 0.0f;
+	}
+
+	void Tick(float pDeltaTime)
+	{
+		GravityTick(pDeltaTime, out Vector3 gravityDown);
+		MoveTick(pDeltaTime);
+
+		Vector3 Velocity = m_VelocityXZ + (m_VelocityY * gravityDown);
+		m_Controller.Move((Velocity * pDeltaTime) + Math.Horizontal(m_RecievedDisplacement));
+
+		m_Controller.enabled = false;
+		transform.position += m_RecievedDisplacement.y * Vector3.up;
+		m_Controller.enabled = true;
+
+		m_RecievedDisplacement = Vector3.zero;
+	}
+
+	private void GravityTick(float pDeltaTime, out Vector3 oGravityDirection)
+	{
+		m_VelocityY += (m_VelocityY > 0.0f ? UpGravity.Value : DownGravity.Value) * pDeltaTime;
+		float maxVelocityY = GravityEnabled ? (m_Root.OnGround.IsOnGround ? -1.0f : TerminalGravity.Value) : 0.0f;
+		m_VelocityY = Mathf.Max(m_VelocityY, maxVelocityY);
+
+		oGravityDirection = Vector3.up;
+		if (m_VelocityY < 0.0f && m_Root.OnGround.IsOnSlope)
 		{
-			yield return null;
-			m_AccelerationGravity.y = pCurve.Evaluate(progress01) * pScalar;
-			progress01 += Time.deltaTime * timeScale;
+			oGravityDirection = Vector3.ProjectOnPlane(Vector3.up, m_Root.OnGround.GetAverageNormal()).normalized;
 		}
-		pOnComplete?.Invoke();
+	}
+
+	private void MoveTick(float pDeltaTime)
+	{
+		Vector3 normal = m_Root.OnGround.IsOnGround ? m_Root.OnGround.GetAverageNormal() : Vector3.up;
+		Vector3 input = Vector3.zero;
+		if (MovementEnabled)
+		{
+			input = m_Root.Input.Move.Input.y * MainCamera.Camera.transform.forward.ProjectOnPlane(normal);
+			input += m_Root.Input.Move.Input.x * MainCamera.Camera.transform.right.ProjectOnPlane(normal);
+			input.Normalize();
+		}
+
+		GetStats(out float acceleration, out float drag, out float maxVelocity);
+		m_VelocityXZ -= drag * pDeltaTime * m_VelocityXZ; // Drag
+		if (maxVelocity > 0.0f)
+		{
+			maxVelocity = Mathf.Max(maxVelocity, m_VelocityXZ.magnitude);
+		}
+		m_VelocityXZ += acceleration * pDeltaTime * input; // Acceleration
+		m_VelocityXZ = Vector3.ClampMagnitude(m_VelocityXZ, maxVelocity);
+		return;
+	}
+
+	private void GetStats(out float oAcceleration, out float oDrag, out float oMaxVelocity)
+	{
+		if (m_Root.OnGround.IsOnGround)
+		{
+			oAcceleration = Acceleration.Value;
+			oDrag = Drag.Value;
+			oMaxVelocity = MaxVelocity.Value;
+			return;
+		}
+		else if (m_Root.OnGround.IsInAir)
+		{
+			oAcceleration = AirAcceleration.Value;
+			oDrag = AirDrag.Value;
+			oMaxVelocity = AirMaxVelocity.Value;
+			return;
+		}
+		oAcceleration = m_SlopeAcceleration;
+		oDrag = m_SlopeDrag;
+		oMaxVelocity = m_SlopeMaxVelocity;
 	}
 
 	private void OnDrawGizmos()
 	{
 		Gizmos.color = Color.yellow;
 		Vector3 start = transform.position + m_Controller.center;
-		Gizmos.DrawLine(start, start + m_AccelerationGravity);
+		Gizmos.DrawLine(start, start + (Vector3.down * m_VelocityY));
+	}
+
+	public void AddVelocity(Vector3 pVelocity)
+	{
+		m_VelocityXZ.x += pVelocity.x;
+		m_VelocityY += pVelocity.y;
+		m_VelocityXZ.z += pVelocity.z;
+	}
+	public void AddVelocityXZ(Vector3 pVelocity)
+	{
+		m_VelocityXZ += pVelocity;
+	}
+	public void SetVelocityY(float pVelocity)
+	{
+		m_VelocityY = pVelocity;
+	}
+	public void SetVelocityXZ(Vector3 pVelocity)
+	{
+		m_VelocityXZ = pVelocity;
+	}
+
+	public void AddDisplacement(Vector3 pMovement, Quaternion pRotation) // IMotionReciver
+	{
+		m_RecievedDisplacement += pMovement;
+		transform.rotation *= pRotation;
 	}
 }

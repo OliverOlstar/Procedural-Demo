@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion {
+namespace RootMotion
+{
+
 
 	/// <summary>
 	/// Manages solver initiation and updating
@@ -31,13 +32,19 @@ namespace RootMotion {
 		protected virtual void UpdateSolver() {}
 		protected virtual void FixTransforms() {}
 		
+		private ODev.PoseAnimator.PoseAnimator poseAnimator;
 		private Animator animator;
 		private Animation legacy;
 		private bool updateFrame;
 		private bool componentInitiated;
 
 		void OnDisable() {
-			if (!Application.isPlaying) return;
+			if (!Application.isPlaying)
+			{
+				return;
+			}
+
+
 			Initiate();
 		}
 
@@ -47,14 +54,33 @@ namespace RootMotion {
 
 		private bool animatePhysics {
 			get {
-				if (animator != null) return animator.updateMode == AnimatorUpdateMode.AnimatePhysics;
-				if (legacy != null) return legacy.animatePhysics;
+				if (poseAnimator != null)
+				{
+					return true;
+				}
+
+				if (animator != null)
+				{
+					return animator.updateMode == AnimatorUpdateMode.AnimatePhysics;
+				}
+
+
+				if (legacy != null)
+				{
+					return legacy.animatePhysics;
+				}
+
+
 				return false;
 			}
 		}
 
 		private void Initiate() {
-			if (componentInitiated) return;
+			if (componentInitiated)
+			{
+				return;
+			}
+
 
 			FindAnimatorRecursive(transform, true);
 			
@@ -63,30 +89,67 @@ namespace RootMotion {
 		}
 
 		void Update() {
-			if (skipSolverUpdate) return;
-			if (animatePhysics) return;
+			if (skipSolverUpdate)
+			{
+				return;
+			}
 
-			if (fixTransforms) FixTransforms();
+
+			if (animatePhysics)
+			{
+				return;
+			}
+
+
+			if (fixTransforms)
+			{
+				FixTransforms();
+			}
+
 		}
 
 		// Finds the first Animator/Animation up the hierarchy
 		private void FindAnimatorRecursive(Transform t, bool findInChildren) {
-			if (isAnimated) return;
+			if (isAnimated)
+			{
+				return;
+			}
 
+
+			t.TryGetComponent(out poseAnimator);
 			animator = t.GetComponent<Animator>();
 			legacy = t.GetComponent<Animation>();
 
-			if (isAnimated) return;
+			if (isAnimated)
+			{
+				return;
+			}
 
-			if (animator == null && findInChildren) animator = t.GetComponentInChildren<Animator>();
-			if (legacy == null && findInChildren) legacy = t.GetComponentInChildren<Animation>();
+			if (poseAnimator == null && findInChildren)
+			{
+				poseAnimator = t.GetComponentInChildren<ODev.PoseAnimator.PoseAnimator>();
+			}
 
-			if (!isAnimated && t.parent != null) FindAnimatorRecursive(t.parent, false);
+			if (animator == null && findInChildren)
+			{
+				animator = t.GetComponentInChildren<Animator>();
+			}
+
+			if (legacy == null && findInChildren)
+			{
+				legacy = t.GetComponentInChildren<Animation>();
+			}
+
+			if (!isAnimated && t.parent != null)
+			{
+				FindAnimatorRecursive(t.parent, false);
+			}
+
 		}
 
 		private bool isAnimated {
 			get {
-				return animator != null || legacy != null;
+				return poseAnimator != null || animator != null || legacy != null;
 			}
 		}
 
@@ -98,16 +161,34 @@ namespace RootMotion {
 
 			updateFrame = true;
 
-			if (animatePhysics && fixTransforms) FixTransforms();
+			if (animatePhysics && fixTransforms)
+			{
+				FixTransforms();
+			}
+
 		}
 
 		// Updating
 		void LateUpdate() {
-			if (skipSolverUpdate) return;
+			if (skipSolverUpdate)
+			{
+				return;
+			}
 
 			// Check if either animatePhysics is false or FixedUpdate has been called
-			if (!animatePhysics) updateFrame = true;
-			if (!updateFrame) return;
+
+			if (!animatePhysics)
+			{
+				updateFrame = true;
+			}
+
+
+			if (!updateFrame)
+			{
+				return;
+			}
+
+
 			updateFrame = false;
 
 			UpdateSolver();
@@ -117,7 +198,11 @@ namespace RootMotion {
 		private bool skipSolverUpdate;
 
 		public void UpdateSolverExternal() {
-			if (!enabled) return;
+			if (!enabled)
+			{
+				return;
+			}
+
 
 			skipSolverUpdate = true;
 			

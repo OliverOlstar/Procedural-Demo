@@ -1,7 +1,7 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// The base abstract class for all %IK solvers
@@ -30,10 +30,21 @@ namespace RootMotion.FinalIK {
 		/// Initiate the solver with specified root Transform. Use only if this %IKSolver is not a member of an %IK component.
 		/// </summary>
 		public void Initiate(Transform root) {
-            if (executedInEditor) return;
-			if (OnPreInitiate != null) OnPreInitiate();
+            if (executedInEditor)
+			{
+				return;
+			}
 
-			if (root == null) Debug.LogError("Initiating IKSolver with null root Transform.");
+			if (OnPreInitiate != null)
+			{
+				OnPreInitiate();
+			}
+
+			if (root == null)
+			{
+				Debug.LogError("Initiating IKSolver with null root Transform.");
+			}
+
 			this.root = root;
 			initiated = false;
 
@@ -49,21 +60,37 @@ namespace RootMotion.FinalIK {
 			initiated = true;
 			firstInitiation = false;
 
-			if (OnPostInitiate != null) OnPostInitiate();
+			if (OnPostInitiate != null)
+			{
+				OnPostInitiate();
+			}
 		}
 		
 		/// <summary>
 		/// Updates the %IK solver. Use only if this %IKSolver is not a member of an %IK component or the %IK component has been disabled and you intend to manually control the updating.
 		/// </summary>
 		public void Update() {
-			if (OnPreUpdate != null) OnPreUpdate();
+			if (OnPreUpdate != null)
+			{
+				OnPreUpdate();
+			}
 
-			if (firstInitiation) Initiate(root); // when the IK component has been disabled in Awake, this will initiate it.
-			if (!initiated) return;
+			if (firstInitiation)
+			{
+				Initiate(root); // when the IK component has been disabled in Awake, this will initiate it.
+			}
+
+			if (!initiated)
+			{
+				return;
+			}
 
 			OnUpdate();
 
-			if (OnPostUpdate != null) OnPostUpdate();
+			if (OnPostUpdate != null)
+			{
+				OnPostUpdate();
+			}
 		}
 		
 		/// <summary>
@@ -121,12 +148,12 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Gets all the points used by the solver.
 		/// </summary>
-		public abstract IKSolver.Point[] GetPoints();
+		public abstract Point[] GetPoints();
 		
 		/// <summary>
 		/// Gets the point with the specified Transform.
 		/// </summary>
-		public abstract IKSolver.Point GetPoint(Transform transform);
+		public abstract Point GetPoint(Transform transform);
 
 		/// <summary>
 		/// Fixes all the Transforms used by the solver to their initial state.
@@ -182,8 +209,15 @@ namespace RootMotion.FinalIK {
 			/// Fixes the transform to its default local state.
 			/// </summary>
 			public void FixTransform() {
-				if (transform.localPosition != defaultLocalPosition) transform.localPosition = defaultLocalPosition;
-				if (transform.localRotation != defaultLocalRotation) transform.localRotation = defaultLocalRotation;
+				if (transform.localPosition != defaultLocalPosition)
+				{
+					transform.localPosition = defaultLocalPosition;
+				}
+
+				if (transform.localRotation != defaultLocalRotation)
+				{
+					transform.localRotation = defaultLocalRotation;
+				}
 			}
 
 			/// <summary>
@@ -241,8 +275,16 @@ namespace RootMotion.FinalIK {
 			/// </summary>
 			public RotationLimit rotationLimit {
 				get {
-					if (!isLimited) return null;
-					if (_rotationLimit == null) _rotationLimit = transform.GetComponent<RotationLimit>();
+					if (!isLimited)
+					{
+						return null;
+					}
+
+					if (_rotationLimit == null)
+					{
+						_rotationLimit = transform.GetComponent<RotationLimit>();
+					}
+
 					isLimited = _rotationLimit != null;
 					return _rotationLimit;
 				}
@@ -256,7 +298,10 @@ namespace RootMotion.FinalIK {
 			 * Swings the Transform's axis towards the swing target
 			 * */
 			public void Swing(Vector3 swingTarget, float weight = 1f) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
 
 				Quaternion r = Quaternion.FromToRotation(transform.rotation * axis, swingTarget - transform.position);
 
@@ -269,8 +314,11 @@ namespace RootMotion.FinalIK {
 			}
 
 			public static void SolverSwing(Bone[] bones, int index, Vector3 swingTarget, float weight = 1f) {
-				if (weight <= 0f) return;
-				
+				if (weight <= 0f)
+				{
+					return;
+				}
+
 				Quaternion r = Quaternion.FromToRotation(bones[index].solverRotation * bones[index].axis, swingTarget - bones[index].solverPosition);
 				
 				if (weight >= 1f) {
@@ -289,7 +337,10 @@ namespace RootMotion.FinalIK {
 			 * Swings the Transform's axis towards the swing target on the XY plane only
 			 * */
 			public void Swing2D(Vector3 swingTarget, float weight = 1f) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
 
 				Vector3 from = transform.rotation * axis;
 				Vector3 to = swingTarget - transform.position;
@@ -403,7 +454,10 @@ namespace RootMotion.FinalIK {
 		public static Transform ContainsDuplicateBone(Bone[] bones) {
 			for (int i = 0; i < bones.Length; i++) {
 				for (int i2 = 0; i2 < bones.Length; i2++) {
-					if (i != i2 && bones[i].transform == bones[i2].transform) return bones[i].transform;
+					if (i != i2 && bones[i].transform == bones[i2].transform)
+					{
+						return bones[i].transform;
+					}
 				}
 			}
 			return null;
@@ -412,7 +466,7 @@ namespace RootMotion.FinalIK {
 		/*
 		 * Make sure the bones are in valid Hierarchy
 		 * */
-		public static bool HierarchyIsValid(IKSolver.Bone[] bones) {
+		public static bool HierarchyIsValid(Bone[] bones) {
 			for (int i = 1; i < bones.Length; i++) {
 				// If parent bone is not an ancestor of bone, the hierarchy is invalid
 				if (!Hierarchy.IsAncestor(bones[i].transform, bones[i - 1].transform)) {

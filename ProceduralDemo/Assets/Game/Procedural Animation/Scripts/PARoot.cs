@@ -1,27 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using RootMotion.FinalIK;
-using System;
-using OliverLoescher.Util;
+using ODev.Util;
+using ODev.Picker;
 
 namespace PA
 {
 	public class PARoot : MonoBehaviour
 	{
 		[SerializeField, DisableInPlayMode]
-		private OliverLoescher.Util.Mono.Updateable m_Updateable = new(OliverLoescher.Util.Mono.Type.Late, OliverLoescher.Util.Mono.Priorities.ModelController);
+		private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Late, ODev.Util.Mono.Priorities.ModelController);
 
 		private bool m_IsInitalized = false;
 
 		public IPACharacter Character { get; private set; }
-		[SerializeField]
+		[SerializeField, Asset]
 		private SOBody m_BodyData;
 		private PABody m_Body;
 		[SerializeField]
 		private Transform m_BodyTransform;
-		[SerializeField]
+		[SerializeField, Asset]
 		private SOLimb[] m_LimbDatas;
 		private PALimb[] m_Limbs;
 		private int m_LastLimbIndex = 0;
@@ -107,12 +106,12 @@ namespace PA
 		// {
 		// 	if (!m_IsInitalized)
 		// 	{
-		// 		OliverLoescher.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddLimb", this);
+		// 		ODev.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddLimb", this);
 		// 		return;
 		// 	}
 		// 	if (m_Limbs.Contains(pLimb))
 		// 	{
-		// 		OliverLoescher.Util.Debug.LogWarning("Limb already added", "AddLimb", this);
+		// 		ODev.Util.Debug.LogWarning("Limb already added", "AddLimb", this);
 		// 		return;
 		// 	}
 		// 	m_Limbs.Add(pLimb);
@@ -122,7 +121,7 @@ namespace PA
 		// {
 		// 	if (!m_Limbs.Remove(pLimb))
 		// 	{
-		// 		OliverLoescher.Util.Debug.LogWarning("Failed to remove", "RemoveLimb", this);
+		// 		ODev.Util.Debug.LogWarning("Failed to remove", "RemoveLimb", this);
 		// 	}
 		// }
 
@@ -130,12 +129,12 @@ namespace PA
 		// {
 		// 	if (!m_IsInitalized)
 		// 	{
-		// 		OliverLoescher.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddPoint", this);
+		// 		ODev.Util.Debug.LogWarning("Not initalized yet, skipping add", "AddPoint", this);
 		// 		return;
 		// 	}
 		// 	if (Points.Contains(pPoint))
 		// 	{
-		// 		OliverLoescher.Util.Debug.LogWarning("Point already added", "AddPoint", this);
+		// 		ODev.Util.Debug.LogWarning("Point already added", "AddPoint", this);
 		// 		return;
 		// 	}
 		// 	Points.Add(pPoint);
@@ -145,7 +144,7 @@ namespace PA
 		// {
 		// 	if (!Points.Remove(pAPoint))
 		// 	{
-		// 		OliverLoescher.Util.Debug.LogWarning("Failed to remove", "RemovePoint", this);
+		// 		ODev.Util.Debug.LogWarning("Failed to remove", "RemovePoint", this);
 		// 	}
 		// }
 	}

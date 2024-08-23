@@ -9,7 +9,6 @@ N.B. there may be a bug so if the custom option doesn't come up refer to this th
 
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -52,7 +51,7 @@ namespace Core
 
             if (m == null)
             {
-                Debug.LogError(Core.DebugUtil.GetScenePath(smr.gameObject) + "." + "EditorObjExporter.MeshToString: Mesh is null!!!");
+                Debug.LogError(DebugUtil.GetScenePath(smr.gameObject) + "." + "EditorObjExporter.MeshToString: Mesh is null!!!");
                 return string.Empty;
             }
 
@@ -67,7 +66,7 @@ namespace Core
 
             if (m == null)
             {
-                Debug.LogError(Core.DebugUtil.GetScenePath(mf.gameObject) + "." + "EditorObjExporter.MeshToString: Mesh is null!!!");
+                Debug.LogError(DebugUtil.GetScenePath(mf.gameObject) + "." + "EditorObjExporter.MeshToString: Mesh is null!!!");
                 return string.Empty;
             }
 
@@ -97,7 +96,7 @@ namespace Core
 
         private static string MeshToString(Mesh m, Transform t, Material[] mats, Dictionary<string, ObjMaterial> materialList, bool exportMats, Vector2[] uv2 = null)
 		{
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sb = new();
 
 			int count = 0;
 			sb.Append("g ").Append(t.name).Append("\n");
@@ -147,14 +146,18 @@ namespace Core
 					//See if this material is already in the materiallist.
 					try
 					{
-						ObjMaterial objMaterial = new ObjMaterial();
+						ObjMaterial objMaterial = new();
 
 						objMaterial.name = mats[material].name;
 
 						if (mats[material].mainTexture)
+						{
 							objMaterial.textureName = AssetDatabase.GetAssetPath(mats[material].mainTexture);
+						}
 						else
+						{
 							objMaterial.textureName = null;
+						}
 
 						materialList.Add(objMaterial.name, objMaterial);
 					}
@@ -201,7 +204,7 @@ namespace Core
 
 		private static void MaterialsToFile(Dictionary<string, ObjMaterial> materialList, string folder, string filename)
 		{
-			using (StreamWriter sw = new StreamWriter(folder + "/" + filename + ".mtl"))
+			using (StreamWriter sw = new(folder + "/" + filename + ".mtl"))
 			{
 				foreach (KeyValuePair<string, ObjMaterial> kvp in materialList)
 				{
@@ -222,8 +225,9 @@ namespace Core
 						int stripIndex = destinationFile.LastIndexOf('/');//FIXME: Should be Path.PathSeparator;
 
 						if (stripIndex >= 0)
+						{
 							destinationFile = destinationFile.Substring(stripIndex + 1).Trim();
-
+						}
 
 						string relativeFile = destinationFile;
 
@@ -327,45 +331,53 @@ namespace Core
         private static void MeshStringToFile(string meshString, Dictionary<string, ObjMaterial> materialList, string folder, string filename, bool exportMats)
         {
             string filePath = folder + "/" + filename + ".obj";
-            using (StreamWriter sw = new StreamWriter(filePath))
+            using (StreamWriter sw = new(filePath))
             {
                 if (exportMats)
-                    sw.Write("mtllib ./" + filename + ".mtl\n");
+				{
+					sw.Write("mtllib ./" + filename + ".mtl\n");
+				}
 
-                sw.Write(meshString);
+				sw.Write(meshString);
             }
 
             if (exportMats)
-                MaterialsToFile(materialList, folder, filename);
+			{
+				MaterialsToFile(materialList, folder, filename);
+			}
 
-            AssetDatabase.Refresh();
+			AssetDatabase.Refresh();
         }
 
         private static void MeshStringsToFile(string[] meshStrings, Dictionary<string, ObjMaterial> materialList, string folder, string filename, bool exportMats)
         {
             string filePath = folder + "/" + filename + ".obj";
-            using (StreamWriter sw = new StreamWriter(filePath))
+            using (StreamWriter sw = new(filePath))
             {
                 if (exportMats)
-                    sw.Write("mtllib ./" + filename + ".mtl\n");
+				{
+					sw.Write("mtllib ./" + filename + ".mtl\n");
+				}
 
-                for (int i = 0; i < meshStrings.Length; i++)
+				for (int i = 0; i < meshStrings.Length; i++)
                 {
                     sw.Write(meshStrings[i]);
                 }
             }
 
             if (exportMats)
-                MaterialsToFile(materialList, folder, filename);
+			{
+				MaterialsToFile(materialList, folder, filename);
+			}
 
-            AssetDatabase.Refresh();
+			AssetDatabase.Refresh();
         }
 
 		private static bool CreateTargetFolder()
 		{
 			try
 			{
-				System.IO.Directory.CreateDirectory(EditorPrefs.GetString(FOLDER_PATH_KEY, DEFAULT_FOLDER_PATH));
+				Directory.CreateDirectory(EditorPrefs.GetString(FOLDER_PATH_KEY, DEFAULT_FOLDER_PATH));
 			}
 			catch
 			{
@@ -380,10 +392,12 @@ namespace Core
 		static void ChangeTargetFolder()
 		{
 			if (!CreateTargetFolder())
+			{
 				return;
+			}
 
 			string folder = EditorPrefs.GetString(FOLDER_PATH_KEY, DEFAULT_FOLDER_PATH);
-			if (!System.IO.Directory.Exists(folder))
+			if (!Directory.Exists(folder))
 			{
 				folder = DEFAULT_FOLDER_PATH;
 			}
@@ -392,7 +406,7 @@ namespace Core
 				folder.Remove(folder.LastIndexOf('/')),
 				folder.Remove(0, folder.LastIndexOf('/') + 1));
 
-			if (System.IO.Directory.Exists(folder))
+			if (Directory.Exists(folder))
 			{
 				EditorPrefs.SetString(FOLDER_PATH_KEY, folder);
 			}
@@ -453,7 +467,9 @@ namespace Core
 		static void ExportSelectionToSeparate()
 		{
 			if (!CreateTargetFolder())
+			{
 				return;
+			}
 
 			Transform[] selection = Selection.GetTransforms(SelectionMode.Editable | SelectionMode.ExcludePrefab);
 
@@ -477,17 +493,23 @@ namespace Core
 			}
 
 			if (exportedObjects > 0)
+			{
 				EditorUtility.DisplayDialog("Objects exported", "Exported " + exportedObjects + " objects", "ok");
+			}
 			else
+			{
 				EditorUtility.DisplayDialog("Objects not exported", "Make sure at least some of your selected objects have mesh filters!", "ok");
-        }
+			}
+		}
 
         static void ExportWholeSelectionToSingle(bool exportMaterials)
         {
             if (!CreateTargetFolder())
-                return;
+			{
+				return;
+			}
 
-            Transform[] selection = Selection.GetTransforms(SelectionMode.Editable | SelectionMode.ExcludePrefab);
+			Transform[] selection = Selection.GetTransforms(SelectionMode.Editable | SelectionMode.ExcludePrefab);
 
             if (selection.Length == 0)
             {
@@ -495,8 +517,8 @@ namespace Core
                 return;
             }
 
-            List<SkinnedMeshRenderer> smrList = new List<SkinnedMeshRenderer>();
-            List<MeshFilter> mfList = new List<MeshFilter>();
+            List<SkinnedMeshRenderer> smrList = new();
+            List<MeshFilter> mfList = new();
 
             for (int i = 0; i < selection.Length; i++)
             {
@@ -515,28 +537,34 @@ namespace Core
 
             if (smrList.Count + mfList.Count > 0)
             {
-                string filename = EditorSceneManager.GetActiveScene().path + "_" + (smrList.Count + mfList.Count);
+                string filename = UnityEngine.SceneManagement.SceneManager.GetActiveScene().path + "_" + (smrList.Count + mfList.Count);
 
                 int stripIndex = filename.LastIndexOf('/');//FIXME: Should be Path.PathSeparator
 
                 if (stripIndex >= 0)
-                    filename = filename.Substring(stripIndex + 1).Trim();
+				{
+					filename = filename.Substring(stripIndex + 1).Trim();
+				}
 
-                SkinnedMeshRenderersAndMeshFiltersToFile(smrList.ToArray(), mfList.ToArray(), EditorPrefs.GetString(FOLDER_PATH_KEY, DEFAULT_FOLDER_PATH), filename, exportMaterials, false);
+				SkinnedMeshRenderersAndMeshFiltersToFile(smrList.ToArray(), mfList.ToArray(), EditorPrefs.GetString(FOLDER_PATH_KEY, DEFAULT_FOLDER_PATH), filename, exportMaterials, false);
 
 
                 EditorUtility.DisplayDialog("Objects exported", "Exported " + (smrList.Count + mfList.Count) + " objects to " + filename, "ok");
             }
             else
-                EditorUtility.DisplayDialog("Objects not exported", "Make sure at least some of your selected objects have mesh filters!", "ok");
-        }
+			{
+				EditorUtility.DisplayDialog("Objects not exported", "Make sure at least some of your selected objects have mesh filters!", "ok");
+			}
+		}
 
         static void ExportEachSelectionToSingle(bool exportMaterials)
         {
             if (!CreateTargetFolder())
-                return;
+			{
+				return;
+			}
 
-            Transform[] selection = Selection.GetTransforms(SelectionMode.Editable | SelectionMode.ExcludePrefab);
+			Transform[] selection = Selection.GetTransforms(SelectionMode.Editable | SelectionMode.ExcludePrefab);
 
             if (selection.Length == 0)
             {
@@ -561,8 +589,10 @@ namespace Core
                 EditorUtility.DisplayDialog("Objects exported", "Exported " + exportedObjects + " objects", "ok");
             }
             else
-                EditorUtility.DisplayDialog("Objects not exported", "Make sure at least some of your selected objects have mesh filters!", "ok");
-        }
+			{
+				EditorUtility.DisplayDialog("Objects not exported", "Make sure at least some of your selected objects have mesh filters!", "ok");
+			}
+		}
 
 		[MenuItem("Core/Export/Export whole selection to single OBJ")]
 		static void ExportWholeSelectionToSingleWithMats()

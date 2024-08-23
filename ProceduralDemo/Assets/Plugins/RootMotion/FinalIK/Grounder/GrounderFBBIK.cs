@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Grounding for FBBIK characters.
@@ -54,7 +54,7 @@ namespace RootMotion.FinalIK {
 			public SpineEffector() {}
 
 			/// <summary>
-			/// Initializes a new instance of the <see cref="RootMotion.FinalIK.GrounderFBBIK+SpineEffector"/> class.
+			/// Initializes a new instance of the <see cref="GrounderFBBIK+SpineEffector"/> class.
 			/// </summary>
 			/// <param name="effectorType">Effector type.</param>
 			/// <param name="horizontalWeight">Horizontal weight.</param>
@@ -99,8 +99,16 @@ namespace RootMotion.FinalIK {
 
 		// Can we initiate the Grounding?
 		private bool IsReadyToInitiate() {
-			if (ik == null) return false;
-			if (!ik.solver.initiated) return false;
+			if (ik == null)
+			{
+				return false;
+			}
+
+			if (!ik.solver.initiated)
+			{
+				return false;
+			}
+
 			return true;
 		}
 
@@ -108,11 +116,21 @@ namespace RootMotion.FinalIK {
 		void Update() {
 			firstSolve = true;
 			weight = Mathf.Clamp(weight, 0f, 1f);
-			if (weight <= 0f) return;
+			if (weight <= 0f)
+			{
+				return;
+			}
 
-			if (initiated) return;
-			if (!IsReadyToInitiate()) return;
-			
+			if (initiated)
+			{
+				return;
+			}
+
+			if (!IsReadyToInitiate())
+			{
+				return;
+			}
+
 			Initiate();
 		}
 
@@ -146,12 +164,26 @@ namespace RootMotion.FinalIK {
 
 		// Called before updating the main IK solver
 		private void OnSolverUpdate() {
-			if (!firstSolve) return;
-			firstSolve = false;
-			if (!enabled) return;
-			if (weight <= 0f) return;
+			if (!firstSolve)
+			{
+				return;
+			}
 
-			if (OnPreGrounder != null) OnPreGrounder();
+			firstSolve = false;
+			if (!enabled)
+			{
+				return;
+			}
+
+			if (weight <= 0f)
+			{
+				return;
+			}
+
+			if (OnPreGrounder != null)
+			{
+				OnPreGrounder();
+			}
 
 			solver.Update();
 
@@ -175,7 +207,10 @@ namespace RootMotion.FinalIK {
 				}
 			}
 
-			if (OnPostGrounder != null) OnPostGrounder();
+			if (OnPostGrounder != null)
+			{
+				OnPostGrounder();
+			}
 		}
 		
 		// Set the effector positionOffset for the foot
@@ -187,15 +222,24 @@ namespace RootMotion.FinalIK {
 
 		// Auto-assign ik
 		void OnDrawGizmosSelected() {
-			if (ik == null) ik = GetComponent<FullBodyBipedIK>();
-			if (ik == null) ik = GetComponentInParent<FullBodyBipedIK>();
-			if (ik == null) ik = GetComponentInChildren<FullBodyBipedIK>();
+			if (ik == null && !TryGetComponent<FullBodyBipedIK>(out ik))
+			{
+				ik = GetComponentInParent<FullBodyBipedIK>();
+			}
+
+			if (ik == null)
+			{
+				ik = GetComponentInChildren<FullBodyBipedIK>();
+			}
 		}
 
         private void OnPostSolverUpdate()
         {
-            if (OnPostIK != null) OnPostIK();
-        }
+            if (OnPostIK != null)
+			{
+				OnPostIK();
+			}
+		}
 
         // Cleaning up the delegate
         void OnDestroy() {

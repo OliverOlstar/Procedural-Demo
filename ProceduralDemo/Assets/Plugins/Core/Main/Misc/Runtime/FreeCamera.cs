@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -27,7 +26,10 @@ public class FreeCamera : MonoBehaviour
 
 	void Update()
 	{
-		if (!Application.isEditor) return;
+		if (!Application.isEditor)
+		{
+			return;
+		}
 
 		if (SceneView.lastActiveSceneView != null)
 		{
@@ -59,8 +61,7 @@ public class FreeCamera : MonoBehaviour
 				m_Distance -= Time.deltaTime * m_ZoomSpeed;
 				d += m_Distance;
 			}
-			transform.rotation = Core.Util.SafeLookRotation(-offset, Vector3.up);
-			transform.position = pivot + d * offset;
+			transform.SetPositionAndRotation(pivot + d * offset, Core.Util.SafeLookRotation(-offset, Vector3.up));
 			GetComponent<Camera>().fieldOfView = sceneCamera.fieldOfView;
 		}
 	}

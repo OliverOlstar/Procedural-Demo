@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
-using RootMotion.FinalIK;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Shoulder rotator is a workaround for FBBIK not rotating the shoulder bones when pulled by hands.
@@ -26,10 +26,19 @@ namespace RootMotion.FinalIK {
 		}
 
 		private void RotateShoulders () {
-			if (ik == null) return;
-			if (ik.solver.IKPositionWeight <= 0f) return;
+			if (ik == null)
+			{
+				return;
+			}
+
+
+			if (ik.solver.IKPositionWeight <= 0f)
+			{
+				return;
+			}
 
 			// Skipping the second update cycle
+
 			if (skip) {
 				skip = false;
 				return;
@@ -71,7 +80,11 @@ namespace RootMotion.FinalIK {
 
 		// Remove the delegate when destroyed
 		void OnDestroy() {
-			if (ik != null) ik.solver.OnPostUpdate -= RotateShoulders;
+			if (ik != null)
+			{
+				ik.solver.OnPostUpdate -= RotateShoulders;
+			}
+
 		}
 	}
 }

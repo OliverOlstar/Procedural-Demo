@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
- 
+
 public class ReplaceSelection : ScriptableWizard
 {
 	static GameObject replacement = null;
@@ -15,7 +14,7 @@ public class ReplaceSelection : ScriptableWizard
 	[MenuItem("Core/Selection/Replace")]
 	static void CreateWizard()
 	{
-		ScriptableWizard.DisplayWizard( "Replace Selection", typeof( ReplaceSelection ), "Replace" );
+		DisplayWizard( "Replace Selection", typeof( ReplaceSelection ), "Replace" );
 	}
  
 	public ReplaceSelection()
@@ -56,7 +55,7 @@ transforms = Selection.GetTransforms( SelectionMode.TopLevel | SelectionMode.Onl
 			}
 			else
 			{
-				g = ( GameObject )Editor.Instantiate( replacement );
+				g = ( GameObject )Instantiate( replacement );
 			}
 	 
 			Transform gTransform = g.transform;
@@ -77,7 +76,7 @@ transforms = Selection.GetTransforms( SelectionMode.TopLevel | SelectionMode.Onl
 		{
 			foreach( GameObject g in Selection.gameObjects )
 			{
-				GameObject.DestroyImmediate( g );
+				DestroyImmediate( g );
 			}
 		}
     }

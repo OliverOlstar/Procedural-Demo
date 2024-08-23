@@ -1,13 +1,14 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Contains methods common for all heuristic solvers.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class IKSolverHeuristic: IKSolver {
 		
 		#region Main Interface
@@ -44,9 +45,19 @@ namespace RootMotion.FinalIK {
 		/// Returns true if the new chain is valid.
 		/// </returns>
 		public bool SetChain(Transform[] hierarchy, Transform root) {
-			if (bones == null || bones.Length != hierarchy.Length) bones = new Bone[hierarchy.Length];
+			if (bones == null || bones.Length != hierarchy.Length)
+			{
+				bones = new Bone[hierarchy.Length];
+			}
+
+
 			for (int i = 0; i < hierarchy.Length; i++) {
-				if (bones[i] == null) bones[i] = new IKSolver.Bone();
+				if (bones[i] == null)
+				{
+					bones[i] = new Bone();
+				}
+
+
 				bones[i].transform = hierarchy[i];
 			}
 			
@@ -64,20 +75,37 @@ namespace RootMotion.FinalIK {
 				newBones[i] = bones[i].transform;
 			}
 			
-			newBones[newBones.Length - 1] = bone;
+			newBones[^1] = bone;
 			
 			SetChain(newBones, root);
 		}
 		
 		public override void StoreDefaultLocalState() {
-			for (int i = 0; i < bones.Length; i++) bones[i].StoreDefaultLocalState();
+			for (int i = 0; i < bones.Length; i++)
+			{
+				bones[i].StoreDefaultLocalState();
+			}
+
 		}
 
 		public override void FixTransforms() {
-			if (!initiated) return;
-			if (IKPositionWeight <= 0f) return;
+			if (!initiated)
+			{
+				return;
+			}
 
-			for (int i = 0; i < bones.Length; i++) bones[i].FixTransform();
+
+			if (IKPositionWeight <= 0f)
+			{
+				return;
+			}
+
+
+			for (int i = 0; i < bones.Length; i++)
+			{
+				bones[i].FixTransform();
+			}
+
 		}
 		
 		public override bool IsValid(ref string message) {
@@ -119,12 +147,20 @@ namespace RootMotion.FinalIK {
 			return true;
 		}
 		
-		public override IKSolver.Point[] GetPoints() {
-			return bones as IKSolver.Point[];
+		public override Point[] GetPoints() {
+			return bones as Point[];
 		}
 		
-		public override IKSolver.Point GetPoint(Transform transform) {
-			for (int i = 0; i < bones.Length; i++) if (bones[i].transform == transform) return bones[i] as IKSolver.Point;
+		public override Point GetPoint(Transform transform) {
+			for (int i = 0; i < bones.Length; i++)
+			{
+				if (bones[i].transform == transform)
+				{
+					return bones[i] as Point;
+				}
+			}
+
+
 			return null;
 		}
 		
@@ -157,12 +193,16 @@ namespace RootMotion.FinalIK {
 					if (bones[i].rotationLimit != null) {
 						if (XY) {
 							if (bones[i].rotationLimit is RotationLimitHinge) {
-							} else Warning.Log("Only Hinge Rotation Limits should be used on 2D IK solvers.", bones[i].transform);
+							} else
+							{
+								Warning.Log("Only Hinge Rotation Limits should be used on 2D IK solvers.", bones[i].transform);
+							}
+
 						}
 						bones[i].rotationLimit.Disable();
 					}
 				} else {
-					bones[i].axis = Quaternion.Inverse(bones[i].transform.rotation) * (bones[bones.Length - 1].transform.position - bones[0].transform.position);
+					bones[i].axis = Quaternion.Inverse(bones[i].transform.rotation) * (bones[^1].transform.position - bones[0].transform.position);
 				}
 			}
 		}
@@ -174,7 +214,7 @@ namespace RootMotion.FinalIK {
 		 * */
 		protected virtual Vector3 localDirection {
 			get {
-				return bones[0].transform.InverseTransformDirection(bones[bones.Length - 1].transform.position - bones[0].transform.position);
+				return bones[0].transform.InverseTransformDirection(bones[^1].transform.position - bones[0].transform.position);
 			}
 		}
 		
@@ -193,40 +233,76 @@ namespace RootMotion.FinalIK {
 		 * Get target offset to break out of the linear singularity issue
 		 * */
 		protected Vector3 GetSingularityOffset() {
-			if (!SingularityDetected()) return Vector3.zero;
-			
+			if (!SingularityDetected())
+			{
+				return Vector3.zero;
+			}
+
+
 			Vector3 IKDirection = (IKPosition - bones[0].transform.position).normalized;
 			
-			Vector3 secondaryDirection = new Vector3(IKDirection.y, IKDirection.z, IKDirection.x);
+			Vector3 secondaryDirection = new(IKDirection.y, IKDirection.z, IKDirection.x);
 			
 			// Avoiding getting locked by the Hinge Rotation Limit
-			if (useRotationLimits && bones[bones.Length - 2].rotationLimit != null && bones[bones.Length - 2].rotationLimit is RotationLimitHinge) {
-				secondaryDirection = bones[bones.Length - 2].transform.rotation * bones[bones.Length - 2].rotationLimit.axis;
+			if (useRotationLimits && bones[^2].rotationLimit != null && bones[^2].rotationLimit is RotationLimitHinge) {
+				secondaryDirection = bones[^2].transform.rotation * bones[^2].rotationLimit.axis;
 			}
 			
-			return Vector3.Cross(IKDirection, secondaryDirection) * bones[bones.Length - 2].length * 0.5f;
+			return 0.5f * bones[^2].length * Vector3.Cross(IKDirection, secondaryDirection);
 		}
 		
 		/*
 		 * Detects linear singularity issue when the direction from first bone to IKPosition matches the direction from first bone to the last bone.
 		 * */
 		private bool SingularityDetected() {
-			if (!initiated) return false;
-			
-			Vector3 toLastBone = bones[bones.Length - 1].transform.position - bones[0].transform.position;
+			if (!initiated)
+			{
+				return false;
+			}
+
+
+			Vector3 toLastBone = bones[^1].transform.position - bones[0].transform.position;
 			Vector3 toIKPosition = IKPosition - bones[0].transform.position;
 			
 			float toLastBoneDistance = toLastBone.magnitude;
 			float toIKPositionDistance = toIKPosition.magnitude;
 
-			if (toLastBoneDistance < toIKPositionDistance) return false;
-			if (toLastBoneDistance < chainLength - (bones[bones.Length - 2].length * 0.1f)) return false;
-			if (toLastBoneDistance == 0) return false;
-			if (toIKPositionDistance == 0) return false;
-			if (toIKPositionDistance > toLastBoneDistance) return false;
-			
+			if (toLastBoneDistance < toIKPositionDistance)
+			{
+				return false;
+			}
+
+
+			if (toLastBoneDistance < chainLength - (bones[^2].length * 0.1f))
+			{
+				return false;
+			}
+
+
+			if (toLastBoneDistance == 0)
+			{
+				return false;
+			}
+
+
+			if (toIKPositionDistance == 0)
+			{
+				return false;
+			}
+
+
+			if (toIKPositionDistance > toLastBoneDistance)
+			{
+				return false;
+			}
+
+
 			float dot = Vector3.Dot(toLastBone / toLastBoneDistance, toIKPosition / toIKPositionDistance);
-			if (dot < 0.999f) return false;
+			if (dot < 0.999f)
+			{
+				return false;
+			}
+
 
 			return true;
 		}

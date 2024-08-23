@@ -4,7 +4,7 @@
 public class UnimateShake : UnimateTween<UnimateShake, UnimateShake.Player>
 {
 	[SerializeField]
-	private AnimationCurve m_ScaleCurve = new AnimationCurve(new Keyframe(0.0f, 1.0f), new Keyframe(1.0f, 1.0f));
+	private AnimationCurve m_ScaleCurve = new(new Keyframe(0.0f, 1.0f), new Keyframe(1.0f, 1.0f));
 	[SerializeField]
 	private Vector3 m_Distance = Vector3.one;
 	[SerializeField]
@@ -37,7 +37,7 @@ public class UnimateShake : UnimateTween<UnimateShake, UnimateShake.Player>
 
 		protected override void OnUpdateTween(float normalizedTime, float loopingTime)
 		{
-			Vector3 offset = new Vector3(
+			Vector3 offset = new(
 				Random.Range(-1.0f, 1.0f),
 				Random.Range(-1.0f, 1.0f),
 				Random.Range(-1.0f, 1.0f));

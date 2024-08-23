@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Reflection;
 
 namespace RootMotion
 {
-    public class TQ
+	public class TQ
     {
         public TQ() { }
 
@@ -29,12 +27,18 @@ namespace RootMotion
         public static Quaternion GetPostRotation(Avatar avatar, AvatarIKGoal avatarIKGoal)
         {
             int humanId = (int)HumanIDFromAvatarIKGoal(avatarIKGoal);
-            if (humanId == (int)HumanBodyBones.LastBone) throw new InvalidOperationException("Invalid human id.");
+            if (humanId == (int)HumanBodyBones.LastBone)
+			{
+				throw new InvalidOperationException("Invalid human id.");
+			}
 
-            MethodInfo methodGetPostRotation = typeof(Avatar).GetMethod("GetPostRotation", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (methodGetPostRotation == null) throw new InvalidOperationException("Cannot find GetPostRotation method.");
+			MethodInfo methodGetPostRotation = typeof(Avatar).GetMethod("GetPostRotation", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (methodGetPostRotation == null)
+			{
+				throw new InvalidOperationException("Cannot find GetPostRotation method.");
+			}
 
-            return (Quaternion)methodGetPostRotation.Invoke(avatar, new object[] { humanId });
+			return (Quaternion)methodGetPostRotation.Invoke(avatar, new object[] { humanId });
         }
 
         /// <summary>
@@ -43,24 +47,33 @@ namespace RootMotion
         public static TQ GetIKGoalTQ(Avatar avatar, float humanScale, AvatarIKGoal avatarIKGoal, TQ bodyPositionRotation, TQ boneTQ)
         {
             int humanId = (int)HumanIDFromAvatarIKGoal(avatarIKGoal);
-            if (humanId == (int)HumanBodyBones.LastBone) throw new InvalidOperationException("Invalid human id.");
+            if (humanId == (int)HumanBodyBones.LastBone)
+			{
+				throw new InvalidOperationException("Invalid human id.");
+			}
 
-            MethodInfo methodGetAxisLength = typeof(Avatar).GetMethod("GetAxisLength", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (methodGetAxisLength == null) throw new InvalidOperationException("Cannot find GetAxisLength method.");
+			MethodInfo methodGetAxisLength = typeof(Avatar).GetMethod("GetAxisLength", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (methodGetAxisLength == null)
+			{
+				throw new InvalidOperationException("Cannot find GetAxisLength method.");
+			}
 
-            MethodInfo methodGetPostRotation = typeof(Avatar).GetMethod("GetPostRotation", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (methodGetPostRotation == null) throw new InvalidOperationException("Cannot find GetPostRotation method.");
+			MethodInfo methodGetPostRotation = typeof(Avatar).GetMethod("GetPostRotation", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (methodGetPostRotation == null)
+			{
+				throw new InvalidOperationException("Cannot find GetPostRotation method.");
+			}
 
-            Quaternion postRotation = (Quaternion)methodGetPostRotation.Invoke(avatar, new object[] { humanId });
+			Quaternion postRotation = (Quaternion)methodGetPostRotation.Invoke(avatar, new object[] { humanId });
 
-            var goalTQ = new TQ(boneTQ.t, boneTQ.q * postRotation);
+			TQ goalTQ = new TQ(boneTQ.t, boneTQ.q * postRotation);
 
             if (avatarIKGoal == AvatarIKGoal.LeftFoot || avatarIKGoal == AvatarIKGoal.RightFoot)
             {
                 // Here you could use animator.leftFeetBottomHeight or animator.rightFeetBottomHeight rather than GetAxisLenght
                 // Both are equivalent but GetAxisLength is the generic way and work for all human bone
                 float axislength = (float)methodGetAxisLength.Invoke(avatar, new object[] { humanId });
-                Vector3 footBottom = new Vector3(axislength, 0, 0);
+                Vector3 footBottom = new(axislength, 0, 0);
                 goalTQ.t += (goalTQ.q * footBottom);
             }
 
@@ -78,34 +91,43 @@ namespace RootMotion
         public static TQ WorldSpaceIKGoalToBone(TQ goalTQ, Avatar avatar, AvatarIKGoal avatarIKGoal)
         {
             int humanId = (int)HumanIDFromAvatarIKGoal(avatarIKGoal);
-            if (humanId == (int)HumanBodyBones.LastBone) throw new InvalidOperationException("Invalid human id.");
+            if (humanId == (int)HumanBodyBones.LastBone)
+			{
+				throw new InvalidOperationException("Invalid human id.");
+			}
 
-            MethodInfo methodGetAxisLength = typeof(Avatar).GetMethod("GetAxisLength", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (methodGetAxisLength == null) throw new InvalidOperationException("Cannot find GetAxisLength method.");
+			MethodInfo methodGetAxisLength = typeof(Avatar).GetMethod("GetAxisLength", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (methodGetAxisLength == null)
+			{
+				throw new InvalidOperationException("Cannot find GetAxisLength method.");
+			}
 
-            MethodInfo methodGetPostRotation = typeof(Avatar).GetMethod("GetPostRotation", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (methodGetPostRotation == null) throw new InvalidOperationException("Cannot find GetPostRotation method.");
+			MethodInfo methodGetPostRotation = typeof(Avatar).GetMethod("GetPostRotation", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (methodGetPostRotation == null)
+			{
+				throw new InvalidOperationException("Cannot find GetPostRotation method.");
+			}
 
-            Quaternion postRotation = (Quaternion)methodGetPostRotation.Invoke(avatar, new object[] { humanId });
+			Quaternion postRotation = (Quaternion)methodGetPostRotation.Invoke(avatar, new object[] { humanId });
 
             if (avatarIKGoal == AvatarIKGoal.LeftFoot || avatarIKGoal == AvatarIKGoal.RightFoot)
             {
                 // Here you could use animator.leftFeetBottomHeight or animator.rightFeetBottomHeight rather than GetAxisLenght
                 // Both are equivalent but GetAxisLength is the generic way and work for all human bone
                 float axislength = (float)methodGetAxisLength.Invoke(avatar, new object[] { humanId });
-                Vector3 footBottom = new Vector3(axislength, 0, 0);
+                Vector3 footBottom = new(axislength, 0, 0);
                 goalTQ.t -= (goalTQ.q * footBottom);
             }
 
-            TQ boneTQ = new TQ(goalTQ.t, goalTQ.q * Quaternion.Inverse(postRotation));
+            TQ boneTQ = new(goalTQ.t, goalTQ.q * Quaternion.Inverse(postRotation));
 
             return boneTQ;
         }
 
         public static TQ GetWorldSpaceIKGoal(BakerHumanoidQT ikQT, BakerHumanoidQT rootQT, float time, float humanScale)
         {
-            var tq = ikQT.Evaluate(time);
-            var rTQ = rootQT.Evaluate(time);
+			TQ tq = ikQT.Evaluate(time);
+			TQ rTQ = rootQT.Evaluate(time);
 
             tq.q = rTQ.q * tq.q;
             tq.t = rTQ.t + rTQ.q * tq.t;

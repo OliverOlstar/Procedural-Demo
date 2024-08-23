@@ -1,7 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace Core
@@ -157,8 +155,8 @@ namespace Core
 
 	public class EnumListAttribute : PropertyAttribute
 	{
-		public System.Type mEnumType = null;
-		public EnumListAttribute(System.Type enumType)
+		public Type mEnumType = null;
+		public EnumListAttribute(Type enumType)
 		{
 			mEnumType = enumType;
 		}
@@ -166,10 +164,10 @@ namespace Core
 
 	public class EnumMaskAttribute : PropertyAttribute
 	{
-		private System.Type m_Type = null;
-		public System.Type Type => m_Type;
+		private Type m_Type = null;
+		public Type Type => m_Type;
 
-		public EnumMaskAttribute(System.Type type = null)
+		public EnumMaskAttribute(Type type = null)
 		{
 			m_Type = type;
 		}

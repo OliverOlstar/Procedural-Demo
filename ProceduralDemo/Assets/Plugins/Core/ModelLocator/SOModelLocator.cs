@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ModelLocator
 {
 	public abstract class SOModelLocator : ScriptableObject
 	{
 		[SerializeField]
-		private Core.InspectorNotes m_Notes = new Core.InspectorNotes();
+		private Core.InspectorNotes m_Notes = new();
 
 		[SerializeField]
 		protected Vector3 m_Position = Vector3.zero;
@@ -107,8 +105,7 @@ namespace ModelLocator
 
 		public void AttachAsChild(Transform transform)
 		{
-			transform.position = Position();
-			transform.rotation = Rotation();
+			transform.SetPositionAndRotation(Position(), Rotation());
 			transform.parent = Transform;
 		}
 	}

@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion {
+namespace RootMotion
+{
+
 
 	/// <summary>
 	/// Contains references to bones common to all biped characters.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class BipedReferences {
 		
 		#region Main Interface
@@ -86,15 +87,60 @@ namespace RootMotion {
 		/// </summary>
 		public virtual bool isFilled {
 			get {
-				if (root == null) return false;
-				if (pelvis == null) return false;
-				if (leftThigh == null || leftCalf == null || leftFoot == null) return false;
-				if (rightThigh == null || rightCalf == null || rightFoot == null) return false;
-				if (leftUpperArm == null || leftForearm == null || leftHand == null) return false;
-				if (rightUpperArm == null || rightForearm == null || rightHand == null) return false;
-					
-				foreach (Transform s in spine) if (s == null) return false;
-				foreach (Transform eye in eyes) if (eye == null) return false;
+				if (root == null)
+				{
+					return false;
+				}
+
+
+				if (pelvis == null)
+				{
+					return false;
+				}
+
+
+				if (leftThigh == null || leftCalf == null || leftFoot == null)
+				{
+					return false;
+				}
+
+
+				if (rightThigh == null || rightCalf == null || rightFoot == null)
+				{
+					return false;
+				}
+
+
+				if (leftUpperArm == null || leftForearm == null || leftHand == null)
+				{
+					return false;
+				}
+
+
+				if (rightUpperArm == null || rightForearm == null || rightHand == null)
+				{
+					return false;
+				}
+
+
+				foreach (Transform s in spine)
+				{
+					if (s == null)
+					{
+						return false;
+					}
+				}
+
+
+				foreach (Transform eye in eyes)
+				{
+					if (eye == null)
+					{
+						return false;
+					}
+				}
+
+
 				return true;
 			}
 		}
@@ -112,15 +158,60 @@ namespace RootMotion {
 		/// Gets a value indicating whether this <see cref="BipedReferences"/> is empty. If includeRoot is false, returns true(is empty) even if root Transform has been assigned.
 		/// </summary>
 		public virtual bool IsEmpty(bool includeRoot) {
-			if (includeRoot && root != null) return false;
-			if (pelvis != null || head != null) return false;
-			if (leftThigh != null || leftCalf != null || leftFoot != null) return false;
-			if (rightThigh != null || rightCalf != null || rightFoot != null) return false;
-			if (leftUpperArm != null || leftForearm != null || leftHand != null) return false;
-			if (rightUpperArm != null || rightForearm != null || rightHand != null) return false;
-				
-			foreach (Transform s in spine) if (s != null) return false;
-			foreach (Transform eye in eyes) if (eye != null) return false;
+			if (includeRoot && root != null)
+			{
+				return false;
+			}
+
+
+			if (pelvis != null || head != null)
+			{
+				return false;
+			}
+
+
+			if (leftThigh != null || leftCalf != null || leftFoot != null)
+			{
+				return false;
+			}
+
+
+			if (rightThigh != null || rightCalf != null || rightFoot != null)
+			{
+				return false;
+			}
+
+
+			if (leftUpperArm != null || leftForearm != null || leftHand != null)
+			{
+				return false;
+			}
+
+
+			if (rightUpperArm != null || rightForearm != null || rightHand != null)
+			{
+				return false;
+			}
+
+
+			foreach (Transform s in spine)
+			{
+				if (s != null)
+				{
+					return false;
+				}
+			}
+
+
+			foreach (Transform eye in eyes)
+			{
+				if (eye != null)
+				{
+					return false;
+				}
+			}
+
+
 			return true;
 		}
 
@@ -128,25 +219,114 @@ namespace RootMotion {
 		/// Returns true if the References contain the specified Transform
 		/// </summary>
 		public virtual bool Contains(Transform t, bool ignoreRoot = false) {
-			if (!ignoreRoot && root == t) return true;
-			if (pelvis == t) return true;
-			if (leftThigh == t) return true;
-			if (leftCalf == t) return true;
-			if (leftFoot == t) return true;
-			if (rightThigh == t) return true;
-			if (rightCalf == t) return true;
-			if (rightFoot == t) return true;
-			if (leftUpperArm == t) return true;
-			if (leftForearm == t) return true;
-			if (leftHand == t) return true;
-			if (rightUpperArm == t) return true;
-			if (rightForearm == t) return true;
-			if (rightHand == t) return true;
-			if (head == t) return true;
+			if (!ignoreRoot && root == t)
+			{
+				return true;
+			}
 
-			foreach (Transform s in spine) if (s == t) return true;
-			foreach (Transform e in eyes) if (e == t) return true;
- 
+
+			if (pelvis == t)
+			{
+				return true;
+			}
+
+
+			if (leftThigh == t)
+			{
+				return true;
+			}
+
+
+			if (leftCalf == t)
+			{
+				return true;
+			}
+
+
+			if (leftFoot == t)
+			{
+				return true;
+			}
+
+
+			if (rightThigh == t)
+			{
+				return true;
+			}
+
+
+			if (rightCalf == t)
+			{
+				return true;
+			}
+
+
+			if (rightFoot == t)
+			{
+				return true;
+			}
+
+
+			if (leftUpperArm == t)
+			{
+				return true;
+			}
+
+
+			if (leftForearm == t)
+			{
+				return true;
+			}
+
+
+			if (leftHand == t)
+			{
+				return true;
+			}
+
+
+			if (rightUpperArm == t)
+			{
+				return true;
+			}
+
+
+			if (rightForearm == t)
+			{
+				return true;
+			}
+
+
+			if (rightHand == t)
+			{
+				return true;
+			}
+
+
+			if (head == t)
+			{
+				return true;
+			}
+
+
+			foreach (Transform s in spine)
+			{
+				if (s == t)
+				{
+					return true;
+				}
+			}
+
+
+			foreach (Transform e in eyes)
+			{
+				if (e == t)
+				{
+					return true;
+				}
+			}
+
+
 			return false;
 		}
 
@@ -177,11 +357,16 @@ namespace RootMotion {
 		/// Automatically detects biped bones. Returns true if a valid biped has been referenced.
 		/// </summary>
 		public static bool AutoDetectReferences(ref BipedReferences references, Transform root, AutoDetectParams autoDetectParams) {
-			if (references == null) references = new BipedReferences();
+			if (references == null)
+			{
+				references = new BipedReferences();
+			}
+
+
 			references.root = root;
 
 			// If that failed try the Animator
-			var animator = root.GetComponent<Animator>();
+			Animator animator = root.GetComponent<Animator>();
 			if (animator != null && animator.isHuman) {
 				AssignHumanoidReferences(ref references, animator, autoDetectParams);
 				return true; // Assume humanoids are always valid
@@ -214,7 +399,11 @@ namespace RootMotion {
 		/// Detects the references based on naming and hierarchy.
 		/// </summary>
 		public static void DetectReferencesByNaming(ref BipedReferences references, Transform root, AutoDetectParams autoDetectParams) {
-			if (references == null) references = new BipedReferences();
+			if (references == null)
+			{
+				references = new BipedReferences();
+			}
+
 
 			Transform[] children = root.GetComponentsInChildren<Transform>();
 			
@@ -232,7 +421,11 @@ namespace RootMotion {
 			
 			// If pelvis is not an ancestor of a leg, it is not a valid pelvis
 			if (references.pelvis == null || !Hierarchy.IsAncestor(references.leftThigh, references.pelvis)) {
-				if (references.leftThigh != null) references.pelvis = references.leftThigh.parent;
+				if (references.leftThigh != null)
+				{
+					references.pelvis = references.leftThigh.parent;
+				}
+
 			}
 			
 			// Find spine and head bones
@@ -247,7 +440,7 @@ namespace RootMotion {
 					for (int i = inverseSpine.Length - 1; i > -1; i--) {
 						if (AddBoneToSpine(inverseSpine[i], ref references, autoDetectParams)) {
 							Array.Resize(ref references.spine, references.spine.Length + 1);
-							references.spine[references.spine.Length - 1] = inverseSpine[i];
+							references.spine[^1] = inverseSpine[i];
 						}
 					}
 					
@@ -273,7 +466,7 @@ namespace RootMotion {
 				for (int i = 0; i < eyes.Length; i++) {
 					if (AddBoneToEyes(eyes[i], ref references, autoDetectParams)) {
 						Array.Resize(ref references.eyes, references.eyes.Length + 1);
-						references.eyes[references.eyes.Length - 1] = eyes[i];
+						references.eyes[^1] = eyes[i];
 					}
 				}
 			}
@@ -283,10 +476,18 @@ namespace RootMotion {
 		/// Fills in BipedReferences using Animator.GetBoneTransform().
 		/// </summary>
 		public static void AssignHumanoidReferences(ref BipedReferences references, Animator animator, AutoDetectParams autoDetectParams) {
-			if (references == null) references = new BipedReferences();
+			if (references == null)
+			{
+				references = new BipedReferences();
+			}
 
-			if (animator == null || !animator.isHuman) return;
-			
+
+			if (animator == null || !animator.isHuman)
+			{
+				return;
+			}
+
+
 			references.spine = new Transform[0];
 			references.eyes = new Transform[0];
 			
@@ -315,7 +516,11 @@ namespace RootMotion {
 			
 			// Make sure the neck bone is not above the arms
 			if (references.leftUpperArm != null) {
-				if (!IsNeckBone(animator.GetBoneTransform(HumanBodyBones.Neck), references.leftUpperArm)) AddBoneToHierarchy(ref references.spine, animator.GetBoneTransform(HumanBodyBones.Neck));
+				if (!IsNeckBone(animator.GetBoneTransform(HumanBodyBones.Neck), references.leftUpperArm))
+				{
+					AddBoneToHierarchy(ref references.spine, animator.GetBoneTransform(HumanBodyBones.Neck));
+				}
+
 			}
 			
 			if (autoDetectParams.includeEyes) {
@@ -333,13 +538,42 @@ namespace RootMotion {
 				return true;
 			}
 			
-			if (LimbError(references.leftThigh, references.leftCalf, references.leftFoot, ref errorMessage)) return true;
-			if (LimbError(references.rightThigh, references.rightCalf, references.rightFoot, ref errorMessage)) return true;
-			if (LimbError(references.leftUpperArm, references.leftForearm, references.leftHand, ref errorMessage)) return true;
-			if (LimbError(references.rightUpperArm, references.rightForearm, references.rightHand, ref errorMessage)) return true;
-			if (SpineError(references, ref errorMessage)) return true;
-			if (EyesError(references, ref errorMessage)) return true;
-			
+			if (LimbError(references.leftThigh, references.leftCalf, references.leftFoot, ref errorMessage))
+			{
+				return true;
+			}
+
+
+			if (LimbError(references.rightThigh, references.rightCalf, references.rightFoot, ref errorMessage))
+			{
+				return true;
+			}
+
+
+			if (LimbError(references.leftUpperArm, references.leftForearm, references.leftHand, ref errorMessage))
+			{
+				return true;
+			}
+
+
+			if (LimbError(references.rightUpperArm, references.rightForearm, references.rightHand, ref errorMessage))
+			{
+				return true;
+			}
+
+
+			if (SpineError(references, ref errorMessage))
+			{
+				return true;
+			}
+
+
+			if (EyesError(references, ref errorMessage))
+			{
+				return true;
+			}
+
+
 			return false;
 		}
 
@@ -347,15 +581,54 @@ namespace RootMotion {
 		/// Checks the setup for possible problems.
 		/// </summary>
 		public static bool SetupWarning(BipedReferences references, ref string warningMessage) {
-			if (LimbWarning(references.leftThigh, references.leftCalf, references.leftFoot, ref warningMessage)) return true;
-			if (LimbWarning(references.rightThigh, references.rightCalf, references.rightFoot, ref warningMessage)) return true;
-			if (LimbWarning(references.leftUpperArm, references.leftForearm, references.leftHand, ref warningMessage)) return true;
-			if (LimbWarning(references.rightUpperArm, references.rightForearm, references.rightHand, ref warningMessage)) return true;
-			if (SpineWarning(references, ref warningMessage)) return true;
-			if (EyesWarning(references, ref warningMessage)) return true;
-			if (RootHeightWarning(references, ref warningMessage)) return true;
-			if (FacingAxisWarning(references, ref warningMessage)) return true;
-			
+			if (LimbWarning(references.leftThigh, references.leftCalf, references.leftFoot, ref warningMessage))
+			{
+				return true;
+			}
+
+
+			if (LimbWarning(references.rightThigh, references.rightCalf, references.rightFoot, ref warningMessage))
+			{
+				return true;
+			}
+
+
+			if (LimbWarning(references.leftUpperArm, references.leftForearm, references.leftHand, ref warningMessage))
+			{
+				return true;
+			}
+
+
+			if (LimbWarning(references.rightUpperArm, references.rightForearm, references.rightHand, ref warningMessage))
+			{
+				return true;
+			}
+
+
+			if (SpineWarning(references, ref warningMessage))
+			{
+				return true;
+			}
+
+
+			if (EyesWarning(references, ref warningMessage))
+			{
+				return true;
+			}
+
+
+			if (RootHeightWarning(references, ref warningMessage))
+			{
+				return true;
+			}
+
+
+			if (FacingAxisWarning(references, ref warningMessage))
+			{
+				return true;
+			}
+
+
 			return false;
 		}
 
@@ -364,32 +637,67 @@ namespace RootMotion {
 
 		// Determines whether a Transform is above the arms
 		private static bool IsNeckBone(Transform bone, Transform leftUpperArm) {
-			if (leftUpperArm.parent != null && leftUpperArm.parent == bone) return false;
-			if (Hierarchy.IsAncestor(leftUpperArm, bone)) return false;
+			if (leftUpperArm.parent != null && leftUpperArm.parent == bone)
+			{
+				return false;
+			}
+
+
+			if (Hierarchy.IsAncestor(leftUpperArm, bone))
+			{
+				return false;
+			}
+
+
 			return true;
 		}
 
 		// Determines whether a bone is valid for being added into the eyes array
 		private static bool AddBoneToEyes(Transform bone, ref BipedReferences references, AutoDetectParams autoDetectParams) {
 			if (references.head != null) {
-				if (!Hierarchy.IsAncestor(bone, references.head)) return false;
+				if (!Hierarchy.IsAncestor(bone, references.head))
+				{
+					return false;
+				}
+
 			}
 			
-			if (bone.GetComponent<SkinnedMeshRenderer>() != null) return false;
-			
+			if (bone.GetComponent<SkinnedMeshRenderer>() != null)
+			{
+				return false;
+			}
+
+
 			return true;
 		}
 		
 		// Determines whether a bone is valid for being added into the spine
 		private static bool AddBoneToSpine(Transform bone, ref BipedReferences references, AutoDetectParams autoDetectParams) {
-			if (bone == references.root) return false;
-			
+			if (bone == references.root)
+			{
+				return false;
+			}
+
+
 			bool isLegsParent = bone == references.leftThigh.parent;
-			if (isLegsParent && !autoDetectParams.legsParentInSpine) return false;
-			
+			if (isLegsParent && !autoDetectParams.legsParentInSpine)
+			{
+				return false;
+			}
+
+
 			if (references.pelvis != null) {
-				if (bone == references.pelvis) return false;
-				if (Hierarchy.IsAncestor(references.pelvis, bone)) return false;
+				if (bone == references.pelvis)
+				{
+					return false;
+				}
+
+
+				if (Hierarchy.IsAncestor(references.pelvis, bone))
+				{
+					return false;
+				}
+
 			}
 			
 			return true;
@@ -415,16 +723,20 @@ namespace RootMotion {
 			if (limb.Length > 3) {
 				firstBone = limb[0];
 				secondBone = limb[2];
-				lastBone = limb[limb.Length - 1];
+				lastBone = limb[^1];
 			}
 		}
 		
 		// Adds transform to hierarchy if not null
 		private static void AddBoneToHierarchy(ref Transform[] bones, Transform transform) {
-			if (transform == null) return;
-			
+			if (transform == null)
+			{
+				return;
+			}
+
+
 			Array.Resize(ref bones, bones.Length + 1);
-			bones[bones.Length - 1] = transform;
+			bones[^1] = transform;
 		}
 		
 		// Check if the limb is properly set up
@@ -488,7 +800,11 @@ namespace RootMotion {
 		// Check if spine is properly set up
 		private static bool SpineError(BipedReferences references, ref string errorMessage) {
 			// No spine might be a valid setup in some cases
-			if (references.spine.Length == 0) return false;
+			if (references.spine.Length == 0)
+			{
+				return false;
+			}
+
 
 			for (int i = 0; i < references.spine.Length; i++) {
 				if (references.spine[i] == null) {
@@ -510,8 +826,16 @@ namespace RootMotion {
 			
 			for (int i = 0; i < references.spine.Length; i++) {
 				bool matchesParentPosition = false;
-				if (i == 0 && references.spine[i].position == references.pelvis.position) matchesParentPosition = true;
-				if (i != 0 && references.spine.Length > 1 && references.spine[i].position == references.spine[i - 1].position) matchesParentPosition = true;
+				if (i == 0 && references.spine[i].position == references.pelvis.position)
+				{
+					matchesParentPosition = true;
+				}
+
+				if (i != 0 && references.spine.Length > 1 && references.spine[i].position == references.spine[i - 1].position)
+				{
+					matchesParentPosition = true;
+				}
+
 
 				if (matchesParentPosition) {
 					errorMessage = "Biped's spine bone nr " + i + " position is the same as its parent spine/pelvis bone's position. Please remove this bone from the spine.";
@@ -531,7 +855,11 @@ namespace RootMotion {
 		// Check if eyes are properly set up
 		private static bool EyesError(BipedReferences references, ref string errorMessage) {
 			// No eyes might be a valid setup
-			if (references.eyes.Length == 0) return false;
+			if (references.eyes.Length == 0)
+			{
+				return false;
+			}
+
 
 			for (int i = 0; i < references.eyes.Length; i++) {
 				if (references.eyes[i] == null) {
@@ -557,8 +885,12 @@ namespace RootMotion {
 		
 		// Check if BipedIK transform position is at the character's feet
 		private static bool RootHeightWarning(BipedReferences references, ref string warningMessage) {
-			if (references.head == null) return false;
-			
+			if (references.head == null)
+			{
+				return false;
+			}
+
+
 			float headHeight = GetVerticalOffset(references.head.position, references.leftFoot.position, references.root.rotation);
 			float rootHeight = GetVerticalOffset(references.root.position, references.leftFoot.position, references.root.rotation);
 			

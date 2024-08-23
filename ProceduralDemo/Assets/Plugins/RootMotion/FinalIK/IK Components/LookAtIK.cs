@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Rotates a hierarchy of bones to face a target
@@ -37,7 +38,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The LookAt %IK solver.
 		/// </summary>
-		public IKSolverLookAt solver = new IKSolverLookAt();
+		public IKSolverLookAt solver = new();
 		
 		public override IKSolver GetIKSolver() {
 			return solver as IKSolver;

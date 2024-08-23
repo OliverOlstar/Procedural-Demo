@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
 [CustomPropertyDrawer(typeof(UnimaSet))]
@@ -36,7 +34,7 @@ public class UnimaSetDrawer : PropertyDrawer
 		r.width -= r2.width;
 		r2.x += r.width;
 
-		GUIStyle style = new GUIStyle(GUI.skin.label);
+		GUIStyle style = new(GUI.skin.label);
 		style.alignment = TextAnchor.MiddleCenter;
 		style.fontSize = 16;
 

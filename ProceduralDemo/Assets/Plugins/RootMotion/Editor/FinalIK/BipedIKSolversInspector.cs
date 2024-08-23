@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector and scene view tools for Biped IK Solvers.
 	 * */
+
 	public class BipedIKSolversInspector: IKSolverInspector {
 		
 		/*
@@ -37,11 +38,31 @@ namespace RootMotion.FinalIK {
 				for (int i = 0; i < props.Length; i++) {
 					BeginProperty(props[i]);
 					if (props[i].isExpanded) {
-						if (i <= 3) IKSolverLimbInspector.AddInspector(props[i], false, false);
-						else if (i == 4) IKSolverHeuristicInspector.AddInspector(props[i], false, false);
-						else if (i == 5) IKSolverAimInspector.AddInspector(props[i], false);
-						else if (i == 6) IKSolverLookAtInspector.AddInspector(props[i], false, false);
-						else if (i == 7) ConstraintsInspector.AddInspector(props[i]);
+						if (i <= 3)
+						{
+							IKSolverLimbInspector.AddInspector(props[i], false, false);
+						}
+
+						else if (i == 4)
+						{
+							IKSolverHeuristicInspector.AddInspector(props[i], false, false);
+						}
+
+						else if (i == 5)
+						{
+							IKSolverAimInspector.AddInspector(props[i], false);
+						}
+
+						else if (i == 6)
+						{
+							IKSolverLookAtInspector.AddInspector(props[i], false, false);
+						}
+
+						else if (i == 7)
+						{
+							ConstraintsInspector.AddInspector(props[i]);
+						}
+
 					}
 					EndProperty(props[i]);
 				}
@@ -74,13 +95,21 @@ namespace RootMotion.FinalIK {
 				for (int i = 0; i < solvers.ikSolvers.Length; i++) {
 					Handles.color = GetSolverColor(i);
 					if (solvers.ikSolvers[i].GetIKPositionWeight() > 0 && selected != i && solvers.ikSolvers[i].initiated) {
-						if (Inspector.DotButton(solvers.ikSolvers[i].GetIKPosition(), Quaternion.identity, GetHandleSize(solvers.ikSolvers[i].GetIKPosition()), GetHandleSize(solvers.ikSolvers[i].GetIKPosition()))) selected = i;
+						if (DotButton(solvers.ikSolvers[i].GetIKPosition(), Quaternion.identity, GetHandleSize(solvers.ikSolvers[i].GetIKPosition()), GetHandleSize(solvers.ikSolvers[i].GetIKPosition())))
+						{
+							selected = i;
+						}
+
 					}
 				}
 				
 				if ((solvers.pelvis.positionWeight > 0 || solvers.pelvis.rotationWeight > 0) && selected != solvers.ikSolvers.Length) {
 					Handles.color = GetSolverColor(7);
-					if (Inspector.DotButton(solvers.pelvis.position, Quaternion.identity, GetHandleSize(solvers.pelvis.position),  GetHandleSize(solvers.pelvis.position))) selected = solvers.ikSolvers.Length;
+					if (DotButton(solvers.pelvis.position, Quaternion.identity, GetHandleSize(solvers.pelvis.position),  GetHandleSize(solvers.pelvis.position)))
+					{
+						selected = solvers.ikSolvers.Length;
+					}
+
 				}
 			}
 		}
@@ -89,12 +118,42 @@ namespace RootMotion.FinalIK {
 		 * Gets the color of the solver at index.
 		 * */
 		private static Color GetSolverColor(int index) {
-			if (index == 0 || index == 2) return new Color(0f, 0.8f, 1f, 1f); // Left limb
-			if (index == 1 || index == 3) return new Color(0.3f, 1f, 0.3f, 1f); // Right limb
-			if (index == 4) return new Color(1f, 0.5f, 0.5f, 1f); // Spine
-			if (index == 5) return new Color(0.2f, 0.5f, 1f, 1f); // Look At
-			if (index == 6) return new Color(1f, 0f, 0.5f, 1f); // Aim
-			if (index == 7) return new Color(0.9f, 0.9f, 0.9f, 1f); // Pelvis
+			if (index == 0 || index == 2)
+			{
+				return new Color(0f, 0.8f, 1f, 1f); // Left limb
+			}
+
+
+			if (index == 1 || index == 3)
+			{
+				return new Color(0.3f, 1f, 0.3f, 1f); // Right limb
+			}
+
+
+			if (index == 4)
+			{
+				return new Color(1f, 0.5f, 0.5f, 1f); // Spine
+			}
+
+
+			if (index == 5)
+			{
+				return new Color(0.2f, 0.5f, 1f, 1f); // Look At
+			}
+
+
+			if (index == 6)
+			{
+				return new Color(1f, 0f, 0.5f, 1f); // Aim
+			}
+
+
+			if (index == 7)
+			{
+				return new Color(0.9f, 0.9f, 0.9f, 1f); // Pelvis
+			}
+
+
 			return Color.white;
 		}
 		
@@ -113,7 +172,12 @@ namespace RootMotion.FinalIK {
 		 * */
 		private static void EndProperty(SerializedProperty prop) {
 			EditorGUILayout.EndVertical();
-			if (prop.isExpanded) EditorGUILayout.Space();
+			if (prop.isExpanded)
+			{
+				EditorGUILayout.Space();
+			}
+
+
 			EditorGUI.indentLevel = 1;
 		}
 	}

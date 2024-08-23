@@ -3,15 +3,13 @@
 //Copyright protected under Unity Asset Store EULA
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Random = System.Random;
 
 namespace StylizedWater2
 {
-    [Serializable]
+	[Serializable]
     public class WaterMesh
     {
         public enum Shape
@@ -58,7 +56,7 @@ namespace StylizedWater2
 
         public static Mesh Create(Shape shape, float size, float vertexDistance, float uvTiling = 1f, float noise = 0f)
         {
-            WaterMesh waterMesh = new WaterMesh();
+            WaterMesh waterMesh = new();
             waterMesh.shape = shape;
             waterMesh.scale = size;
             waterMesh.vertexDistance = vertexDistance;
@@ -71,27 +69,30 @@ namespace StylizedWater2
         // Get the index of point number 'x' in circle number 'c'
         private int GetPointIndex(int c, int x)
         {
-            if (c < 0) return 0;
+            if (c < 0)
+			{
+				return 0;
+			}
 
-            x = x % ((c + 1) * 6); 
+			x = x % ((c + 1) * 6); 
 
             return (3 * c * (c + 1) + x + 1);
         }
 
         private Mesh CreateCircle()
         {
-            Mesh m = new Mesh();
+            Mesh m = new();
             m.name = "WaterDisk";
 
             int subdivisions = Mathf.FloorToInt(scale / vertexDistance);
             
             float distance = 1f / subdivisions;
 
-            var vertices = new List<Vector3>();
-            var uvs = new List<Vector2>();
-            var uvs2 = new List<Vector2>();
+			List<Vector3> vertices = new List<Vector3>();
+			List<Vector2> uvs = new List<Vector2>();
+			List<Vector2> uvs2 = new List<Vector2>();
             vertices.Add(Vector3.zero); //Center
-            var tris = new List<int>();
+			List<int> tris = new List<int>();
 
             // First pass => build vertices
             for (int loop = 0; loop < subdivisions; loop++)
@@ -99,7 +100,7 @@ namespace StylizedWater2
                 float angleStep = (Mathf.PI * 2f) / ((loop + 1) * 6);
                 for (int point = 0; point < (loop + 1) * 6; ++point)
                 {
-                    Vector3 vPos = new Vector3(
+                    Vector3 vPos = new(
                     Mathf.Sin(angleStep * point) ,
                     0f,
                     Mathf.Cos(angleStep * point));
@@ -108,7 +109,7 @@ namespace StylizedWater2
                     vPos.x += UnityEngine.Random.Range(-noise * 0.01f, noise * 0.01f);
                     vPos.z -= UnityEngine.Random.Range(noise * 0.01f, -noise * 0.01f);
 
-                    vertices.Add(vPos * (scale * 0.5f) * distance * (loop + 1));
+                    vertices.Add((loop + 1) * (scale * 0.5f) * distance * vPos);
                 }
             }
 
@@ -165,7 +166,7 @@ namespace StylizedWater2
 
         private Mesh CreatePlane()
         {
-            Mesh m = new Mesh();
+            Mesh m = new();
             m.name = "WaterPlane";
 
             scale = Mathf.Max(1f, scale);
@@ -182,7 +183,7 @@ namespace StylizedWater2
             int[] triangles = new int[numTriangles];
             Vector4[] tangents = new Vector4[numVertices];
             Vector3[] normals = new Vector3[numVertices];
-            Vector4 tangent = new Vector4(1f, 0f, 0f, -1f);
+            Vector4 tangent = new(1f, 0f, 0f, -1f);
 
             int index = 0;
             float scaleX = scale / subdivisions;

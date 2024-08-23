@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using OliverLoescher.Util;
-using OliverLoescher.Cue;
-using OliverLoescher;
+using ODev;
+using ODev.Util;
+using ODev.Cue;
+using ODev.Picker;
 
-public class TestSpear : MonoBehaviour
+public class TestSpear : MonoBehaviour, TransformFollower.IMotionReciver
 {
 	[SerializeField]
 	private float Force = 5.0f;
@@ -14,9 +13,9 @@ public class TestSpear : MonoBehaviour
 	[SerializeField]
 	private float GravityDelay = 3.0f;
 	[SerializeField]
-	private LayerMask HitLayer = new LayerMask();
+	private LayerMask HitLayer = new();
 	[SerializeField]
-	private Easing.EaseParams RecallEase = new Easing.EaseParams();
+	private Easing.EaseParams RecallEase = new();
 	[SerializeField]
 	private float RecallSeconds = 5.0f;
 
@@ -39,11 +38,11 @@ public class TestSpear : MonoBehaviour
 	private Transform HighlightSpear = null;
 
 	[Space, SerializeField]
-	private Easing.EaseParams playerSnapEase = new Easing.EaseParams();
+	private Easing.EaseParams playerSnapEase = new();
 	[SerializeField]
 	private float playerSnapEaseSeconds = 1.0f;
 
-	[Space, SerializeField]
+	[Space, SerializeField, Asset]
 	private SOCue hitCue;
 
 	private Transform Camera = null;
@@ -54,9 +53,11 @@ public class TestSpear : MonoBehaviour
 	private bool isAiming = false;
 	private TestCharacter character;
 	private Collider trigger = null;
-	private readonly TransformFollower follower = new TransformFollower();
+	private readonly TransformFollower follower = new();
 
 	private Vector3 CharacterStandPoint => transform.position + (0.5f * transform.localScale.y * Vector3.up) + (0.45f * transform.localScale.z * -transform.forward);
+
+	Transform TransformFollower.IMotionReciver.Transform => transform;
 
 	private Vector3 SpearBack() => transform.position - (0.5f * transform.localScale.z * transform.forward);
 	private Vector3 SpearBack(Vector3 pPosition) => pPosition - (0.5f * transform.localScale.z * transform.forward);
@@ -114,7 +115,7 @@ public class TestSpear : MonoBehaviour
 		Vector3 recallStartPosition = transform.position;
 		isAnimating = true;
 		float seconds = Vector3.Distance(recallStartPosition, Camera.position) * RecallSeconds;
-		Anim.Play(RecallEase, Mathf.Min(seconds * 10.0f, 0.2f),
+		Anim.Play(RecallEase, Mathf.Min(seconds * 10.0f, 0.2f), Anim.Type.Visual,
 		(pProgress) => // OnTick
 		{
 			transform.position = Vector3.LerpUnclamped(recallStartPosition, Camera.position, pProgress);
@@ -221,7 +222,7 @@ public class TestSpear : MonoBehaviour
 				// transform.SetPositionAndRotation(hit.point - (0.4f * transform.localScale.z * transform.forward), Quaternion.LookRotation(-hit.normal));
 				trigger.enabled = true;
 
-				follower.Start(hit.transform, transform, hit.point, OnAttachedMoved, true, OliverLoescher.Util.Mono.Type.Default, OliverLoescher.Util.Mono.Priorities.CharacterController, this);
+				follower.Start(hit.transform, this, hit.point, true, ODev.Util.Mono.Type.Default, ODev.Util.Mono.Priorities.CharacterController, this);
 			}
 			SOCue.Play(hitCue, new CueContext(hit.point));
 			return;
@@ -235,16 +236,20 @@ public class TestSpear : MonoBehaviour
 			Velocity.y += Gravity * Time.deltaTime;
 		}
 		transform.position += Velocity * Time.deltaTime;
-		if (Velocity.NotNearZero())
+		if (!Velocity.IsNearZero())
+		{
 			transform.rotation = Quaternion.LookRotation(Velocity);
+		}
 	}
 
-	private void OnAttachedMoved(Vector3 pDeltaPosition)
+	void TransformFollower.IMotionReciver.AddDisplacement(Vector3 pMovement, Quaternion pRotation)
 	{
+		transform.position += pMovement;
+		transform.rotation *= pRotation;
 		if (character != null && !isAnimating)
 		{
 			character.transform.position = CharacterStandPoint;
-			StartPosition += pDeltaPosition;
+			StartPosition += pMovement;
 		}
 	}
 
@@ -257,16 +262,21 @@ public class TestSpear : MonoBehaviour
 		character.SetUpdateEnabled(false);
 		Vector3 startPosition = character.transform.position;
 		isAnimating = true;
-		Anim.Play(playerSnapEase, playerSnapEaseSeconds,
+		Anim.Play(playerSnapEase, playerSnapEaseSeconds, Anim.Type.Visual,
 		(float pProgress) =>
 		{
 			if (character != null)
+			{
 				character.transform.position = Vector3.LerpUnclamped(startPosition, CharacterStandPoint, pProgress);
+			}
 		},
 		(float _) =>
 		{
 			if (character != null)
+			{
 				character.transform.position = CharacterStandPoint;
+			}
+
 			isAnimating = false;
 		});
 	}

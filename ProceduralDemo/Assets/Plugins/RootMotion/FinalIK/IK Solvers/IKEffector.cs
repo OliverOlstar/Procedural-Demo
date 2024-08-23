@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	///  Effector for manipulating node based %IK solvers.
@@ -190,7 +191,11 @@ namespace RootMotion.FinalIK {
 				}
 
 				isEndEffector = true;
-			} else isEndEffector = false; 
+			} else
+			{
+				isEndEffector = false;
+			}
+
 		}
 		
 		/*
@@ -208,7 +213,12 @@ namespace RootMotion.FinalIK {
 		 * Set the position and rotation to match the target
 		 * */
 		public void SetToTarget() {
-			if (target == null) return;
+			if (target == null)
+			{
+				return;
+			}
+
+
 			position = target.position;
 			rotation = target.rotation;
 		}
@@ -233,19 +243,35 @@ namespace RootMotion.FinalIK {
 			if (float.IsInfinity(positionOffset.x) ||
 				float.IsInfinity(positionOffset.y) ||
 				float.IsInfinity(positionOffset.z)
-			    ) Debug.LogError("Invalid IKEffector.positionOffset (contains Infinity)! Please make sure not to set IKEffector.positionOffset to infinite values.", bone);
+			    )
+			{
+				Debug.LogError("Invalid IKEffector.positionOffset (contains Infinity)! Please make sure not to set IKEffector.positionOffset to infinite values.", bone);
+			}
+
 
 			if (float.IsNaN(positionOffset.x) ||
 			    float.IsNaN(positionOffset.y) ||
 			    float.IsNaN(positionOffset.z)
-			    ) Debug.LogError("Invalid IKEffector.positionOffset (contains NaN)! Please make sure not to set IKEffector.positionOffset to NaN values.", bone);
+			    )
+			{
+				Debug.LogError("Invalid IKEffector.positionOffset (contains NaN)! Please make sure not to set IKEffector.positionOffset to NaN values.", bone);
+			}
 
-			if (positionOffset.sqrMagnitude > 10000000000f) Debug.LogError("Additive effector positionOffset detected in Full Body IK (extremely large value). Make sure you are not circularily adding to effector positionOffset each frame.", bone);
+
+			if (positionOffset.sqrMagnitude > 10000000000f)
+			{
+				Debug.LogError("Additive effector positionOffset detected in Full Body IK (extremely large value). Make sure you are not circularily adding to effector positionOffset each frame.", bone);
+			}
+
 
 			if (float.IsInfinity(position.x) ||
 			    float.IsInfinity(position.y) ||
 			    float.IsInfinity(position.z)
-			    ) Debug.LogError("Invalid IKEffector.position (contains Infinity)!");
+			    )
+			{
+				Debug.LogError("Invalid IKEffector.position (contains Infinity)!");
+			}
+
 
 			solver.GetNode(chainIndex, nodeIndex).offset += positionOffset * solver.IKPositionWeight;
 
@@ -303,7 +329,11 @@ namespace RootMotion.FinalIK {
 			solver.GetNode(chainIndex, nodeIndex).solverPosition = Vector3.Lerp(GetPosition(solver, out planeRotationOffset), position, posW);
 
 			// Child nodes
-			if (!effectChildNodes) return;
+			if (!effectChildNodes)
+			{
+				return;
+			}
+
 
 			for (int i = 0; i < childBones.Length; i++) {
 				solver.GetNode(childChainIndexes[i], childNodeIndexes[i]).solverPosition = Vector3.Lerp(solver.GetNode(childChainIndexes[i], childNodeIndexes[i]).solverPosition, solver.GetNode(chainIndex, nodeIndex).solverPosition + localPositions[i], posW);
@@ -315,11 +345,19 @@ namespace RootMotion.FinalIK {
 		 * */
 		private Vector3 GetPosition(IKSolverFullBody solver, out Quaternion planeRotationOffset) {
 			planeRotationOffset = Quaternion.identity;
-			if (!isEndEffector) return solver.GetNode(chainIndex, nodeIndex).solverPosition; // non end-effectors are always free
+			if (!isEndEffector)
+			{
+				return solver.GetNode(chainIndex, nodeIndex).solverPosition; // non end-effectors are always free
+			}
 
-			if (maintainRelativePositionWeight <= 0f) return animatedPosition;
+
+			if (maintainRelativePositionWeight <= 0f)
+			{
+				return animatedPosition;
+			}
 
 			// Maintain relative position
+
 			Vector3 p = bone.position;
 			Vector3 dir = p - planeBone1.position;
 				

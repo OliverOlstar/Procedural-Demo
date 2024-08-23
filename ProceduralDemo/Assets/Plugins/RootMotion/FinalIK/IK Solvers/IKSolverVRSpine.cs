@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
-using RootMotion;
 using UnityEngine.Serialization;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
 	/// <summary>
 	/// Hybrid %IK solver designed for mapping a character to a VR headset and 2 hand controllers 
 	/// </summary>
@@ -14,7 +13,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Spine solver for IKSolverVR.
 		/// </summary>
-		[System.Serializable]
+		[Serializable]
 		public class Spine: BodyPart {
 
             [LargeHeader("Head")]
@@ -221,7 +220,11 @@ namespace RootMotion.FinalIK {
             internal VirtualBone firstSpineBone { get { return bones[spineIndex]; }}
 			internal VirtualBone chest { 
 				get { 
-					if (hasChest) return bones[chestIndex];
+					if (hasChest)
+					{
+						return bones[chestIndex];
+					}
+
 					return bones[spineIndex];
 				}
 			}
@@ -277,24 +280,54 @@ namespace RootMotion.FinalIK {
 					headHeight = V3Tools.ExtractVertical(headPos - positions[0], rotations[0] * Vector3.up, 1f).magnitude;
 
 					int boneCount = 3;
-					if (hasChest) boneCount++;
-					if (hasNeck) boneCount++;
+					if (hasChest)
+					{
+						boneCount++;
+					}
+
+					if (hasNeck)
+					{
+						boneCount++;
+					}
+
 					bones = new VirtualBone[boneCount];
 
 					chestIndex = hasChest? 2: 1;
 
 					neckIndex = 1;
-					if (hasChest) neckIndex++;
-					if (hasNeck) neckIndex++;
+					if (hasChest)
+					{
+						neckIndex++;
+					}
+
+					if (hasNeck)
+					{
+						neckIndex++;
+					}
 
 					headIndex = 2;
-					if (hasChest) headIndex++;
-					if (hasNeck) headIndex++;
+					if (hasChest)
+					{
+						headIndex++;
+					}
+
+					if (hasNeck)
+					{
+						headIndex++;
+					}
 
 					bones[0] = new VirtualBone(pelvisPos, pelvisRot);
 					bones[1] = new VirtualBone(spinePos, spineRot);
-					if (hasChest) bones[chestIndex] = new VirtualBone(chestPos, chestRot);
-					if (hasNeck) bones[neckIndex] = new VirtualBone(neckPos, neckRot);
+					if (hasChest)
+					{
+						bones[chestIndex] = new VirtualBone(chestPos, chestRot);
+					}
+
+					if (hasNeck)
+					{
+						bones[neckIndex] = new VirtualBone(neckPos, neckRot);
+					}
+
 					bones[headIndex] = new VirtualBone(headPos, headRot);
 
 					pelvisRotationOffset = Quaternion.identity;
@@ -321,8 +354,16 @@ namespace RootMotion.FinalIK {
                 
                 bones[0].Read(pelvisPos, pelvisRot);
 				bones[1].Read(spinePos, spineRot);
-				if (hasChest) bones[chestIndex].Read(chestPos, chestRot);
-				if (hasNeck) bones[neckIndex].Read(neckPos, neckRot);
+				if (hasChest)
+				{
+					bones[chestIndex].Read(chestPos, chestRot);
+				}
+
+				if (hasNeck)
+				{
+					bones[neckIndex].Read(neckPos, neckRot);
+				}
+
 				bones[headIndex].Read(headPos, headRot);
 
 				float spineLength = Vector3.Distance (pelvisPos, headPos);
@@ -386,7 +427,10 @@ namespace RootMotion.FinalIK {
 					Vector3 ver = toHead - hor;
 					float dot = Vector3.Dot(ver, rootUp);
 					if (dot > 0f) {
-						if (ver.magnitude < mHH) ver = ver.normalized * mHH;
+						if (ver.magnitude < mHH)
+						{
+							ver = ver.normalized * mHH;
+						}
 					} else {
 						ver = -ver.normalized * mHH;
 					}
@@ -399,16 +443,28 @@ namespace RootMotion.FinalIK {
 				headDeltaPosition = headPosition - head.solverPosition;
 				pelvisDeltaRotation = QuaTools.FromToRotation(pelvis.solverRotation, headRotation * pelvisRelativeRotation);
 
-                if (pelvisRotationWeight <= 0f) anchorRotation = headRotation * anchorRelativeToHead;
-                else if (pelvisRotationWeight > 0f && pelvisRotationWeight < 1f) anchorRotation = Quaternion.Lerp(headRotation * anchorRelativeToHead, pelvisRotation * anchorRelativeToPelvis, pelvisRotationWeight);
-                else if (pelvisRotationWeight >= 1f) anchorRotation = pelvisRotation * anchorRelativeToPelvis;
-            }
+                if (pelvisRotationWeight <= 0f)
+				{
+					anchorRotation = headRotation * anchorRelativeToHead;
+				}
+				else if (pelvisRotationWeight > 0f && pelvisRotationWeight < 1f)
+				{
+					anchorRotation = Quaternion.Lerp(headRotation * anchorRelativeToHead, pelvisRotation * anchorRelativeToPelvis, pelvisRotationWeight);
+				}
+				else if (pelvisRotationWeight >= 1f)
+				{
+					anchorRotation = pelvisRotation * anchorRelativeToPelvis;
+				}
+			}
 
 			private void CalculateChestTargetRotation(VirtualBone rootBone, Arm[] arms) {
 				chestTargetRotation = headRotation * chestRelativeRotation;
 
 				// Use hands to adjust c
-				if (arms[0] != null) AdjustChestByHands(ref chestTargetRotation, arms);
+				if (arms[0] != null)
+				{
+					AdjustChestByHands(ref chestTargetRotation, arms);
+				}
 
 				faceDirection = Vector3.Cross(anchorRotation * Vector3.right, rootBone.readRotation * Vector3.up) + anchorRotation * Vector3.forward;
 			}
@@ -420,8 +476,12 @@ namespace RootMotion.FinalIK {
                 if (maxRootAngle < 180f)
                 {
                     Vector3 f = faceDirection;
-                    if (rootHeadingOffset != 0f) f = Quaternion.AngleAxis(rootHeadingOffset, Vector3.up) * f;
-                    Vector3 faceDirLocal = Quaternion.Inverse(rootBone.solverRotation) * f;
+                    if (rootHeadingOffset != 0f)
+					{
+						f = Quaternion.AngleAxis(rootHeadingOffset, Vector3.up) * f;
+					}
+
+					Vector3 faceDirLocal = Quaternion.Inverse(rootBone.solverRotation) * f;
                     float angle = Mathf.Atan2(faceDirLocal.x, faceDirLocal.z) * Mathf.Rad2Deg;
 
                     float rotation = 0f;
@@ -468,9 +528,12 @@ namespace RootMotion.FinalIK {
 
 				InverseTranslateToHead(legs, false, false, Vector3.zero, positionWeight);
 
-                if (LOD < 1) FABRIKPass(animatedPelvisPos, rootUp, positionWeight);
+                if (LOD < 1)
+				{
+					FABRIKPass(animatedPelvisPos, rootUp, positionWeight);
+				}
 
-                Bend(bones, neckIndex, headIndex, headRotation, headClampWeight, true, rotationWeight);                
+				Bend(bones, neckIndex, headIndex, headRotation, headClampWeight, true, rotationWeight);                
 
                 SolvePelvis ();                
             }
@@ -481,7 +544,7 @@ namespace RootMotion.FinalIK {
                 //Vector3 startOffset = rootUp * (bones[bones.Length - 1].solverPosition - bones[0].solverPosition).magnitude;
                 Vector3 startOffset = Vector3.zero;// (bones[bones.Length - 1].solverPosition - bones[0].solverPosition) * weight;
 
-                float dist = Vector3.Distance(bones[0].solverPosition, bones[bones.Length - 1].solverPosition);
+                float dist = Vector3.Distance(bones[0].solverPosition, bones[^1].solverPosition);
 
 				VirtualBone.SolveFABRIK(bones, startPos, endPos, weight, 1f, 1, dist, startOffset);
 			}
@@ -493,9 +556,12 @@ namespace RootMotion.FinalIK {
                     Quaternion headSolverRotation = head.solverRotation;
 
                     Vector3 delta = ((IKPositionPelvis + pelvisPositionOffset) - pelvis.solverPosition) * pelvisPositionWeight;
-                    foreach (VirtualBone bone in bones) bone.solverPosition += delta;
+                    foreach (VirtualBone bone in bones)
+					{
+						bone.solverPosition += delta;
+					}
 
-                    Vector3 bendNormal = anchorRotation * Vector3.right;
+					Vector3 bendNormal = anchorRotation * Vector3.right;
 
                     if (hasChest && hasNeck)
                     {
@@ -558,10 +624,16 @@ namespace RootMotion.FinalIK {
 				solvedRotations[index + 1] = bones[1].solverRotation;
 
 				// Chest
-				if (hasChest) solvedRotations[index + 2] = bones[chestIndex].solverRotation;
+				if (hasChest)
+				{
+					solvedRotations[index + 2] = bones[chestIndex].solverRotation;
+				}
 
 				// Neck
-				if (hasNeck) solvedRotations[index + 3] = bones[neckIndex].solverRotation;
+				if (hasNeck)
+				{
+					solvedRotations[index + 3] = bones[neckIndex].solverRotation;
+				}
 
 				// Head
 				solvedRotations[index + 4] = bones[headIndex].solverRotation;
@@ -578,7 +650,10 @@ namespace RootMotion.FinalIK {
 			}
 
 			private void AdjustChestByHands(ref Quaternion chestTargetRotation, Arm[] arms) {
-                if (LOD > 0) return;
+                if (LOD > 0)
+				{
+					return;
+				}
 
 				Quaternion h = Quaternion.Inverse(anchorRotation);
 
@@ -633,16 +708,23 @@ namespace RootMotion.FinalIK {
 				// Move the body back when head is moving down
 				Vector3 m = rootRotation * Vector3.forward;
                 float deltaY = V3Tools.ExtractVertical(deltaPosition, rootRotation * Vector3.up, 1f).magnitude;
-                if (scale > 0f) deltaY /= scale;
+                if (scale > 0f)
+				{
+					deltaY /= scale;
+				}
+
 				float backOffset = deltaY * -moveBodyBackWhenCrouching * headHeight;
 				deltaPosition += m * backOffset;
 
-                MovePosition (LimitPelvisPosition(legs, pelvis.solverPosition + deltaPosition * bodyPosStiffness * positionWeight, false));
+                MovePosition (LimitPelvisPosition(legs, pelvis.solverPosition + bodyPosStiffness * positionWeight * deltaPosition, false));
 			}
 
 			// Limit the position of the pelvis so that the feet/toes would remain fixed
 			private Vector3 LimitPelvisPosition(Leg[] legs, Vector3 pelvisPosition, bool useCurrentLegMag, int it = 2) {
-                if (!hasLegs) return pelvisPosition;
+                if (!hasLegs)
+				{
+					return pelvisPosition;
+				}
 
 				// Cache leg current mag
 				if (useCurrentLegMag) {
@@ -670,10 +752,21 @@ namespace RootMotion.FinalIK {
 
 			// Bending the spine to the head effector
 			private void Bend(VirtualBone[] bones, int firstIndex, int lastIndex, Quaternion targetRotation, float clampWeight, bool uniformWeight, float w) {
-				if (w <= 0f) return;
-				if (bones.Length == 0) return;
+				if (w <= 0f)
+				{
+					return;
+				}
+
+				if (bones.Length == 0)
+				{
+					return;
+				}
+
 				int bonesCount = (lastIndex + 1) - firstIndex;
-				if (bonesCount < 1) return;
+				if (bonesCount < 1)
+				{
+					return;
+				}
 
 				Quaternion r = QuaTools.FromToRotation(bones[lastIndex].solverRotation, targetRotation);
 				r = QuaTools.ClampRotation(r, clampWeight, 2);
@@ -681,19 +774,34 @@ namespace RootMotion.FinalIK {
 				float step = uniformWeight? 1f / bonesCount: 0f;
 				
 				for (int i = firstIndex; i < lastIndex + 1; i++) {
-					if (!uniformWeight) step = Mathf.Clamp(((i - firstIndex) + 1) / bonesCount, 0, 1f);
+					if (!uniformWeight)
+					{
+						step = Mathf.Clamp(((i - firstIndex) + 1) / bonesCount, 0, 1f);
+					}
+
 					VirtualBone.RotateAroundPoint(bones, i, bones[i].solverPosition, Quaternion.Slerp(Quaternion.identity, r, step * w));
 				}
 			}
 
 			// Bending the spine to the head effector
 			private void Bend(VirtualBone[] bones, int firstIndex, int lastIndex, Quaternion targetRotation, Quaternion rotationOffset, float clampWeight, bool uniformWeight, float w) {
-                if (w <= 0f) return;
-                if (bones.Length == 0) return;
-                int bonesCount = (lastIndex + 1) - firstIndex;
-                if (bonesCount < 1) return;
+                if (w <= 0f)
+				{
+					return;
+				}
 
-                Quaternion r = QuaTools.FromToRotation(bones[lastIndex].solverRotation, targetRotation);
+				if (bones.Length == 0)
+				{
+					return;
+				}
+
+				int bonesCount = (lastIndex + 1) - firstIndex;
+                if (bonesCount < 1)
+				{
+					return;
+				}
+
+				Quaternion r = QuaTools.FromToRotation(bones[lastIndex].solverRotation, targetRotation);
                 r = QuaTools.ClampRotation(r, clampWeight, 2);
                 float step = uniformWeight ? 1f / bonesCount : 0f;
 
@@ -710,10 +818,19 @@ namespace RootMotion.FinalIK {
                             step = i == 0 ? 0.2f : 0.8f;
                         } else if (bonesCount == 3)
                         {
-                            if (i == 0) step = 0.15f;
-                            else if (i == 1) step = 0.4f;
-                            else step = 0.45f;
-                        } else if (bonesCount > 3)
+                            if (i == 0)
+							{
+								step = 0.15f;
+							}
+							else if (i == 1)
+							{
+								step = 0.4f;
+							}
+							else
+							{
+								step = 0.45f;
+							}
+						} else if (bonesCount > 3)
                         {
                             step = 1f / bonesCount;
                         }

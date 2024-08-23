@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
 	/*
 	 * Custom inspector and scene view tools for IKSolverArm
 	 * */
@@ -58,12 +58,19 @@ namespace RootMotion.FinalIK {
 		 * Draws the scene view helpers for IKSolverTrigonometric
 		 * */
 		public static void AddScene(IKSolverArm solver, Color color, bool modifiable) {
-			if (Application.isPlaying && !solver.initiated) return;
-			if (!Application.isPlaying && !solver.IsValid()) return;
-			
+			if (Application.isPlaying && !solver.initiated)
+			{
+				return;
+			}
+
+			if (!Application.isPlaying && !solver.IsValid())
+			{
+				return;
+			}
+
 			//float length = Vector3.Distance(solver.bone1.transform.position, solver.bone2.transform.position) + Vector3.Distance(solver.bone2.transform.position, solver.bone3.transform.position);
 			//float size = length * 0.05f;
-			
+
 			Handles.color = color;
 			GUI.color = color;
 			
@@ -74,24 +81,32 @@ namespace RootMotion.FinalIK {
 			Handles.DrawLine(solver.forearm.transform.position, solver.hand.transform.position);
 
 			// Joints
-			Inspector.SphereCap(0, solver.chest.transform.position, Quaternion.identity, GetHandleSize(solver.chest.transform.position));
-			Inspector.SphereCap(0, solver.shoulder.transform.position, Quaternion.identity, GetHandleSize(solver.shoulder.transform.position));
-			Inspector.SphereCap(0, solver.upperArm.transform.position, Quaternion.identity, GetHandleSize(solver.upperArm.transform.position));
-			Inspector.SphereCap(0, solver.forearm.transform.position, Quaternion.identity, GetHandleSize(solver.forearm.transform.position));
-			Inspector.SphereCap(0, solver.hand.transform.position, Quaternion.identity, GetHandleSize(solver.hand.transform.position));
+			SphereCap(0, solver.chest.transform.position, Quaternion.identity, GetHandleSize(solver.chest.transform.position));
+			SphereCap(0, solver.shoulder.transform.position, Quaternion.identity, GetHandleSize(solver.shoulder.transform.position));
+			SphereCap(0, solver.upperArm.transform.position, Quaternion.identity, GetHandleSize(solver.upperArm.transform.position));
+			SphereCap(0, solver.forearm.transform.position, Quaternion.identity, GetHandleSize(solver.forearm.transform.position));
+			SphereCap(0, solver.hand.transform.position, Quaternion.identity, GetHandleSize(solver.hand.transform.position));
 
 			if (Application.isPlaying && (solver.IKPositionWeight > 0 || solver.IKRotationWeight > 0)) {
 				if (modifiable) {
-					Inspector.CubeCap(0, solver.IKPosition, solver.IKRotation, GetHandleSize(solver.IKPosition));
+					CubeCap(0, solver.IKPosition, solver.IKRotation, GetHandleSize(solver.IKPosition));
 					
 					// Manipulating position and rotation
 					switch(Tools.current) {
 					case Tool.Move:
-						if (solver.arm.target == null) solver.IKPosition = Handles.PositionHandle(solver.IKPosition, Quaternion.identity);
-						break;
+						if (solver.arm.target == null)
+							{
+								solver.IKPosition = Handles.PositionHandle(solver.IKPosition, Quaternion.identity);
+							}
+
+							break;
 					case Tool.Rotate:
-						if (solver.arm.target == null) solver.IKRotation = Handles.RotationHandle(solver.IKRotation, solver.IKPosition);
-						break;
+						if (solver.arm.target == null)
+							{
+								solver.IKRotation = Handles.RotationHandle(solver.IKRotation, solver.IKPosition);
+							}
+
+							break;
 					}
 				}
 				

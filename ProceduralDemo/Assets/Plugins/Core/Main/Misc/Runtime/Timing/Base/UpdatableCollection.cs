@@ -39,7 +39,7 @@ namespace Core
 			private SortedDictionary<int, HashSet<TUpdatable>> m_Updatables;
 			private Dictionary<TUpdatable, int> m_Priorities;
 			private Dictionary<TUpdatable, DateTime> m_LastUpdateTimes;
-			private Dictionary<System.Type, string> m_ProfilerKeys;
+			private Dictionary<Type, string> m_ProfilerKeys;
 			private int[] m_Keys;
 			private TUpdatable[] m_Values;
 			private bool m_KeysAreDirty;
@@ -50,7 +50,7 @@ namespace Core
 				m_Updatables = new SortedDictionary<int, HashSet<TUpdatable>>(this);
 				m_Priorities = new Dictionary<TUpdatable, int>();
 				m_LastUpdateTimes = new Dictionary<TUpdatable, DateTime>();
-				m_ProfilerKeys = new Dictionary<System.Type, string>();
+				m_ProfilerKeys = new Dictionary<Type, string>();
 				m_Keys = new int[MIN_ARRAY_SIZE];
 				m_Values = new TUpdatable[MIN_ARRAY_SIZE];
 				m_KeysAreDirty = true;
@@ -128,7 +128,7 @@ namespace Core
 				}
 				bool added = hashset.Add(updatable);
 				m_Priorities[updatable] = priority;
-				System.Type type = updatable.GetType();
+				Type type = updatable.GetType();
 				if (!m_ProfilerKeys.ContainsKey(type))
 				{
 					m_ProfilerKeys[type] = type.Name;

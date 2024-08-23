@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
 namespace Core
@@ -15,7 +14,7 @@ namespace Core
 			public static bool IsTutorial() { return s_Tutorial; }
 			public static void Tutorial(bool tutorial) { s_Tutorial = tutorial; }
 
-			static List<RectTransform> s_InputBlockers = new List<RectTransform>();
+			static List<RectTransform> s_InputBlockers = new();
 
 			public static bool IgnoreInput()
 			{

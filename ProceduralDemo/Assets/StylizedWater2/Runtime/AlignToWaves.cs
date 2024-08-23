@@ -34,7 +34,7 @@ namespace StylizedWater2
         [Tooltip("Controls how strongly the transform should rotate to align with the wave curvature")]
         public float rollAmount = 0.1f;
 
-        public List<Vector3> samples = new List<Vector3>();
+        public List<Vector3> samples = new();
         
         private Vector3 normal;
         private float height;
@@ -77,17 +77,29 @@ namespace StylizedWater2
 
         public void FixedUpdate()
         {
-            if (!this || !this.enabled || Disable) return;
-            
-#if UNITY_EDITOR
-            if (!EnableInEditor && Application.isPlaying == false) return;
-#endif
-            
-            if(autoFind) waterObject = WaterObject.Find(this.transform.position, false);
-            
-            if (!waterObject || !waterObject.material) return;
+            if (!this || !this.enabled || Disable)
+			{
+				return;
+			}
 
-            m_waterLevel = waterObject && waterLevelSource == WaterLevelSource.WaterObject? waterObject.transform.position.y : waterLevel;
+#if UNITY_EDITOR
+			if (!EnableInEditor && !Application.isPlaying)
+			{
+				return;
+			}
+#endif
+
+			if (autoFind)
+			{
+				waterObject = WaterObject.Find(this.transform.position, false);
+			}
+
+			if (!waterObject || !waterObject.material)
+			{
+				return;
+			}
+
+			m_waterLevel = waterObject && waterLevelSource == WaterLevelSource.WaterObject? waterObject.transform.position.y : waterLevel;
 
             normal = Vector3.up;
             height = 0f;
@@ -115,24 +127,33 @@ namespace StylizedWater2
 
         private void ApplyTransform()
         {
-            if(rollAmount > 0) this.transform.up = normal;
+            if(rollAmount > 0)
+			{
+				this.transform.up = normal;
+			}
 
-            var position = this.transform.position;
+			Vector3 position = this.transform.position;
             this.transform.position = new Vector3(position.x, height, position.z);
         }
         
         public Vector3 ConvertToWorldSpace(Vector3 position)
         {
-            if (childTransform) return childTransform.TransformPoint(position);
+            if (childTransform)
+			{
+				return childTransform.TransformPoint(position);
+			}
 
-            return this.transform.TransformPoint(position);
+			return this.transform.TransformPoint(position);
         }
 
         public Vector3 ConvertToLocalSpace(Vector3 position)
         {
-            if (childTransform) return childTransform.InverseTransformPoint(position);
+            if (childTransform)
+			{
+				return childTransform.InverseTransformPoint(position);
+			}
 
-            return this.transform.InverseTransformPoint(position);
+			return this.transform.InverseTransformPoint(position);
         }
 
     }

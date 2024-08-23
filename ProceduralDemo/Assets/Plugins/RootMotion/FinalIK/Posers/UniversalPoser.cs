@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
 namespace RootMotion.FinalIK
@@ -14,7 +13,7 @@ namespace RootMotion.FinalIK
 		/// <summary>
 		/// Mapping a bone to its target
 		/// </summary>
-		[System.Serializable]
+		[Serializable]
 		public class Map
 		{
 			public Transform bone;
@@ -93,16 +92,30 @@ namespace RootMotion.FinalIK
 
 		protected override void UpdatePoser()
 		{
-			if (weight <= 0f) return;
-			if (localPositionWeight <= 0f && localRotationWeight <= 0f) return;
-			if (poseRoot == null) return;
+			if (weight <= 0f)
+			{
+				return;
+			}
+
+			if (localPositionWeight <= 0f && localRotationWeight <= 0f)
+			{
+				return;
+			}
+
+			if (poseRoot == null)
+			{
+				return;
+			}
 
 			// Calculate weights
 			float rW = localRotationWeight * weight;
 			float pW = localPositionWeight * weight;
 
 			// Lerping the localRotation and the localPosition
-			for (int i = 0; i < bones.Length; i++) bones[i].Update(rW, pW, targetAxis1, targetAxis2, axis1, axis2);
+			for (int i = 0; i < bones.Length; i++)
+			{
+				bones[i].Update(rW, pW, targetAxis1, targetAxis2, axis1, axis2);
+			}
 		}
 
 
@@ -127,7 +140,10 @@ namespace RootMotion.FinalIK
 		{
 			for (int i = 0; i < array.Length; i++)
 			{
-				if (array[i].name == tName) return array[i];
+				if (array[i].name == tName)
+				{
+					return array[i];
+				}
 			}
 			return null;
 		}

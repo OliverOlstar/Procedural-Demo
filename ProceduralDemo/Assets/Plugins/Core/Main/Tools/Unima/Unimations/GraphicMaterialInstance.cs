@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GraphicMaterialInstance : MonoBehaviour
 {
-	private Dictionary<Material, Material> m_Instances = new Dictionary<Material, Material>();
+	private Dictionary<Material, Material> m_Instances = new();
 	private Material m_Instance = null;
 
 	public static Material InstatiateCopy(Graphic graphic)

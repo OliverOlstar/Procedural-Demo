@@ -1,19 +1,24 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector and scene view tools for IKEffector
 	 * */
+
 	public class IKEffectorInspector: IKSolverInspector {
 		
 		#region Public methods
 		
 		public static void DrawArrayElementEffector(SerializedProperty effector, bool editHierarchy) {
-			if (!editHierarchy) return;
-			
+			if (!editHierarchy)
+			{
+				return;
+			}
+
+
 			if (effector.FindPropertyRelative("bones").arraySize > 1) {
 				GUILayout.BeginHorizontal();
 				GUILayout.Space(indent);
@@ -23,7 +28,11 @@ namespace RootMotion.FinalIK {
 			
 			AddArray(effector.FindPropertyRelative("bones"), new GUIContent("Bones", string.Empty), editHierarchy, false, null, OnAddToArrayBone, DrawArrayElementLabelBone, false);
 			
-			if (effector.isExpanded) EditorGUILayout.Space();
+			if (effector.isExpanded)
+			{
+				EditorGUILayout.Space();
+			}
+
 		}
 		
 		public static void OnAddToArrayEffector(SerializedProperty effector) {
@@ -35,7 +44,7 @@ namespace RootMotion.FinalIK {
 		}
 		
 		public static void DrawArrayElementLabelEffector(SerializedProperty effector, bool editHierarchy) {
-			GUILayout.Space(Inspector.indent);
+			GUILayout.Space(indent);
 			if (editHierarchy) {
 				EditorGUILayout.PropertyField(effector, new GUIContent(GetArrayName(effector.FindPropertyRelative("bones"), "Effector"), string.Empty), false, GUILayout.Width(100));
 			} else {
@@ -61,9 +70,13 @@ namespace RootMotion.FinalIK {
 		}
 		
 		public static void AddScene(IKEffector e, Color color, bool modifiable, float size) {
-			if (!modifiable) return;
-			
+			if (!modifiable)
+			{
+				return;
+			}
+
 			// Draw effectors
+
 			bool rotate = e.isEndEffector;
 			float weight = rotate? Mathf.Max(e.positionWeight, e.rotationWeight): e.positionWeight;
 			
@@ -73,7 +86,7 @@ namespace RootMotion.FinalIK {
 					Handles.color = new Color(color.r, color.g, color.b, weight);
 
 					Handles.DrawLine(e.position, e.bone.position);
-					Inspector.SphereCap(0, e.bone.position, Quaternion.identity, size * 0.5f);
+				SphereCap(0, e.bone.position, Quaternion.identity, size * 0.5f);
 
 					// Manipulating position and rotation
 					if (e.target == null) {
@@ -82,14 +95,25 @@ namespace RootMotion.FinalIK {
 							e.position = Handles.PositionHandle(e.position, Quaternion.identity);
 							break;
 						case Tool.Rotate:
-							if (rotate) e.rotation = Handles.RotationHandle(e.rotation, e.position);
+							if (rotate)
+							{
+								e.rotation = Handles.RotationHandle(e.rotation, e.position);
+							}
+
 							break;
 						}
 					}
 					
-					if (rotate) Inspector.CubeCap(0, e.position, e.rotation, size);
-					else Inspector.SphereCap(0, e.position, Quaternion.identity, size);
+					if (rotate)
+				{
+					CubeCap(0, e.position, e.rotation, size);
+				}
+				else
+				{
+					SphereCap(0, e.position, Quaternion.identity, size);
+				}
 				//}
+
 			}
 		}
 		

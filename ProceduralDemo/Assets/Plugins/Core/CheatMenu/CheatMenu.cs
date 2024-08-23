@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Core;
 
 namespace Core.CheatMenu
 {
@@ -23,10 +22,10 @@ namespace Core.CheatMenu
 
 		private const float OPEN_TIME = 0.5f;
 
-		[SerializeField, Core.Tooltip("Increase or decrease the scale of the cheat menu GUI. " +
+		[SerializeField, Tooltip("Increase or decrease the scale of the cheat menu GUI. " +
 			"This is especially for mobile games in order to make buttons easier to press")]
 		private float m_ScaleGUI = 3.33f;
-		[SerializeField, Core.Tooltip("Screen resolution that will be use primarily during testing/development.\n\n" +
+		[SerializeField, Tooltip("Screen resolution that will be use primarily during testing/development.\n\n" +
 			"This value is used to re-target GUI scale for other resolutions in order to maintain a consistent 'real world' size of buttons/text.\n\n" +
 			"ie. We don't want the GUI to be 2x smaller when working on a 4k screen vs and HD screen")]
 		private float m_ReferenceScreenWidth = 1080.0f;
@@ -37,9 +36,9 @@ namespace Core.CheatMenu
 		private float ScaledHeight => Screen.height / NormalizedScale;
 		
 #pragma warning disable CS0414
-		[SerializeField, Core.Percent]
+		[SerializeField, Percent]
 		private float m_HorizScreenSpace = 1.0f;
-		[SerializeField, Core.Percent]
+		[SerializeField, Percent]
 		private float m_VertScreenSpace = 0.95f;
 #pragma warning restore
 
@@ -61,7 +60,7 @@ namespace Core.CheatMenu
 		private Vector2 m_ScrollPosition = Vector2.zero;
 		private static CheatMenuGroup[] s_GroupArray = null;
 		private static Dictionary<string, CheatMenuGroup> s_GroupDict;
-		private int m_TimeScaleHandle = Core.TimeScaleManager.INVALID_HANDLE;
+		private int m_TimeScaleHandle = TimeScaleManager.INVALID_HANDLE;
 		private GUIStyle m_HeaderStyle = null;
 
 #pragma warning disable CS0414 // No referenced in RELEASE
@@ -79,7 +78,7 @@ namespace Core.CheatMenu
 		{
 			if (s_Instance != null)
 			{
-				Core.DebugUtil.DevException("A new CheatMenu was just created but one already existed. CheatMenu is a singleton, this should never happen.");
+				DebugUtil.DevException("A new CheatMenu was just created but one already existed. CheatMenu is a singleton, this should never happen.");
 			}
 			s_Instance = this;
 
@@ -90,7 +89,7 @@ namespace Core.CheatMenu
 			{
 				s_GroupDict = new Dictionary<string, CheatMenuGroup>();
 				List<CheatMenuGroup> groupList = ListPool<CheatMenuGroup>.Request();
-				foreach (Type type in Core.TypeUtility.GetTypesDerivedFrom(typeof(CheatMenuPage)))
+				foreach (Type type in TypeUtility.GetTypesDerivedFrom(typeof(CheatMenuPage)))
 				{
 					if (type.IsAbstract || type.GetCustomAttributes(typeof(IgnorePageAttribute), true).Length > 0)
 					{
@@ -222,8 +221,8 @@ namespace Core.CheatMenu
 			// Scale up buttons and text fields to make them more pressable on mobile devices
 			GUIStyle originalButton = GUI.skin.button;
 			GUIStyle originalTextField = GUI.skin.textField;
-			GUIStyle newButton = new GUIStyle(GUI.skin.button);
-			GUIStyle newTextField = new GUIStyle(GUI.skin.textField);
+			GUIStyle newButton = new(GUI.skin.button);
+			GUIStyle newTextField = new(GUI.skin.textField);
 			newButton.fixedHeight = 26;
 			newTextField.fixedHeight = 26;
 			GUI.skin.button = newButton;
@@ -244,7 +243,7 @@ namespace Core.CheatMenu
 			
 			float widthScale = m_HorizScreenSpace;
 			float heightScale = m_VertScreenSpace;
-			Rect rect = new Rect(
+			Rect rect = new(
 				0.5f * (1.0f - widthScale) * width,
 				0.5f * (1.0f - heightScale) * height,
 				widthScale * width,
@@ -383,7 +382,7 @@ namespace Core.CheatMenu
 			Log("Open");
 			m_IsOpen = true;
 			m_InputBlocker.gameObject.SetActive(true);
-			m_TimeScaleHandle = Core.TimeScaleManager.StartTimeEvent(0.0f);
+			m_TimeScaleHandle = TimeScaleManager.StartTimeEvent(0.0f);
 			OnOpened();
 			if (!TryGetCurrentCurrentGroup(out CheatMenuGroup currentGroup))
 			{
@@ -406,9 +405,9 @@ namespace Core.CheatMenu
 			Log("Close");
 			m_IsOpen = false;
 			m_InputBlocker.gameObject.SetActive(false);
-			if (m_TimeScaleHandle != Core.TimeScaleManager.INVALID_HANDLE)
+			if (m_TimeScaleHandle != TimeScaleManager.INVALID_HANDLE)
 			{
-				Core.TimeScaleManager.EndTimeEvent(m_TimeScaleHandle);
+				TimeScaleManager.EndTimeEvent(m_TimeScaleHandle);
 			}
 			OnClosed();
 			if (TryGetCurrentCurrentGroup(out CheatMenuGroup currentGroup))

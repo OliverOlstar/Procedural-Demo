@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEditor.AnimatedValues;
 #if URP
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -16,7 +15,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace StylizedWater2
 {
-    public partial class MaterialUI : ShaderGUI
+	public partial class MaterialUI : ShaderGUI
     {
 #if URP
         private MaterialEditor materialEditor;
@@ -334,9 +333,12 @@ namespace StylizedWater2
             _DistanceNormalsOn = FindProperty("_DistanceNormalsOn", props);
             _WavesOn = FindProperty("_WavesOn", props);
 
-            if(material.HasProperty("_CurvedWorldBendSettings")) _CurvedWorldBendSettings = FindProperty("_CurvedWorldBendSettings", props);
-            
-            simpleShadingContent = new GUIContent("Simple", 
+            if(material.HasProperty("_CurvedWorldBendSettings"))
+			{
+				_CurvedWorldBendSettings = FindProperty("_CurvedWorldBendSettings", props);
+			}
+
+			simpleShadingContent = new GUIContent("Simple", 
              "Mobile friendly");
 
             advancedShadingContent = new GUIContent("Advanced",
@@ -410,7 +412,7 @@ namespace StylizedWater2
 
             collection = new List<Texture2D>();
             
-            foreach (var guid in contentGUIDS)
+            foreach (string guid in contentGUIDS)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 
@@ -494,9 +496,11 @@ namespace StylizedWater2
             
             if (EditorGUI.EndChangeCheck())
             {
-                foreach (var obj in  materialEditor.targets)
-                    MaterialChanged((Material)obj);
-            }
+                foreach (UnityEngine.Object obj in  materialEditor.targets)
+				{
+					MaterialChanged((Material)obj);
+				}
+			}
         }
 
         //Material sphere preview is mostly useless, due to simplistic rendering. Overlay an icon instead
@@ -509,12 +513,15 @@ namespace StylizedWater2
         {
             UI.DrawNotification(!UniversalRenderPipeline.asset, "Universal Render Pipeline is currently not active!", "Show me", StylizedWaterEditor.OpenGraphicsSettings, MessageType.Error);
 
-            if (!UniversalRenderPipeline.asset) return;
-            
-            if (UniversalRenderPipeline.asset && initialized)
+            if (!UniversalRenderPipeline.asset)
+			{
+				return;
+			}
+
+			if (UniversalRenderPipeline.asset && initialized)
             {
                 UI.DrawNotification(
-                    UniversalRenderPipeline.asset.supportsCameraDepthTexture == false &&
+!UniversalRenderPipeline.asset.supportsCameraDepthTexture &&
                     _DisableDepthTexture.floatValue == 0f,
                     "Depth texture is disabled, which is required for the material's current configuration",
                     "Enable",
@@ -522,7 +529,7 @@ namespace StylizedWater2
                     MessageType.Error);
                 
                 UI.DrawNotification(
-                    UniversalRenderPipeline.asset.supportsCameraOpaqueTexture == false && _RefractionOn.floatValue == 1f,
+!UniversalRenderPipeline.asset.supportsCameraOpaqueTexture && _RefractionOn.floatValue == 1f,
                     "Opaque texture is disabled, which is required for the material's current configuration",
                     "Enable",
                     StylizedWaterEditor.EnableOpaqueTexture,
@@ -534,7 +541,7 @@ namespace StylizedWater2
             #if !UNITY_2023_1_OR_NEWER //OpenGLES 2.0 no longer supported at all
             if (EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android || EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS)
             {
-                if (PlayerSettings.GetUseDefaultGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget) == false &&
+                if (!PlayerSettings.GetUseDefaultGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget) &&
                     PlayerSettings.GetGraphicsAPIs(EditorUserBuildSettings.activeBuildTarget)[0] == GraphicsDeviceType.OpenGLES2)
                 {
                     UI.DrawNotification("You are targeting the OpenGLES 2.0 graphics API, which is not supported. Shader will not compile on the device", MessageType.Error);
@@ -564,9 +571,12 @@ namespace StylizedWater2
 
         private void MaterialChanged(Material material)
         {
-            if (material == null) throw new ArgumentNullException(nameof(material));
+            if (material == null)
+			{
+				throw new ArgumentNullException(nameof(material));
+			}
 
-            SetMaterialKeywords(material);
+			SetMaterialKeywords(material);
             
             material.SetTexture("_CausticsTex", _CausticsTex.textureValue);
             material.SetTexture("_BumpMap", _BumpMap.textureValue);
@@ -601,7 +611,7 @@ namespace StylizedWater2
             rect.yMin += 5f;
             #endif
             
-            GUIContent c = new GUIContent("Version " + AssetInfo.INSTALLED_VERSION);
+            GUIContent c = new("Version " + AssetInfo.INSTALLED_VERSION);
             rect.width = EditorStyles.label.CalcSize(c).x;
             //rect.x += (rect.width * 2f);
             rect.y -= 3f;
@@ -671,9 +681,12 @@ namespace StylizedWater2
                 {
                     DrawShaderProperty(_WorldSpaceUV, new GUIContent(_WorldSpaceUV.displayName, "Use either the mesh's UV or world-space position coordinates as a base for texture tiling"));
                 }
-                if(_RiverModeOn.floatValue > 0) EditorGUILayout.HelpBox("Shader will use always the mesh's UV coordinates when River Mode is enabled.", MessageType.None);
+                if(_RiverModeOn.floatValue > 0)
+				{
+					EditorGUILayout.HelpBox("Shader will use always the mesh's UV coordinates when River Mode is enabled.", MessageType.None);
+				}
 
-                EditorGUILayout.Space();
+				EditorGUILayout.Space();
 
                 EditorGUILayout.LabelField("Animation", EditorStyles.boldLabel);
 
@@ -683,7 +696,7 @@ namespace StylizedWater2
                 #if UNITY_2020_2_OR_NEWER
                 if (EditorWindow.focusedWindow && EditorWindow.focusedWindow.GetType() == typeof(SceneView))
                 {
-                    if (SceneView.lastActiveSceneView.sceneViewState.alwaysRefreshEnabled == false)
+                    if (!SceneView.lastActiveSceneView.sceneViewState.alwaysRefreshEnabled)
                     {
                         UI.DrawNotification("The \"Always Refresh\" option is disabled in the scene view. Water surface animations will appear to be jumpy", messageType:MessageType.None);
                     }
@@ -768,9 +781,16 @@ namespace StylizedWater2
                 {
                     GUILayout.FlexibleSpace();
                     
-                    if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(UI.iconPrefix + "Toolbar Minus")), EditorStyles.miniButtonLeft, GUILayout.MaxWidth(EditorGUIUtility.fieldWidth / 2))) material.renderQueue--;
-                    if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(UI.iconPrefix + "Toolbar Plus")), EditorStyles.miniButtonRight, GUILayout.MaxWidth(EditorGUIUtility.fieldWidth / 2))) material.renderQueue++;
-                }
+                    if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(UI.iconPrefix + "Toolbar Minus")), EditorStyles.miniButtonLeft, GUILayout.MaxWidth(EditorGUIUtility.fieldWidth / 2)))
+					{
+						material.renderQueue--;
+					}
+
+					if (GUILayout.Button(new GUIContent(EditorGUIUtility.IconContent(UI.iconPrefix + "Toolbar Plus")), EditorStyles.miniButtonRight, GUILayout.MaxWidth(EditorGUIUtility.fieldWidth / 2)))
+					{
+						material.renderQueue++;
+					}
+				}
                 
                 if (material.renderQueue <= 2450 || material.renderQueue >= 3500)
                 {
@@ -796,13 +816,16 @@ namespace StylizedWater2
                 EditorGUILayout.Space();
                 
                 EditorGUI.BeginChangeCheck();
-                var tessellationTooltip = "Dynamically subdivides the mesh's triangles to create denser topology near the camera." +
+				string tessellationTooltip = "Dynamically subdivides the mesh's triangles to create denser topology near the camera." +
                                           "\n\nThis allows for more detailed wave animations." +
                                           "\n\nOnly supported on GPUs with Shader Model 4.6+ and the Metal graphics API on Mac/iOS. Should it fail, it will fall back to the non-tessellated shader automatically";
                 tesselationEnabled = EditorGUILayout.Toggle(new GUIContent("Tessellation", tessellationTooltip), tesselationEnabled);
-                if(UI.ExpandTooltips) EditorGUILayout.HelpBox(tessellationTooltip, MessageType.None);
-                
-                if (EditorGUI.EndChangeCheck())
+                if(UI.ExpandTooltips)
+				{
+					EditorGUILayout.HelpBox(tessellationTooltip, MessageType.None);
+				}
+
+				if (EditorGUI.EndChangeCheck())
                 {
                     foreach (UnityEngine.Object target in materialEditor.targets)
                     {
@@ -825,14 +848,17 @@ namespace StylizedWater2
                         #endif
                         
                         Shader newShader = Shader.Find(newShaderName);
-                        if(newShader) AssignNewShaderToMaterial(material, material.shader, newShader);
-                        #if SWS_DEV
+                        if(newShader)
+						{
+							AssignNewShaderToMaterial(material, material.shader, newShader);
+						}
+#if SWS_DEV
                         else
                         {
                              Debug.Log("Failed to find tessellation shader with name: " + newShaderName);
                         }
-                        #endif
-                    }
+#endif
+					}
                 }
                 
                 if (tesselationEnabled && _TessValue != null)
@@ -958,9 +984,12 @@ namespace StylizedWater2
                     {
                         DrawShaderProperty(_ColorAbsorption, new GUIContent(_ColorAbsorption.displayName, "Darkens the underwater color, based on the water's depth. This is a particular physical property of water that contributes to a realistic appearance."));
                     }
-                    if (_RefractionOn.floatValue == 0) EditorGUILayout.HelpBox("Requires the Refraction feature to be enabled", MessageType.None);
-                    
-                    EditorGUILayout.Space();
+                    if (_RefractionOn.floatValue == 0)
+					{
+						EditorGUILayout.HelpBox("Requires the Refraction feature to be enabled", MessageType.None);
+					}
+
+					EditorGUILayout.Space();
                 }
 
                 DrawShaderProperty(_VertexColorDepth, new GUIContent("Vertex color depth (G)", "The Green vertex color channel subtracts (visual) depth from the water, making it appear shallow. When River Mode is enabled, this controls the complete opacity of the material instead"));
@@ -1054,9 +1083,12 @@ namespace StylizedWater2
                     DrawTextureSelector(_CausticsTex, ref causticsTextures);
 
                     UI.Material.DrawFloatField(_CausticsBrightness, "Brightness", "The intensity of the incoming light controls how strongly the effect is visible. This parameter acts as a multiplier.");
-                    if(!_CausticsBrightness.hasMixedValue) _CausticsBrightness.floatValue = Mathf.Max(0, _CausticsBrightness.floatValue);
-                    
-                    DrawShaderProperty(_CausticsChromance, new GUIContent(_CausticsChromance.displayName, "Blends between grayscale and RGB caustics"));
+                    if(!_CausticsBrightness.hasMixedValue)
+					{
+						_CausticsBrightness.floatValue = Mathf.Max(0, _CausticsBrightness.floatValue);
+					}
+
+					DrawShaderProperty(_CausticsChromance, new GUIContent(_CausticsChromance.displayName, "Blends between grayscale and RGB caustics"));
                     DrawShaderProperty(_CausticsDistortion, new GUIContent(_CausticsDistortion.displayName, "Distort the caustics based on the normal map"));
                     
                     EditorGUILayout.Space();
@@ -1237,13 +1269,15 @@ namespace StylizedWater2
                         float intersectionStyle = GUILayout.Toolbar((int)_IntersectionStyle.floatValue,
                             new GUIContent[]
                             {
-                                new GUIContent("None"), new GUIContent("Sharp"), new GUIContent("Smooth"),
+                                new("None"), new("Sharp"), new("Smooth"),
                             }, GUILayout.MaxWidth((250f))
                             );
                         
                         if (EditorGUI.EndChangeCheck())
-                            _IntersectionStyle.floatValue = intersectionStyle;
-                    }
+						{
+							_IntersectionStyle.floatValue = intersectionStyle;
+						}
+					}
 
                     EditorGUI.showMixedValue = false;
                     
@@ -1252,9 +1286,12 @@ namespace StylizedWater2
                     #endif
                     
                 }
-                if (UI.ExpandTooltips) EditorGUILayout.HelpBox("Draws an animated foam effect where the water intersects with opaque geometry", MessageType.None);
+                if (UI.ExpandTooltips)
+				{
+					EditorGUILayout.HelpBox("Draws an animated foam effect where the water intersects with opaque geometry", MessageType.None);
+				}
 
-                if (_IntersectionStyle.floatValue > 0 || _IntersectionStyle.hasMixedValue)
+				if (_IntersectionStyle.floatValue > 0 || _IntersectionStyle.hasMixedValue)
                 {
                     DrawShaderProperty(_IntersectionSource, new GUIContent("Gradient source", null, "The effect requires a linear gradient to work with, something that represents the distance from the intersection point out towards the water." +
                                                                                                     "\n\nThis parameter control what's being used as the source to approximate this information."));
@@ -1315,11 +1352,17 @@ namespace StylizedWater2
                     DrawShaderProperty(_SunReflectionStrength, new GUIContent("Strength", "This value is multiplied over the sun light's intensity"));
                     if (UniversalRenderPipeline.asset)
                     {
-                        if(UniversalRenderPipeline.asset.supportsHDR == false) EditorGUILayout.HelpBox("Note: HDR is disabled on the current pipeline asset", MessageType.None);
-                    }
-                    if(!_SunReflectionStrength.hasMixedValue) _SunReflectionStrength.floatValue = Mathf.Max(0, _SunReflectionStrength.floatValue);
-                    
-                    DrawShaderProperty(_SunReflectionSize, new GUIContent("Size", "Determines how wide the reflection appears"));
+                        if(!UniversalRenderPipeline.asset.supportsHDR)
+						{
+							EditorGUILayout.HelpBox("Note: HDR is disabled on the current pipeline asset", MessageType.None);
+						}
+					}
+                    if(!_SunReflectionStrength.hasMixedValue)
+					{
+						_SunReflectionStrength.floatValue = Mathf.Max(0, _SunReflectionStrength.floatValue);
+					}
+
+					DrawShaderProperty(_SunReflectionSize, new GUIContent("Size", "Determines how wide the reflection appears"));
                     DrawShaderProperty(_SunReflectionDistortion, new GUIContent("Distortion", "Distortion is largely influenced by the strength of the normal map texture and wave curvature"));
 
                     if (_LightingOn.floatValue > 0f || _LightingOn.hasMixedValue)
@@ -1331,11 +1374,17 @@ namespace StylizedWater2
                         DrawShaderProperty(_PointSpotLightReflectionStrength, new GUIContent("Strength", "This value is multiplied over the light's intensity"));
                         if (UniversalRenderPipeline.asset)
                         {
-                            if(UniversalRenderPipeline.asset.supportsHDR == false) EditorGUILayout.HelpBox("Note: HDR is disabled on the current pipeline asset", MessageType.None);
-                        }
-                        if(!_PointSpotLightReflectionStrength.hasMixedValue) _PointSpotLightReflectionStrength.floatValue = Mathf.Max(0, _PointSpotLightReflectionStrength.floatValue);
-                        
-                        DrawShaderProperty(_PointSpotLightReflectionSize, new GUIContent("Size", "Specular reflection size for point/spot lights"));
+                            if(!UniversalRenderPipeline.asset.supportsHDR)
+							{
+								EditorGUILayout.HelpBox("Note: HDR is disabled on the current pipeline asset", MessageType.None);
+							}
+						}
+                        if(!_PointSpotLightReflectionStrength.hasMixedValue)
+						{
+							_PointSpotLightReflectionStrength.floatValue = Mathf.Max(0, _PointSpotLightReflectionStrength.floatValue);
+						}
+
+						DrawShaderProperty(_PointSpotLightReflectionSize, new GUIContent("Size", "Specular reflection size for point/spot lights"));
                         DrawShaderProperty(_PointSpotLightReflectionDistortion, new GUIContent("Distortion", "Distortion is largely influenced by the strength of the normal map texture and wave curvature"));
                     }
                 }
@@ -1346,9 +1395,9 @@ namespace StylizedWater2
                 EditorGUILayout.LabelField("Environment Reflections", EditorStyles.boldLabel);
 
                 DrawShaderProperty(_EnvironmentReflectionsOn, new GUIContent("Enable", "Enable reflections from the skybox, reflection probes, screen-space- and planar -reflections."));
-                
+
 #if UNITY_2022_1_OR_NEWER
-                var customReflection = RenderSettings.customReflectionTexture;
+				Texture customReflection = RenderSettings.customReflectionTexture;
                 #else
                 var customReflection = RenderSettings.customReflection;
                 #endif
@@ -1357,7 +1406,7 @@ namespace StylizedWater2
                     UI.DrawNotification("Lighting settings: Environment reflections source is set to \"Custom\" without a cubemap assigned. No reflections may be visible", MessageType.Warning);
                 }
 
-                if (_EnvironmentReflectionsOn.floatValue > 0 && QualitySettings.realtimeReflectionProbes == false && PlanarReflectionRenderer.Instances.Count == 0)
+                if (_EnvironmentReflectionsOn.floatValue > 0 && !QualitySettings.realtimeReflectionProbes && PlanarReflectionRenderer.Instances.Count == 0)
                 {
                     UI.DrawNotification("Realtime reflection probes are disabled in Quality Settings", MessageType.Warning);
                 }
@@ -1531,7 +1580,7 @@ namespace StylizedWater2
 
                 if (GUILayout.Button(new GUIContent("▼", "Select a texture"), GUILayout.Height(65f), GUILayout.Width(21)))
                 {
-                    GenericMenu menu = new GenericMenu();
+                    GenericMenu menu = new();
 
                     for (int i = 0; i < textures.Count; i++)
                     {
@@ -1549,7 +1598,7 @@ namespace StylizedWater2
         
         private void SwitchSection(UI.Material.Section target)
         {
-            foreach (var section in sections)
+            foreach (UI.Material.Section section in sections)
             {
                 section.Expanded = (target == section) && !section.Expanded;
                 //section.Expanded = true;
@@ -1566,35 +1615,98 @@ namespace StylizedWater2
                 
             {
                 //Ensure keyword states are synced with their float property counterpart
-                if (material.IsKeywordEnabled("_UNLIT") && _LightingOn.floatValue > 0) _LightingOn.floatValue = 0f;
-                if (!material.IsKeywordEnabled("_UNLIT") && _LightingOn.floatValue < 1f) _LightingOn.floatValue = 1;
-                
-                if (material.IsKeywordEnabled("_RECEIVE_SHADOWS_OFF") && _ReceiveShadows.floatValue > 0) _ReceiveShadows.floatValue = 0f;
-                if (!material.IsKeywordEnabled("_RECEIVE_SHADOWS_OFF") && _ReceiveShadows.floatValue < 1f) _ReceiveShadows.floatValue = 1;
+                if (material.IsKeywordEnabled("_UNLIT") && _LightingOn.floatValue > 0)
+				{
+					_LightingOn.floatValue = 0f;
+				}
 
-                if (material.IsKeywordEnabled("_FLAT_SHADING") && _FlatShadingOn.floatValue < 1f) _FlatShadingOn.floatValue = 1f;
-                if (!material.IsKeywordEnabled("_FLAT_SHADING") && _FlatShadingOn.floatValue > 0) _FlatShadingOn.floatValue = 0;
-                
-                if (material.IsKeywordEnabled("_RIVER") && _RiverModeOn.floatValue < 1f) _RiverModeOn.floatValue = 1f;
-                if (!material.IsKeywordEnabled("_RIVER") && _RiverModeOn.floatValue > 0) _RiverModeOn.floatValue = 0;
+				if (!material.IsKeywordEnabled("_UNLIT") && _LightingOn.floatValue < 1f)
+				{
+					_LightingOn.floatValue = 1;
+				}
 
-                if (material.IsKeywordEnabled("_FOAM") && _FoamOn.floatValue < 1f) _FoamOn.floatValue = 1f;
-                if (!material.IsKeywordEnabled("_FOAM") && _FoamOn.floatValue > 0) _FoamOn.floatValue = 0;
+				if (material.IsKeywordEnabled("_RECEIVE_SHADOWS_OFF") && _ReceiveShadows.floatValue > 0)
+				{
+					_ReceiveShadows.floatValue = 0f;
+				}
 
-                if (material.IsKeywordEnabled("_DISTANCE_NORMALS") && _DistanceNormalsOn.floatValue < 1f) _DistanceNormalsOn.floatValue = 1f;
-                if (!material.IsKeywordEnabled("_DISTANCE_NORMALS") && _DistanceNormalsOn.floatValue > 0) _DistanceNormalsOn.floatValue = 0;
+				if (!material.IsKeywordEnabled("_RECEIVE_SHADOWS_OFF") && _ReceiveShadows.floatValue < 1f)
+				{
+					_ReceiveShadows.floatValue = 1;
+				}
 
-                if (material.IsKeywordEnabled("_TRANSLUCENCY") && _TranslucencyOn.floatValue < 1f) _TranslucencyOn.floatValue = 1f;
-                if (!material.IsKeywordEnabled("_TRANSLUCENCY") && _TranslucencyOn.floatValue > 0) _TranslucencyOn.floatValue = 0;
-                
-                if (material.IsKeywordEnabled("_SPECULARHIGHLIGHTS_OFF") && _SpecularReflectionsOn.floatValue > 0) _SpecularReflectionsOn.floatValue = 0;
-                if (!material.IsKeywordEnabled("_SPECULARHIGHLIGHTS_OFF") && _SpecularReflectionsOn.floatValue < 1f) _SpecularReflectionsOn.floatValue = 1;
-                
-                if (material.IsKeywordEnabled("_ENVIRONMENTREFLECTIONS_OFF") && _EnvironmentReflectionsOn.floatValue > 0) _EnvironmentReflectionsOn.floatValue = 0;
-                if (!material.IsKeywordEnabled("_ENVIRONMENTREFLECTIONS_OFF") && _EnvironmentReflectionsOn.floatValue < 1f) _EnvironmentReflectionsOn.floatValue = 1;
+				if (material.IsKeywordEnabled("_FLAT_SHADING") && _FlatShadingOn.floatValue < 1f)
+				{
+					_FlatShadingOn.floatValue = 1f;
+				}
 
-                //Translucency settings
-                {
+				if (!material.IsKeywordEnabled("_FLAT_SHADING") && _FlatShadingOn.floatValue > 0)
+				{
+					_FlatShadingOn.floatValue = 0;
+				}
+
+				if (material.IsKeywordEnabled("_RIVER") && _RiverModeOn.floatValue < 1f)
+				{
+					_RiverModeOn.floatValue = 1f;
+				}
+
+				if (!material.IsKeywordEnabled("_RIVER") && _RiverModeOn.floatValue > 0)
+				{
+					_RiverModeOn.floatValue = 0;
+				}
+
+				if (material.IsKeywordEnabled("_FOAM") && _FoamOn.floatValue < 1f)
+				{
+					_FoamOn.floatValue = 1f;
+				}
+
+				if (!material.IsKeywordEnabled("_FOAM") && _FoamOn.floatValue > 0)
+				{
+					_FoamOn.floatValue = 0;
+				}
+
+				if (material.IsKeywordEnabled("_DISTANCE_NORMALS") && _DistanceNormalsOn.floatValue < 1f)
+				{
+					_DistanceNormalsOn.floatValue = 1f;
+				}
+
+				if (!material.IsKeywordEnabled("_DISTANCE_NORMALS") && _DistanceNormalsOn.floatValue > 0)
+				{
+					_DistanceNormalsOn.floatValue = 0;
+				}
+
+				if (material.IsKeywordEnabled("_TRANSLUCENCY") && _TranslucencyOn.floatValue < 1f)
+				{
+					_TranslucencyOn.floatValue = 1f;
+				}
+
+				if (!material.IsKeywordEnabled("_TRANSLUCENCY") && _TranslucencyOn.floatValue > 0)
+				{
+					_TranslucencyOn.floatValue = 0;
+				}
+
+				if (material.IsKeywordEnabled("_SPECULARHIGHLIGHTS_OFF") && _SpecularReflectionsOn.floatValue > 0)
+				{
+					_SpecularReflectionsOn.floatValue = 0;
+				}
+
+				if (!material.IsKeywordEnabled("_SPECULARHIGHLIGHTS_OFF") && _SpecularReflectionsOn.floatValue < 1f)
+				{
+					_SpecularReflectionsOn.floatValue = 1;
+				}
+
+				if (material.IsKeywordEnabled("_ENVIRONMENTREFLECTIONS_OFF") && _EnvironmentReflectionsOn.floatValue > 0)
+				{
+					_EnvironmentReflectionsOn.floatValue = 0;
+				}
+
+				if (!material.IsKeywordEnabled("_ENVIRONMENTREFLECTIONS_OFF") && _EnvironmentReflectionsOn.floatValue < 1f)
+				{
+					_EnvironmentReflectionsOn.floatValue = 1;
+				}
+
+				//Translucency settings
+				{
                     Vector4 _TranslucencyParams = GetLegacyVectorProperty(material, "_TranslucencyParams");
 
                     _TranslucencyStrength.floatValue = _TranslucencyParams.x;
@@ -1655,7 +1767,7 @@ namespace StylizedWater2
 
         private Vector4 GetLegacyVectorProperty(Material mat, string name)
         {
-            SerializedObject materialObj = new SerializedObject(mat);
+            SerializedObject materialObj = new(mat);
             
             //Note: Vectors are actually stored as colors
             SerializedProperty vectorProperties = materialObj.FindProperty("m_SavedProperties.m_Colors");
@@ -1685,7 +1797,7 @@ namespace StylizedWater2
         
         private void DeleteProperty(Material mat, string name)
         {
-            SerializedObject materialObj = new SerializedObject(mat);
+            SerializedObject materialObj = new(mat);
             
             SerializedProperty vectorProperties = materialObj.FindProperty("m_SavedProperties.m_Colors");
             

@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using OliverLoescher.Util;
+using ODev.Util;
 using UnityEngine;
 
 public class TestMoveBetweenPoints : MonoBehaviour, IPACharacter
@@ -34,7 +32,7 @@ public class TestMoveBetweenPoints : MonoBehaviour, IPACharacter
 	private IEnumerator Start()
 	{
 		yield return null;
-		Anim.Play(Ease, Points[pCurrIndex].Seconds, OnTick, OnComplete);
+		Anim.Play(Ease, Points[pCurrIndex].Seconds, Anim.Type.Physics, OnTick, OnComplete);
 	}
 
 	private void OnTick(float pProgress)

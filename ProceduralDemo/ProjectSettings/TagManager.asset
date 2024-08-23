@@ -12,7 +12,7 @@ TagManager:
   - Terrian
   - Water
   - UI
-  - 
+  - Building
   - 
   - 
   - 
@@ -31,9 +31,9 @@ TagManager:
   - Model
   - 
   - 
-  - 
-  - 
-  - 
+  - Interactor
+  - Interactable
+  - BuildingPlacement
   - 
   - 
   - 

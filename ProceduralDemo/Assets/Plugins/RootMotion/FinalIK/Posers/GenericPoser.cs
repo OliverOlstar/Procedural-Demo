@@ -1,9 +1,10 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
+
 	/// <summary>
 	/// Posing the children of a Transform to match the children of another Transform
 	/// </summary>
@@ -12,7 +13,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Mapping a bone to its target
 		/// </summary>
-		[System.Serializable]
+		[Serializable]
 		public class Map {
 			public Transform bone;
 			public Transform target;
@@ -68,7 +69,7 @@ namespace RootMotion.FinalIK {
 				target = GetTargetNamed(children[i].name, poseChildren);
 				if (target != null) {
 					Array.Resize(ref maps, maps.Length + 1);
-					maps[maps.Length - 1] = new Map(children[i], target);
+					maps[^1] = new Map(children[i], target);
 				}
 			}
 
@@ -80,16 +81,34 @@ namespace RootMotion.FinalIK {
 		}
 
 		protected override void UpdatePoser() {
-			if (weight <= 0f) return;
-			if (localPositionWeight <= 0f && localRotationWeight <= 0f) return;
-			if (poseRoot == null) return;
-			
+			if (weight <= 0f)
+			{
+				return;
+			}
+
+
+			if (localPositionWeight <= 0f && localRotationWeight <= 0f)
+			{
+				return;
+			}
+
+
+			if (poseRoot == null)
+			{
+				return;
+			}
+
 			// Calculate weights
+
 			float rW = localRotationWeight * weight;
 			float pW = localPositionWeight * weight;
 			
 			// Lerping the localRotation and the localPosition
-			for (int i = 0; i < maps.Length; i++) maps[i].Update(rW, pW);
+			for (int i = 0; i < maps.Length; i++)
+			{
+				maps[i].Update(rW, pW);
+			}
+
 		}
 
 		
@@ -108,7 +127,11 @@ namespace RootMotion.FinalIK {
 		// Returns a Transform from the array that has the specified name
 		private Transform GetTargetNamed(string tName, Transform[] array) {
 			for (int i = 0; i < array.Length; i++) {
-				if (array[i].name == tName) return array[i];
+				if (array[i].name == tName)
+				{
+					return array[i];
+				}
+
 			}
 			return null;
 		}

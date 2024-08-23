@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.Events;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	public partial class IKSolverVR: IKSolver {
 
@@ -52,8 +52,12 @@ namespace RootMotion.FinalIK {
                     relaxFlag = false;
                 }
 
-                if (Vector3.Magnitude(p - stepTo) < stepThreshold && Quaternion.Angle(rootRotation, stepToRootRot) < 25f) return;
-                stepFrom = position;
+                if (Vector3.Magnitude(p - stepTo) < stepThreshold && Quaternion.Angle(rootRotation, stepToRootRot) < 25f)
+				{
+					return;
+				}
+
+				stepFrom = position;
 				stepTo = p;
 				stepFromRot = rotation;
 				stepToRootRot = rootRotation;
@@ -69,24 +73,36 @@ namespace RootMotion.FinalIK {
 			}
 
 			public void UpdateStanding(Quaternion rootRotation, float minAngle, float speed, float deltaTime) {
-				if (speed <= 0f || minAngle >= 180f) return;
+				if (speed <= 0f || minAngle >= 180f)
+				{
+					return;
+				}
 
 				Quaternion r = rootRotation * footRelativeToRoot;
 				float angle = Quaternion.Angle (rotation, r);
-				if (angle > minAngle) rotation = Quaternion.RotateTowards (rotation, r, Mathf.Min (deltaTime * speed * (1f - supportLegW), angle -minAngle));
+				if (angle > minAngle)
+				{
+					rotation = Quaternion.RotateTowards (rotation, r, Mathf.Min (deltaTime * speed * (1f - supportLegW), angle -minAngle));
+				}
 			}
 
 			public void Update(InterpolationMode interpolation, UnityEvent onStep, float deltaTime) {
 				float supportLegWTarget = isSupportLeg ? 1f : 0f;
 				supportLegW = Mathf.SmoothDamp (supportLegW, supportLegWTarget, ref supportLegWV, 0.2f);
 
-				if (!isStepping) return;
+				if (!isStepping)
+				{
+					return;
+				}
 
 				stepProgress = Mathf.MoveTowards(stepProgress, 1f, deltaTime * stepSpeed);
 
-				if (stepProgress >= 1f) onStep.Invoke ();
+				if (stepProgress >= 1f)
+				{
+					onStep.Invoke ();
+				}
 
-				float stepProgressSmooth = RootMotion.Interp.Float(stepProgress, interpolation);
+				float stepProgressSmooth = Interp.Float(stepProgress, interpolation);
 
 				position = Vector3.Lerp(stepFrom, stepTo, stepProgressSmooth);
 				rotation = Quaternion.Lerp(stepFromRot, stepToRot, stepProgressSmooth);

@@ -4,7 +4,6 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor.SceneManagement;
 
 namespace Core
 {
@@ -19,8 +18,8 @@ namespace Core
 
 		public class RefData
 		{
-			public string path = Core.Str.EMPTY;
-			public string name = Core.Str.EMPTY;
+			public string path = Str.EMPTY;
+			public string name = Str.EMPTY;
 			public Object obj;
 			public bool inUse = false;
 			public HashSet<string> refernces = null;
@@ -29,7 +28,7 @@ namespace Core
 
 		static Dictionary<string, HashSet<string>> s_DepDB = null;
 
-		List<RefData> m_Objects = new List<RefData>();
+		List<RefData> m_Objects = new();
 
 		Vector2 m_ScrollPos1 = Vector2.zero;
 		SortType m_SortType = SortType.InUse;
@@ -37,7 +36,7 @@ namespace Core
 		[MenuItem("Assets/Check References", false, 51)]
 		static void Menu()
 		{
-			ReferencesWindow window = EditorWindow.GetWindow<ReferencesWindow>(true, "References");
+			ReferencesWindow window = GetWindow<ReferencesWindow>(true, "References");
 			window.Init();
 		}
 
@@ -72,7 +71,7 @@ namespace Core
 				Object obj = AssetDatabase.LoadAssetAtPath<Object>(file);
 				if (obj != null)
 				{
-					RefData data = new RefData();
+					RefData data = new();
 					data.obj = obj;
 					data.path = file.Replace("\\", "/");
 					data.name = Path.GetFileName(data.path);
@@ -120,7 +119,7 @@ namespace Core
 			AssetDatabase.Refresh();
 			AssetDatabase.SaveAssets();
 
-			HashSet<string> assetPaths = new HashSet<string>();
+			HashSet<string> assetPaths = new();
 
 			if (IncludeScenes)
 			{
@@ -179,7 +178,7 @@ namespace Core
 					count++;
 					if (EditorUtility.DisplayCancelableProgressBar(
 							"References Window",
-							Core.Str.Build("Collecting dependiences ", count.ToString(), "/", total.ToString()),
+							Str.Build("Collecting dependiences ", count.ToString(), "/", total.ToString()),
 							(float)count / total))
 					{
 						s_DepDB = null;
@@ -255,7 +254,7 @@ namespace Core
 				return;
 			}
 
-			GUILayout.Label(Core.Str.Build("Selected ", m_Objects.Count.ToString()));
+			GUILayout.Label(Str.Build("Selected ", m_Objects.Count.ToString()));
 
 			SortType newType = (SortType)EditorGUILayout.EnumPopup(
 				m_SortType,
@@ -267,7 +266,7 @@ namespace Core
 			}
 
 			bool selectAll = Selection.objects.Length > 0;
-			List<Object> allObjects = new List<Object>(m_Objects.Count);
+			List<Object> allObjects = new(m_Objects.Count);
 			foreach (RefData data in m_Objects)
 			{
 				if (data.obj != null)
@@ -294,7 +293,7 @@ namespace Core
 			}
 			if (GUILayout.Button("Select referenced", GUILayout.ExpandWidth(false)))
 			{
-				List<Object> used = new List<Object>(m_Objects.Count);
+				List<Object> used = new(m_Objects.Count);
 				foreach (RefData data in m_Objects)
 				{
 					if (data.obj != null && data.inUse)
@@ -306,7 +305,7 @@ namespace Core
 			}
 			if (GUILayout.Button("Select not referenced", GUILayout.ExpandWidth(false)))
 			{
-				List<Object> notUsed = new List<Object>(m_Objects.Count);
+				List<Object> notUsed = new(m_Objects.Count);
 				foreach (RefData data in m_Objects)
 				{
 					if (data.obj != null && !data.inUse)
@@ -320,7 +319,7 @@ namespace Core
 
 			m_ScrollPos1 = GUILayout.BeginScrollView(m_ScrollPos1);
 			bool dirty = false;
-			List<Object> objs = new List<Object>(Selection.objects.Length);
+			List<Object> objs = new(Selection.objects.Length);
 			foreach (RefData data in m_Objects)
 			{
 				if (data.obj != null)

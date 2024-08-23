@@ -6,14 +6,14 @@ namespace Core
 {
 	public class RenameFiles : EditorWindow
 	{
-		UnityEngine.Object m_Selected = null;
+		Object m_Selected = null;
 		string m_OldName = string.Empty;
 		string m_NewName = string.Empty;
 
 		[MenuItem("Core/File/Rename")]
 		static void CreateWizard()
 		{
-			RenameFiles window = EditorWindow.GetWindow<RenameFiles>("Rename Files");
+			RenameFiles window = GetWindow<RenameFiles>("Rename Files");
 			window.Show();
 		}
 

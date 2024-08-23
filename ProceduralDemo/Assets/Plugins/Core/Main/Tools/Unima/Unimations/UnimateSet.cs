@@ -1,13 +1,12 @@
 ﻿
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Unimate/Core/Set")]
 public class UnimateSet : Unimate<UnimateSet, UnimateSet.Player>
 {
 	[SerializeField]
-	private UnimaSet m_AnimationSet = new UnimaSet();
+	private UnimaSet m_AnimationSet = new();
 	public UnimaSet Set => m_AnimationSet;
 
 	public override UnimaDurationType GetEditorDuration(out float duration)

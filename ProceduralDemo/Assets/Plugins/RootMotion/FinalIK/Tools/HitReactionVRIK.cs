@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Class for creating procedural FBBIK hit reactions.
@@ -33,14 +33,22 @@ namespace RootMotion.FinalIK {
 
 			// Start processing the hit
 			public virtual void Hit(Vector3 force, AnimationCurve[] curves, Vector3 point) {
-				if (length == 0f) length = GetLength(curves);
+				if (length == 0f)
+				{
+					length = GetLength(curves);
+				}
+
 				if (length <= 0f) {
 					Debug.LogError("Hit Point WeightCurve length is zero.");
 					return;
 				}
 
 				// Start crossfading if the last hit has not completed yet
-				if (timer < 1f) crossFader = 0f;
+				if (timer < 1f)
+				{
+					crossFader = 0f;
+				}
+
 				crossFadeSpeed = crossFadeTime > 0f? 1f / crossFadeTime: 0f;
 				CrossFadeStart();
 
@@ -64,8 +72,14 @@ namespace RootMotion.FinalIK {
 				timer = Mathf.Clamp(timer + deltaTime, 0f, length);
 
 				// Advance the crossFader
-				if (crossFadeSpeed > 0f) crossFader = Mathf.Clamp(crossFader + (deltaTime * crossFadeSpeed), 0f, 1f);
-				else crossFader = 1f;
+				if (crossFadeSpeed > 0f)
+				{
+					crossFader = Mathf.Clamp(crossFader + (deltaTime * crossFadeSpeed), 0f, 1f);
+				}
+				else
+				{
+					crossFader = 1f;
+				}
 
 				// Pass this on to the hit points
 				OnApply(ik, curves, weight);
@@ -124,7 +138,10 @@ namespace RootMotion.FinalIK {
 
 			// Remember the current offset values for each effector, so we can smoothly crossfade from it
 			protected override void CrossFadeStart() {
-				foreach (PositionOffsetLink l in offsetLinks) l.CrossFadeStart();
+				foreach (PositionOffsetLink l in offsetLinks)
+				{
+					l.CrossFadeStart();
+				}
 			}
 
 			// Calculate offset, apply to FBBIK effectors
@@ -134,7 +151,10 @@ namespace RootMotion.FinalIK {
 				Vector3 offset = (curves[forceDirCurveIndex].Evaluate(timer) * force) + (curves[upDirCurveIndex].Evaluate(timer) * up);
 				offset *= weight;
 
-				foreach (PositionOffsetLink l in offsetLinks) l.Apply(ik, offset, crossFader);
+				foreach (PositionOffsetLink l in offsetLinks)
+				{
+					l.Apply(ik, offset, crossFader);
+				}
 			}
 
 		}
@@ -183,9 +203,12 @@ namespace RootMotion.FinalIK {
             {
                 base.Hit(force, curves, point);
 
-                if (rigidbody == null) rigidbody = collider.GetComponent<Rigidbody>();
+                if (rigidbody == null)
+				{
+					rigidbody = collider.GetComponent<Rigidbody>();
+				}
 
-                Vector3 com = rigidbody != null ? rigidbody.worldCenterOfMass : collider.transform.position;
+				Vector3 com = rigidbody != null ? rigidbody.worldCenterOfMass : collider.transform.position;
                 comAxis = Vector3.Cross(force, point - com);
             }
 
@@ -196,7 +219,10 @@ namespace RootMotion.FinalIK {
 
 			// Remember the current offset values for each bone, so we can smoothly crossfade from it
 			protected override void CrossFadeStart() {
-				foreach (RotationOffsetLink l in offsetLinks) l.CrossFadeStart();
+				foreach (RotationOffsetLink l in offsetLinks)
+				{
+					l.CrossFadeStart();
+				}
 			}
 
 			// Calculate offset, apply to the bones
@@ -206,12 +232,14 @@ namespace RootMotion.FinalIK {
 					return;
 				}
 
-				if (rigidbody == null) rigidbody = collider.GetComponent<Rigidbody>();
-				if (rigidbody != null) {
+				if (rigidbody == null && collider.TryGetComponent<Rigidbody>(out rigidbody)) {
 					float comValue = curves[curveIndex].Evaluate(timer) * weight;
 					Quaternion offset = Quaternion.AngleAxis(comValue, comAxis);
 
-					foreach (RotationOffsetLink l in offsetLinks) l.Apply(ik, offset, crossFader);
+					foreach (RotationOffsetLink l in offsetLinks)
+					{
+						l.Apply(ik, offset, crossFader);
+					}
 				}
 			}
 
@@ -224,8 +252,15 @@ namespace RootMotion.FinalIK {
 
 		// Called by IKSolverFullBody before updating
 		protected override void OnModifyOffset() {
-			foreach (PositionOffset p in positionOffsets) p.Apply(ik, offsetCurves, weight);
-			foreach (RotationOffset r in rotationOffsets) r.Apply(ik, offsetCurves, weight);
+			foreach (PositionOffset p in positionOffsets)
+			{
+				p.Apply(ik, offsetCurves, weight);
+			}
+
+			foreach (RotationOffset r in rotationOffsets)
+			{
+				r.Apply(ik, offsetCurves, weight);
+			}
 		}
 
 		// Hit one of the hit points (defined by hit.collider)
@@ -236,11 +271,17 @@ namespace RootMotion.FinalIK {
 			}
 
 			foreach (PositionOffset p in positionOffsets) {
-				if (p.collider == collider) p.Hit(force, offsetCurves, point);
+				if (p.collider == collider)
+				{
+					p.Hit(force, offsetCurves, point);
+				}
 			}
 
 			foreach (RotationOffset r in rotationOffsets) {
-				if (r.collider == collider) r.Hit(force, offsetCurves, point);
+				if (r.collider == collider)
+				{
+					r.Hit(force, offsetCurves, point);
+				}
 			}
 		}
 	}

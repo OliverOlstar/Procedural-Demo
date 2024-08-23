@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [ExecuteInEditMode]
 [DisallowMultipleComponent]
@@ -10,26 +9,37 @@ public class UIFitInsideParent : MonoBehaviour {
 
 	void Rescale()
 	{
-		var rt = GetComponent<RectTransform>();
-		if (rt == null)
+		if (!TryGetComponent<RectTransform>(out RectTransform rt))
+		{
 			return;
-		var pRt = rt.parent.GetComponent<RectTransform>();
-		if (pRt == null)
+		}
+
+		if (!rt.parent.TryGetComponent<RectTransform>(out RectTransform pRt))
+		{
 			return;
-		var w = rt.rect.width + horizontalInset * 2f + Mathf.Abs(rt.localPosition.x) * 2f;
-		var h = rt.rect.height + verticalInset * 2f + Mathf.Abs(rt.localPosition.y) * 2f;
-		var ar = w / h;
-		var pW = pRt.rect.width;
-		var pH = pRt.rect.height;
-		var pAr = pW / pH;
-		var scaleBefore = rt.localScale.x;
-		var scaleAfter = allowUpscale ? 1000f : 1f;
+		}
+
+		float w = rt.rect.width + horizontalInset * 2f + Mathf.Abs(rt.localPosition.x) * 2f;
+		float h = rt.rect.height + verticalInset * 2f + Mathf.Abs(rt.localPosition.y) * 2f;
+		float ar = w / h;
+		float pW = pRt.rect.width;
+		float pH = pRt.rect.height;
+		float pAr = pW / pH;
+		float scaleBefore = rt.localScale.x;
+		float scaleAfter = allowUpscale ? 1000f : 1f;
 		if (ar > pAr)
+		{
 			scaleAfter = Mathf.Min(pW / w, scaleAfter);
+		}
 		else
+		{
 			scaleAfter = Mathf.Min(pH / h, scaleAfter);
+		}
+
 		if (!Core.Util.Approximately(scaleAfter, scaleBefore))
+		{
 			rt.localScale = new Vector3(scaleAfter, scaleAfter, rt.localScale.z);
+		}
 	}
 
 	void OnEnable()

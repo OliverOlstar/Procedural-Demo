@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core
 {
@@ -12,7 +10,7 @@ namespace Core
 			Full,
 		}
 
-		private static string EditorPrefsKey(ReportType reportType) => Core.Str.Build(Application.dataPath, typeof(T).Name, reportType.ToString());
+		private static string EditorPrefsKey(ReportType reportType) => Str.Build(Application.dataPath, typeof(T).Name, reportType.ToString());
 
 		public static bool IsLocked() { return TryGetReport(out _, out _); }
 

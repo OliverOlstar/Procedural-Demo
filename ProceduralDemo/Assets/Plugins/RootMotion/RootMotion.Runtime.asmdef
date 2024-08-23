@@ -1,3 +1,16 @@
-﻿{
-	"name": "RootMotion"
+{
+    "name": "RootMotion",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b7e6cd4cbc686c54393d0eb863081a5d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion.FinalIK
 {
 
-    /// <summary>
-    /// Calibrates VRIK for the HMD and up to 5 additional trackers.
-    /// </summary>
-    public static class VRIKCalibrator
+	/// <summary>
+	/// Calibrates VRIK for the HMD and up to 5 additional trackers.
+	/// </summary>
+	public static class VRIKCalibrator
     {
 
         /// <summary>
@@ -161,7 +160,7 @@ namespace RootMotion.FinalIK
                 return null;
             }
 
-            CalibrationData data = new CalibrationData();
+            CalibrationData data = new();
 
             ik.solver.FixTransforms();
 
@@ -174,9 +173,8 @@ namespace RootMotion.FinalIK
 
             // Head
             Transform headTarget = ik.solver.spine.headTarget == null ? (new GameObject("Head Target")).transform : ik.solver.spine.headTarget;
-            headTarget.position = headPos;
-            headTarget.rotation = ik.references.head.rotation;
-            headTarget.parent = headTracker;
+            headTarget.SetPositionAndRotation(headPos, ik.references.head.rotation);
+			headTarget.parent = headTracker;
             ik.solver.spine.headTarget = headTarget;
 
             // Size
@@ -187,9 +185,8 @@ namespace RootMotion.FinalIK
             if (bodyTracker != null)
             {
                 Transform pelvisTarget = ik.solver.spine.pelvisTarget == null ? (new GameObject("Pelvis Target")).transform : ik.solver.spine.pelvisTarget;
-                pelvisTarget.position = ik.references.pelvis.position;
-                pelvisTarget.rotation = ik.references.pelvis.rotation;
-                pelvisTarget.parent = bodyTracker;
+                pelvisTarget.SetPositionAndRotation(ik.references.pelvis.position, ik.references.pelvis.rotation);
+				pelvisTarget.parent = bodyTracker;
                 ik.solver.spine.pelvisTarget = pelvisTarget;
 
                 ik.solver.spine.pelvisPositionWeight = settings.pelvisPositionWeight;
@@ -240,22 +237,36 @@ namespace RootMotion.FinalIK
             }
 
             // Legs
-            if (leftFootTracker != null) CalibrateLeg(settings, leftFootTracker, ik.solver.leftLeg, (ik.references.leftToes != null ? ik.references.leftToes : ik.references.leftFoot), ik.references.root.forward, true);
-            if (rightFootTracker != null) CalibrateLeg(settings, rightFootTracker, ik.solver.rightLeg, (ik.references.rightToes != null ? ik.references.rightToes : ik.references.rightFoot), ik.references.root.forward, false);
+            if (leftFootTracker != null)
+			{
+				CalibrateLeg(settings, leftFootTracker, ik.solver.leftLeg, (ik.references.leftToes != null ? ik.references.leftToes : ik.references.leftFoot), ik.references.root.forward, true);
+			}
 
-            // Root controller
-            bool addRootController = bodyTracker != null || (leftFootTracker != null && rightFootTracker != null);
-            var rootController = ik.references.root.GetComponent<VRIKRootController>();
+			if (rightFootTracker != null)
+			{
+				CalibrateLeg(settings, rightFootTracker, ik.solver.rightLeg, (ik.references.rightToes != null ? ik.references.rightToes : ik.references.rightFoot), ik.references.root.forward, false);
+			}
+
+			// Root controller
+			bool addRootController = bodyTracker != null || (leftFootTracker != null && rightFootTracker != null);
+			VRIKRootController rootController = ik.references.root.GetComponent<VRIKRootController>();
 
             if (addRootController)
             {
-                if (rootController == null) rootController = ik.references.root.gameObject.AddComponent<VRIKRootController>();
-                rootController.Calibrate();
+                if (rootController == null)
+				{
+					rootController = ik.references.root.gameObject.AddComponent<VRIKRootController>();
+				}
+
+				rootController.Calibrate();
             }
             else
             {
-                if (rootController != null) GameObject.Destroy(rootController);
-            }
+                if (rootController != null)
+				{
+					Object.Destroy(rootController);
+				}
+			}
 
             // Additional solver settings
             ik.solver.spine.minHeadHeight = 0f;
@@ -292,15 +303,18 @@ namespace RootMotion.FinalIK
             // Target position
             float inwardOffset = isLeft ? settings.footInwardOffset : -settings.footInwardOffset;
             target.position = tracker.position + trackerSpace * new Vector3(inwardOffset, 0f, settings.footForwardOffset);
-            target.position = new Vector3(target.position.x, lastBone.position.y, target.position.z);
-
+            
             // Target rotation
-            target.rotation = lastBone.rotation;
+            target.SetPositionAndRotation(new Vector3(target.position.x, lastBone.position.y, target.position.z), lastBone.rotation);
 
-            // Rotate target forward towards tracker forward
-            Vector3 footForward = AxisTools.GetAxisVectorToDirection(lastBone, rootForward);
-            if (Vector3.Dot(lastBone.rotation * footForward, rootForward) < 0f) footForward = -footForward;
-            Vector3 fLocal = Quaternion.Inverse(Quaternion.LookRotation(target.rotation * footForward)) * f;
+			// Rotate target forward towards tracker forward
+			Vector3 footForward = AxisTools.GetAxisVectorToDirection(lastBone, rootForward);
+            if (Vector3.Dot(lastBone.rotation * footForward, rootForward) < 0f)
+			{
+				footForward = -footForward;
+			}
+
+			Vector3 fLocal = Quaternion.Inverse(Quaternion.LookRotation(target.rotation * footForward)) * f;
             float angle = Mathf.Atan2(fLocal.x, fLocal.z) * Mathf.Rad2Deg;
             float headingOffset = isLeft ? settings.footHeadingOffset : -settings.footHeadingOffset;
             target.rotation = Quaternion.AngleAxis(angle + headingOffset, Vector3.up) * target.rotation;
@@ -335,16 +349,23 @@ namespace RootMotion.FinalIK
                 public Target(Transform t)
                 {
                     this.used = t != null;
-                    if (!this.used) return;
+                    if (!this.used)
+					{
+						return;
+					}
 
-                    this.localPosition = t.localPosition;
+					this.localPosition = t.localPosition;
                     this.localRotation = t.localRotation;
                 }
 
                 public void SetTo(Transform t)
                 {
-                    if (!used) return;
-                    t.localPosition = localPosition;
+                    if (!used)
+					{
+						return;
+					}
+
+					t.localPosition = localPosition;
                     t.localRotation = localRotation;
                 }
             }
@@ -444,22 +465,36 @@ namespace RootMotion.FinalIK
             }
 
             // Legs
-            if (leftFootTracker != null) CalibrateLeg(data, leftFootTracker, ik.solver.leftLeg, (ik.references.leftToes != null ? ik.references.leftToes : ik.references.leftFoot), ik.references.root.forward, true);
-            if (rightFootTracker != null) CalibrateLeg(data, rightFootTracker, ik.solver.rightLeg, (ik.references.rightToes != null ? ik.references.rightToes : ik.references.rightFoot), ik.references.root.forward, false);
+            if (leftFootTracker != null)
+			{
+				CalibrateLeg(data, leftFootTracker, ik.solver.leftLeg, (ik.references.leftToes != null ? ik.references.leftToes : ik.references.leftFoot), ik.references.root.forward, true);
+			}
 
-            // Root controller
-            bool addRootController = bodyTracker != null || (leftFootTracker != null && rightFootTracker != null);
-            var rootController = ik.references.root.GetComponent<VRIKRootController>();
+			if (rightFootTracker != null)
+			{
+				CalibrateLeg(data, rightFootTracker, ik.solver.rightLeg, (ik.references.rightToes != null ? ik.references.rightToes : ik.references.rightFoot), ik.references.root.forward, false);
+			}
+
+			// Root controller
+			bool addRootController = bodyTracker != null || (leftFootTracker != null && rightFootTracker != null);
+			VRIKRootController rootController = ik.references.root.GetComponent<VRIKRootController>();
 
             if (addRootController)
             {
-                if (rootController == null) rootController = ik.references.root.gameObject.AddComponent<VRIKRootController>();
-                rootController.Calibrate(data);
+                if (rootController == null)
+				{
+					rootController = ik.references.root.gameObject.AddComponent<VRIKRootController>();
+				}
+
+				rootController.Calibrate(data);
             }
             else
             {
-                if (rootController != null) GameObject.Destroy(rootController);
-            }
+                if (rootController != null)
+				{
+					Object.Destroy(rootController);
+				}
+			}
 
             // Additional solver settings
             ik.solver.spine.minHeadHeight = 0f;
@@ -468,18 +503,31 @@ namespace RootMotion.FinalIK
 
         private static void CalibrateLeg(CalibrationData data, Transform tracker, IKSolverVR.Leg leg, Transform lastBone, Vector3 rootForward, bool isLeft)
         {
-            if (isLeft && data.leftFoot == null) return;
-            if (!isLeft && data.rightFoot == null) return;
+            if (isLeft && data.leftFoot == null)
+			{
+				return;
+			}
 
-            string name = isLeft ? "Left" : "Right";
+			if (!isLeft && data.rightFoot == null)
+			{
+				return;
+			}
+
+			string name = isLeft ? "Left" : "Right";
             Transform target = leg.target == null ? (new GameObject(name + " Foot Target")).transform : leg.target;
 
             target.parent = tracker;
 
-            if (isLeft) data.leftFoot.SetTo(target);
-            else data.rightFoot.SetTo(target);
+            if (isLeft)
+			{
+				data.leftFoot.SetTo(target);
+			}
+			else
+			{
+				data.rightFoot.SetTo(target);
+			}
 
-            leg.target = target;
+			leg.target = target;
 
             leg.positionWeight = 1f;
             leg.rotationWeight = 1f;
@@ -488,10 +536,16 @@ namespace RootMotion.FinalIK
             Transform bendGoal = leg.bendGoal == null ? (new GameObject(name + " Leg Bend Goal")).transform : leg.bendGoal;
             bendGoal.parent = tracker;
 
-            if (isLeft) data.leftLegGoal.SetTo(bendGoal);
-            else data.rightLegGoal.SetTo(bendGoal);
+            if (isLeft)
+			{
+				data.leftLegGoal.SetTo(bendGoal);
+			}
+			else
+			{
+				data.rightLegGoal.SetTo(bendGoal);
+			}
 
-            leg.bendGoal = bendGoal;
+			leg.bendGoal = bendGoal;
             leg.bendGoalWeight = 1f;
         }
 
@@ -515,7 +569,7 @@ namespace RootMotion.FinalIK
             CalibrateScale(ik, scaleMlp);
 
             // Fill in Calibration Data
-            CalibrationData data = new CalibrationData();
+            CalibrationData data = new();
             data.scale = ik.references.root.localScale.y;
             data.head = new CalibrationData.Target(ik.solver.spine.headTarget);
             data.leftHand = new CalibrationData.Target(ik.solver.leftArm.target);
@@ -529,9 +583,12 @@ namespace RootMotion.FinalIK
         /// </summary>
         public static void CalibrateHead(VRIK ik, Transform centerEyeAnchor, Vector3 anchorPositionOffset, Vector3 anchorRotationOffset)
         {
-            if (ik.solver.spine.headTarget == null) ik.solver.spine.headTarget = new GameObject("Head IK Target").transform;
+            if (ik.solver.spine.headTarget == null)
+			{
+				ik.solver.spine.headTarget = new GameObject("Head IK Target").transform;
+			}
 
-            Vector3 forward = Quaternion.Inverse(ik.references.head.rotation) * ik.references.root.forward;
+			Vector3 forward = Quaternion.Inverse(ik.references.head.rotation) * ik.references.root.forward;
             Vector3 up = Quaternion.Inverse(ik.references.head.rotation) * ik.references.root.up;
             Quaternion headSpace = Quaternion.LookRotation(forward, up);
 
@@ -549,11 +606,13 @@ namespace RootMotion.FinalIK
         /// </summary>
         public static void CalibrateBody(VRIK ik, Transform pelvisTracker, Vector3 trackerPositionOffset, Vector3 trackerRotationOffset)
         {
-            if (ik.solver.spine.pelvisTarget == null) ik.solver.spine.pelvisTarget = new GameObject("Pelvis IK Target").transform;
+            if (ik.solver.spine.pelvisTarget == null)
+			{
+				ik.solver.spine.pelvisTarget = new GameObject("Pelvis IK Target").transform;
+			}
 
-            ik.solver.spine.pelvisTarget.position = ik.references.pelvis.position + ik.references.root.rotation * trackerPositionOffset;
-            ik.solver.spine.pelvisTarget.rotation = ik.references.root.rotation * Quaternion.Euler(trackerRotationOffset);
-            ik.solver.spine.pelvisTarget.parent = pelvisTracker;
+			ik.solver.spine.pelvisTarget.SetPositionAndRotation(ik.references.pelvis.position + ik.references.root.rotation * trackerPositionOffset, ik.references.root.rotation * Quaternion.Euler(trackerRotationOffset));
+			ik.solver.spine.pelvisTarget.parent = pelvisTracker;
         }
 
         /// <summary>
@@ -561,10 +620,17 @@ namespace RootMotion.FinalIK
         /// </summary>
         public static void CalibrateHands(VRIK ik, Transform leftHandAnchor, Transform rightHandAnchor, Vector3 anchorPositionOffset, Vector3 anchorRotationOffset)
         {
-            if (ik.solver.leftArm.target == null) ik.solver.leftArm.target = new GameObject("Left Hand IK Target").transform;
-            if (ik.solver.rightArm.target == null) ik.solver.rightArm.target = new GameObject("Right Hand IK Target").transform;
+            if (ik.solver.leftArm.target == null)
+			{
+				ik.solver.leftArm.target = new GameObject("Left Hand IK Target").transform;
+			}
 
-            CalibrateHand(ik, leftHandAnchor, anchorPositionOffset, anchorRotationOffset, true);
+			if (ik.solver.rightArm.target == null)
+			{
+				ik.solver.rightArm.target = new GameObject("Right Hand IK Target").transform;
+			}
+
+			CalibrateHand(ik, leftHandAnchor, anchorPositionOffset, anchorRotationOffset, true);
             CalibrateHand(ik, rightHandAnchor, anchorPositionOffset, anchorRotationOffset, false);
         }
 
@@ -577,17 +643,23 @@ namespace RootMotion.FinalIK
                 rotationOffset.z = -rotationOffset.z;
             }
 
-            var hand = isLeft ? ik.references.leftHand : ik.references.rightHand;
-            var forearm = isLeft ? ik.references.leftForearm : ik.references.rightForearm;
-            var target = isLeft ? ik.solver.leftArm.target : ik.solver.rightArm.target;
+			Transform hand = isLeft ? ik.references.leftHand : ik.references.rightHand;
+			Transform forearm = isLeft ? ik.references.leftForearm : ik.references.rightForearm;
+			Transform target = isLeft ? ik.solver.leftArm.target : ik.solver.rightArm.target;
 
             Vector3 forward = isLeft ? ik.solver.leftArm.wristToPalmAxis : ik.solver.rightArm.wristToPalmAxis;
-            if (forward == Vector3.zero) forward = VRIKCalibrator.GuessWristToPalmAxis(hand, forearm);
+            if (forward == Vector3.zero)
+			{
+				forward = GuessWristToPalmAxis(hand, forearm);
+			}
 
-            Vector3 up = isLeft ? ik.solver.leftArm.palmToThumbAxis : ik.solver.rightArm.palmToThumbAxis;
-            if (up == Vector3.zero) up = VRIKCalibrator.GuessPalmToThumbAxis(hand, forearm);
+			Vector3 up = isLeft ? ik.solver.leftArm.palmToThumbAxis : ik.solver.rightArm.palmToThumbAxis;
+            if (up == Vector3.zero)
+			{
+				up = GuessPalmToThumbAxis(hand, forearm);
+			}
 
-            Quaternion handSpace = Quaternion.LookRotation(forward, up);
+			Quaternion handSpace = Quaternion.LookRotation(forward, up);
             Vector3 anchorPos = hand.position + hand.rotation * handSpace * positionOffset;
             Quaternion anchorRot = hand.rotation * handSpace * Quaternion.Euler(rotationOffset);
             Quaternion anchorRotInverse = Quaternion.Inverse(anchorRot);
@@ -601,8 +673,12 @@ namespace RootMotion.FinalIK
         {
             Vector3 toForearm = forearm.position - hand.position;
             Vector3 axis = AxisTools.ToVector3(AxisTools.GetAxisToDirection(hand, toForearm));
-            if (Vector3.Dot(toForearm, hand.rotation * axis) > 0f) axis = -axis;
-            return axis;
+            if (Vector3.Dot(toForearm, hand.rotation * axis) > 0f)
+			{
+				axis = -axis;
+			}
+
+			return axis;
         }
 
         public static Vector3 GuessPalmToThumbAxis(Transform hand, Transform forearm)
@@ -629,8 +705,12 @@ namespace RootMotion.FinalIK
             Vector3 handNormal = Vector3.Cross(hand.position - forearm.position, hand.GetChild(thumbIndex).position - hand.position);
             Vector3 toThumb = Vector3.Cross(handNormal, hand.position - forearm.position);
             Vector3 axis = AxisTools.ToVector3(AxisTools.GetAxisToDirection(hand, toThumb));
-            if (Vector3.Dot(toThumb, hand.rotation * axis) < 0f) axis = -axis;
-            return axis;
+            if (Vector3.Dot(toThumb, hand.rotation * axis) < 0f)
+			{
+				axis = -axis;
+			}
+
+			return axis;
         }
     }
 }

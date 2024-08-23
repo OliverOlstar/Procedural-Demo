@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	// Custom Scene View handles for the FingerRig.
+
 	[CustomEditor(typeof(FingerRig))]
 	public class FingerRigInspector : Editor {
 
@@ -14,21 +15,43 @@ namespace RootMotion.FinalIK {
 		private MonoScript monoScript;
 
 		void OnEnable() {
-			if (serializedObject == null) return;
-			
+			if (serializedObject == null)
+			{
+				return;
+			}
+
 			// Changing the script execution order
+
 			if (!Application.isPlaying) {
 				monoScript = MonoScript.FromMonoBehaviour(script);
 				int currentExecutionOrder = MonoImporter.GetExecutionOrder(monoScript);
-				if (currentExecutionOrder != 10000) MonoImporter.SetExecutionOrder(monoScript, 10000);
+				if (currentExecutionOrder != 10000)
+				{
+					MonoImporter.SetExecutionOrder(monoScript, 10000);
+				}
+
 			}
 		}
 
 		void OnSceneGUI() {
-			if (!script.enabled) return;
+			if (!script.enabled)
+			{
+				return;
+			}
+
+
 			string message = string.Empty;
-			if (!script.IsValid(ref message)) return;
-			if (Application.isPlaying && !script.initiated) return;
+			if (!script.IsValid(ref message))
+			{
+				return;
+			}
+
+
+			if (Application.isPlaying && !script.initiated)
+			{
+				return;
+			}
+
 
 			Color color = Color.cyan;
 			color.a = script.weight;
@@ -87,7 +110,11 @@ namespace RootMotion.FinalIK {
 					if (script.fingers[i].weight > 0 && selected != i && script.fingers[i].initiated) {
 						float size = IKSolverInspector.GetHandleSize(script.fingers[i].IKPosition) * 0.5f;
 
-						if (Inspector.DotButton(script.fingers[i].IKPosition, Quaternion.identity, size, size)) selected = i;
+						if (Inspector.DotButton(script.fingers[i].IKPosition, Quaternion.identity, size, size))
+						{
+							selected = i;
+						}
+
 					}
 				}
 			}

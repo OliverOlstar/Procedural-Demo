@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
@@ -21,7 +19,7 @@ namespace Core
 
 			if (!s_Edit && string.IsNullOrEmpty(property.stringValue))
 			{
-				GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
+				GUIStyle labelStyle = new(GUI.skin.label);
 				labelStyle.fontSize = 10;
 				if (GUI.Button(position, "// <Add " + label.text + " here>", labelStyle))
 				{

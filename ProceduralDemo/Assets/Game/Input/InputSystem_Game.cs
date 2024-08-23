@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using OliverLoescher;
-using UnityEngine;
+using ODev;
 
 public class InputSystem_Game : Singleton<PlayerInput_Game> {}

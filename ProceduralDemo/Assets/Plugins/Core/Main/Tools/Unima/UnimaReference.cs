@@ -20,7 +20,7 @@ public class UnimaTiming
 public abstract class UnimaTimedItem
 {
 	[SerializeField]
-	protected UnimaTiming m_Timing = new UnimaTiming();
+	protected UnimaTiming m_Timing = new();
 	public UnimaTiming Timing => m_Timing;
 
 	public abstract IUnimaPlayer InstatiatePlayer(GameObject gameObject);
@@ -56,7 +56,7 @@ public class UnimaReference : UnimaTimedItem
 public class UnimaSet : IEnumerable<UnimaReference>
 {
 	[SerializeField]
-	private List<UnimaReference> m_Animations = new List<UnimaReference>();
+	private List<UnimaReference> m_Animations = new();
 
 	public int Count => m_Animations.Count;
 
@@ -74,7 +74,7 @@ public class UnimaSet : IEnumerable<UnimaReference>
 
 	public List<IUnimaPlayer> InstantiatePlayers(GameObject gameObject)
 	{
-		List<IUnimaPlayer> players = new List<IUnimaPlayer>(m_Animations.Count);
+		List<IUnimaPlayer> players = new(m_Animations.Count);
 		foreach (UnimaReference anim in m_Animations)
 		{
 			IUnimaPlayer player = anim.InstatiatePlayer(gameObject);

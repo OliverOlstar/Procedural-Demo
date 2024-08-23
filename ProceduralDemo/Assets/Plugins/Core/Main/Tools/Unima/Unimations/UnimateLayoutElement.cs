@@ -16,7 +16,7 @@ public class UnimateLayoutElement : UnimateTween<UnimateLayoutElement, UnimateLa
 	[SerializeField]
 	private AnimationCurve m_AnimationCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 	[SerializeField]
-	private LayoutElementValues m_TargetValues = new LayoutElementValues();
+	private LayoutElementValues m_TargetValues = new();
 	[SerializeField]
 	private OriginCache m_OriginCache = OriginCache.Initialize;
 

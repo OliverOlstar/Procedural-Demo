@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Head effector for FBBIK.
@@ -132,12 +132,18 @@ namespace RootMotion.FinalIK {
 		// Store the default local positions and rotations of the bones used by this head effector.
 		private void OnStoreDefaultLocalState() {
 			foreach (BendBone bendBone in bendBones) {
-				if (bendBone != null) bendBone.StoreDefaultLocalState();
+				if (bendBone != null)
+				{
+					bendBone.StoreDefaultLocalState();
+				}
 			}
 
 			ccdDefaultLocalRotations = new Quaternion[CCDBones.Length];
 			for (int i = 0; i < CCDBones.Length; i++) {
-				if (CCDBones[i] != null) ccdDefaultLocalRotations[i] = CCDBones[i].localRotation;
+				if (CCDBones[i] != null)
+				{
+					ccdDefaultLocalRotations[i] = CCDBones[i].localRotation;
+				}
 			}
 
 			headLocalPosition = ik.references.head.localPosition;
@@ -169,14 +175,23 @@ namespace RootMotion.FinalIK {
 
 		// Fix the bones used by this head effector to their default local state
 		private void OnFixTransforms() {
-			if (!enabled) return;
+			if (!enabled)
+			{
+				return;
+			}
 
 			foreach (BendBone bendBone in bendBones) {
-				if (bendBone != null) bendBone.FixTransforms();
+				if (bendBone != null)
+				{
+					bendBone.FixTransforms();
+				}
 			}
 
 			for (int i = 0; i < CCDBones.Length; i++) {
-				if (CCDBones[i] != null) CCDBones[i].localRotation = ccdDefaultLocalRotations[i];
+				if (CCDBones[i] != null)
+				{
+					CCDBones[i].localRotation = ccdDefaultLocalRotations[i];
+				}
 			}
 
 			ik.references.head.localPosition = headLocalPosition;
@@ -199,14 +214,27 @@ namespace RootMotion.FinalIK {
 
 		// Called by the FBBIK each time before it reads the pose
 		private void OnPreRead() {
-			if (!enabled) return;
-			if (!gameObject.activeInHierarchy) return;
+			if (!enabled)
+			{
+				return;
+			}
 
-			if (ik.solver.iterations == 0) return;
+			if (!gameObject.activeInHierarchy)
+			{
+				return;
+			}
+
+			if (ik.solver.iterations == 0)
+			{
+				return;
+			}
 
 			ik.solver.FABRIKPass = handsPullBody;
 
-			if (bendBonesCount != bendBones.Length || ccdBonesCount != CCDBones.Length || stretchBonesCount != stretchBones.Length || chestBonesCount != chestBones.Length) OnStoreDefaultLocalState();
+			if (bendBonesCount != bendBones.Length || ccdBonesCount != CCDBones.Length || stretchBonesCount != stretchBones.Length || chestBonesCount != chestBones.Length)
+			{
+				OnStoreDefaultLocalState();
+			}
 
 			// Chest direction
 			ChestDirection();
@@ -233,15 +261,25 @@ namespace RootMotion.FinalIK {
 
 			chestRotation = Quaternion.LookRotation(ik.references.head.position - ik.references.leftUpperArm.position, ik.references.rightUpperArm.position - ik.references.leftUpperArm.position);
 
-			if (OnPostHeadEffectorFK != null) OnPostHeadEffectorFK ();
+			if (OnPostHeadEffectorFK != null)
+			{
+				OnPostHeadEffectorFK ();
+			}
 		}
 
 		// Bending the spine to the head effector
 		private void SpineBend() {
 			float w = bendWeight * ik.solver.IKPositionWeight;
 
-			if (w <= 0f) return;
-			if (bendBones.Length == 0) return;
+			if (w <= 0f)
+			{
+				return;
+			}
+
+			if (bendBones.Length == 0)
+			{
+				return;
+			}
 
 			Quaternion rotation = transform.rotation * Quaternion.Inverse(ik.references.root.rotation * headRotationRelativeToRoot);
 			rotation = QuaTools.ClampRotation(rotation, bodyClampWeight, 2);
@@ -259,8 +297,11 @@ namespace RootMotion.FinalIK {
 		private void CCDPass() {
 			float w = CCDWeight * ik.solver.IKPositionWeight;
 
-			if (w <= 0f) return;
-			
+			if (w <= 0f)
+			{
+				return;
+			}
+
 			for (int i = CCDBones.Length - 1; i > -1; i--) {
 				Quaternion r = Quaternion.FromToRotation(ik.references.head.position - CCDBones[i].position, transform.position - CCDBones[i].position) * CCDBones[i].rotation;
 				float d = Mathf.Lerp((CCDBones.Length - i) / CCDBones.Length, 1f, roll);
@@ -276,10 +317,20 @@ namespace RootMotion.FinalIK {
 
 		// Called by the FBBIK before each solver iteration
 		private void Iterate(int iteration) {
-			if (!enabled) return;
-			if (!gameObject.activeInHierarchy) return;
+			if (!enabled)
+			{
+				return;
+			}
 
-			if (ik.solver.iterations == 0) return;
+			if (!gameObject.activeInHierarchy)
+			{
+				return;
+			}
+
+			if (ik.solver.iterations == 0)
+			{
+				return;
+			}
 
 			// Shoulders
 			leftShoulderPos = transform.position + (leftShoulderPos - transform.position).normalized * leftShoulderDist;
@@ -310,8 +361,15 @@ namespace RootMotion.FinalIK {
 		
 		// Called by the FBBIK each time it is finished updating
 		private void OnPostUpdate() {
-			if (!enabled) return;
-			if (!gameObject.activeInHierarchy) return;
+			if (!enabled)
+			{
+				return;
+			}
+
+			if (!gameObject.activeInHierarchy)
+			{
+				return;
+			}
 
 			// Stretching the spine and neck
 			PostStretching ();
@@ -325,12 +383,18 @@ namespace RootMotion.FinalIK {
 
 		private void ChestDirection() {
 			float w = chestDirectionWeight * ik.solver.IKPositionWeight;
-			if (w <= 0f) return;
+			if (w <= 0f)
+			{
+				return;
+			}
 
 			bool changed = false;
-			chestDirection = RootMotion.V3Tools.ClampDirection(chestDirection, ik.references.root.forward, 0.45f, 2, out changed);
+			chestDirection = V3Tools.ClampDirection(chestDirection, ik.references.root.forward, 0.45f, 2, out changed);
 
-			if (chestDirection == Vector3.zero) return;
+			if (chestDirection == Vector3.zero)
+			{
+				return;
+			}
 
 			Quaternion q = Quaternion.FromToRotation (ik.references.root.forward, chestDirection);
 			q = Quaternion.Lerp (Quaternion.identity, q, w * (1f / chestBones.Length));
@@ -349,13 +413,22 @@ namespace RootMotion.FinalIK {
 				stretch *= w;
 
 				stretchDamper = Mathf.Max (stretchDamper, 0f);
-				if (stretchDamper > 0f) stretch /= (1f + stretch.magnitude) * (1f + stretchDamper);
-				
+				if (stretchDamper > 0f)
+				{
+					stretch /= (1f + stretch.magnitude) * (1f + stretchDamper);
+				}
+
 				for (int i = 0; i < stretchBones.Length; i++) {
-					if (stretchBones[i] != null) stretchBones[i].position += stretch / stretchBones.Length;
+					if (stretchBones[i] != null)
+					{
+						stretchBones[i].position += stretch / stretchBones.Length;
+					}
 				}
 			}
-			if (fixHead && ik.solver.IKPositionWeight > 0f) ik.references.head.position = transform.position;
+			if (fixHead && ik.solver.IKPositionWeight > 0f)
+			{
+				ik.references.head.position = transform.position;
+			}
 		}
 
 		// Interpolate the solver position of the effector
@@ -368,14 +441,21 @@ namespace RootMotion.FinalIK {
 			Vector3 direction = pos2 - pos1;
 			
 			float distance = direction.magnitude;
-			if (distance == nominalDistance) return;
-			if (distance == 0f) return;
-			
+			if (distance == nominalDistance)
+			{
+				return;
+			}
+
+			if (distance == 0f)
+			{
+				return;
+			}
+
 			float force = 1f;
 			
 			force *= 1f - nominalDistance / distance;
 			
-			Vector3 offset = direction * force * 0.5f;
+			Vector3 offset = 0.5f * force * direction;
 			
 			pos1 += offset;
 			pos2 -= offset;

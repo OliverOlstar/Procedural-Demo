@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEditor;
@@ -35,7 +34,7 @@ public static class UberPickerGUI
 	{
 		float offset = 4.0f; // Nudge slightly to the left to pack in the smallest amount of space
 		attachToRect.width -= POINTER_BUTTON_WIDTH - offset;
-		Rect r = new Rect(attachToRect.x + attachToRect.width, attachToRect.y, POINTER_BUTTON_WIDTH, EditorGUIUtility.singleLineHeight);
+		Rect r = new(attachToRect.x + attachToRect.width, attachToRect.y, POINTER_BUTTON_WIDTH, EditorGUIUtility.singleLineHeight);
 		r.x -= offset;
 		return r;
 	}
@@ -134,7 +133,7 @@ public static class UberPickerGUI
 		IAssetPickerPathSource pathSource,
 		UberPickerPathCache.Select selectionType,
 		string selection,
-		System.Action<SerializedProperty, string> onSelected)
+		Action<SerializedProperty, string> onSelected)
 	{
 		Rect originalPosition = position;
 		position.height = EditorGUIUtility.singleLineHeight;
@@ -153,7 +152,7 @@ public static class UberPickerGUI
 		//	label.image = AssetDatabase.GetCachedIcon(selectedPath);
 		//}
 
-		if (pathSource.TryGetUnityObjectType(out System.Type objectType))
+		if (pathSource.TryGetUnityObjectType(out Type objectType))
 		{
 			if (DragAndDrop.objectReferences.Length > 0)
 			{
@@ -225,7 +224,7 @@ public static class UberPickerGUI
 			if (GUI.Button(buttonPosition, name, EditorStyles.popup))
 			{
 				UberPickerSearchWindowProvider pickerWindow = UberPickerSearchWindowProvider.GetOrCreate(property, pickerPaths, onSelected);
-				SearchWindowContext context = new SearchWindowContext(
+				SearchWindowContext context = new(
 					GUIUtility.GUIToScreenPoint(Event.current.mousePosition),
 					pickerWindow.Width,
 					pickerWindow.Height);
@@ -234,7 +233,7 @@ public static class UberPickerGUI
 		}
 	}
 
-	public static void TryDrawFoldoutInspector(SerializedProperty property, System.Type objectType, GUIContent label, Rect position, Rect originalPosition, out Rect labelPosition)
+	public static void TryDrawFoldoutInspector(SerializedProperty property, Type objectType, GUIContent label, Rect position, Rect originalPosition, out Rect labelPosition)
 	{
 		labelPosition = position;
 		labelPosition.width = EditorGUIUtility.labelWidth;
@@ -244,7 +243,7 @@ public static class UberPickerGUI
 			Core.PropertyDrawerUtil.TryApplyTooltipIcon(labelPosition, label);
 			return;
 		}
-		SerializedObject obj = new SerializedObject(property.objectReferenceValue);
+		SerializedObject obj = new(property.objectReferenceValue);
 		SerializedProperty prop = obj.GetIterator();
 		if (!prop.NextVisible(true) || !prop.NextVisible(false)) // You need to call Next (true) on the first element to get to the first element
 		{
@@ -282,7 +281,7 @@ public static class UberPickerGUI
 			while (prop.NextVisible(false));
 		}
 
-		Rect r = new Rect(
+		Rect r = new(
 			position.x,
 			startingY,
 			2.0f,
@@ -306,7 +305,7 @@ public static class UberPickerGUI
 		{
 			return height;
 		}
-		SerializedObject obj = new SerializedObject(property.objectReferenceValue);
+		SerializedObject obj = new(property.objectReferenceValue);
 		SerializedProperty prop = obj.GetIterator();
 		if (!prop.NextVisible(true) || !prop.NextVisible(false)) // You need to call Next (true) on the first element to get to the first element
 		{

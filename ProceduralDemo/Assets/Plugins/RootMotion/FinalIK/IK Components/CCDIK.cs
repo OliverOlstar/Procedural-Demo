@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// CCD (Cyclic Coordinate Descent) %IK solver component.
@@ -37,7 +38,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The CCD %IK solver.
 		/// </summary>
-		public IKSolverCCD solver = new IKSolverCCD();
+		public IKSolverCCD solver = new();
 		
 		public override IKSolver GetIKSolver() {
 			return solver as IKSolver;

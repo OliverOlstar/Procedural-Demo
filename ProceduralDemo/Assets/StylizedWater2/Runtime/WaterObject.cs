@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace StylizedWater2
 {
-    /// <summary>
-    /// Attached to every mesh using the Stylized Water 2 shader
-    /// Provides a generic way of identifying water objects and accessing their properties
-    /// </summary>
-    [ExecuteInEditMode]
+	/// <summary>
+	/// Attached to every mesh using the Stylized Water 2 shader
+	/// Provides a generic way of identifying water objects and accessing their properties
+	/// </summary>
+	[ExecuteInEditMode]
     [AddComponentMenu("Stylized Water 2/Water Object")]
     [DisallowMultipleComponent]
     public class WaterObject : MonoBehaviour
@@ -17,7 +16,7 @@ namespace StylizedWater2
         /// <summary>
         /// Collection of all available WaterObject instances. Instances (un)register themselves in the OnEnable/OnDisable functions.
         /// </summary>
-        public static readonly List<WaterObject> Instances = new List<WaterObject>();
+        public static readonly List<WaterObject> Instances = new();
         
         public Material material;
         public MeshFilter meshFilter;
@@ -98,9 +97,17 @@ namespace StylizedWater2
 
         private void OnValidate()
         {
-            if (!meshRenderer) meshRenderer = GetComponent<MeshRenderer>();
-            if (!meshFilter) meshFilter = GetComponent<MeshFilter>();
-            FetchWaterMaterial();
+            if (!meshRenderer)
+			{
+				meshRenderer = GetComponent<MeshRenderer>();
+			}
+
+			if (!meshFilter)
+			{
+				meshFilter = GetComponent<MeshFilter>();
+			}
+
+			FetchWaterMaterial();
         }
 
         /// <summary>
@@ -122,8 +129,11 @@ namespace StylizedWater2
         /// </summary>
         public void ApplyInstancedProperties()
         {
-            if(props != null) meshRenderer.SetPropertyBlock(props);
-        }
+            if(props != null)
+			{
+				meshRenderer.SetPropertyBlock(props);
+			}
+		}
 
         /// <summary>
         /// Checks if the position is below the maximum possible wave height. Can be used as a fast broad-phase check, before actually using the more expensive SampleWaves function
@@ -136,13 +146,20 @@ namespace StylizedWater2
 
         public void AssignMesh(Mesh mesh)
         {
-            if (meshFilter) meshFilter.sharedMesh = mesh;
-        }
+            if (meshFilter)
+			{
+				meshFilter.sharedMesh = mesh;
+			}
+		}
 
         public void AssignMaterial(Material newMaterial)
         {
-            if (meshRenderer) meshRenderer.sharedMaterial = newMaterial;
-            material = newMaterial;
+            if (meshRenderer)
+			{
+				meshRenderer.sharedMaterial = newMaterial;
+			}
+
+			material = newMaterial;
         }
 
         /// <summary>
@@ -152,7 +169,7 @@ namespace StylizedWater2
         /// <returns></returns>
         public static WaterObject New(Material waterMaterial = null, Mesh mesh = null)
         {
-            GameObject go = new GameObject("Water Object", typeof(MeshFilter), typeof(MeshRenderer), typeof(WaterObject));
+            GameObject go = new("Water Object", typeof(MeshFilter), typeof(MeshRenderer), typeof(WaterObject));
             go.layer = LayerMask.NameToLayer("Water");
             
             #if UNITY_EDITOR
@@ -180,7 +197,7 @@ namespace StylizedWater2
         /// <returns></returns>
         public static WaterObject Find(Vector3 position, bool rotationSupport)
         {
-            Ray ray = new Ray(position + (Vector3.up * 1000f), Vector3.down);
+            Ray ray = new(position + (Vector3.up * 1000f), Vector3.down);
             
             foreach (WaterObject obj in Instances)
             {
@@ -188,13 +205,19 @@ namespace StylizedWater2
                 {
                     //Local space
                     ray.origin = obj.transform.InverseTransformPoint(ray.origin);
-                    if (obj.meshFilter.sharedMesh.bounds.IntersectRay(ray)) return obj;
-                }
+                    if (obj.meshFilter.sharedMesh.bounds.IntersectRay(ray))
+					{
+						return obj;
+					}
+				}
                 else
                 {
                     //Axis-aligned bounds
-                    if (obj.meshRenderer.bounds.IntersectRay(ray)) return obj;
-                }
+                    if (obj.meshRenderer.bounds.IntersectRay(ray))
+					{
+						return obj;
+					}
+				}
             }
             
             return null;

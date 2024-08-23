@@ -1,0 +1,18 @@
+{
+    "name": "ODev.PlayerPrefs.Editor",
+    "rootNamespace": "ODev.PlayerPrefs",
+    "references": [
+        "GUID:ed0cf72217d72d343bf36032cea541c6"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -34,7 +34,7 @@ public class SerializedInterfaceDrawer : PropertyDrawer
 			}
 			else
 			{
-				GUIContent content = new GUIContent($"GameObject {go.name} does not have any\nComponents implementing {serializedInterface.GetInterfaceType().Name}");
+				GUIContent content = new($"GameObject {go.name} does not have any\nComponents implementing {serializedInterface.GetInterfaceType().Name}");
 				EditorWindow.focusedWindow.ShowNotification(content, NOTIFICATION_DURATION);
 			}
 		}
@@ -44,7 +44,7 @@ public class SerializedInterfaceDrawer : PropertyDrawer
 		}
 		else
 		{
-			GUIContent content = new GUIContent($"{pickedObject.GetType().Name} does not\nimplement {serializedInterface.GetInterfaceType().Name}");
+			GUIContent content = new($"{pickedObject.GetType().Name} does not\nimplement {serializedInterface.GetInterfaceType().Name}");
 			EditorWindow.focusedWindow.ShowNotification(content, NOTIFICATION_DURATION);
 		}
 	}

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using RootMotion.FinalIK;
 using UnityEngine;
@@ -30,7 +28,10 @@ namespace PA
 			{
 				m_Target = new GameObject($"{pRoot.name}.{pIKSolver.GetRoot().name} IKTarget").transform;
 				if (s_Container == null)
+				{
 					s_Container = new GameObject("IKTargets Container").transform;
+				}
+
 				m_Target.SetParent(s_Container);
 				m_Target.position = pIKSolver.bones.Last().transform.position;
 				pIKSolver.target = m_Target;

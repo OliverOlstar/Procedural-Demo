@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RootMotion
 {
-    public class AnimationModifierStack : MonoBehaviour
+	public class AnimationModifierStack : MonoBehaviour
     {
         public AnimationModifier[] modifiers = new AnimationModifier[0];
 
@@ -36,24 +34,43 @@ namespace RootMotion
         {
             foreach (AnimationModifier m in modifiers)
             {
-                if (!m.enabled) continue;
-                m.OnBakerUpdate(normalizedTime);
+                if (!m.enabled)
+				{
+					continue;
+				}
+
+				m.OnBakerUpdate(normalizedTime);
             }
         }
 
         private void LateUpdate()
         {
-            if (!animator.enabled && !baker.isBaking) return;
-            if (baker.isBaking && baker.mode == Baker.Mode.AnimationClips) return;
-            if (animator.runtimeAnimatorController == null) return;
+            if (!animator.enabled && !baker.isBaking)
+			{
+				return;
+			}
 
-            AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+			if (baker.isBaking && baker.mode == Baker.Mode.AnimationClips)
+			{
+				return;
+			}
+
+			if (animator.runtimeAnimatorController == null)
+			{
+				return;
+			}
+
+			AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
             float n = info.normalizedTime;
 
             foreach (AnimationModifier m in modifiers)
             {
-                if (!m.enabled) continue;
-                m.OnBakerUpdate(n);
+                if (!m.enabled)
+				{
+					continue;
+				}
+
+				m.OnBakerUpdate(n);
             }
         }
     }

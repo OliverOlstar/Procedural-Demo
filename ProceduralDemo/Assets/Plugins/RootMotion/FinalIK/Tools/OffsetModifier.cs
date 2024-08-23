@@ -29,14 +29,40 @@ namespace RootMotion.FinalIK {
 				
 				if (spring <= 0f) {
 					// Hard limits
-					if (x) offset.x = Mathf.Clamp(offset.x, minX, maxX);
-					if (y) offset.y = Mathf.Clamp(offset.y, minY, maxY);
-					if (z) offset.z = Mathf.Clamp(offset.z, minZ, maxZ);
+					if (x)
+					{
+						offset.x = Mathf.Clamp(offset.x, minX, maxX);
+					}
+
+					if (y)
+					{
+						offset.y = Mathf.Clamp(offset.y, minY, maxY);
+					}
+
+
+					if (z)
+					{
+						offset.z = Mathf.Clamp(offset.z, minZ, maxZ);
+					}
+
 				} else {
 					// Soft limits
-					if (x) offset.x = SpringAxis(offset.x, minX, maxX);
-					if (y) offset.y = SpringAxis(offset.y, minY, maxY);
-					if (z) offset.z = SpringAxis(offset.z, minZ, maxZ);
+					if (x)
+					{
+						offset.x = SpringAxis(offset.x, minX, maxX);
+					}
+
+					if (y)
+					{
+						offset.y = SpringAxis(offset.y, minY, maxY);
+					}
+
+
+					if (z)
+					{
+						offset.z = SpringAxis(offset.z, minZ, maxZ);
+					}
+
 				}
 				
 				// Apply to the effector
@@ -45,8 +71,18 @@ namespace RootMotion.FinalIK {
 			
 			// Just math for limiting floats
 			private float SpringAxis(float value, float min, float max) {
-				if (value > min && value < max) return value;
-				if (value < min) return Spring(value, min, true);
+				if (value > min && value < max)
+				{
+					return value;
+				}
+
+
+				if (value < min)
+				{
+					return Spring(value, min, true);
+				}
+
+
 				return Spring(value, max, false);
 			}
 			
@@ -55,7 +91,12 @@ namespace RootMotion.FinalIK {
 				float illegal = value - limit;
 				float s = illegal * spring;
 				
-				if (negative) return value + Mathf.Clamp(-s, 0, -illegal);
+				if (negative)
+				{
+					return value + Mathf.Clamp(-s, 0, -illegal);
+				}
+
+
 				return value - Mathf.Clamp(s, 0, illegal);
 			}
 		}
@@ -77,20 +118,43 @@ namespace RootMotion.FinalIK {
 		}
 		
 		private IEnumerator Initiate() {
-			while (ik == null) yield return null;
+			while (ik == null)
+			{
+				yield return null;
+			}
 
 			// You can use just LateUpdate, but note that it doesn't work when you have animatePhysics turned on for the character.
+
 			ik.solver.OnPreUpdate += ModifyOffset;
 			lastTime = Time.time;
 		}
 
 		// The main function that checks for all conditions and calls OnModifyOffset if they are met
 		private void ModifyOffset() {
-			if (!enabled) return;
-			if (weight <= 0f) return;
-			if (ik == null) return;
+			if (!enabled)
+			{
+				return;
+			}
+
+
+			if (weight <= 0f)
+			{
+				return;
+			}
+
+
+			if (ik == null)
+			{
+				return;
+			}
+
+
 			weight = Mathf.Clamp(weight, 0f, 1f);
-			if (deltaTime <= 0f) return;
+			if (deltaTime <= 0f)
+			{
+				return;
+			}
+
 
 			OnModifyOffset();
 
@@ -106,7 +170,11 @@ namespace RootMotion.FinalIK {
 
 		// Remove the delegate when destroyed
 		protected virtual void OnDestroy() {
-			if (ik != null) ik.solver.OnPreUpdate -= ModifyOffset;
+			if (ik != null)
+			{
+				ik.solver.OnPreUpdate -= ModifyOffset;
+			}
+
 		}
 	}
 

@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RootMotion.Demos
 {
 
-    // Custom navigator for Unity Navigation.
-    [System.Serializable]
+	// Custom navigator for Unity Navigation.
+	[System.Serializable]
     public class Navigator
     {
 
@@ -118,22 +116,35 @@ namespace RootMotion.Demos
                         d.y = 0f;
                         float mag = d.magnitude;
 
-                        if (mag > 0f) normalizedDeltaPosition = (d / d.magnitude);
-                        else normalizedDeltaPosition = Vector3.zero;
+                        if (mag > 0f)
+						{
+							normalizedDeltaPosition = (d / d.magnitude);
+						}
+						else
+						{
+							normalizedDeltaPosition = Vector3.zero;
+						}
 
-                        if (mag < cornerRadius)
+						if (mag < cornerRadius)
                         {
                             cornerIndex++;
 
-                            if (cornerIndex >= corners.Length) Stop();
-                        }
+                            if (cornerIndex >= corners.Length)
+							{
+								Stop();
+							}
+						}
                     }
                     break;
 
                 // Not on path, not seeking
                 case State.Idle:
-                    if (activeTargetSeeking && Time.time > nextPathTime) CalculatePath(targetPosition);
-                    break;
+                    if (activeTargetSeeking && Time.time > nextPathTime)
+					{
+						CalculatePath(targetPosition);
+					}
+
+					break;
             }
         }
 
@@ -154,15 +165,18 @@ namespace RootMotion.Demos
 
         private bool Find(Vector3 targetPosition)
         {
-            if (HorDistance(transform.position, targetPosition) < cornerRadius * 2f) return false;
-            //if (HorDistance(targetPosition, lastTargetPosition) < recalculateBadTargetDistance) return false;
-            if (UnityEngine.AI.NavMesh.CalculatePath(transform.position, targetPosition, UnityEngine.AI.NavMesh.AllAreas, path))
+            if (HorDistance(transform.position, targetPosition) < cornerRadius * 2f)
+			{
+				return false;
+			}
+			//if (HorDistance(targetPosition, lastTargetPosition) < recalculateBadTargetDistance) return false;
+			if (UnityEngine.AI.NavMesh.CalculatePath(transform.position, targetPosition, UnityEngine.AI.NavMesh.AllAreas, path))
             {
                 return true;
             }
             else
             {
-                UnityEngine.AI.NavMeshHit hit = new UnityEngine.AI.NavMeshHit();
+                UnityEngine.AI.NavMeshHit hit = new();
 
                 if (UnityEngine.AI.NavMesh.SamplePosition(targetPosition, out hit, maxSampleDistance, UnityEngine.AI.NavMesh.AllAreas))
                 {
@@ -189,11 +203,22 @@ namespace RootMotion.Demos
 
         public void Visualize()
         {
-            if (state == State.Idle) Gizmos.color = Color.gray;
-            if (state == State.Seeking) Gizmos.color = Color.red;
-            if (state == State.OnPath) Gizmos.color = Color.green;
+            if (state == State.Idle)
+			{
+				Gizmos.color = Color.gray;
+			}
 
-            if (corners.Length > 0 && state == State.OnPath && cornerIndex == 0)
+			if (state == State.Seeking)
+			{
+				Gizmos.color = Color.red;
+			}
+
+			if (state == State.OnPath)
+			{
+				Gizmos.color = Color.green;
+			}
+
+			if (corners.Length > 0 && state == State.OnPath && cornerIndex == 0)
             {
                 Gizmos.DrawLine(transform.position, corners[0]);
             }

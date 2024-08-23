@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Contains helper methods for managing IKSolver's fields.
 	 * */
+
 	public class IKSolverInspector: Inspector {
 
 		public static float GetHandleSize(Vector3 position) {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	public partial class Grounding {
 
@@ -54,8 +54,12 @@ namespace RootMotion.FinalIK {
             public RaycastHit GetHitPoint {
                 get
                 {
-                    if (grounding.quality == Quality.Best) return capsuleHit;
-                    return heelHit;
+                    if (grounding.quality == Quality.Best)
+					{
+						return capsuleHit;
+					}
+
+					return heelHit;
                 }
             }
 
@@ -92,8 +96,11 @@ namespace RootMotion.FinalIK {
 
 			// Should be called each time the leg is (re)activated
 			public void OnEnable() {
-				if (!initiated) return;
-				
+				if (!initiated)
+				{
+					return;
+				}
+
 				lastPosition = transform.position;
 				lastTime = Time.deltaTime;
 			}
@@ -109,15 +116,25 @@ namespace RootMotion.FinalIK {
 
 			// Raycasting, processing the leg's position
 			public void Process() {
-				if (!initiated) return;
-				if (grounding.maxStep <= 0) return;
+				if (!initiated)
+				{
+					return;
+				}
 
-                transformPosition = doOverrideFootPosition ? overrideFootPosition : transform.position;
+				if (grounding.maxStep <= 0)
+				{
+					return;
+				}
+
+				transformPosition = doOverrideFootPosition ? overrideFootPosition : transform.position;
                 doOverrideFootPosition = false;
 
 				deltaTime = Time.time - lastTime;
 				lastTime = Time.time;
-				if (deltaTime == 0f) return;
+				if (deltaTime == 0f)
+				{
+					return;
+				}
 
 				up = grounding.up;
 				heightFromGround = Mathf.Infinity;
@@ -129,52 +146,75 @@ namespace RootMotion.FinalIK {
 
 				Vector3 prediction = velocity * grounding.prediction;
 				
-				if (grounding.footRadius <= 0) grounding.quality = Grounding.Quality.Fastest;
+				if (grounding.footRadius <= 0)
+				{
+					grounding.quality = Quality.Fastest;
+				}
 
-                isGrounded = false;
+				isGrounded = false;
 
                 // Raycasting
                 switch (grounding.quality)
                 {
 
                     // The fastest, single raycast
-                    case Grounding.Quality.Fastest:
+                    case Quality.Fastest:
 
                         RaycastHit predictedHit = GetRaycastHit(prediction);
                         SetFootToPoint(predictedHit.normal, predictedHit.point);
-                        if (predictedHit.collider != null) isGrounded = true;
-                        break;
+                        if (predictedHit.collider != null)
+						{
+							isGrounded = true;
+						}
+
+						break;
 
                     // Medium, 3 raycasts
-                    case Grounding.Quality.Simple:
+                    case Quality.Simple:
 
                         heelHit = GetRaycastHit(Vector3.zero);
                         Vector3 f = grounding.GetFootCenterOffset();
-                        if (invertFootCenter) f = -f;
-                        RaycastHit toeHit = GetRaycastHit(f + prediction);
-                        RaycastHit sideHit = GetRaycastHit(grounding.root.right * grounding.footRadius * 0.5f);
+                        if (invertFootCenter)
+						{
+							f = -f;
+						}
 
-                        if (heelHit.collider != null || toeHit.collider != null || sideHit.collider != null) isGrounded = true;
+						RaycastHit toeHit = GetRaycastHit(f + prediction);
+                        RaycastHit sideHit = GetRaycastHit(0.5f * grounding.footRadius * grounding.root.right);
 
-                        Vector3 planeNormal = Vector3.Cross(toeHit.point - heelHit.point, sideHit.point - heelHit.point).normalized;
-                        if (Vector3.Dot(planeNormal, up) < 0) planeNormal = -planeNormal;
+                        if (heelHit.collider != null || toeHit.collider != null || sideHit.collider != null)
+						{
+							isGrounded = true;
+						}
 
-                        SetFootToPlane(planeNormal, heelHit.point, heelHit.point);
+						Vector3 planeNormal = Vector3.Cross(toeHit.point - heelHit.point, sideHit.point - heelHit.point).normalized;
+                        if (Vector3.Dot(planeNormal, up) < 0)
+						{
+							planeNormal = -planeNormal;
+						}
+
+						SetFootToPlane(planeNormal, heelHit.point, heelHit.point);
                         break;
 
                     // The slowest, raycast and a capsule cast
-                    case Grounding.Quality.Best:
+                    case Quality.Best:
                         heelHit = GetRaycastHit(invertFootCenter ? -grounding.GetFootCenterOffset() : Vector3.zero);
                         capsuleHit = GetCapsuleHit(prediction);
 
-                        if (heelHit.collider != null || capsuleHit.collider != null) isGrounded = true;
+                        if (heelHit.collider != null || capsuleHit.collider != null)
+						{
+							isGrounded = true;
+						}
 
-                        SetFootToPlane(capsuleHit.normal, capsuleHit.point, heelHit.point);
+						SetFootToPlane(capsuleHit.normal, capsuleHit.point, heelHit.point);
                         break;
                 }
 
 				float offsetTarget = stepHeightFromGround;
-				if (!grounding.rootGrounded) offsetTarget = 0f;
+				if (!grounding.rootGrounded)
+				{
+					offsetTarget = 0f;
+				}
 
 				IKOffset = Interp.LerpValue(IKOffset, offsetTarget, grounding.footSpeed, grounding.footSpeed);
 				IKOffset = Mathf.Lerp(IKOffset, offsetTarget, deltaTime * grounding.footSpeed);
@@ -203,10 +243,14 @@ namespace RootMotion.FinalIK {
             // Get predicted Capsule hit from the middle of the foot
             private RaycastHit GetCapsuleHit(Vector3 offsetFromHeel)
             {
-                RaycastHit hit = new RaycastHit();
+                RaycastHit hit = new();
                 Vector3 f = grounding.GetFootCenterOffset();
-                if (invertFootCenter) f = -f;
-                Vector3 origin = transformPosition + f;
+                if (invertFootCenter)
+				{
+					f = -f;
+				}
+
+				Vector3 origin = transformPosition + f;
 
                 if (grounding.overstepFallsDown)
                 {
@@ -228,7 +272,7 @@ namespace RootMotion.FinalIK {
                     // Safeguarding from a CapsuleCast bug in Unity that might cause it to return NaN for hit.point when cast against large colliders.
                     if (float.IsNaN(hit.point.x))
                     {
-                        hit.point = origin - up * grounding.maxStep * 2f;
+                        hit.point = origin - 2f * grounding.maxStep * up;
                         hit.normal = up;
                     }
                 }
@@ -252,7 +296,7 @@ namespace RootMotion.FinalIK {
             // Get simple Raycast from the heel
             private RaycastHit GetRaycastHit(Vector3 offsetFromHeel)
             {
-                RaycastHit hit = new RaycastHit();
+                RaycastHit hit = new();
                 Vector3 origin = transformPosition + offsetFromHeel;
 
                 if (grounding.overstepFallsDown)
@@ -265,9 +309,12 @@ namespace RootMotion.FinalIK {
                 }
                 hit.normal = up;
 
-                if (grounding.maxStep <= 0f) return hit;
+                if (grounding.maxStep <= 0f)
+				{
+					return hit;
+				}
 
-                grounding.Raycast(origin + grounding.maxStep * up, -up, out hit, grounding.maxStep * 2, grounding.layers, QueryTriggerInteraction.Ignore);
+				grounding.Raycast(origin + grounding.maxStep * up, -up, out hit, grounding.maxStep * 2, grounding.layers, QueryTriggerInteraction.Ignore);
 
                 // Since Unity2017 Raycasts will return Vector3.zero when starting from inside a collider
                 if (hit.point == Vector3.zero && hit.normal == Vector3.zero)
@@ -287,7 +334,11 @@ namespace RootMotion.FinalIK {
 
             // Rotates ground normal with respect to maxFootRotationAngle
             private Vector3 RotateNormal(Vector3 normal) {
-				if (grounding.quality == Grounding.Quality.Best) return normal;
+				if (grounding.quality == Quality.Best)
+				{
+					return normal;
+				}
+
 				return Vector3.RotateTowards(up, normal, grounding.maxFootRotationAngle * Mathf.Deg2Rad, deltaTime);
 			}
 			
@@ -329,8 +380,16 @@ namespace RootMotion.FinalIK {
 			
 			// Gets the target hit normal offset as a Quaternion
 			private Quaternion GetRotationOffsetTarget() {
-				if (grounding.maxFootRotationAngle <= 0f) return Quaternion.identity;
-				if (grounding.maxFootRotationAngle >= 180f) return toHitNormal;
+				if (grounding.maxFootRotationAngle <= 0f)
+				{
+					return Quaternion.identity;
+				}
+
+				if (grounding.maxFootRotationAngle >= 180f)
+				{
+					return toHitNormal;
+				}
+
 				return Quaternion.RotateTowards(Quaternion.identity, toHitNormal, grounding.maxFootRotationAngle);
 			}
 			

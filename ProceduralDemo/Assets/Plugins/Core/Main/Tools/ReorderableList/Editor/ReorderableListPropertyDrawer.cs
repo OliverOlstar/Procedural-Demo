@@ -1,5 +1,4 @@
 #if UNITY_2021_1_OR_NEWER
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -183,7 +182,7 @@ namespace Core
 
 		public static ReorderableListDrawerProperties Create(SerializedProperty propertyFromDrawer, out SerializedObject obj, out SerializedProperty list)
 		{
-			ReorderableListDrawerProperties instance = new ReorderableListDrawerProperties();
+			ReorderableListDrawerProperties instance = new();
 			instance.Initialize(propertyFromDrawer, out obj, out list);
 			return instance;
 		}
@@ -258,11 +257,11 @@ namespace Core
 
 	public class ReorderableListDrawerCache : Dictionary<(int, string), ReorderableListDrawer>
 	{
-		private static ReorderableListDrawerCache s_Cache = new ReorderableListDrawerCache();
+		private static ReorderableListDrawerCache s_Cache = new();
 
 		public static ReorderableListDrawer Get(SerializedProperty property, GUIContent label)
 		{
-			var key = GetKey(property);
+			(int, string) key = GetKey(property);
 			if (TryGetCache(key, out ReorderableListDrawer value))
 			{
 				return value;

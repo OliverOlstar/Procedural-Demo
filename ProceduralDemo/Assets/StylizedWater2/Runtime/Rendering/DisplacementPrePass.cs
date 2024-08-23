@@ -11,7 +11,7 @@ namespace StylizedWater2
     public class DisplacementPrePass : ScriptableRenderPass
     {
         private const string profilerTag = "Water Displacement Prepass";
-        private static readonly ProfilingSampler profilerSampler = new ProfilingSampler(profilerTag);
+        private static readonly ProfilingSampler profilerSampler = new(profilerTag);
 
         public const string KEYWORD = "WATER_DISPLACEMENT_PASS";
 
@@ -29,7 +29,7 @@ namespace StylizedWater2
         //Render pass
         FilteringSettings m_FilteringSettings;
         RenderStateBlock m_RenderStateBlock;
-        private readonly List<ShaderTagId> m_ShaderTagIdList = new List<ShaderTagId>()
+        private readonly List<ShaderTagId> m_ShaderTagIdList = new()
         {
             new ShaderTagId("DepthOnly")
         };
@@ -41,7 +41,7 @@ namespace StylizedWater2
         }
 
         private static readonly Quaternion viewRotation = Quaternion.Euler(new Vector3(90f, 0f, 0f));
-        private static readonly Vector3 viewScale = new Vector3(1, 1, -1);
+        private static readonly Vector3 viewScale = new(1, 1, -1);
         private static Rect viewportRect;
 
         private const string BufferName = "_WaterDisplacementBuffer";
@@ -86,13 +86,13 @@ namespace StylizedWater2
         private void SetupProjection(CommandBuffer cmd, Camera camera)
         {
             centerPosition = camera.transform.position;
-            centerPosition += camera.transform.forward * settings.range * 0.5f;
+            centerPosition += 0.5f * settings.range * camera.transform.forward;
 
             centerPosition = StabilizeProjection(centerPosition, (settings.range) / resolution);
 
-            //var frustumHeight = 2.0f * renderRange * Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad); //Still clips, plus doesn't support orthographc
-            var frustumHeight = settings.range;
-            centerPosition += (Vector3.up * frustumHeight * 0.5f);
+			//var frustumHeight = 2.0f * renderRange * Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad); //Still clips, plus doesn't support orthographc
+			float frustumHeight = settings.range;
+            centerPosition += (0.5f * frustumHeight * Vector3.up);
 
             projection = Matrix4x4.Ortho(-orthoSize, orthoSize, -orthoSize, orthoSize, 0.03f, frustumHeight * 2f);
 

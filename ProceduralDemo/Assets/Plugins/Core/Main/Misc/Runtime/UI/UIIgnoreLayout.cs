@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class UIIgnoreLayout : MonoBehaviour
 {
-	static HashSet<int> s_InstanceIDs = new HashSet<int>();
+	static HashSet<int> s_InstanceIDs = new();
 
 	public static bool IsIgnoringLayout(Transform transform)
 	{

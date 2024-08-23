@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Core
 {
@@ -13,12 +11,12 @@ namespace Core
 
 		protected virtual void OnEnable()
 		{
-			Core.MonoDirector.Register(this);
+			MonoDirector.Register(this);
 		}
 
 		protected virtual void OnDisable()
 		{
-			Core.MonoDirector.Deregister(this);
+			MonoDirector.Deregister(this);
 		}
 	}
 }

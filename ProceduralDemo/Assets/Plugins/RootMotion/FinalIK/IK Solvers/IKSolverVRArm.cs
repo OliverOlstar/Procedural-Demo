@@ -1,25 +1,23 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
-using RootMotion;
 
 namespace RootMotion.FinalIK
 {
 
-    /// <summary>
-    /// Hybrid %IK solver designed for mapping a character to a VR headset and 2 hand controllers 
-    /// </summary>
-    public partial class IKSolverVR : IKSolver
+	/// <summary>
+	/// Hybrid %IK solver designed for mapping a character to a VR headset and 2 hand controllers 
+	/// </summary>
+	public partial class IKSolverVR : IKSolver
     {
 
         /// <summary>
         /// 4-segmented analytic arm chain.
         /// </summary>
-        [System.Serializable]
+        [Serializable]
         public class Arm : BodyPart
         {
 
-            [System.Serializable]
+            [Serializable]
             public enum ShoulderRotationMode
             {
                 YawPitch,
@@ -127,7 +125,7 @@ namespace RootMotion.FinalIK
             /// <summary>
             /// 'Time' represents (target distance / arm length) and 'value' represents the amount of stretching. So value at time 1 represents stretching amount at the point where distance to the target is equal to arm length. Value at time 2 represents stretching amount at the point where distance to the target is double the arm length. Linear stretching would be achieved with a linear curve going up by 45 degrees. Increase the range of stretching by moving the last key up and right by the same amount. Smoothing in the curve can help reduce elbow snapping (start stretching the arm slightly before target distance reaches arm length). To get a good optimal value for this curve, please go to the 'VRIK (Basic)' demo scene and copy the stretch curve over from the Pilot character.
             /// </summary>
-            public AnimationCurve stretchCurve = new AnimationCurve();
+            public AnimationCurve stretchCurve = new();
 
             /// <summary>
             /// Target position of the hand. Will be overwritten if target is assigned.
@@ -227,8 +225,12 @@ namespace RootMotion.FinalIK
 
                     // Get the local axis of the upper arm pointing towards the bend normal
                     Vector3 upperArmForwardAxis = AxisTools.GetAxisVectorToDirection(upperArmRotation, rootForward);
-                    if (Vector3.Dot(upperArmRotation * upperArmForwardAxis, rootForward) < 0f) upperArmForwardAxis = -upperArmForwardAxis;
-                    upperArmBendAxis = Vector3.Cross(Quaternion.Inverse(upperArmRotation) * (forearmPosition - upperArmPosition), upperArmForwardAxis);
+                    if (Vector3.Dot(upperArmRotation * upperArmForwardAxis, rootForward) < 0f)
+					{
+						upperArmForwardAxis = -upperArmForwardAxis;
+					}
+
+					upperArmBendAxis = Vector3.Cross(Quaternion.Inverse(upperArmRotation) * (forearmPosition - upperArmPosition), upperArmForwardAxis);
                     if (upperArmBendAxis == Vector3.zero)
                     {
                         Debug.LogError("VRIK can not calculate which way to bend the arms because the arms are perfectly straight. Please rotate the elbow bones slightly in their natural bending direction in the Editor.");
@@ -378,8 +380,12 @@ namespace RootMotion.FinalIK
 
                             // Rotate bones
                             Quaternion sR = pitchRotation * yawRotation;
-                            if (shoulderRotationWeight * positionWeight < 1f) sR = Quaternion.Lerp(Quaternion.identity, sR, shoulderRotationWeight * positionWeight);
-                            VirtualBone.RotateBy(bones, sR);
+                            if (shoulderRotationWeight * positionWeight < 1f)
+							{
+								sR = Quaternion.Lerp(Quaternion.identity, sR, shoulderRotationWeight * positionWeight);
+							}
+
+							VirtualBone.RotateBy(bones, sR);
 
                             Stretching();
 
@@ -414,8 +420,12 @@ namespace RootMotion.FinalIK
                             float angleBefore = Mathf.Atan2(vBefore.x, vBefore.z) * Mathf.Rad2Deg;
                             float angleAfter = Mathf.Atan2(vAfter.x, vAfter.z) * Mathf.Rad2Deg;
                             float pitchAngle = Mathf.DeltaAngle(angleBefore, angleAfter);
-                            if (isLeft) pitchAngle = -pitchAngle;
-                            pitchAngle = Mathf.Clamp(pitchAngle * shoulderRotationWeight * shoulderTwistWeight * 2f * positionWeight, 0f, 180f);
+                            if (isLeft)
+							{
+								pitchAngle = -pitchAngle;
+							}
+
+							pitchAngle = Mathf.Clamp(pitchAngle * shoulderRotationWeight * shoulderTwistWeight * 2f * positionWeight, 0f, 180f);
 
                             shoulder.solverRotation = Quaternion.AngleAxis(pitchAngle, shoulder.solverRotation * (isLeft ? shoulder.axis : -shoulder.axis)) * shoulder.solverRotation;
                             upperArm.solverRotation = Quaternion.AngleAxis(pitchAngle, upperArm.solverRotation * (isLeft ? upperArm.axis : -upperArm.axis)) * upperArm.solverRotation;
@@ -424,9 +434,12 @@ namespace RootMotion.FinalIK
                 }
                 else
                 {
-                    if (LOD < 1) Stretching();
+                    if (LOD < 1)
+					{
+						Stretching();
+					}
 
-                    bendNormal = GetBendNormal(position - upperArm.solverPosition);
+					bendNormal = GetBendNormal(position - upperArm.solverPosition);
                     // Solve arm trigonometric
                     if (hasShoulder)
                     {
@@ -500,15 +513,18 @@ namespace RootMotion.FinalIK
                 value -= min;
 
                 float t = Mathf.Clamp(value / range, 0f, 1f);
-                float tEased = RootMotion.Interp.Float(t, InterpolationMode.InOutQuintic);
+                float tEased = Interp.Float(t, InterpolationMode.InOutQuintic);
                 return Mathf.Lerp(min, max, tEased);
             }
 
             private Vector3 GetBendNormal(Vector3 dir)
             {
-                if (bendGoal != null) bendDirection = bendGoal.position - bones[1].solverPosition;
+                if (bendGoal != null)
+				{
+					bendDirection = bendGoal.position - bones[1].solverPosition;
+				}
 
-                Vector3 armDir = bones[0].solverRotation * bones[0].axis;
+				Vector3 armDir = bones[0].solverRotation * bones[0].axis;
 
                 Vector3 f = Vector3.down;
                 Vector3 t = Quaternion.Inverse(chestRotation) * dir.normalized + Vector3.forward;
@@ -532,9 +548,12 @@ namespace RootMotion.FinalIK
                     b = Vector3.Slerp(b, bendDirection, bendGoalWeight);
                 }
 
-                if (swivelOffset != 0f) b = Quaternion.AngleAxis(swivelOffset, -dir) * b;
+                if (swivelOffset != 0f)
+				{
+					b = Quaternion.AngleAxis(swivelOffset, -dir) * b;
+				}
 
-                return Vector3.Cross(b, dir);
+				return Vector3.Cross(b, dir);
             }
 
             private void Visualize(VirtualBone bone1, VirtualBone bone2, VirtualBone bone3, Color color)

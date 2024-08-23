@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// A wrapper for making IKSolverVRLeg work with other IK components and the Grounder.
@@ -16,13 +16,13 @@ namespace RootMotion.FinalIK {
 		/// </summary>
 		public Quaternion IKRotation = Quaternion.identity;
 
-		public IKSolver.Point pelvis = new IKSolver.Point();
-		public IKSolver.Point thigh = new IKSolver.Point();
-		public IKSolver.Point calf = new IKSolver.Point();
-		public IKSolver.Point foot = new IKSolver.Point();
-		public IKSolver.Point toe = new IKSolver.Point();
+		public Point pelvis = new();
+		public Point thigh = new();
+		public Point calf = new();
+		public Point foot = new();
+		public Point toe = new();
 		
-		public IKSolverVR.Leg leg = new IKSolverVR.Leg();
+		public IKSolverVR.Leg leg = new();
 		public Vector3 heelOffset;
 		
 		private Vector3[] positions = new Vector3[6];
@@ -68,16 +68,36 @@ namespace RootMotion.FinalIK {
 			return initiated;
 		}
 
-		public override IKSolver.Point[] GetPoints() {
-			return new IKSolver.Point[5] { (IKSolver.Point)pelvis, (IKSolver.Point)thigh, (IKSolver.Point)calf, (IKSolver.Point)foot, (IKSolver.Point)toe };
+		public override Point[] GetPoints() {
+			return new Point[5] { (Point)pelvis, (Point)thigh, (Point)calf, (Point)foot, (Point)toe };
 		}
 		
-		public override IKSolver.Point GetPoint(Transform transform) {
-			if (pelvis.transform == transform) return (IKSolver.Point)pelvis;
-			if (thigh.transform == transform) return (IKSolver.Point)thigh;
-			if (calf.transform == transform) return (IKSolver.Point)calf;
-			if (foot.transform == transform) return (IKSolver.Point)foot;
-			if (toe.transform == transform) return (IKSolver.Point)toe;
+		public override Point GetPoint(Transform transform) {
+			if (pelvis.transform == transform)
+			{
+				return (Point)pelvis;
+			}
+
+			if (thigh.transform == transform)
+			{
+				return (Point)thigh;
+			}
+
+			if (calf.transform == transform)
+			{
+				return (Point)calf;
+			}
+
+			if (foot.transform == transform)
+			{
+				return (Point)foot;
+			}
+
+			if (toe.transform == transform)
+			{
+				return (Point)toe;
+			}
+
 			return null;
 		}
 		
@@ -89,7 +109,10 @@ namespace RootMotion.FinalIK {
 		}
 		
 		public override void FixTransforms() {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
 			thigh.FixTransform();
 			calf.FixTransform();

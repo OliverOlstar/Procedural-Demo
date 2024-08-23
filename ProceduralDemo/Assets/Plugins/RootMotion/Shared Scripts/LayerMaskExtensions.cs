@@ -38,7 +38,7 @@ namespace RootMotion {
 		public static LayerMask NamesToMask(params string[] layerNames)
 		{
 			LayerMask ret = (LayerMask)0;
-			foreach(var name in layerNames)
+			foreach(string name in layerNames)
 			{
 				ret |= (1 << LayerMask.NameToLayer(name));
 			}
@@ -51,7 +51,7 @@ namespace RootMotion {
 		public static LayerMask LayerNumbersToMask(params int[] layerNumbers)
 		{
 			LayerMask ret = (LayerMask)0;
-			foreach(var layer in layerNumbers)
+			foreach(int layer in layerNumbers)
 			{
 				ret |= (1 << layer);
 			}
@@ -88,7 +88,7 @@ namespace RootMotion {
 		/// </summary>
 		public static string[] MaskToNames(this LayerMask original)
 		{
-			var output = new List<string>();
+			List<string> output = new List<string>();
 			
 			for (int i = 0; i < 32; ++i)
 			{
@@ -110,7 +110,7 @@ namespace RootMotion {
 		/// </summary>
 		public static int[] MaskToNumbers(this LayerMask original)
 		{
-			var output = new List<int>();
+			List<int> output = new List<int>();
 			
 			for (int i = 0; i < 32; ++i)
 			{

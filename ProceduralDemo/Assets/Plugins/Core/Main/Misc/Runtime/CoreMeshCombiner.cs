@@ -9,13 +9,13 @@ namespace Core
 
 		class MeshSkeleton
 		{
-			public List<Vector3> m_Vertices = new List<Vector3>(MAX_VERTS);
-			public List<Vector3> m_Normals = new List<Vector3>(MAX_VERTS);
-			public List<Vector4> m_Tangents = new List<Vector4>(MAX_VERTS);
-			public List<Color> m_VertexColors = new List<Color>(MAX_VERTS);
-			public List<Vector2> m_UV = new List<Vector2>(MAX_VERTS);
-			public List<Vector2> m_UV2 = new List<Vector2>(MAX_VERTS);
-			public List<int> m_Triangles = new List<int>(MAX_VERTS);
+			public List<Vector3> m_Vertices = new(MAX_VERTS);
+			public List<Vector3> m_Normals = new(MAX_VERTS);
+			public List<Vector4> m_Tangents = new(MAX_VERTS);
+			public List<Color> m_VertexColors = new(MAX_VERTS);
+			public List<Vector2> m_UV = new(MAX_VERTS);
+			public List<Vector2> m_UV2 = new(MAX_VERTS);
+			public List<int> m_Triangles = new(MAX_VERTS);
 
 			public static MeshSkeleton FromSubMeshes(Transform transform, Mesh mesh, List<int> submeshs, Vector4 lightmapScaleOffset)
 			{
@@ -25,7 +25,7 @@ namespace Core
 						+ " has a negative scale which will interfere with mesh combining.", transform.gameObject);
 				}
 
-				List<int> tris = new List<int>(MAX_VERTS);
+				List<int> tris = new(MAX_VERTS);
 				foreach (int submesh in submeshs)
 				{
 					tris.AddRange(mesh.GetTriangles(submesh));
@@ -52,8 +52,8 @@ namespace Core
 						+ " has " + mesh.vertices.Length + " verts and " + mesh.tangents.Length + " tangents", transform.gameObject);
 				}
 
-				List<int> verts = new List<int>();
-				MeshSkeleton meshSkeleton = new MeshSkeleton();
+				List<int> verts = new();
+				MeshSkeleton meshSkeleton = new();
 				for (int i = 0; i < tris.Count; i++)
 				{
 					int vert = tris[i];
@@ -128,7 +128,7 @@ namespace Core
 
 			public Mesh GetMesh()
 			{
-				Mesh mesh = new Mesh();
+				Mesh mesh = new();
 				mesh.vertices = m_Vertices.ToArray();
 				mesh.colors = m_VertexColors.ToArray();
 				mesh.normals = m_Normals.ToArray();
@@ -143,7 +143,7 @@ namespace Core
 
 		class MeshAccumulator
 		{
-			List<MeshSkeleton> m_AccumulatedMeshSkeletons = new List<MeshSkeleton>();
+			List<MeshSkeleton> m_AccumulatedMeshSkeletons = new();
 			public Material m_Material = null;
 			public int m_LightmapIndex = -1;
 
@@ -194,12 +194,12 @@ namespace Core
 					bool duplicate = false;
 					for (int j = 0; j < accMeshSkeletion.m_Vertices.Count; j++)
 					{
-						if (Core.Util.VectorEquals(meshSkeleton.m_Vertices[i], accMeshSkeletion.m_Vertices[j])
-							&& Core.Util.ColorEquals(meshSkeleton.m_VertexColors[i], accMeshSkeletion.m_VertexColors[j])
-							&& Core.Util.VectorEquals(meshSkeleton.m_Normals[i], accMeshSkeletion.m_Normals[j])
-							&& Core.Util.VectorEquals(meshSkeleton.m_Tangents[i], accMeshSkeletion.m_Tangents[j])
-							&& Core.Util.VectorEquals(meshSkeleton.m_UV[i], accMeshSkeletion.m_UV[j])
-							&& Core.Util.VectorEquals(meshSkeleton.m_UV2[i], accMeshSkeletion.m_UV2[j]))
+						if (Util.VectorEquals(meshSkeleton.m_Vertices[i], accMeshSkeletion.m_Vertices[j])
+							&& Util.ColorEquals(meshSkeleton.m_VertexColors[i], accMeshSkeletion.m_VertexColors[j])
+							&& Util.VectorEquals(meshSkeleton.m_Normals[i], accMeshSkeletion.m_Normals[j])
+							&& Util.VectorEquals(meshSkeleton.m_Tangents[i], accMeshSkeletion.m_Tangents[j])
+							&& Util.VectorEquals(meshSkeleton.m_UV[i], accMeshSkeletion.m_UV[j])
+							&& Util.VectorEquals(meshSkeleton.m_UV2[i], accMeshSkeletion.m_UV2[j]))
 						{
 							vertexMap[i] = j;
 							duplicate = true;
@@ -273,7 +273,7 @@ namespace Core
 		{
 			bool hasCollider = false;
 			MeshRenderer[] renderers = parentTransform.GetComponentsInChildren<MeshRenderer>();
-			List<MeshAccumulator> meshAccumulators = new List<MeshAccumulator>(renderers.Length);
+			List<MeshAccumulator> meshAccumulators = new(renderers.Length);
 
 			for (int i = 0; i < renderers.Length; i++)
 			{
@@ -296,8 +296,7 @@ namespace Core
 					Debug.LogError("MeshAccumulator.CombineAllChildMeshes() Can't combine " +  DebugUtil.GetScenePath(renderer.gameObject) + " because it's part of static batch", renderer.gameObject);
 					continue;
 				}
-				MeshFilter filter = renderer.transform.GetComponent<MeshFilter>();
-				if (filter == null)
+				if (!renderer.transform.TryGetComponent<MeshFilter>(out MeshFilter filter))
 				{
 					continue;
 				}
@@ -317,7 +316,7 @@ namespace Core
 
 				if (Application.isPlaying)
 				{
-					GameObject.Destroy(renderer.gameObject);
+					Object.Destroy(renderer.gameObject);
 				}
 			}
 
@@ -332,14 +331,14 @@ namespace Core
 		public static Mesh SeperateSubMesh(Mesh mesh, MeshRenderer renderer, int index)
 		{
 			int[] triangles = mesh.GetTriangles(index);
-			Mesh newMesh = new Mesh();
+			Mesh newMesh = new();
 			newMesh.Clear();
 
-			List<Vector3> verts = new List<Vector3>();
-			List<Vector3> norms = new List<Vector3>();
-			List<Vector2> uvs = new List<Vector2>();
-			List<Vector2> uv2s = new List<Vector2>();
-			List<Color> colors = new List<Color>();
+			List<Vector3> verts = new();
+			List<Vector3> norms = new();
+			List<Vector2> uvs = new();
+			List<Vector2> uv2s = new();
+			List<Color> colors = new();
 
 			for (int i = 0; i < mesh.vertices.Length; i++)
 			{
@@ -394,14 +393,14 @@ namespace Core
 		[System.Obsolete()]
 		public static Mesh CombineSubMeshes(CombineInstance[] meshes)
 		{
-			Mesh newMesh = new Mesh();
+			Mesh newMesh = new();
 			newMesh.Clear();
-			List<int> tris = new List<int>();
-			List<Vector3> verts = new List<Vector3>();
-			List<Vector3> norms = new List<Vector3>();
-			List<Vector2> uvs = new List<Vector2>();
-			List<Vector2> uv2s = new List<Vector2>();
-			List<Color> colors = new List<Color>();
+			List<int> tris = new();
+			List<Vector3> verts = new();
+			List<Vector3> norms = new();
+			List<Vector2> uvs = new();
+			List<Vector2> uv2s = new();
+			List<Color> colors = new();
 			List<int>[] subMeshes = new List<int>[meshes.Length];
 
 			for (int i = 0; i < meshes.Length; i++)
@@ -449,7 +448,7 @@ namespace Core
 			int lightmapIndex = renderer.lightmapIndex;
 			Vector4 lightmapScaleOffset = renderer.lightmapScaleOffset;
 
-			List<int> accumulatedSubmeshes = new List<int>(mesh.subMeshCount);
+			List<int> accumulatedSubmeshes = new(mesh.subMeshCount);
 
 			for (int j = 0; j < mesh.subMeshCount; j++)
 			{
@@ -465,7 +464,7 @@ namespace Core
 					Debug.LogError("MeshCombiner.AccumulateAllSubmeshes: GameObject " + DebugUtil.GetScenePath(renderer.gameObject) + " material at index " + j + " is null.", renderer.gameObject);
 					continue;
 				}
-				List<int> matchingSubmeshes = new List<int>() { j };
+				List<int> matchingSubmeshes = new() { j };
 				for (int k = j + 1; k < mesh.subMeshCount; k++)
 				{
 					if (k < renderer.sharedMaterials.Length)
@@ -515,14 +514,14 @@ namespace Core
 		{
 			Transform combinedMeshes = new GameObject(target.name + "(Combined)").transform;
 			combinedMeshes.transform.parent = target.parent;
-			List<Mesh> meshes = new List<Mesh>(meshAccumulators.Count);
+			List<Mesh> meshes = new(meshAccumulators.Count);
 			for (int i = 0; i < meshAccumulators.Count; i++)
 			{
 				string name = meshAccumulators[i].GetName(target);
 				Mesh[] accumulatedMeshes = meshAccumulators[i].GetMeshes(name);
 				for (int j = 0; j < accumulatedMeshes.Length; j++)
 				{
-					GameObject newObject = new GameObject(accumulatedMeshes.Length > 1 ? name + " " + j : name);
+					GameObject newObject = new(accumulatedMeshes.Length > 1 ? name + " " + j : name);
 					newObject.transform.parent = combinedMeshes;
 					MeshFilter filter = newObject.AddComponent<MeshFilter>();
 					MeshRenderer renderer = newObject.AddComponent<MeshRenderer>();

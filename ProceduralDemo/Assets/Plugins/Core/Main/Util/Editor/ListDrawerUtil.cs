@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
@@ -57,14 +56,17 @@ namespace Core
 			}
 			Rect r = position;
 			r.height = EditorGUIUtility.singleLineHeight;
-			if (drawBGs) EditorGUI.DrawRect(r, 0.5f * Color.white);
+			if (drawBGs)
+			{
+				EditorGUI.DrawRect(r, 0.5f * Color.white);
+			}
 
 			Rect r2 = r;
 			r2.width = 20.0f;
 			r.width -= r2.width;
 			r2.x += r.width;
 
-			GUIStyle style = new GUIStyle(GUI.skin.label);
+			GUIStyle style = new(GUI.skin.label);
 			style.alignment = TextAnchor.MiddleCenter;
 			style.fontSize = 16;
 
@@ -95,7 +97,10 @@ namespace Core
 				Rect bgRect = r;
 				bgRect.width += r2.width;
 				bgRect.height = totalHeight;
-				if (drawBGs) EditorGUI.DrawRect(bgRect, 0.5f * Color.white);
+				if (drawBGs)
+				{
+					EditorGUI.DrawRect(bgRect, 0.5f * Color.white);
+				}
 
 				if (GUI.Button(r2, "\uE09F", style))
 				{
@@ -205,7 +210,7 @@ namespace Core
 				return null;
 			}
 			string[] typeStrings = element.managedReferenceFullTypename.Split(' ', '.'); // Remove assembly name and namespace
-			string name = typeStrings[typeStrings.Length - 1];
+			string name = typeStrings[^1];
 			if (getNameConfig is IRemoveSuffix removeSuffix && name.EndsWith(removeSuffix.Suffix))
 			{
 				name = name.Substring(0, name.Length - removeSuffix.Suffix.Length);

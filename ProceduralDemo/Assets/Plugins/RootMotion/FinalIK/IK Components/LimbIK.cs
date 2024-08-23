@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// %IK component for IKSolverLimb.
@@ -37,7 +38,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The Limb %IK solver.
 		/// </summary>
-		public IKSolverLimb solver = new IKSolverLimb();
+		public IKSolverLimb solver = new();
 		
 		public override IKSolver GetIKSolver() {
 			return solver as IKSolver;

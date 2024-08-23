@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 using RootMotion.FinalIK;
 
-namespace RootMotion.Demos {
+namespace RootMotion.Demos
+{
 
 	/*
 	 * Custom inspector and scene view helpers for the InteractionTarget.
@@ -15,8 +15,8 @@ namespace RootMotion.Demos {
 
 		private const string twistAxisLabel = " Twist Axis";
 		private const float size = 0.005f;
-		private static Color targetColor = new Color(0.2f, 1f, 0.5f);
-		private static Color pivotColor = new Color(0.2f, 0.5f, 1f);
+		private static Color targetColor = new(0.2f, 1f, 0.5f);
+		private static Color pivotColor = new(0.2f, 0.5f, 1f);
 
 		void OnSceneGUI() {
 			Handles.color = targetColor;

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace Core
 {
@@ -11,7 +9,7 @@ namespace Core
 #if UNITY_EDITOR
 		public static bool _EditorDebugMode = false;
 
-		private static List<ObjectPoolBase> s_EditorPools = new List<ObjectPoolBase>();
+		private static List<ObjectPoolBase> s_EditorPools = new();
 		public static IEnumerable<ObjectPoolBase> _EditorPools => s_EditorPools;
 
 		public ObjectPoolBase()
@@ -44,11 +42,11 @@ namespace Core
 
 	public class ObjectPool<T> : ObjectPoolBase where T : class, new()
 	{
-		private Dictionary<T, string> m_Pooled = new Dictionary<T, string>();
+		private Dictionary<T, string> m_Pooled = new();
 		public override int PooledCount => m_Pooled.Count;
 
 #if UNITY_EDITOR
-		private Dictionary<int, string> m_EditorActive = new Dictionary<int, string>(); // Don't hold references to active objects so we don't affect memory management
+		private Dictionary<int, string> m_EditorActive = new(); // Don't hold references to active objects so we don't affect memory management
 
 		public override int _EditorActiveCount => m_EditorActive.Count;
 		public override IEnumerable<string> _EditorActiveStackTraces => m_EditorActive.Values;
@@ -145,7 +143,7 @@ namespace Core
 
 	public abstract class PooledObject<T> : IPooledObject where T : class, IPooledObject, new()
 	{
-		private static Core.ObjectPool<T> s_Pool = new Core.ObjectPool<T>();
+		private static ObjectPool<T> s_Pool = new();
 		private static int s_ID = 0;
 
 		private int m_ID = 0;
@@ -190,7 +188,7 @@ namespace Core
 		public PooledHandle(T instance)
 		{
 			m_Instance = instance ?? throw new System.ArgumentNullException($"PooledHandle() Handle {typeof(T).Name} cannot be constructed with null instance");
-			m_ID = m_Instance.PoolID != INVALID_ID || Core.Util.IsRelease() ? m_Instance.PoolID :
+			m_ID = m_Instance.PoolID != INVALID_ID || Util.IsRelease() ? m_Instance.PoolID :
 				throw new System.InvalidOperationException($"PooledHandle() Handle {typeof(T).Name} instance has invalid ID, is it set up to pool properly?");
 		}
 

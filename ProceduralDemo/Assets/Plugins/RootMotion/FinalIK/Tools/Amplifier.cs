@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Demo script that amplifies the motion of a body part relative to the root of the character or another body part.
@@ -44,9 +45,13 @@ namespace RootMotion.FinalIK {
 
 			// Update the Body
 			public void Update(IKSolverFullBodyBiped solver, float w, float deltaTime) {
-				if (transform == null || relativeTo == null) return;
+				if (transform == null || relativeTo == null)
+				{
+					return;
+				}
 
 				// Find the relative position of the transform
+
 				Vector3 relativePos = relativeTo.InverseTransformDirection(transform.position - relativeTo.position);
 
 				// Initiating
@@ -69,7 +74,7 @@ namespace RootMotion.FinalIK {
 
 				// Apply the amplitude to the effector links
 				for (int i = 0; i < effectorLinks.Length; i++) {
-					solver.GetEffector(effectorLinks[i].effector).positionOffset += offset * w * effectorLinks[i].weight;
+					solver.GetEffector(effectorLinks[i].effector).positionOffset += effectorLinks[i].weight * w * offset;
 				}
 
 				lastRelativePos = relativePos;
@@ -90,12 +95,21 @@ namespace RootMotion.FinalIK {
 		// Called by IKSolverFullBody before updating
 		protected override void OnModifyOffset() {
 			if (!ik.fixTransforms) {
-				if (!Warning.logged) Warning.Log("Amplifier needs the Fix Transforms option of the FBBIK to be set to true. Otherwise it might amplify to infinity, should the animator of the character stop because of culling.", transform);
+				if (!Warning.logged)
+				{
+					Warning.Log("Amplifier needs the Fix Transforms option of the FBBIK to be set to true. Otherwise it might amplify to infinity, should the animator of the character stop because of culling.", transform);
+				}
+
+
 				return;
 			}
 
 			// Update the Bodies
-			foreach (Body body in bodies) body.Update(ik.solver, weight, deltaTime);
+			foreach (Body body in bodies)
+			{
+				body.Update(ik.solver, weight, deltaTime);
+			}
+
 		}
 	}
 }

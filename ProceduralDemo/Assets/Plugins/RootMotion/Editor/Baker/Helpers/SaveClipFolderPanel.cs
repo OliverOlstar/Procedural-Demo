@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using UnityEditor;
-using System.IO;
-using System;
+﻿using UnityEditor;
 
 namespace RootMotion
 {
-    public class SaveClipFolderPanel : EditorWindow
+	public class SaveClipFolderPanel : EditorWindow
     {
         public static string Apply(string currentPath)
         {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Demo script that adds the illusion of mass to your character using FullBodyBipedIK.
@@ -46,7 +46,11 @@ namespace RootMotion.FinalIK {
 
 			// Reset to Transform
 			public void Reset() {
-				if (transform == null) return;
+				if (transform == null)
+				{
+					return;
+				}
+
 				lazyPoint = transform.position;
 				lastPosition = transform.position;
 				direction = Vector3.zero;
@@ -54,8 +58,11 @@ namespace RootMotion.FinalIK {
 
 			// Update this body, apply the offset to the effector
 			public void Update(IKSolverFullBodyBiped solver, float weight, float deltaTime) {
-				if (transform == null) return;
-				
+				if (transform == null)
+				{
+					return;
+				}
+
 				// If first update, set this body to Transform
 				if (firstUpdate) {
 					Reset();
@@ -66,7 +73,7 @@ namespace RootMotion.FinalIK {
 				direction = Vector3.Lerp(direction, ((transform.position - lazyPoint) / deltaTime) * 0.01f, deltaTime * acceleration);
 
 				// Lazy follow
-				lazyPoint += direction * deltaTime * speed;
+				lazyPoint += deltaTime * speed * direction;
 
 				// Match velocity
 				delta = transform.position - lastPosition;
@@ -78,7 +85,7 @@ namespace RootMotion.FinalIK {
 				// Apply position offset to the effector
 				foreach (EffectorLink effectorLink in effectorLinks) {
 					
-					solver.GetEffector(effectorLink.effector).positionOffset += (lazyPoint - transform.position) * effectorLink.weight * weight;
+					solver.GetEffector(effectorLink.effector).positionOffset += effectorLink.weight * weight * (lazyPoint - transform.position);
 				}
 
 				lastPosition = transform.position;
@@ -93,13 +100,19 @@ namespace RootMotion.FinalIK {
 		// Reset all Bodies
 		public void ResetBodies() {
 			lastTime = Time.time;
-			foreach (Body body in bodies) body.Reset();
+			foreach (Body body in bodies)
+			{
+				body.Reset();
+			}
 		}
 
 		// Called by IKSolverFullBody before updating
 		protected override void OnModifyOffset() {
 			// Update the Bodies
-			foreach (Body body in bodies) body.Update(ik.solver, weight, deltaTime);
+			foreach (Body body in bodies)
+			{
+				body.Update(ik.solver, weight, deltaTime);
+			}
 
 			// Apply the offset limits
 			ApplyLimits(limits);

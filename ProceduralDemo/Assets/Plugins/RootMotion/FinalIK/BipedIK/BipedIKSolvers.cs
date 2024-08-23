@@ -1,53 +1,58 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// BipedIK solver collection.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class BipedIKSolvers {
 		/// <summary>
 		/// The left foot
 		/// </summary>
-		public IKSolverLimb leftFoot = new IKSolverLimb(AvatarIKGoal.LeftFoot);
+		public IKSolverLimb leftFoot = new(AvatarIKGoal.LeftFoot);
 		/// <summary>
 		/// The right foot.
 		/// </summary>
-		public IKSolverLimb rightFoot = new IKSolverLimb(AvatarIKGoal.RightFoot);
+		public IKSolverLimb rightFoot = new(AvatarIKGoal.RightFoot);
 		/// <summary>
 		/// The left hand.
 		/// </summary>
-		public IKSolverLimb leftHand = new IKSolverLimb(AvatarIKGoal.LeftHand);
+		public IKSolverLimb leftHand = new(AvatarIKGoal.LeftHand);
 		/// <summary>
 		/// The right hand.
 		/// </summary>
-		public IKSolverLimb rightHand = new IKSolverLimb(AvatarIKGoal.RightHand);
+		public IKSolverLimb rightHand = new(AvatarIKGoal.RightHand);
 		/// <summary>
 		/// The spine.
 		/// </summary>
-		public IKSolverFABRIK spine = new IKSolverFABRIK();
+		public IKSolverFABRIK spine = new();
 		/// <summary>
 		/// The Look At %IK.
 		/// </summary>
-		public IKSolverLookAt lookAt = new IKSolverLookAt();
+		public IKSolverLookAt lookAt = new();
 		/// <summary>
 		/// The Aim %IK. Rotates the spine to aim a transform's forward towards the target.
 		/// </summary>
-		public IKSolverAim aim = new IKSolverAim();
+		public IKSolverAim aim = new();
 		/// <summary>
 		/// %Constraints for manipulating the character's pelvis.
 		/// </summary>
-		public Constraints pelvis = new Constraints();
+		public Constraints pelvis = new();
 
 		/// <summary>
 		/// Gets the array containing all the limbs.
 		/// </summary>
 		public IKSolverLimb[] limbs {
 			get {
-				if (_limbs == null || (_limbs != null && _limbs.Length != 4)) _limbs = new IKSolverLimb[4] { leftFoot, rightFoot, leftHand, rightHand };
+				if (_limbs == null || (_limbs != null && _limbs.Length != 4))
+				{
+					_limbs = new IKSolverLimb[4] { leftFoot, rightFoot, leftHand, rightHand };
+				}
+
 				return _limbs;
 			}	
 		}
@@ -58,7 +63,12 @@ namespace RootMotion.FinalIK {
 		/// </summary>
 		public IKSolver[] ikSolvers {
 			get {
-				if (_ikSolvers == null || (_ikSolvers != null && _ikSolvers.Length != 7)) _ikSolvers = new IKSolver[7] { leftFoot, rightFoot, leftHand, rightHand, spine, lookAt, aim };
+				if (_ikSolvers == null || (_ikSolvers != null && _ikSolvers.Length != 7))
+				{
+					_ikSolvers = new IKSolver[7] { leftFoot, rightFoot, leftHand, rightHand, spine, lookAt, aim };
+				}
+
+
 				return _ikSolvers;
 			}
 		}

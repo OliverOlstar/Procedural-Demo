@@ -12,9 +12,9 @@ namespace Core
 
 		public static bool Equals(string s1, string s2)
 		{
-			if (object.ReferenceEquals(s1, null) || object.ReferenceEquals(s2, null))
+			if (s1 is null || s2 is null)
 			{
-				return object.ReferenceEquals(s1, null) && object.ReferenceEquals(s2, null);
+				return s1 is null && s2 is null;
 			}
 			int s1Len = s1.Length;
 			if (s1Len != s2.Length)
@@ -33,12 +33,12 @@ namespace Core
 
 		public static bool IsEmpty(string s)
 		{
-			return object.ReferenceEquals(s, null) || s.Length == 0;
+			return s is null || s.Length == 0;
 		}
 
 		public static bool Contains(string s1, string s2)
 		{
-			if (object.ReferenceEquals(s1, null) || object.ReferenceEquals(s2, null))
+			if (s1 is null || s2 is null)
 			{
 				return false;
 			}
@@ -63,7 +63,7 @@ namespace Core
 
 		public static bool Contains(string s, char c)
 		{
-			if (object.ReferenceEquals(s, null))
+			if (s is null)
 			{
 				return false;
 			}
@@ -80,7 +80,7 @@ namespace Core
 
 		public static int FirstIndexOf(string s, char c)
 		{
-			if (object.ReferenceEquals(s, null))
+			if (s is null)
 			{
 				return -1;
 			}
@@ -97,7 +97,7 @@ namespace Core
 
 		public static int LastIndexOf(string s, char c)
 		{
-			if (object.ReferenceEquals(s, null))
+			if (s is null)
 			{
 				return -1;
 			}
@@ -114,17 +114,17 @@ namespace Core
 
 		public static bool StartsWith(string s1, string s2)
 		{
-			if (object.ReferenceEquals(s1, null) || object.ReferenceEquals(s2, null))
+			if (s1 is null || s2 is null)
 			{
 				return false;
 			}
-			int s1Len = s1.Length;
-			int s2Len = s2.Length;
-			if (s1Len < s2Len)
+			int s1Length = s1.Length;
+			int s2Length = s2.Length;
+			if (s1Length < s2Length)
 			{
 				return false;
 			}
-			for (int i = 0; i < s2Len; ++i)
+			for (int i = 0; i < s2Length; ++i)
 			{
 				if (s1[i] != s2[i])
 				{
@@ -136,7 +136,7 @@ namespace Core
 
 		public static bool EndsWith(string s1, string s2)
 		{
-			if (object.ReferenceEquals(s1, null) || object.ReferenceEquals(s2, null))
+			if (s1 is null || s2 is null)
 			{
 				return false;
 			}
@@ -158,7 +158,7 @@ namespace Core
 
 		public static bool StartsWith(string s1, char c)
 		{
-			if (object.ReferenceEquals(s1, null) || s1.Length == 0)
+			if (s1 is null || s1.Length == 0)
 			{
 				return false;
 			}
@@ -167,14 +167,14 @@ namespace Core
 
 		public static bool EndsWith(string s1, char c)
 		{
-			if (object.ReferenceEquals(s1, null) || s1.Length == 0)
+			if (s1 is null || s1.Length == 0)
 			{
 				return false;
 			}
-			return s1[s1.Length - 1] == c;
+			return s1[^1] == c;
 		}
 
-		private static StringBuilder s_BuildBuilder = new StringBuilder();
+		private static StringBuilder s_BuildBuilder = new();
 		public static string Build(string s1, string s2)
 		{
 			s_BuildBuilder.Clear();
@@ -225,7 +225,7 @@ namespace Core
 			return s_BuildBuilder.ToString();
 		}
 
-		static StringBuilder s_AddBuilder = new StringBuilder();
+		static StringBuilder s_AddBuilder = new();
 		public static void Add(string s1) =>
 			s_AddBuilder.Append(s1);
 		public static void Add(string s1, string s2) =>
@@ -299,7 +299,7 @@ namespace Core
 #if UNITY_EDITOR
 		public static string EditorFinish()
 		{
-			string finish = Core.Str.EMPTY;
+			string finish = EMPTY;
 			if (s_AddBuilder != null)
 			{
 				finish = s_AddBuilder.ToString();
@@ -316,7 +316,7 @@ namespace Core
 
 		public static string Finish()
 		{
-			string finish = Core.Str.EMPTY;
+			string finish = EMPTY;
 			if (s_AddBuilder != null)
 			{
 				finish = s_AddBuilder.ToString();

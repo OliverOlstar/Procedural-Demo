@@ -88,7 +88,7 @@ public class UnimaControllerDrawer : PropertyDrawer
 			Rect pPlay = p1;
 			pPlay.width = playControlWidth;
 			pPlay.x = pFoldout.xMax;
-			GUIStyle playButton = new GUIStyle(GUI.skin.label);
+			GUIStyle playButton = new(GUI.skin.label);
 			playButton.active.textColor = Color.white;
 			if (m_Controller.IsPlaying())
 			{
@@ -255,10 +255,10 @@ public class UnimaControllerDrawer : PropertyDrawer
 
 	private bool GetAlphaIDs(Component comp, string id, out int index, out string[] ids)
 	{
-		List<IUnimaControllerSource> sources = new List<IUnimaControllerSource>();
+		List<IUnimaControllerSource> sources = new();
 		UnimaUtil.FindControllerSources(comp.gameObject, sources);
-		List<UnimaController> controllers = new List<UnimaController>(sources.Count);
-		List<string> idList = new List<string>(controllers.Count);
+		List<UnimaController> controllers = new(sources.Count);
+		List<string> idList = new(controllers.Count);
 		foreach (IUnimaControllerSource source in sources)
 		{
 			source.AddControllers(controllers);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -53,7 +52,7 @@ namespace Core
 
 			// Find all objects of the lists key type
 			Type type = genericArgs[1];
-			List<Object> objs = new List<Object>();
+			List<Object> objs = new();
 			AssetDatabaseUtil.LoadAll(type, objs);
 
 			// Clean up list and make sure each entry is keyed by a valid scriptable object
@@ -87,7 +86,7 @@ namespace Core
 			}
 
 			// Actually draw the inspector
-			Rect labelpos = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+			Rect labelpos = new(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
 			labelpos.x += 16.0f * (EditorGUI.indentLevel - 1);
 			GUI.Label(labelpos, prop.displayName, EditorStyles.boldLabel);
 
@@ -98,7 +97,7 @@ namespace Core
 				SerializedProperty element = list.GetArrayElementAtIndex(i);
 				float height = EditorGUI.GetPropertyHeight(element);
 				labelpos.height += height;
-				Rect r2 = new Rect(position.x, y, position.width, height);
+				Rect r2 = new(position.x, y, position.width, height);
 				EditorGUI.PropertyField(r2, element);
 				y += height;
 			}

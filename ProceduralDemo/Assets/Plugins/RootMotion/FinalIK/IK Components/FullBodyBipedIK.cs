@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Full Body %IK System designed specifically for bipeds
@@ -49,12 +50,12 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The biped definition. Don't change refences directly in runtime, use SetReferences(BipedReferences references) instead.
 		/// </summary>
-		public BipedReferences references = new BipedReferences();
+		public BipedReferences references = new();
 		
 		/// <summary>
 		/// The FullBodyBiped %IK solver.
 		/// </summary>
-		public IKSolverFullBodyBiped solver = new IKSolverFullBodyBiped();
+		public IKSolverFullBodyBiped solver = new();
 
 		/// <summary>
 		/// Sets the solver to new biped references.
@@ -75,9 +76,13 @@ namespace RootMotion.FinalIK {
 		/// </summary>
 		public bool ReferencesError(ref string errorMessage) {
 			// All the errors common to all bipeds
-			if (BipedReferences.SetupError(references, ref errorMessage)) return true;
-			
+			if (BipedReferences.SetupError(references, ref errorMessage))
+			{
+				return true;
+			}
+
 			// All the errors specific to FBBIK
+
 			if (references.spine.Length == 0) {
 				errorMessage = "References has no spine bones assigned, can not initiate the solver.";
 				return true;
@@ -112,9 +117,13 @@ namespace RootMotion.FinalIK {
 		/// </summary>
 		public bool ReferencesWarning(ref string warningMessage) {
 			// Check for all the warnings common to all bipeds
-			if (BipedReferences.SetupWarning(references, ref warningMessage)) return true;
+			if (BipedReferences.SetupWarning(references, ref warningMessage))
+			{
+				return true;
+			}
 
 			// Check for warnings specific to FBBIK
+
 			Vector3 toRightShoulder = references.rightUpperArm.position - references.leftUpperArm.position;
 			Vector3 shoulderToRootNode = solver.rootNode.position - references.leftUpperArm.position;
 			float dot = Vector3.Dot(toRightShoulder.normalized, shoulderToRootNode.normalized);

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	public class LookAtController : MonoBehaviour {
 
@@ -78,14 +78,27 @@ namespace RootMotion.FinalIK {
             // Smooth weight
             float targetWeight = target != null ? weight : 0f;
 			ik.solver.IKPositionWeight = Mathf.SmoothDamp(ik.solver.IKPositionWeight, targetWeight, ref weightV, weightSmoothTime);
-			if (ik.solver.IKPositionWeight >= 0.999f && targetWeight > ik.solver.IKPositionWeight) ik.solver.IKPositionWeight = 1f;
-			if (ik.solver.IKPositionWeight <= 0.001f && targetWeight < ik.solver.IKPositionWeight) ik.solver.IKPositionWeight = 0f;
+			if (ik.solver.IKPositionWeight >= 0.999f && targetWeight > ik.solver.IKPositionWeight)
+			{
+				ik.solver.IKPositionWeight = 1f;
+			}
 
-			if (ik.solver.IKPositionWeight <= 0f) return;
+			if (ik.solver.IKPositionWeight <= 0.001f && targetWeight < ik.solver.IKPositionWeight)
+			{
+				ik.solver.IKPositionWeight = 0f;
+			}
+
+			if (ik.solver.IKPositionWeight <= 0f)
+			{
+				return;
+			}
 
 			// Smooth target switching
 			switchWeight = Mathf.SmoothDamp(switchWeight, 1f, ref switchWeightV, targetSwitchSmoothTime);
-			if (switchWeight >= 0.999f) switchWeight = 1f;
+			if (switchWeight >= 0.999f)
+			{
+				switchWeight = 1f;
+			}
 
 			if (target != null) {
 				ik.solver.IKPosition = Vector3.Lerp(lastPosition, target.position + offset, switchWeight);

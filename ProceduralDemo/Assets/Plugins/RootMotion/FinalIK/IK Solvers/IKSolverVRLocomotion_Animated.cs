@@ -145,9 +145,12 @@ namespace RootMotion.FinalIK
             {
                 ResetParams(positions);
 
-                if (animator == null) return;
+                if (animator == null)
+				{
+					return;
+				}
 
-                if (!isHashed)
+				if (!isHashed)
                 {
                     VRIK_Horizontal = Animator.StringToHash("VRIK_Horizontal");
                     VRIK_Vertical = Animator.StringToHash("VRIK_Vertical");
@@ -196,10 +199,13 @@ namespace RootMotion.FinalIK
                     return;
                 }
 
-                if (deltaTime <= 0f) return;
+                if (deltaTime <= 0f)
+				{
+					return;
+				}
 
-                // Root up vector
-                Vector3 rootUp = solver.rootBone.solverRotation * Vector3.up;
+				// Root up vector
+				Vector3 rootUp = solver.rootBone.solverRotation * Vector3.up;
                 
                 // Substract any motion from parent transforms
                 Vector3 externalDelta = solver.rootBone.solverPosition - lastEndRootPos;
@@ -261,11 +267,22 @@ namespace RootMotion.FinalIK
 
                 // Is Moving
                 float m = moveThreshold * scale;
-                if (isMoving) m *= 0.9f;
-                bool isMovingRaw = velocityLocal.sqrMagnitude > m * m;
-                if (isMovingRaw) stopMoveTimer = 0f;
-                else stopMoveTimer += deltaTime;
-                isMoving = stopMoveTimer < 0.05f;
+                if (isMoving)
+				{
+					m *= 0.9f;
+				}
+
+				bool isMovingRaw = velocityLocal.sqrMagnitude > m * m;
+                if (isMovingRaw)
+				{
+					stopMoveTimer = 0f;
+				}
+				else
+				{
+					stopMoveTimer += deltaTime;
+				}
+
+				isMoving = stopMoveTimer < 0.05f;
 
                 // Max root angle
                 float maxRootAngleTarget = isMoving ? maxRootAngleMoving : maxRootAngleStanding;
@@ -299,11 +316,22 @@ namespace RootMotion.FinalIK
                 
                 // Root lerp speed
                 float rootLerpSpeedTarget = 0;
-                if (isMoving) rootLerpSpeedTarget = rootLerpSpeedWhileMoving;
-                if (isStopping) rootLerpSpeedTarget = rootLerpSpeedWhileStopping;
-                if (isTurning) rootLerpSpeedTarget = rootLerpSpeedWhileTurning;
+                if (isMoving)
+				{
+					rootLerpSpeedTarget = rootLerpSpeedWhileMoving;
+				}
 
-                rootLerpSpeedTarget *= Mathf.Max(headTargetVelocity.magnitude, 0.2f);
+				if (isStopping)
+				{
+					rootLerpSpeedTarget = rootLerpSpeedWhileStopping;
+				}
+
+				if (isTurning)
+				{
+					rootLerpSpeedTarget = rootLerpSpeedWhileTurning;
+				}
+
+				rootLerpSpeedTarget *= Mathf.Max(headTargetVelocity.magnitude, 0.2f);
                 rootLerpSpeed = Mathf.Lerp(rootLerpSpeed, rootLerpSpeedTarget, deltaTime * 20f);
 
                 // Root lerp and limits

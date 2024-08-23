@@ -32,29 +32,29 @@ namespace Core.CheatMenu
 			}
 			GUILayout.EndHorizontal();
 
-			GUIStyle titleStyle = new GUIStyle(GUI.skin.label);
+			GUIStyle titleStyle = new(GUI.skin.label);
 			titleStyle.fontStyle = FontStyle.Bold;
 
-			GUIStyle toggleStyle = new GUIStyle(GUI.skin.label);
+			GUIStyle toggleStyle = new(GUI.skin.label);
 			toggleStyle.fontSize = 24;
 			toggleStyle.alignment = TextAnchor.MiddleLeft;
 
-			GUIStyle toggleTipStyle = new GUIStyle(toggleStyle);
+			GUIStyle toggleTipStyle = new(toggleStyle);
 			toggleTipStyle.fontSize = 16;
 
-			GUIStyle buttonStyle = new GUIStyle(GUI.skin.label);
+			GUIStyle buttonStyle = new(GUI.skin.label);
 			buttonStyle.alignment = TextAnchor.MiddleLeft;
 
 			// Debug Options
-			foreach (string groupName in Core.DebugOption.GetGroupNames())
+			foreach (string groupName in DebugOption.GetGroupNames())
 			{
-				if (Core.DebugOption.Group.EditorOnlyGroups.Contains(groupName))
+				if (DebugOption.Group.EditorOnlyGroups.Contains(groupName))
 				{
 					continue;
 				}
 
 				GUILayout.Label(groupName, titleStyle);
-				foreach (Core.DebugOption op in Core.DebugOption.GetGroupOptions(groupName))
+				foreach (DebugOption op in DebugOption.GetGroupOptions(groupName))
 				{
 					if (!op.CanShow())
 					{
@@ -65,7 +65,7 @@ namespace Core.CheatMenu
 					bool isTooltipOpen = m_ActiveTooltip == op;
 
 					// Big button
-					bool set = Core.DebugOption.IsSet(op);
+					bool set = DebugOption.IsSet(op);
 					Rect r = GUILayoutUtility.GetRect(new GUIContent(), GUI.skin.button);
 					if (hasTooltip)
 					{

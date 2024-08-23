@@ -1,7 +1,6 @@
 
 using UnityEngine;
 using UnityEditor;
-using System.IO;
 
 public class CaptureTools : EditorWindow
 {
@@ -10,7 +9,7 @@ public class CaptureTools : EditorWindow
     [MenuItem("Window/Capture Tools", false, 9999)]
 	static void CreateWizard()
 	{
-        BundleTools window = EditorWindow.GetWindow<BundleTools>("Capture Tools");
+        BundleTools window = GetWindow<BundleTools>("Capture Tools");
 		window.Show();
 	}
 
@@ -19,8 +18,8 @@ public class CaptureTools : EditorWindow
         if (GUILayout.Button("Spawn Camera"))
         {
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Capture/CaptureCamera.prefab");
-            GameObject captureCamera = Object.Instantiate<GameObject>(prefab);
-            Object.DontDestroyOnLoad(captureCamera);
+            GameObject captureCamera = Instantiate(prefab);
+			DontDestroyOnLoad(captureCamera);
             m_Camera = captureCamera.AddComponent<FreeCamera>();
         }
 

@@ -40,12 +40,12 @@ namespace Core
 			foreach (string t in traces)
 			{
 				int i1 = t.IndexOf('(');
-				string s1 = i1 >= 0 ? t.Substring(0, i1) : Core.Str.EMPTY;
+				string s1 = i1 >= 0 ? t.Substring(0, i1) : Str.EMPTY;
 				int i2 = t.LastIndexOf('\\');
-				string s2 = i2 >= 0 ? t.Substring(i2 + 1, t.Length - i2 - 1) : Core.Str.EMPTY;
-				Core.Str.AddLine(s1, "  -  ", s2);
+				string s2 = i2 >= 0 ? t.Substring(i2 + 1, t.Length - i2 - 1) : Str.EMPTY;
+				Str.AddLine(s1, "  -  ", s2);
 			}
-			return Core.Str.Finish();
+			return Str.Finish();
 		}
 
 		private void OnGUI()

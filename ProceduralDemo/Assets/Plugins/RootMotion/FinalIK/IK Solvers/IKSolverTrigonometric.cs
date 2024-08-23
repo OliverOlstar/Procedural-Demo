@@ -1,13 +1,13 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Analytic %IK solver based on the Law of Cosines.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class IKSolverTrigonometric: IKSolver {
 		
 		#region Main Interface
@@ -32,15 +32,15 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The first bone (upper arm or thigh).
 		/// </summary>
-		public TrigonometricBone bone1 = new TrigonometricBone();
+		public TrigonometricBone bone1 = new();
 		/// <summary>
 		/// The second bone (forearm or calf).
 		/// </summary>
-		public TrigonometricBone bone2 = new TrigonometricBone();
+		public TrigonometricBone bone2 = new();
 		/// <summary>
 		/// The third bone (hand or foot).
 		/// </summary>
-		public TrigonometricBone bone3 = new TrigonometricBone();	
+		public TrigonometricBone bone3 = new();	
 		
 		/// <summary>
 		/// Sets the bend goal position.
@@ -49,9 +49,16 @@ namespace RootMotion.FinalIK {
 		/// Goal position.
 		/// </param>
 		public void SetBendGoalPosition(Vector3 goalPosition, float weight) {
-			if (!initiated) return;
-			if (weight <= 0f) return;
-			
+			if (!initiated)
+			{
+				return;
+			}
+
+			if (weight <= 0f)
+			{
+				return;
+			}
+
 			Vector3 normal = Vector3.Cross(goalPosition - bone1.transform.position, IKPosition - bone1.transform.position);
 			if (normal != Vector3.zero) {
 				if (weight >= 1f) {
@@ -67,10 +74,16 @@ namespace RootMotion.FinalIK {
 		/// Sets the bend plane to match current bone rotations.
 		/// </summary>
 		public void SetBendPlaneToCurrent() {
-			if (!initiated) return;
-			
+			if (!initiated)
+			{
+				return;
+			}
+
 			Vector3 normal = Vector3.Cross(bone2.transform.position - bone1.transform.position, bone3.transform.position - bone2.transform.position);
-			if (normal != Vector3.zero) bendNormal = normal;
+			if (normal != Vector3.zero)
+			{
+				bendNormal = normal;
+			}
 		}
 		
 		/// <summary>
@@ -101,14 +114,26 @@ namespace RootMotion.FinalIK {
 			return IKRotationWeight;
 		}
 		
-		public override IKSolver.Point[] GetPoints() {
-			return new IKSolver.Point[3] { (IKSolver.Point)bone1, (IKSolver.Point)bone2, (IKSolver.Point)bone3 };
+		public override Point[] GetPoints() {
+			return new Point[3] { (Point)bone1, (Point)bone2, (Point)bone3 };
 		}
 		
-		public override IKSolver.Point GetPoint(Transform transform) {
-			if (bone1.transform == transform) return (IKSolver.Point)bone1;
-			if (bone2.transform == transform) return (IKSolver.Point)bone2;
-			if (bone3.transform == transform) return (IKSolver.Point)bone3;
+		public override Point GetPoint(Transform transform) {
+			if (bone1.transform == transform)
+			{
+				return (Point)bone1;
+			}
+
+			if (bone2.transform == transform)
+			{
+				return (Point)bone2;
+			}
+
+			if (bone3.transform == transform)
+			{
+				return (Point)bone3;
+			}
+
 			return null;
 		}
 
@@ -119,7 +144,10 @@ namespace RootMotion.FinalIK {
 		}
 		
 		public override void FixTransforms() {
-			if (!initiated) return;
+			if (!initiated)
+			{
+				return;
+			}
 
 			bone1.FixTransform();
 			bone2.FixTransform();
@@ -153,8 +181,9 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// Bone type used by IKSolverTrigonometric.
 		/// </summary>
-		[System.Serializable]
-		public class TrigonometricBone: IKSolver.Bone {
+		[Serializable]
+		public class TrigonometricBone: Bone
+		{
 			
 			private Quaternion targetToLocalSpace;
 			private Vector3 defaultLocalBendNormal;
@@ -214,7 +243,10 @@ namespace RootMotion.FinalIK {
 		/// Solve the bone chain.
 		/// </summary>
 		public static void Solve(Transform bone1, Transform bone2, Transform bone3, Vector3 targetPosition, Vector3 bendNormal, float weight) {
-			if (weight <= 0f) return;
+			if (weight <= 0f)
+			{
+				return;
+			}
 
 			// Direction of the limb in solver
 			targetPosition = Vector3.Lerp(bone3.position, targetPosition, weight);
@@ -223,8 +255,11 @@ namespace RootMotion.FinalIK {
 			
 			// Distance between the first and the last node solver positions
 			float length = dir.magnitude;
-			if (length == 0f) return;
-			
+			if (length == 0f)
+			{
+				return;
+			}
+
 			float sqrMag1 = (bone2.position - bone1.position).sqrMagnitude;
 			float sqrMag2 = (bone3.position - bone2.position).sqrMagnitude;
 			
@@ -236,12 +271,18 @@ namespace RootMotion.FinalIK {
 			
 			// Position the second node
 			Quaternion q1 = Quaternion.FromToRotation(bone2.position - bone1.position, toBendPoint);
-			if (weight < 1f) q1 = Quaternion.Lerp(Quaternion.identity, q1, weight);
+			if (weight < 1f)
+			{
+				q1 = Quaternion.Lerp(Quaternion.identity, q1, weight);
+			}
 
 			bone1.rotation = q1 * bone1.rotation;
 
 			Quaternion q2 = Quaternion.FromToRotation(bone3.position - bone2.position, targetPosition - bone2.position);
-			if (weight < 1f) q2 = Quaternion.Lerp(Quaternion.identity, q2, weight);
+			if (weight < 1f)
+			{
+				q2 = Quaternion.Lerp(Quaternion.identity, q2, weight);
+			}
 
 			bone2.rotation = q2 * bone2.rotation;
 		}
@@ -251,15 +292,22 @@ namespace RootMotion.FinalIK {
 			float x = ((directionMag * directionMag) + (sqrMag1 - sqrMag2)) / 2f / directionMag;
 			float y = (float)Math.Sqrt(Mathf.Clamp(sqrMag1 - x * x, 0, Mathf.Infinity));
 			
-			if (direction == Vector3.zero) return Vector3.zero;
+			if (direction == Vector3.zero)
+			{
+				return Vector3.zero;
+			}
+
 			return Quaternion.LookRotation(direction, bendDirection) * new Vector3(0f, y, x);
 		}
 
 		#endregion Class Methods
 		
 		protected override void OnInitiate() {
-			if (bendNormal == Vector3.zero) bendNormal = Vector3.right;
-			
+			if (bendNormal == Vector3.zero)
+			{
+				bendNormal = Vector3.right;
+			}
+
 			OnInitiateVirtual();
 			
 			IKPosition = bone3.transform.position;
@@ -273,8 +321,16 @@ namespace RootMotion.FinalIK {
 
 		// Are the bones parented directly to each other?
 		private bool IsDirectHierarchy() {
-			if (bone3.transform.parent != bone2.transform) return false;
-			if (bone2.transform.parent != bone1.transform) return false;
+			if (bone3.transform.parent != bone2.transform)
+			{
+				return false;
+			}
+
+			if (bone2.transform.parent != bone1.transform)
+			{
+				return false;
+			}
+
 			return true;
 		}
 
@@ -309,8 +365,11 @@ namespace RootMotion.FinalIK {
 				bone1.sqrMag = (bone2.transform.position - bone1.transform.position).sqrMagnitude;
 				bone2.sqrMag = (bone3.transform.position - bone2.transform.position).sqrMagnitude;
 				
-				if (bendNormal == Vector3.zero && !Warning.logged) LogWarning("IKSolverTrigonometric Bend Normal is Vector3.zero.");
-				
+				if (bendNormal == Vector3.zero && !Warning.logged)
+				{
+					LogWarning("IKSolverTrigonometric Bend Normal is Vector3.zero.");
+				}
+
 				weightIKPosition = Vector3.Lerp(bone3.transform.position, IKPosition, IKPositionWeight);
 				
 				// Interpolating bend normal
@@ -319,8 +378,11 @@ namespace RootMotion.FinalIK {
 				// Calculating and interpolating bend direction
 				Vector3 bendDirection = Vector3.Lerp(bone2.transform.position - bone1.transform.position, GetBendDirection(weightIKPosition, currentBendNormal), IKPositionWeight);
 				
-				if (bendDirection == Vector3.zero) bendDirection = bone2.transform.position - bone1.transform.position;
-				
+				if (bendDirection == Vector3.zero)
+				{
+					bendDirection = bone2.transform.position - bone1.transform.position;
+				}
+
 				// Rotating bone1
 				bone1.transform.rotation = bone1.GetRotation(bendDirection, currentBendNormal);
 				
@@ -347,8 +409,11 @@ namespace RootMotion.FinalIK {
 		 * */
 		protected Vector3 GetBendDirection(Vector3 IKPosition, Vector3 bendNormal) {
 			Vector3 direction = IKPosition - bone1.transform.position;
-			if (direction == Vector3.zero) return Vector3.zero;
-			
+			if (direction == Vector3.zero)
+			{
+				return Vector3.zero;
+			}
+
 			float directionSqrMag = direction.sqrMagnitude;
 			float directionMagnitude = (float)Math.Sqrt(directionSqrMag);
 			

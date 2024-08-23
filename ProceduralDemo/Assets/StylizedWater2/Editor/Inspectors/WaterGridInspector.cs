@@ -54,9 +54,12 @@ namespace StylizedWater2
 
             EditorGUILayout.LabelField("Appearance", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(material);
-            if(material.objectReferenceValue == null) EditorGUILayout.HelpBox("A material must be assigned", MessageType.Error);
-            
-            EditorGUILayout.Space();
+            if(material.objectReferenceValue == null)
+			{
+				EditorGUILayout.HelpBox("A material must be assigned", MessageType.Error);
+			}
+
+			EditorGUILayout.Space();
             
             EditorGUILayout.LabelField("Movement", EditorStyles.boldLabel);
 

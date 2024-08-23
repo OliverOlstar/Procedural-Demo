@@ -81,7 +81,7 @@ public class UnimatePositionXYZ : UnimateTween<UnimatePositionXYZ, UnimatePositi
 
 		protected override void OnUpdateTween(float normalizedTime, float loopingTime)
 		{
-			Vector3 offset = new Vector3(
+			Vector3 offset = new(
 				Animation.m_XPositionCurve.Evaluate(normalizedTime),
 				Animation.m_YPositionCurve.Evaluate(normalizedTime),
 				Animation.m_ZPositionCurve.Evaluate(normalizedTime));

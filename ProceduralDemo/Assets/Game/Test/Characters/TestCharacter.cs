@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using OliverLoescher;
-using OliverLoescher.Util;
+using ODev;
+using ODev.Util;
 using UnityEngine;
 
 public class TestCharacter : UpdateableMonoBehaviour
@@ -45,13 +43,13 @@ public class TestCharacter : UpdateableMonoBehaviour
 			input.Normalize();
 		}
 
-		float speed = Grounded.IsGrounded ? Speed : AirSpeed;
+		float speed = Grounded.IsOnGround ? Speed : AirSpeed;
 		Velocity += speed * Time.deltaTime * input;
 
-		float drag = Grounded.IsGrounded ? Drag : AirDrag;
+		float drag = Grounded.IsOnGround ? Drag : AirDrag;
 		Velocity -= drag * Time.deltaTime * Math.Horizontal(Velocity);
 
-		if (Grounded.IsGrounded)
+		if (Grounded.IsOnGround)
 		{
 			if (Input.GetKeyDown(KeyCode.Space))
 			{

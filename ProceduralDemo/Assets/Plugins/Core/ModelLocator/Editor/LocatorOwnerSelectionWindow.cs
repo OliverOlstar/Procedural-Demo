@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +10,7 @@ namespace ModelLocator
 
 		public static bool TryOpen(SOModelLocator locator, Vector2 position)
 		{
-			Animator[] rigs = GameObject.FindObjectsOfType<Animator>();
+			Animator[] rigs = FindObjectsOfType<Animator>();
 			if (rigs.Length < 2)
 			{
 				return false;
@@ -21,7 +19,7 @@ namespace ModelLocator
 			float width = 0.0f;
 			float height = 0.0f;
 
-			Rigs dict = new Rigs();
+			Rigs dict = new();
 			foreach (Animator rig in rigs)
 			{
 				Transform joint = Core.Util.FindInTransformChildren(rig.transform, locator.ParentName);
@@ -42,7 +40,7 @@ namespace ModelLocator
 				return false;
 			}
 
-			AssetPickerRenameWindow window = ScriptableObject.CreateInstance<AssetPickerRenameWindow>();
+			AssetPickerRenameWindow window = CreateInstance<AssetPickerRenameWindow>();
 			window.titleContent = new GUIContent("Select Locator Parent");
 			window.Initialize(locator, dict);
 			window.ShowUtility();
@@ -57,7 +55,7 @@ namespace ModelLocator
 
 		private static Animator s_LastSelection = null;
 
-		private Rigs m_Rigs = new Rigs();
+		private Rigs m_Rigs = new();
 		private SOModelLocator m_Locator = null;
 		private int m_SelectedIndex = 0;
 
@@ -73,7 +71,7 @@ namespace ModelLocator
 			{
 				for (int i = 0; i < m_Rigs.Count; i++)
 				{
-					var rig = m_Rigs[i];
+					(Animator Animator, Transform Transform, GUIContent Content) rig = m_Rigs[i];
 					if (rig.Animator == s_LastSelection)
 					{
 						m_SelectedIndex = i;
@@ -85,11 +83,11 @@ namespace ModelLocator
 			{
 				// Try to auto select a clever model based on camera position
 				Transform cameraTransform = SceneView.lastActiveSceneView.camera.transform;
-				Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+				Ray ray = new(cameraTransform.position, cameraTransform.forward);
 				float best = float.MaxValue;
 				for (int i = 0; i < m_Rigs.Count; i++)
 				{
-					var rig = m_Rigs[i];
+					(Animator Animator, Transform Transform, GUIContent Content) rig = m_Rigs[i];
 					float modelHeight = 2.0f; // Most models are ~2m tall
 					Vector3 modelPosition = rig.Animator.transform.position + 0.5f * modelHeight * Vector3.up;
 					Vector3 toModel = modelPosition - ray.origin;
@@ -121,13 +119,13 @@ namespace ModelLocator
 						break;
 					case KeyCode.UpArrow:
 						m_SelectedIndex = m_SelectedIndex - 1 >= 0 ? m_SelectedIndex - 1 : m_Rigs.Count - 1;
-						EditorWindow.GetWindow<SceneView>().LookAt(m_Rigs[m_SelectedIndex].Transform.position);
-						EditorWindow.GetWindow<AssetPickerRenameWindow>();
+						GetWindow<SceneView>().LookAt(m_Rigs[m_SelectedIndex].Transform.position);
+						GetWindow<AssetPickerRenameWindow>();
 						break;
 					case KeyCode.DownArrow:
 						m_SelectedIndex = m_SelectedIndex + 1 < m_Rigs.Count ? m_SelectedIndex + 1 : 0;
-						EditorWindow.GetWindow<SceneView>().LookAt(m_Rigs[m_SelectedIndex].Transform.position);
-						EditorWindow.GetWindow<AssetPickerRenameWindow>();
+						GetWindow<SceneView>().LookAt(m_Rigs[m_SelectedIndex].Transform.position);
+						GetWindow<AssetPickerRenameWindow>();
 						break;
 					case KeyCode.Return:
 						s_LastSelection = m_Rigs[m_SelectedIndex].Animator;
@@ -139,7 +137,7 @@ namespace ModelLocator
 
 			for (int i = 0; i < m_Rigs.Count; i++)
 			{
-				var rig = m_Rigs[i];
+				(Animator Animator, Transform Transform, GUIContent Content) rig = m_Rigs[i];
 				if (i != m_SelectedIndex)
 				{
 					//GUI.color = Color.Lerp(new Color32(127, 214, 252, 255), Color.white, 0.5f);

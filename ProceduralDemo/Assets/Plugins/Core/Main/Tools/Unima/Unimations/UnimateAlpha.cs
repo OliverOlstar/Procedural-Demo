@@ -5,7 +5,7 @@ using UnityEngine;
 public class UnimateAlpha : UnimateTween<UnimateAlpha, UnimateAlpha.Player>
 {
 	[SerializeField]
-	private AnimationCurve m_AlphaCurve = new AnimationCurve(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
+	private AnimationCurve m_AlphaCurve = new(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
 	[SerializeField]
 	private float m_Duration = 1.0f;
 	public override float Duration => m_Duration;
@@ -32,8 +32,7 @@ public class UnimateAlpha : UnimateTween<UnimateAlpha, UnimateAlpha.Player>
 
 		protected override void OnInitialize()
 		{
-			m_Group = GameObject.GetComponent<CanvasGroup>();
-			if (m_Group == null)
+			if (!GameObject.TryGetComponent<CanvasGroup>(out m_Group))
 			{
 				m_Group = GameObject.AddComponent<CanvasGroup>();
 			}

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion {
-	
+namespace RootMotion
+{
+
 	/// <summary>
 	/// The Cartesian axes.
 	/// </summary>
@@ -22,8 +22,16 @@ namespace RootMotion {
 		/// Converts an Axis to Vector3.
 		/// </summary>
 		public static Vector3 ToVector3(Axis axis) {
-			if (axis == Axis.X) return Vector3.right;
-			if (axis == Axis.Y) return Vector3.up;
+			if (axis == Axis.X)
+			{
+				return Vector3.right;
+			}
+
+			if (axis == Axis.Y)
+			{
+				return Vector3.up;
+			}
+
 			return Vector3.forward;
 		}
 
@@ -36,8 +44,16 @@ namespace RootMotion {
 			float absZ = Mathf.Abs(v.z);
 			
 			Axis d = Axis.X;
-			if (absY > absX && absY > absZ) d = Axis.Y;
-			if (absZ > absX && absZ > absY) d = Axis.Z;
+			if (absY > absX && absY > absZ)
+			{
+				d = Axis.Y;
+			}
+
+			if (absZ > absX && absZ > absY)
+			{
+				d = Axis.Z;
+			}
+
 			return d;
 		}
 
@@ -46,8 +62,16 @@ namespace RootMotion {
 		/// </summary>
 		public static Axis GetAxisToPoint(Transform t, Vector3 worldPosition) {
 			Vector3 axis = GetAxisVectorToPoint(t, worldPosition);
-			if (axis == Vector3.right) return Axis.X;
-			if (axis == Vector3.up) return Axis.Y;
+			if (axis == Vector3.right)
+			{
+				return Axis.X;
+			}
+
+			if (axis == Vector3.up)
+			{
+				return Axis.Y;
+			}
+
 			return Axis.Z;
 		}
 
@@ -56,8 +80,16 @@ namespace RootMotion {
 		/// </summary>
 		public static Axis GetAxisToDirection(Transform t, Vector3 direction) {
 			Vector3 axis = GetAxisVectorToDirection(t, direction);
-			if (axis == Vector3.right) return Axis.X;
-			if (axis == Vector3.up) return Axis.Y;
+			if (axis == Vector3.right)
+			{
+				return Axis.X;
+			}
+
+			if (axis == Vector3.up)
+			{
+				return Axis.Y;
+			}
+
 			return Axis.Z;
 		}
 
@@ -85,11 +117,18 @@ namespace RootMotion {
 
             float dotX = Mathf.Abs(Vector3.Dot(r * Vector3.right, direction));
             float dotY = Mathf.Abs(Vector3.Dot(r * Vector3.up, direction));
-            if (dotY > dotX) axis = Vector3.up;
-            float dotZ = Mathf.Abs(Vector3.Dot(r * Vector3.forward, direction));
-            if (dotZ > dotX && dotZ > dotY) axis = Vector3.forward;
+            if (dotY > dotX)
+			{
+				axis = Vector3.up;
+			}
 
-            return axis;
+			float dotZ = Mathf.Abs(Vector3.Dot(r * Vector3.forward, direction));
+            if (dotZ > dotX && dotZ > dotY)
+			{
+				axis = Vector3.forward;
+			}
+
+			return axis;
         }
     }
 }

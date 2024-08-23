@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.Playables;
 
 #if UNITY_EDITOR
@@ -8,10 +7,10 @@ using UnityEditor;
 
 namespace RootMotion
 {
-    /// <summary>
-    /// Base class for animation bakers, handles timing, keyframing and saving AnimationClips.
-    /// </summary>
-    [HelpURL("http://www.root-motion.com/finalikdox/html/page3.html")]
+	/// <summary>
+	/// Base class for animation bakers, handles timing, keyframing and saving AnimationClips.
+	/// </summary>
+	[HelpURL("http://www.root-motion.com/finalikdox/html/page3.html")]
     [AddComponentMenu("Scripts/RootMotion/Baker")]
     public abstract class Baker : MonoBehaviour
     {
@@ -225,9 +224,15 @@ namespace RootMotion
             }
             else
             {
-                if (mode == Mode.Realtime) addLoopFrame = clipSettings.loopTime && clipSettings.loopBlend;
-                else addLoopFrame = clipSettings.loopTime;
-            }
+                if (mode == Mode.Realtime)
+				{
+					addLoopFrame = clipSettings.loopTime && clipSettings.loopBlend;
+				}
+				else
+				{
+					addLoopFrame = clipSettings.loopTime;
+				}
+			}
 
             StartBaking();
 #endif
@@ -270,9 +275,12 @@ namespace RootMotion
         {
 #if UNITY_EDITOR
 
-            if (!isBaking) return;
+            if (!isBaking)
+			{
+				return;
+			}
 
-            if (addLoopFrame)
+			if (addLoopFrame)
             {
                 OnSetLoopFrame(clipLength);
             }
@@ -298,8 +306,7 @@ namespace RootMotion
         [ContextMenu("Find Animation States")]
         public void FindAnimationStates()
         {
-            animator = GetComponent<Animator>();
-            if (animator == null)
+            if (!TryGetComponent<Animator>(out animator))
             {
                 Debug.LogError("No Animator found on Baker GameObject. Can not find animation states.");
                 return;
@@ -311,7 +318,7 @@ namespace RootMotion
                 return;
             }
 
-            var clips = animator.runtimeAnimatorController.animationClips;
+			AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
             animationStates = new string[clips.Length];
             for (int i = 0; i < clips.Length; i++)
             {
@@ -328,12 +335,9 @@ namespace RootMotion
                 {
                     if (firstFrame)
                     {
-                        transform.position = Vector3.zero;
-                        transform.rotation = Quaternion.identity;
-                        GetCharacterRoot().position = Vector3.zero;
-                        GetCharacterRoot().rotation = Quaternion.identity;
-
-                        StartAnimationUpdate();
+                        transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+						GetCharacterRoot().SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+						StartAnimationUpdate();
 
                         currentClipTime = 0f;
                         firstFrame = false;
@@ -390,16 +394,22 @@ namespace RootMotion
                         }
                     }
 
-                    if (!firstFrame) AnimationUpdate();
-                }
+                    if (!firstFrame)
+					{
+						AnimationUpdate();
+					}
+				}
             }
         }
 
         void LateUpdate()
         {
-            if (!isBaking) return;
+            if (!isBaking)
+			{
+				return;
+			}
 
-            if (mode != Mode.Realtime)
+			if (mode != Mode.Realtime)
             {
                 if (setKeyframes)
                 {
@@ -417,9 +427,12 @@ namespace RootMotion
                     firstFrame = false;
                 }
 
-                if (Time.time < nextKeyframeTime) return;
+                if (Time.time < nextKeyframeTime)
+				{
+					return;
+				}
 
-                OnSetKeyframes(Time.time - startBakingTime, false);
+				OnSetKeyframes(Time.time - startBakingTime, false);
 
                 nextKeyframeTime = Time.time + (1f / (float)frameRate);
             }
@@ -431,12 +444,20 @@ namespace RootMotion
             switch (mode)
             {
                 case Mode.AnimationClips:
-                    if (!AnimationMode.InAnimationMode()) AnimationMode.StartAnimationMode();
-                    AnimationMode.BeginSampling();
+                    if (!AnimationMode.InAnimationMode())
+					{
+						AnimationMode.StartAnimationMode();
+					}
+
+					AnimationMode.BeginSampling();
                     AnimationMode.SampleAnimationClip(gameObject, animationClips[currentClipIndex], 0f);
                     AnimationMode.EndSampling();
-                    if (OnStartClip != null) OnStartClip(animationClips[currentClipIndex], 0f);
-                    break;
+                    if (OnStartClip != null)
+					{
+						OnStartClip(animationClips[currentClipIndex], 0f);
+					}
+
+					break;
                 case Mode.AnimationStates:
                     animator.enabled = false;
                     animator.Play(animationStates[currentClipIndex], 0, 0f);
@@ -454,8 +475,12 @@ namespace RootMotion
             switch (mode)
             {
                 case Mode.AnimationClips:
-                    if (AnimationMode.InAnimationMode()) AnimationMode.StopAnimationMode();
-                    break;
+                    if (AnimationMode.InAnimationMode())
+					{
+						AnimationMode.StopAnimationMode();
+					}
+
+					break;
                 case Mode.AnimationStates:
                     animator.enabled = true;
                     break;
@@ -470,12 +495,20 @@ namespace RootMotion
             switch (mode)
             {
                 case Mode.AnimationClips:
-                    if (!AnimationMode.InAnimationMode()) AnimationMode.StartAnimationMode();
-                    AnimationMode.BeginSampling();
+                    if (!AnimationMode.InAnimationMode())
+					{
+						AnimationMode.StartAnimationMode();
+					}
+
+					AnimationMode.BeginSampling();
                     AnimationMode.SampleAnimationClip(gameObject, animationClips[currentClipIndex], currentClipTime);
                     AnimationMode.EndSampling();
-                    if (OnUpdateClip != null) OnUpdateClip(animationClips[currentClipIndex], currentClipTime / animationClips[currentClipIndex].length);
-                    currentClipTime += clipFrameInterval;
+                    if (OnUpdateClip != null)
+					{
+						OnUpdateClip(animationClips[currentClipIndex], currentClipTime / animationClips[currentClipIndex].length);
+					}
+
+					currentClipTime += clipFrameInterval;
                     break;
                 case Mode.AnimationStates:
                     animator.Update(clipFrameInterval);
@@ -490,7 +523,7 @@ namespace RootMotion
 
         public void SaveClips()
         {
-            var clips = GetBakedClips();
+			AnimationClip[] clips = GetBakedClips();
             AnimationClip savedClip = null;
 
             for (int i = 0; i < clips.Length; i++)
@@ -511,7 +544,7 @@ namespace RootMotion
                     AnimationUtility.SetAnimationClipSettings(clips[i], settings);
                 }
 
-                var existing = AssetDatabase.LoadAssetAtPath(path, typeof(AnimationClip)) as AnimationClip;
+				AnimationClip existing = AssetDatabase.LoadAssetAtPath(path, typeof(AnimationClip)) as AnimationClip;
                 if (existing != null)
                 {
                     // Overwrite
@@ -575,11 +608,11 @@ namespace RootMotion
         {
             switch (mode)
             {
-                case Baker.Mode.AnimationClips:
+                case Mode.AnimationClips:
                     return saveToFolder + "/" + animationClips[clipIndex].name + appendName + ".anim";
-                case Baker.Mode.AnimationStates:
+                case Mode.AnimationStates:
                     return saveToFolder + "/" + animationStates[clipIndex] + appendName + ".anim";
-                case Baker.Mode.PlayableDirector:
+                case Mode.PlayableDirector:
                     return saveToFolder + "/" + saveName + ".anim";
                 default:
                     return saveToFolder + "/" + saveName + ".anim";

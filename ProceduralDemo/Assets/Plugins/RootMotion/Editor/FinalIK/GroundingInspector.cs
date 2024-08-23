@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	public class GroundingInspector : Editor {
 

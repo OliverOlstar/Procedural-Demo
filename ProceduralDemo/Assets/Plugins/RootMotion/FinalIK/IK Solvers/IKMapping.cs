@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Maps a bone or a collection of bones to a node based %IK solver
@@ -69,7 +70,12 @@ namespace RootMotion.FinalIK {
 			}
 			
 			public void FixTransform(bool position) {
-				if (position) transform.localPosition = defaultLocalPosition;
+				if (position)
+				{
+					transform.localPosition = defaultLocalPosition;
+				}
+
+
 				transform.localRotation = defaultLocalRotation;
 			}
 			
@@ -139,8 +145,16 @@ namespace RootMotion.FinalIK {
 			public void UpdatePlane(bool rotation, bool position) {
 				Quaternion t = lastAnimatedTargetRotation;
 
-				if (rotation) defaultLocalTargetRotation = QuaTools.RotationToLocalSpace(transform.rotation, t);
-				if (position) planePosition = Quaternion.Inverse(t) * (transform.position - planeBone1.position);
+				if (rotation)
+				{
+					defaultLocalTargetRotation = QuaTools.RotationToLocalSpace(transform.rotation, t);
+				}
+
+				if (position)
+				{
+					planePosition = Quaternion.Inverse(t) * (transform.position - planeBone1.position);
+				}
+
 			}
 			
 			/*
@@ -172,7 +186,11 @@ namespace RootMotion.FinalIK {
 			 * Moves the bone to the solver position of its node
 			 * */
 			public void FixToNode(IKSolverFullBody solver, float weight, IKSolver.Node fixNode = null) {
-				if (fixNode == null) fixNode = solver.GetNode(chainIndex, nodeIndex);
+				if (fixNode == null)
+				{
+					fixNode = solver.GetNode(chainIndex, nodeIndex);
+				}
+
 
 				if (weight >= 1f) {
 					transform.position = fixNode.solverPosition;
@@ -252,7 +270,11 @@ namespace RootMotion.FinalIK {
 			 * Rotates back to the last animated local rotation
 			 * */
 			public void RotateToMaintain(float weight) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
+
 
 				transform.rotation = Quaternion.Lerp(transform.rotation, maintainRotation, weight);
 			}
@@ -261,9 +283,18 @@ namespace RootMotion.FinalIK {
 			 * Rotates to match the effector rotation
 			 * */
 			public void RotateToEffector(IKSolverFullBody solver, float weight) {
-				if (!isNodeBone) return;
+				if (!isNodeBone)
+				{
+					return;
+				}
+
+
 				float w = weight * solver.GetNode(chainIndex, nodeIndex).effectorRotationWeight;
-				if (w <= 0f) return;
+				if (w <= 0f)
+				{
+					return;
+				}
+
 
 				if (w >= 1f) {
 					transform.rotation = solver.GetNode(chainIndex, nodeIndex).solverRotation;
@@ -283,7 +314,12 @@ namespace RootMotion.FinalIK {
 				Vector3 p2 = solver.GetNode(plane2ChainIndex, plane2NodeIndex).solverPosition;
 				Vector3 p3 = solver.GetNode(plane3ChainIndex, plane3NodeIndex).solverPosition;
 
-				if (p1 == p3) return Quaternion.identity;
+				if (p1 == p3)
+				{
+					return Quaternion.identity;
+				}
+
+
 				return Quaternion.LookRotation(p2 - p1, p3 - p1);
 
 				//if (planeNode1.solverPosition == planeNode3.solverPosition) return Quaternion.identity;
@@ -295,7 +331,12 @@ namespace RootMotion.FinalIK {
 			 * */
 			private Quaternion lastAnimatedTargetRotation {
 				get {
-					if (planeBone1.position == planeBone3.position) return Quaternion.identity;
+					if (planeBone1.position == planeBone3.position)
+					{
+						return Quaternion.identity;
+					}
+
+
 					return Quaternion.LookRotation(planeBone2.position - planeBone1.position, planeBone3.position - planeBone1.position);
 				}
 			}
@@ -315,12 +356,22 @@ namespace RootMotion.FinalIK {
 		protected bool BoneIsValid(Transform bone, IKSolver solver, ref string message, Warning.Logger logger = null) {
 			if (bone == null) {
 				message = "IKMappingLimb contains a null reference.";
-				if (logger != null) logger(message);
+				if (logger != null)
+				{
+					logger(message);
+				}
+
+
 				return false;
 			}
 			if (solver.GetPoint(bone) == null) {
 				message = "IKMappingLimb is referencing to a bone '" + bone.name + "' that does not excist in the Node Chain.";
-				if (logger != null) logger(message);
+				if (logger != null)
+				{
+					logger(message);
+				}
+
+
 				return false;
 			}
 			return true;

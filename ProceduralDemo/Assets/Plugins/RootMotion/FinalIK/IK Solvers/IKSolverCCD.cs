@@ -1,13 +1,13 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// CCD (Cyclic Coordinate Descent) constrainable heuristic inverse kinematics algorithm.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class IKSolverCCD : IKSolverHeuristic {
 		
 		#region Main Interface
@@ -16,8 +16,11 @@ namespace RootMotion.FinalIK {
 		/// CCD tends to overemphasise the rotations of the bones closer to the target position. Reducing bone weight down the hierarchy will compensate for this effect.
 		/// </summary>
 		public void FadeOutBoneWeights() {
-			if (bones.Length < 2) return;
-			
+			if (bones.Length < 2)
+			{
+				return;
+			}
+
 			bones[0].weight = 1f;
 			float step = 1f / (bones.Length - 1);
 			
@@ -34,29 +37,50 @@ namespace RootMotion.FinalIK {
 		#endregion Main Interface
 		
 		protected override void OnInitiate() {
-			if (firstInitiation || !Application.isPlaying) IKPosition = bones[bones.Length - 1].transform.position;
-			
+			if (firstInitiation || !Application.isPlaying)
+			{
+				IKPosition = bones[^1].transform.position;
+			}
+
 			InitiateBones();
 		}
 		
 		protected override void OnUpdate() {
-			if (IKPositionWeight <= 0) return;	
+			if (IKPositionWeight <= 0)
+			{
+				return;
+			}
+
 			IKPositionWeight = Mathf.Clamp(IKPositionWeight, 0f, 1f);
 
-			if (target != null) IKPosition = target.position;
-			if (XY) IKPosition.z = bones[0].transform.position.z;
-			
+			if (target != null)
+			{
+				IKPosition = target.position;
+			}
+
+			if (XY)
+			{
+				IKPosition.z = bones[0].transform.position.z;
+			}
+
 			Vector3 singularityOffset = maxIterations > 1? GetSingularityOffset(): Vector3.zero;
 
 			// Iterating the solver
 			for (int i = 0; i < maxIterations; i++) {
 				
 				// Optimizations
-				if (singularityOffset == Vector3.zero && i >= 1 && tolerance > 0 && positionOffset < tolerance * tolerance) break;
+				if (singularityOffset == Vector3.zero && i >= 1 && tolerance > 0 && positionOffset < tolerance * tolerance)
+				{
+					break;
+				}
+
 				lastLocalDirection = localDirection;
 
-				if (OnPreIteration != null) OnPreIteration(i);
-				
+				if (OnPreIteration != null)
+				{
+					OnPreIteration(i);
+				}
+
 				Solve(IKPosition + (i == 0? singularityOffset: Vector3.zero));
 			}
 			
@@ -74,7 +98,7 @@ namespace RootMotion.FinalIK {
 					float w = bones[i].weight * IKPositionWeight;
 
 					if (w > 0f) {
-						Vector3 toLastBone = bones[bones.Length - 1].transform.position - bones[i].transform.position;
+						Vector3 toLastBone = bones[^1].transform.position - bones[i].transform.position;
 						Vector3 toTarget = targetPosition - bones[i].transform.position;
 
 						float angleToLastBone = Mathf.Atan2(toLastBone.x, toLastBone.y) * Mathf.Rad2Deg;
@@ -85,7 +109,10 @@ namespace RootMotion.FinalIK {
 					}
 
 					// Rotation Constraints
-					if (useRotationLimits && bones[i].rotationLimit != null) bones[i].rotationLimit.Apply();
+					if (useRotationLimits && bones[i].rotationLimit != null)
+					{
+						bones[i].rotationLimit.Apply();
+					}
 				}
 			// 3D
 			} else {
@@ -95,18 +122,27 @@ namespace RootMotion.FinalIK {
 					float w = bones[i].weight * IKPositionWeight;
 
 					if (w > 0f) {
-						Vector3 toLastBone = bones[bones.Length - 1].transform.position - bones[i].transform.position;
+						Vector3 toLastBone = bones[^1].transform.position - bones[i].transform.position;
 						Vector3 toTarget = targetPosition - bones[i].transform.position;
 						
 						// Get the rotation to direct the last bone to the target
 						Quaternion targetRotation = Quaternion.FromToRotation(toLastBone, toTarget) * bones[i].transform.rotation;
 
-						if (w >= 1) bones[i].transform.rotation = targetRotation;
-						else bones[i].transform.rotation = Quaternion.Lerp(bones[i].transform.rotation, targetRotation, w);
+						if (w >= 1)
+						{
+							bones[i].transform.rotation = targetRotation;
+						}
+						else
+						{
+							bones[i].transform.rotation = Quaternion.Lerp(bones[i].transform.rotation, targetRotation, w);
+						}
 					}
 
 					// Rotation Constraints
-					if (useRotationLimits && bones[i].rotationLimit != null) bones[i].rotationLimit.Apply();
+					if (useRotationLimits && bones[i].rotationLimit != null)
+					{
+						bones[i].rotationLimit.Apply();
+					}
 				}
 			}
 		}

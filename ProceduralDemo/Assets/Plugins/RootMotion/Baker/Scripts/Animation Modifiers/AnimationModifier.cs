@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RootMotion
 {
 
-    public abstract class AnimationModifier : MonoBehaviour
+	public abstract class AnimationModifier : MonoBehaviour
     {
         protected Animator animator;
         protected Baker baker;

@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Analytic %IK algorithm based on the law of cosines
@@ -37,7 +38,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The Trigonometric %IK solver.
 		/// </summary>
-		public IKSolverTrigonometric solver = new IKSolverTrigonometric();
+		public IKSolverTrigonometric solver = new();
 		
 		public override IKSolver GetIKSolver() {
 			return solver as IKSolver;

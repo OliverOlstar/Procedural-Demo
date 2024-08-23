@@ -6,7 +6,7 @@ public abstract class Unimate<TAnimation, TPlayer> : UnimateBase
 {
 	public override IUnimaPlayer CreatePlayer(UnimaTiming timing, GameObject gameObject)
 	{
-		TPlayer player = new TPlayer();
+		TPlayer player = new();
 		player.Initialize(this, timing, gameObject);
 		return player;
 	}

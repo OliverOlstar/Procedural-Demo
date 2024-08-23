@@ -15,7 +15,7 @@ public class UnimateScale : UnimateTween<UnimateScale, UnimateScale.Player>
 	}
 
 	[SerializeField]
-	private AnimationCurve m_ScaleCurve = new AnimationCurve(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
+	private AnimationCurve m_ScaleCurve = new(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
 	[SerializeField]
 	private ScaleType m_ScaleType = ScaleType.RelativeOriginal;
 	[SerializeField]

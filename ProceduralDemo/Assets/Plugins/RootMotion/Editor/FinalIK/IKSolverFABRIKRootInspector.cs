@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-	namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector and scene view tools for IKSolverFABRIKRoot
 	 * */
+
 	public class IKSolverFABRIKRootInspector : IKSolverInspector {
 		
 		#region Public methods
@@ -33,10 +34,19 @@ using System.Collections;
 		 * */
 		public static void AddScene(IKSolverFABRIKRoot solver, Color color, bool modifiable, ref FABRIKChain selected) {
 			// Protect from null reference errors
-			if (Application.isPlaying && !solver.initiated) return;
+			if (Application.isPlaying && !solver.initiated)
+			{
+				return;
+			}
+
+
 			if (!Application.isPlaying) {
 				string message = string.Empty;
-				if (!solver.IsValid(ref message)) return;
+				if (!solver.IsValid(ref message))
+				{
+					return;
+				}
+
 			}
 			Handles.color = color;
 			
@@ -51,7 +61,7 @@ using System.Collections;
 			Handles.color = new Color(Mathf.Lerp(1f, color.r, solver.rootPin), Mathf.Lerp(1f, color.g, solver.rootPin), Mathf.Lerp(1f, color.b, solver.rootPin), Mathf.Lerp(0.5f, 1f, solver.rootPin));
 			if (solver.GetRoot() != null) {
 				Handles.DrawLine(solver.chains[0].ik.solver.bones[0].transform.position, solver.GetRoot().position);
-				Inspector.CubeCap(0, solver.GetRoot().position, Quaternion.identity, GetHandleSize(solver.GetRoot().position));
+				CubeCap(0, solver.GetRoot().position, Quaternion.identity, GetHandleSize(solver.GetRoot().position));
 			}
 		}
 		
@@ -64,7 +74,7 @@ using System.Collections;
 				if (c.ik.solver.IKPositionWeight > 0 && selected != c) {
 					Handles.color = GetChainColor(c, color);
 
-					if (Inspector.DotButton(c.ik.solver.GetIKPosition(), Quaternion.identity, GetHandleSize(c.ik.solver.GetIKPosition()), GetHandleSize(c.ik.solver.GetIKPosition()))) {
+					if (DotButton(c.ik.solver.GetIKPosition(), Quaternion.identity, GetHandleSize(c.ik.solver.GetIKPosition()), GetHandleSize(c.ik.solver.GetIKPosition()))) {
 						selected = c;
 						return;
 					}

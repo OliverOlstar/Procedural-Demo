@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
-using RootMotion.FinalIK;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
+
 	/// <summary>
 	/// Prevents body parts from penetrating scene geometry by offsetting effectors away from the colliders.
 	/// </summary>
@@ -46,7 +46,7 @@ namespace RootMotion.FinalIK {
 				
 				// Apply offset to the FBBIK effectors
 				foreach (EffectorLink link in effectors) {
-					solver.GetEffector(link.effector).positionOffset += offset * weight * link.weight;
+					solver.GetEffector(link.effector).positionOffset += link.weight * weight * offset;
 				}
 			}
 			
@@ -73,8 +73,12 @@ namespace RootMotion.FinalIK {
 					Physics.SphereCast(from, raycastRadius, direction, out hit, distance, layers);
 				}
 				
-				if (hit.collider == null) return Vector3.zero;
-				
+				if (hit.collider == null)
+				{
+					return Vector3.zero;
+				}
+
+
 				return Vector3.Project(-direction.normalized * (distance - hit.distance), hit.normal);
 			}
 		}
@@ -83,7 +87,11 @@ namespace RootMotion.FinalIK {
 		
 		// Called by IKSolverFullBody before updating
 		protected override void OnModifyOffset() {
-			foreach (Avoider avoider in avoiders) avoider.Solve(ik.solver, weight);
+			foreach (Avoider avoider in avoiders)
+			{
+				avoider.Solve(ik.solver, weight);
+			}
+
 		}
 	}
 }

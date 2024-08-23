@@ -35,7 +35,7 @@ public static class TypeExtensionMethods
 	public static T GetCustomAttribute<T>(this Type type) 
 		where T : Attribute
 	{
-		TryGetCustomAttribute<T>(type, out T attribute);
+		TryGetCustomAttribute(type, out T attribute);
 		return attribute;
 	}
 }

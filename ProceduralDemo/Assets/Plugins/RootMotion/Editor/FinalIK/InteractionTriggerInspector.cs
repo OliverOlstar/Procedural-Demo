@@ -1,28 +1,39 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	// Custom scene view helpers for the InteractionTrigger
+
 	[CustomEditor(typeof(InteractionTrigger))]
 	public class InteractionTriggerInspector : Editor {
 
 		private InteractionTrigger script { get { return target as InteractionTrigger; }}
 		
 		void OnSceneGUI() {
-			if (!script.enabled) return;
+			if (!script.enabled)
+			{
+				return;
+			}
 
-			var collider = script.GetComponent<Collider>();
-			if (collider != null)
+
+			if (script.TryGetComponent<Collider>(out Collider collider))
+			{
 				collider.isTrigger = true;
+			}
+
 			else {
 				Warning.Log ("InteractionTrigger requires a Collider component.", script.transform, true);
 				return;
 			}
 			
-			if (script.ranges.Length == 0) return;
-			
+			if (script.ranges.Length == 0)
+			{
+				return;
+			}
+
+
 			for (int i = 0; i < script.ranges.Length; i++) {
 				DrawRange (script.ranges[i], i);
 			}
@@ -48,10 +59,19 @@ namespace RootMotion.FinalIK {
 					break;
 				}
 				
-				if (i > 0) range.name += "; ";
-			
+				if (i > 0)
+				{
+					range.name += "; ";
+				}
+
+
 				for (int e = 0; e < range.interactions[i].effectors.Length; e++) {
-					if (e > 0) range.name += ", ";
+					if (e > 0)
+					{
+						range.name += ", ";
+					}
+
+
 					range.name += range.interactions[i].effectors[e].ToString();
 				}
 				
@@ -61,8 +81,12 @@ namespace RootMotion.FinalIK {
 				
 			}
 			
-			if (!range.show) return;
-			
+			if (!range.show)
+			{
+				return;
+			}
+
+
 			Color color = GetColor(index);
 			Handles.color = color;
 			GUI.color = color;
@@ -78,7 +102,7 @@ namespace RootMotion.FinalIK {
 		}
 		
 		private void DrawCharacterPosition(InteractionTrigger.Range range, int index) {
-			Vector3 labelPosition = script.transform.position - Vector3.up * index * 0.05f;
+			Vector3 labelPosition = script.transform.position - 0.05f * index * Vector3.up;
 			
 			if (!range.characterPosition.use) {
 				Handles.Label(labelPosition, "Character Position is not used for Range " + index.ToString() + ": " + range.name);
@@ -95,9 +119,14 @@ namespace RootMotion.FinalIK {
 			}
 			
 			Vector3 f = script.transform.forward;
-			if (range.characterPosition.fixYAxis) f.y = 0f;
+			if (range.characterPosition.fixYAxis)
+			{
+				f.y = 0f;
+			}
+
+
 			if (f == Vector3.zero) {
-				Handles.Label(script.transform.position - Vector3.up * index * 0.05f, "Invalid rotation of InteractionTrigger for Range " + index.ToString() + ": " + range.name);
+				Handles.Label(script.transform.position - 0.05f * index * Vector3.up, "Invalid rotation of InteractionTrigger for Range " + index.ToString() + ": " + range.name);
 				return; // Singularity
 			}
 			
@@ -133,10 +162,10 @@ namespace RootMotion.FinalIK {
 				Inspector.DotCap(0, position + x, Quaternion.identity, range.characterPosition.radius * 0.01f);
 			}
 				
-			Handles.Label(position - Vector3.up * index * 0.05f, "Character Position for Range " + index.ToString() + ": " + range.name);
+			Handles.Label(position - 0.05f * index * Vector3.up, "Character Position for Range " + index.ToString() + ": " + range.name);
 				
 			Color color = Handles.color;
-			Color transparent = new Color(color.r, color.g, color.b, 0.3f);
+			Color transparent = new(color.r, color.g, color.b, 0.3f);
 			Handles.color = transparent;
 			
 			Handles.DrawSolidArc(position, up, dir, range.characterPosition.maxAngle * 2f, range.characterPosition.radius);
@@ -145,9 +174,13 @@ namespace RootMotion.FinalIK {
 		}
 		
 		private void DrawCameraPosition(InteractionTrigger.Range range, int index) {
-			if (range.cameraPosition.lookAtTarget == null) return;
-			
-			Vector3 labelPosition = range.cameraPosition.lookAtTarget.transform.position - Vector3.up * index * 0.05f;
+			if (range.cameraPosition.lookAtTarget == null)
+			{
+				return;
+			}
+
+
+			Vector3 labelPosition = range.cameraPosition.lookAtTarget.transform.position - 0.05f * index * Vector3.up;
 			
 			if (range.cameraPosition.direction == Vector3.zero) {
 				Handles.Label(labelPosition, "Camera Position direction is Vector3.zero for Range" + index.ToString() + ": " + range.name);
@@ -174,8 +207,12 @@ namespace RootMotion.FinalIK {
 			
 			Handles.Label(position + direction * 1.1f, "Camera Position for Range " + index.ToString() + ": " + range.name);
 			
-			if (range.cameraPosition.maxAngle >= 180f) return;
-			
+			if (range.cameraPosition.maxAngle >= 180f)
+			{
+				return;
+			}
+
+
 			float r = Mathf.Sin(range.cameraPosition.maxAngle * Mathf.Deg2Rad) * range.cameraPosition.maxDistance;
 			float d = Mathf.Cos(range.cameraPosition.maxAngle * Mathf.Deg2Rad) * range.cameraPosition.maxDistance;
 			

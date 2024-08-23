@@ -1,7 +1,7 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Dedicated abstrac base component for the Grounding solver.
@@ -19,7 +19,7 @@ namespace RootMotion.FinalIK {
 		/// The %Grounding solver. Not to confuse with IK solvers.
 		/// </summary>
 		[Tooltip("The Grounding solver. Not to confuse with IK solvers.")]
-		public Grounding solver = new Grounding();
+		public Grounding solver = new();
 		
 		/// <summary>
 		/// Delegate for Grounder events.
@@ -68,15 +68,18 @@ namespace RootMotion.FinalIK {
             //float dotF = Mathf.Abs(Vector3.Dot(solver.root.forward, spineTangent.normalized)); // Bending spine backwards when going downhill
             //float dotF = Vector3.Dot(solver.root.forward, spineTangent.normalized); // Bending spine forward when going downhill
             float w = (leg.IKPosition - leg.transform.position).magnitude;
-			return spineTangent * w * dotF;
+			return dotF * w * spineTangent;
 		}
 		
 		// Gets the direction from the root to the foot (ortho-normalized to root.up)
 		private Vector3 GetLegSpineTangent(Grounding.Leg leg) {
 			Vector3 tangent = leg.transform.position - solver.root.position;
 			
-			if (!solver.rotateSolver || solver.root.up == Vector3.up) return new Vector3(tangent.x, 0f, tangent.z);
-			
+			if (!solver.rotateSolver || solver.root.up == Vector3.up)
+			{
+				return new Vector3(tangent.x, 0f, tangent.z);
+			}
+
 			Vector3 normal = solver.root.up;
 			Vector3.OrthoNormalize(ref normal, ref tangent);
 			return tangent;

@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using RootMotion.FinalIK;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// When a character with an InteractionSystem component enters the trigger collider of this game object, this component will register itself to the InteractionSystem. 
@@ -103,17 +101,34 @@ namespace RootMotion.FinalIK {
 			public bool IsInRange(Transform character, Transform trigger, out float error) {
 				// Do not use this character position, trigger is still valid
 				error = 0f;
-				if (!use) return true;
-				
+				if (!use)
+				{
+					return true;
+				}
+
 				// Invalid character position conditions
 				error = 180f;
-				if (radius <= 0f) return false;
-				if (maxAngle <= 0f) return false;
-				
+				if (radius <= 0f)
+				{
+					return false;
+				}
+
+				if (maxAngle <= 0f)
+				{
+					return false;
+				}
+
 				Vector3 forward = trigger.forward;
-				if (fixYAxis) forward.y = 0f;
-				if (forward == Vector3.zero) return false; // Singularity
-				
+				if (fixYAxis)
+				{
+					forward.y = 0f;
+				}
+
+				if (forward == Vector3.zero)
+				{
+					return false; // Singularity
+				}
+
 				Vector3 up = (fixYAxis? Vector3.up: trigger.up);
 				
 				Quaternion triggerRotation = Quaternion.LookRotation(forward, up);
@@ -128,9 +143,15 @@ namespace RootMotion.FinalIK {
 				if (orbit) {
 					float mag = offset.magnitude;
 					float dist = toCharacter.magnitude;
-					if (dist < mag - radius || dist > mag + radius) return false;
+					if (dist < mag - radius || dist > mag + radius)
+					{
+						return false;
+					}
 				} else {
-					if (toCharacter.magnitude > radius) return false;
+					if (toCharacter.magnitude > radius)
+					{
+						return false;
+					}
 				}
 				
 				Vector3 d = triggerRotation * direction3D;
@@ -138,7 +159,11 @@ namespace RootMotion.FinalIK {
 				
 				if (orbit) {
 					Vector3 toPosition = position - trigger.position;
-					if (toPosition == Vector3.zero) toPosition = Vector3.forward;
+					if (toPosition == Vector3.zero)
+					{
+						toPosition = Vector3.forward;
+					}
+
 					Quaternion r = Quaternion.LookRotation(toPosition, up);
 					toCharacter = Quaternion.Inverse(r) * toCharacter;
 					
@@ -147,7 +172,11 @@ namespace RootMotion.FinalIK {
 				}
 				
 				float angle = Vector3.Angle(d, character.forward);
-				if (angle > maxAngle) return false;
+				if (angle > maxAngle)
+				{
+					return false;
+				}
+
 				error = (angle / maxAngle) * 180f;
 				
 				return true;
@@ -189,8 +218,16 @@ namespace RootMotion.FinalIK {
 			// Returns the rotation space of this CameraPosition.
 			public Quaternion GetRotation() {
 				Vector3 forward = lookAtTarget.transform.forward;
-				if (fixYAxis) forward.y = 0f;
-				if (forward == Vector3.zero) return Quaternion.identity; // Singularity
+				if (fixYAxis)
+				{
+					forward.y = 0f;
+				}
+
+				if (forward == Vector3.zero)
+				{
+					return Quaternion.identity; // Singularity
+				}
+
 				Vector3 up = (fixYAxis? Vector3.up: lookAtTarget.transform.up);
 				
 				return Quaternion.LookRotation(forward, up);
@@ -200,21 +237,51 @@ namespace RootMotion.FinalIK {
 			public bool IsInRange(Transform raycastFrom, RaycastHit hit, Transform trigger, out float error) {
 				// Not using the CameraPosition
 				error = 0f;
-				if (lookAtTarget == null) return true;
-				
+				if (lookAtTarget == null)
+				{
+					return true;
+				}
+
 				// Not in range conditions
 				error = 180f;
-				if (raycastFrom == null) return false;
-				if (hit.collider != lookAtTarget) return false;
-				if (hit.distance > maxDistance) return false;
-				if (direction == Vector3.zero) return false;
-				if (maxDistance <= 0f) return false;
-				if (maxAngle <= 0f) return false;
-				
+				if (raycastFrom == null)
+				{
+					return false;
+				}
+
+				if (hit.collider != lookAtTarget)
+				{
+					return false;
+				}
+
+				if (hit.distance > maxDistance)
+				{
+					return false;
+				}
+
+				if (direction == Vector3.zero)
+				{
+					return false;
+				}
+
+				if (maxDistance <= 0f)
+				{
+					return false;
+				}
+
+				if (maxAngle <= 0f)
+				{
+					return false;
+				}
+
 				Vector3 d = GetRotation() * direction;
 				
 				float a = Vector3.Angle(raycastFrom.position - hit.point, d);
-				if (a > maxAngle) return false;
+				if (a > maxAngle)
+				{
+					return false;
+				}
+
 				error = (a / maxAngle) * 180f;
 				
 				return true;
@@ -270,9 +337,16 @@ namespace RootMotion.FinalIK {
 				float characterError = 0f;
 				float cameraError = 0f;
 				
-				if (!characterPosition.IsInRange(character, trigger, out characterError)) return false;
-				if (!cameraPosition.IsInRange(raycastFrom, raycastHit, trigger, out cameraError)) return false;
-				
+				if (!characterPosition.IsInRange(character, trigger, out characterError))
+				{
+					return false;
+				}
+
+				if (!cameraPosition.IsInRange(raycastFrom, raycastHit, trigger, out cameraError))
+				{
+					return false;
+				}
+
 				maxError = Mathf.Max(characterError, cameraError);
 				
 				return true;

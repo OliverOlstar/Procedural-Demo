@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Core
@@ -25,7 +23,7 @@ namespace Core
 		where TValue : class
 	{
 		[SerializeField]
-		private InspectorNotes m_Notes = new InspectorNotes();
+		private InspectorNotes m_Notes = new();
 
 #if ODIN_INSPECTOR
 		[Sirenix.OdinInspector.DrawWithUnity]

@@ -54,7 +54,7 @@ namespace Core
 					}
 					break;
 				default:
-					Debug.LogError(Core.Str.Build(
+					Debug.LogError(Str.Build(
 						"GameUtil.ParticleSystemMinMaxCurveDuration: MinMaxCurve on particle system named \"", particleSystem.gameObject.name,
 						"\" has the unrecognized mode ", minMaxCurve.mode.ToString(), "."));
 					break;

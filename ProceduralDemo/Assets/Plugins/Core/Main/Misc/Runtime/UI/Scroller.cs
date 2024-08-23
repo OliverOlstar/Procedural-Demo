@@ -1,5 +1,4 @@
 ﻿using System;
-using Core.StructEnumerable;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,7 +56,11 @@ namespace Core
 
 		public Scroller(ScrollRect scrollRect, float duration, float maxDelta)
 		{
-			if (!scrollRect) throw new ArgumentNullException(nameof(scrollRect));
+			if (!scrollRect)
+			{
+				throw new ArgumentNullException(nameof(scrollRect));
+			}
+
 			ScrollRect = scrollRect;
 			ScrollRect.horizontal = AllowHorizontal;
 			ScrollRect.vertical = AllowVertical;
@@ -70,7 +73,11 @@ namespace Core
 		
 		public void SetScrollDuration(float duration)
 		{
-			if (duration < 0f) throw new ArgumentException($"{nameof(duration)} must be non-negative", nameof(duration));
+			if (duration < 0f)
+			{
+				throw new ArgumentException($"{nameof(duration)} must be non-negative", nameof(duration));
+			}
+
 			m_Duration = duration;
 		}
 

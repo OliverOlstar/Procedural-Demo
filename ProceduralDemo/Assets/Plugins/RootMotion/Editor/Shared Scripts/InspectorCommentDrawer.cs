@@ -54,7 +54,7 @@ namespace RootMotion
 
         private GUIStyle GetStyle()
         {
-            var style = new GUIStyle(GUI.skin.label);
+			GUIStyle style = new GUIStyle(GUI.skin.label);
             style.fontSize = 10;
             style.fontStyle = FontStyle.Normal;
             style.wordWrap = true;

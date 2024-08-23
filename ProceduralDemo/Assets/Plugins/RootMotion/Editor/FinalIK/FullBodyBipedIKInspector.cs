@@ -1,12 +1,13 @@
 ﻿using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
-	namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector for FullBodyBipedIK.
 	 * */
+
 	[CustomEditor(typeof(FullBodyBipedIK))]
 	public class FullBodyBipedIKInspector : IKInspector {
 
@@ -37,8 +38,12 @@ using System.Collections;
 
 				Initiate();
 
-				if (Application.isPlaying) Warning.Log("Biped references were auto-detected on a FullBodyBipedIK component that was added in runtime. Note that this only happens in the Editor and if the GameObject is selected (for quick and convenient debugging). If you want to add FullBodyBipedIK dynamically in runtime via script, you will have to use BipedReferences.AutodetectReferences() for automatic biped detection.", script.transform);
-				
+				if (Application.isPlaying)
+				{
+					Warning.Log("Biped references were auto-detected on a FullBodyBipedIK component that was added in runtime. Note that this only happens in the Editor and if the GameObject is selected (for quick and convenient debugging). If you want to add FullBodyBipedIK dynamically in runtime via script, you will have to use BipedReferences.AutodetectReferences() for automatic biped detection.", script.transform);
+				}
+
+
 				references.isExpanded = !script.references.isFilled;
 			}
 		}
@@ -90,16 +95,24 @@ using System.Collections;
 			}
 
 			// Notify of possible problems, but still initiate
-			if (script.ReferencesWarning(ref message)) Warning.Log(message, script.transform, false);
+			if (script.ReferencesWarning(ref message))
+			{
+				Warning.Log(message, script.transform, false);
+			}
 
 			// Initiate
+
 			script.solver.SetToReferences(script.references, script.solver.rootNode);
 		}
 
 		// Draw the scene view handles
 		void OnSceneGUI() {
 			// Draw the scene veiw helpers
-			if (!script.references.isFilled) return;
+			if (!script.references.isFilled)
+			{
+				return;
+			}
+
 
 			IKSolverFullBodyBipedInspector.AddScene(target, script.solver, color, ref selectedEffector, script.transform);
 		}

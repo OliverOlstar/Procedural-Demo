@@ -3,7 +3,6 @@
 //Copyright protected under Unity Asset Store EULA
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
@@ -27,7 +26,7 @@ using UnityEditor;
 namespace StylizedWater2
 {
 	//Stay awesome Unity, locking everything behind internal UI code just makes things convoluted.
-    public static class PipelineUtilities
+	public static class PipelineUtilities
     {
         private const string renderDataListFieldName = "m_RendererDataList";
         private const string renderFeaturesListFieldName = "m_RendererFeatures";
@@ -86,8 +85,12 @@ namespace StylizedWater2
         {
             get
             {
-                if (_rendererDisplayList == null) RefreshRendererList();
-                return _rendererDisplayList;
+                if (_rendererDisplayList == null)
+				{
+					RefreshRendererList();
+				}
+
+				return _rendererDisplayList;
             }
         }
 
@@ -96,8 +99,12 @@ namespace StylizedWater2
         {
             get
             {
-                if (_rendererIndexList == null) RefreshRendererList();
-                return _rendererIndexList;
+                if (_rendererIndexList == null)
+				{
+					RefreshRendererList();
+				}
+
+				return _rendererIndexList;
             }
         }
 
@@ -114,10 +121,13 @@ namespace StylizedWater2
                 ScriptableRendererData[] m_rendererDataList = GetRenderDataList(UniversalRenderPipeline.asset);
                 
                 //-1 is used to indicate the default renderer
-                if (index == -1) index = defaultRendererIndex;
+                if (index == -1)
+				{
+					index = defaultRendererIndex;
+				}
 
-                //Check if any renderer exists at the current index
-                if (!(index < m_rendererDataList.Length && m_rendererDataList[index] != null))
+				//Check if any renderer exists at the current index
+				if (!(index < m_rendererDataList.Length && m_rendererDataList[index] != null))
                 {
                     Debug.LogWarning($"Renderer at <b>index {index.ToString()}</b> is missing, falling back to Default Renderer. <b>{m_rendererDataList[defaultRendererIndex].name}</b>", UniversalRenderPipeline.asset);
                     return defaultRendererIndex;
@@ -148,8 +158,11 @@ namespace StylizedWater2
 
                 for (int i = 0; i < m_rendererDataList.Length; i++)
                 {
-                    if (m_rendererDataList[i] == renderer) isPresent = true;
-                }
+                    if (m_rendererDataList[i] == renderer)
+					{
+						isPresent = true;
+					}
+				}
 
                 return isPresent;
             }
@@ -166,12 +179,15 @@ namespace StylizedWater2
         /// <param name="renderer"></param>
         private static int AddRendererToPipeline(ScriptableRendererData renderer)
         {
-            if (renderer == null) return -1;
+            if (renderer == null)
+			{
+				return -1;
+			}
 
-            if (UniversalRenderPipeline.asset)
+			if (UniversalRenderPipeline.asset)
             {
                 ScriptableRendererData[] m_rendererDataList = GetRenderDataList(UniversalRenderPipeline.asset);
-                List<ScriptableRendererData> rendererDataList = new List<ScriptableRendererData>();
+                List<ScriptableRendererData> rendererDataList = new();
 
                 for (int i = 0; i < m_rendererDataList.Length; i++)
                 {
@@ -214,9 +230,12 @@ namespace StylizedWater2
         /// <returns></returns>
         public static ScriptableRendererData GetDefaultRenderer(UniversalRenderPipelineAsset asset = null)
         {
-            if (asset == null) asset = UniversalRenderPipeline.asset;
-            
-            if (asset)
+            if (asset == null)
+			{
+				asset = UniversalRenderPipeline.asset;
+			}
+
+			if (asset)
             {
                 ScriptableRendererData[] rendererDataList = GetRenderDataList(asset);
                 int defaultRendererIndex = GetDefaultRendererIndex(asset);
@@ -235,7 +254,7 @@ namespace StylizedWater2
         [Conditional("UNITY_EDITOR")]
         public static void ValidateRenderFeatureSetup<T>(string name)
         {
-            if (Application.isPlaying == false)
+            if (!Application.isPlaying)
             {
                 if (RenderFeatureMissing<T>(out ScriptableRendererData[] renderers))
                 {
@@ -248,7 +267,7 @@ namespace StylizedWater2
 
                     if (EditorUtility.DisplayDialog($"Stylized Water 2", 
                             $"The {name} render feature hasn't been added to the following renderers:\n\n" + 
-                            System.String.Join(System.Environment.NewLine, rendererNames) + 
+                            System.String.Join(Environment.NewLine, rendererNames) + 
                             $"\n\nThis is required for rendering to take effect", "Setup", "Ignore"))
                     {
                         SetupRenderFeature<T>(name:$"Stylized Water 2: {name}");
@@ -265,12 +284,18 @@ namespace StylizedWater2
         /// <returns></returns>
         public static ScriptableRendererFeature GetRenderFeature<T>(ScriptableRendererData renderer = null)
         {
-            if(renderer == null) renderer = GetDefaultRenderer();
-            
-            foreach (ScriptableRendererFeature feature in renderer.rendererFeatures)
+            if(renderer == null)
+			{
+				renderer = GetDefaultRenderer();
+			}
+
+			foreach (ScriptableRendererFeature feature in renderer.rendererFeatures)
             {
-                if (feature && feature.GetType() == typeof(T)) return feature;
-            }
+                if (feature && feature.GetType() == typeof(T))
+				{
+					return feature;
+				}
+			}
 
             return null;
         }
@@ -283,13 +308,19 @@ namespace StylizedWater2
         /// <returns></returns>
         public static bool RenderFeatureAdded<T>(ScriptableRendererData renderer = null)
         {
-            if(renderer == null) renderer = GetDefaultRenderer();
+            if(renderer == null)
+			{
+				renderer = GetDefaultRenderer();
+			}
 
-            foreach (ScriptableRendererFeature feature in renderer.rendererFeatures)
+			foreach (ScriptableRendererFeature feature in renderer.rendererFeatures)
             {
-                if(feature == null) continue;
+                if(feature == null)
+				{
+					continue;
+				}
 
-                if (feature.GetType() == typeof(T))
+				if (feature.GetType() == typeof(T))
                 {
                     return true;
                 }
@@ -306,13 +337,13 @@ namespace StylizedWater2
         /// <returns></returns>
 		public static bool RenderFeatureMissing<T>(out ScriptableRendererData[] renderers)
 		{
-			List<ScriptableRendererData> unconfigured = new List<ScriptableRendererData>();
+			List<ScriptableRendererData> unconfigured = new();
 			
-			foreach (var asset in GraphicsSettings.allConfiguredRenderPipelines)
+			foreach (RenderPipelineAsset asset in GraphicsSettings.allConfiguredRenderPipelines)
             {
                 ScriptableRendererData renderer = GetDefaultRenderer((UniversalRenderPipelineAsset)asset);
 				
-                if(RenderFeatureAdded<T>(renderer) == false) 
+                if(!RenderFeatureAdded<T>(renderer)) 
                 {
                     unconfigured.Add(renderer);
                 }
@@ -330,12 +361,15 @@ namespace StylizedWater2
         /// <typeparam name="T"></typeparam>
         public static void SetupRenderFeature<T>(string name = "")
         {
-            foreach (var asset in GraphicsSettings.allConfiguredRenderPipelines)
+            foreach (RenderPipelineAsset asset in GraphicsSettings.allConfiguredRenderPipelines)
             {
                 ScriptableRendererData renderer = GetDefaultRenderer((UniversalRenderPipelineAsset)asset);
 				
-                if(RenderFeatureAdded<T>(renderer) == false) AddRenderFeature<T>(renderer, name);
-            }
+                if(!RenderFeatureAdded<T>(renderer))
+				{
+					AddRenderFeature<T>(renderer, name);
+				}
+			}
         }
 
         /// <summary>
@@ -345,15 +379,18 @@ namespace StylizedWater2
         /// <typeparam name="T"></typeparam>
         public static ScriptableRendererFeature AddRenderFeature<T>(ScriptableRendererData renderer = null, string name = "")
         {
-            if (renderer == null) renderer = GetDefaultRenderer();
-            
-            ScriptableRendererFeature feature = (ScriptableRendererFeature)ScriptableRendererFeature.CreateInstance(typeof(T).ToString());
+            if (renderer == null)
+			{
+				renderer = GetDefaultRenderer();
+			}
+
+			ScriptableRendererFeature feature = (ScriptableRendererFeature)ScriptableObject.CreateInstance(typeof(T).ToString());
             feature.name = name == string.Empty ? typeof(T).ToString() : name;
             
             //Add component https://github.com/Unity-Technologies/Graphics/blob/d0473769091ff202422ad13b7b764c7b6a7ef0be/com.unity.render-pipelines.universal/Editor/ScriptableRendererDataEditor.cs#L180
 #if UNITY_EDITOR
             AssetDatabase.AddObjectToAsset(feature, renderer);
-            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(feature, out var guid, out long localId);
+            AssetDatabase.TryGetGUIDAndLocalFileIdentifier(feature, out string guid, out long localId);
 #endif
 
             //Get feature list
@@ -380,24 +417,30 @@ namespace StylizedWater2
 
         public static bool IsRenderFeatureEnabled<T>(ScriptableRendererData forwardRenderer = null, bool autoEnable = false)
         {	
-			if (!UniversalRenderPipeline.asset) return true;
-			
-            #if UNITY_2020_1_OR_NEWER //Older version doesn't have the isActive property
-            if (forwardRenderer == null) forwardRenderer = GetDefaultRenderer();
-            
-            FieldInfo renderFeaturesInfo = typeof(ScriptableRendererData).GetField(renderFeaturesListFieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+			if (!UniversalRenderPipeline.asset)
+			{
+				return true;
+			}
+
+#if UNITY_2020_1_OR_NEWER //Older version doesn't have the isActive property
+			if (forwardRenderer == null)
+			{
+				forwardRenderer = GetDefaultRenderer();
+			}
+
+			FieldInfo renderFeaturesInfo = typeof(ScriptableRendererData).GetField(renderFeaturesListFieldName, BindingFlags.Instance | BindingFlags.NonPublic);
             List<ScriptableRendererFeature> m_RendererFeatures = (List<ScriptableRendererFeature>)renderFeaturesInfo.GetValue(forwardRenderer);
 
             foreach (ScriptableRendererFeature feature in m_RendererFeatures)
             {
                 if (feature && feature.GetType() == typeof(T))
                 {
-                    if (feature.isActive == false && autoEnable)
+                    if (!feature.isActive && autoEnable)
                     {
                         feature.SetActive(true);
-                        
-                        #if UNITY_EDITOR
-                        UnityEditor.EditorUtility.SetDirty(forwardRenderer);
+
+#if UNITY_EDITOR
+						EditorUtility.SetDirty(forwardRenderer);
                         #endif
                     }
                     
@@ -417,11 +460,14 @@ namespace StylizedWater2
             
             foreach (ScriptableRendererFeature feature in forwardRenderer.rendererFeatures)
             {
-                if (feature && feature.GetType() == typeof(T)) feature.SetActive(state);
-            }
-            
-            #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(forwardRenderer);
+                if (feature && feature.GetType() == typeof(T))
+				{
+					feature.SetActive(state);
+				}
+			}
+
+#if UNITY_EDITOR
+			EditorUtility.SetDirty(forwardRenderer);
             #endif
             #endif
         }
@@ -498,14 +544,17 @@ namespace StylizedWater2
         
         public static void RemoveRendererFromPipeline(ScriptableRendererData renderer)
         {
-            if (renderer == null) return;
+            if (renderer == null)
+			{
+				return;
+			}
 
-            if (UniversalRenderPipeline.asset)
+			if (UniversalRenderPipeline.asset)
             {
                 BindingFlags bindings = BindingFlags.NonPublic | BindingFlags.Instance;
 
                 ScriptableRendererData[] m_rendererDataList = GetRenderDataList(UniversalRenderPipeline.asset);
-                List<ScriptableRendererData> rendererDataList = new List<ScriptableRendererData>(m_rendererDataList);
+                List<ScriptableRendererData> rendererDataList = new(m_rendererDataList);
 
                 if (rendererDataList.Contains(renderer))
                 {
@@ -540,8 +589,11 @@ namespace StylizedWater2
 
                     for (int i = 0; i < rendererDataList.Length; i++)
                     {
-                        if (rendererDataList[i] == renderer) camData.SetRenderer(i);
-                    }
+                        if (rendererDataList[i] == renderer)
+						{
+							camData.SetRenderer(i);
+						}
+					}
                 }
             }
             else
@@ -556,11 +608,14 @@ namespace StylizedWater2
 
             for (int i = 0; i < GraphicsSettings.allConfiguredRenderPipelines.Length; i++)
             {
-                if(GraphicsSettings.allConfiguredRenderPipelines[i].GetType() != typeof(UniversalRenderPipelineAsset)) continue;
-                
-                UniversalRenderPipelineAsset pipeline = (UniversalRenderPipelineAsset)GraphicsSettings.allConfiguredRenderPipelines[i];
+                if(GraphicsSettings.allConfiguredRenderPipelines[i].GetType() != typeof(UniversalRenderPipelineAsset))
+				{
+					continue;
+				}
 
-                state |= (pipeline.supportsCameraDepthTexture == false);
+				UniversalRenderPipelineAsset pipeline = (UniversalRenderPipelineAsset)GraphicsSettings.allConfiguredRenderPipelines[i];
+
+                state |= (!pipeline.supportsCameraDepthTexture);
             }
 
             return state;
@@ -570,15 +625,21 @@ namespace StylizedWater2
         {
             for (int i = 0; i < GraphicsSettings.allConfiguredRenderPipelines.Length; i++)
             {
-                if(GraphicsSettings.allConfiguredRenderPipelines[i].GetType() != typeof(UniversalRenderPipelineAsset)) continue;
-                
-                UniversalRenderPipelineAsset pipeline = (UniversalRenderPipelineAsset)GraphicsSettings.allConfiguredRenderPipelines[i];
+                if(GraphicsSettings.allConfiguredRenderPipelines[i].GetType() != typeof(UniversalRenderPipelineAsset))
+				{
+					continue;
+				}
+
+				UniversalRenderPipelineAsset pipeline = (UniversalRenderPipelineAsset)GraphicsSettings.allConfiguredRenderPipelines[i];
 
                 #if UNITY_EDITOR
-                if(pipeline.supportsCameraDepthTexture != state) EditorUtility.SetDirty(pipeline);
-                #endif
-                
-                pipeline.supportsCameraDepthTexture = state;
+                if(pipeline.supportsCameraDepthTexture != state)
+				{
+					EditorUtility.SetDirty(pipeline);
+				}
+#endif
+
+				pipeline.supportsCameraDepthTexture = state;
             }
         }
         
@@ -588,12 +649,18 @@ namespace StylizedWater2
 
             for (int i = 0; i < GraphicsSettings.allConfiguredRenderPipelines.Length; i++)
             {
-                if(GraphicsSettings.allConfiguredRenderPipelines[i].GetType() != typeof(UniversalRenderPipelineAsset)) continue;
-                
-                UniversalRenderPipelineAsset pipeline = (UniversalRenderPipelineAsset)GraphicsSettings.allConfiguredRenderPipelines[i];
+                if(GraphicsSettings.allConfiguredRenderPipelines[i].GetType() != typeof(UniversalRenderPipelineAsset))
+				{
+					continue;
+				}
 
-                if (pipeline.supportsCameraOpaqueTexture == false) return true;
-            }
+				UniversalRenderPipelineAsset pipeline = (UniversalRenderPipelineAsset)GraphicsSettings.allConfiguredRenderPipelines[i];
+
+                if (!pipeline.supportsCameraOpaqueTexture)
+				{
+					return true;
+				}
+			}
 
             return state;
         }
@@ -602,23 +669,32 @@ namespace StylizedWater2
         {
             for (int i = 0; i < GraphicsSettings.allConfiguredRenderPipelines.Length; i++)
             {
-                if(GraphicsSettings.allConfiguredRenderPipelines[i].GetType() != typeof(UniversalRenderPipelineAsset)) continue;
-                
-                UniversalRenderPipelineAsset pipeline = (UniversalRenderPipelineAsset)GraphicsSettings.allConfiguredRenderPipelines[i];
+                if(GraphicsSettings.allConfiguredRenderPipelines[i].GetType() != typeof(UniversalRenderPipelineAsset))
+				{
+					continue;
+				}
+
+				UniversalRenderPipelineAsset pipeline = (UniversalRenderPipelineAsset)GraphicsSettings.allConfiguredRenderPipelines[i];
 
                 #if UNITY_EDITOR
-                if(pipeline.supportsCameraOpaqueTexture != state) EditorUtility.SetDirty(pipeline);
-                #endif
-                
-                pipeline.supportsCameraOpaqueTexture = state;
+                if(pipeline.supportsCameraOpaqueTexture != state)
+				{
+					EditorUtility.SetDirty(pipeline);
+				}
+#endif
+
+				pipeline.supportsCameraOpaqueTexture = state;
             }
         }
         
         public static bool TransparentShadowsEnabled()
         {
-            if (!UniversalRenderPipeline.asset) return false;
+            if (!UniversalRenderPipeline.asset)
+			{
+				return false;
+			}
 
-            UniversalRendererData main = (UniversalRendererData)GetDefaultRenderer();
+			UniversalRendererData main = (UniversalRendererData)GetDefaultRenderer();
 
             return main ? main.shadowTransparentReceive : false;
         }
@@ -626,9 +702,12 @@ namespace StylizedWater2
         public static bool IsDepthAfterTransparents()
         {
             #if UNITY_2022_2_OR_NEWER
-            if (!UniversalRenderPipeline.asset) return false;
-            
-            UniversalRendererData main = (UniversalRendererData)GetDefaultRenderer();
+            if (!UniversalRenderPipeline.asset)
+			{
+				return false;
+			}
+
+			UniversalRendererData main = (UniversalRendererData)GetDefaultRenderer();
 
             return main.copyDepthMode == CopyDepthMode.AfterTransparents;
             #else

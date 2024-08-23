@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Offsets the transform from its (animated) position.
@@ -17,10 +18,19 @@ namespace RootMotion.FinalIK {
 		public Vector3 offset;
 		
 		public override void UpdateConstraint() {
-			if (weight <= 0) return;
-			if (!isValid) return;
-			
+			if (weight <= 0)
+			{
+				return;
+			}
+
+
+			if (!isValid)
+			{
+				return;
+			}
+
 			// Initiating
+
 			if (!initiated) {
 				// Storing default values
 				defaultLocalPosition = transform.localPosition;
@@ -30,9 +40,13 @@ namespace RootMotion.FinalIK {
 			}
 			
 			// Check if position has changed. If true, set default local position to current.
-			if (positionChanged) defaultLocalPosition = transform.localPosition;
-			
+			if (positionChanged)
+			{
+				defaultLocalPosition = transform.localPosition;
+			}
+
 			// Offsetting the position
+
 			transform.localPosition = defaultLocalPosition;
 			transform.position += offset * weight;
 			

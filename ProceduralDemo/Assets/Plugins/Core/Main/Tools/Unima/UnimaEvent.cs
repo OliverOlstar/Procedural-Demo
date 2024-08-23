@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 public abstract class UnimaEventBase : IUnimaPlayer, System.IComparable
@@ -89,7 +86,7 @@ public abstract class UnimaEventBase : IUnimaPlayer, System.IComparable
 public class UnimaEvent : UnimaEventBase
 {
 	[SerializeField]
-	private UnityEvent m_Event = new UnityEvent();
+	private UnityEvent m_Event = new();
 	public UnityEvent Event => m_Event;
 
 	protected UnimaEvent(float startTime) : base(startTime)

@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RootMotion
 {
 
-    /// <summary>
-    /// Comment attribute for Editor.
-    /// </summary>
-    public class InspectorComment : PropertyAttribute
+	/// <summary>
+	/// Comment attribute for Editor.
+	/// </summary>
+	public class InspectorComment : PropertyAttribute
     {
 
         public string name;

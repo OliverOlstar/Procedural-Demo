@@ -12,7 +12,7 @@ namespace Core
 		[MenuItem("Core/JSON Viewer")]
 		static void CreateWizard()
 		{
-			JSONViewer window = EditorWindow.GetWindow<JSONViewer>("JSON Viewer");
+			JSONViewer window = GetWindow<JSONViewer>("JSON Viewer");
 			window.Show();
 		}
 
@@ -21,7 +21,7 @@ namespace Core
 			//GUILayout.BeginVertical();
 			if (GUILayout.Button("Format"))
 			{
-				GUI.FocusControl(Core.Str.EMPTY); // Having the text box in focus brings the old text back
+				GUI.FocusControl(Str.EMPTY); // Having the text box in focus brings the old text back
 				m_JSON = m_JSON.Replace("{", "\n{\n");
 				m_JSON = m_JSON.Replace("}", "\n}\n");
 			}

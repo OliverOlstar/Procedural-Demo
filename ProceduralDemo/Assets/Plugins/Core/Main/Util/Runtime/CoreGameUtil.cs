@@ -16,7 +16,9 @@ public static class TransformExtensions
 	{
 		action(t);
 		foreach (Transform child in t)
+		{
 			ApplyRecursively(child, action);
+		}
 	}
 }
 
@@ -39,7 +41,7 @@ namespace Core
 		public static readonly float VECTOR_EPSILON = 0.01f;
 		public static readonly float VECTOR_EPSILON_SQR = VECTOR_EPSILON * VECTOR_EPSILON;
 
-		public static readonly Color ECGColor = new Color(0.0f, 0.68627451f, 0.23137255f, 1.0f);
+		public static readonly Color ECGColor = new(0.0f, 0.68627451f, 0.23137255f, 1.0f);
 
 		private static bool s_IsApplicationQuitting;
 		public static bool IsApplicationQuitting => s_IsApplicationQuitting;
@@ -110,10 +112,14 @@ namespace Core
 		public static string NumberToWords(int number)
 		{
 			if (number == 0)
+			{
 				return "zero";
+			}
 
 			if (number < 0)
+			{
 				return "minus " + NumberToWords(Mathf.Abs(number));
+			}
 
 			string words = "";
 
@@ -138,18 +144,24 @@ namespace Core
 			if (number > 0)
 			{
 				if (words != "")
+				{
 					words += "and ";
+				}
 
-				var unitsMap = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
-				var tensMap = new[] { "zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+				string[] unitsMap = new[] { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
+				string[] tensMap = new[] { "zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
 
 				if (number < 20)
+				{
 					words += unitsMap[number];
+				}
 				else
 				{
 					words += tensMap[number / 10];
 					if ((number % 10) > 0)
+					{
 						words += "-" + unitsMap[number % 10];
+					}
 				}
 			}
 
@@ -160,7 +172,7 @@ namespace Core
 		{
 			get
 			{
-				System.Globalization.NumberFormatInfo format = new System.Globalization.NumberFormatInfo();
+				System.Globalization.NumberFormatInfo format = new();
 				format.NumberGroupSeparator = " ";
 				return format;
 			}
@@ -198,8 +210,7 @@ namespace Core
 			while (transform.parent != null)
 			{
 				transform = transform.parent;
-				T currentComponent = transform.GetComponent<T>();
-				if (currentComponent != null)
+				if (transform.TryGetComponent<T>(out T currentComponent))
 				{
 					highestComponent = currentComponent;
 				}
@@ -210,8 +221,7 @@ namespace Core
 		public static T GetComponentInFamily<T>(GameObject obj) where T : Component
 		{
 			// Check this object first
-			T component = obj.GetComponent<T>();
-			if (component != null)
+			if (obj.TryGetComponent<T>(out T component))
 			{
 				return component;
 			}
@@ -221,8 +231,7 @@ namespace Core
 			for (int i = 0; i < childCount; i++)
 			{
 				Transform child = transform.GetChild(i);
-				component = child.GetComponent<T>();
-				if (component != null)
+				if (child.TryGetComponent<T>(out component))
 				{
 					return component;
 				}
@@ -233,8 +242,7 @@ namespace Core
 				return null;
 			}
 			// Check our parent
-			component = parent.GetComponent<T>();
-			if (component != null)
+			if (parent.TryGetComponent<T>(out component))
 			{
 				return component;
 			}
@@ -243,8 +251,7 @@ namespace Core
 			for (int i = 0; i < childCount; i++)
 			{
 				Transform child = parent.GetChild(i);
-				component = child.GetComponent<T>();
-				if (component != null)
+				if (child.TryGetComponent<T>(out component))
 				{
 					return component;
 				}
@@ -381,13 +388,13 @@ namespace Core
 				return array;
 			}
 			T[] newArray = new T[size];
-			System.Array.Copy(array, newArray, Mathf.Min(size, array.Length));
+			Array.Copy(array, newArray, Mathf.Min(size, array.Length));
 			return newArray;
 		}
 
 		public static Vector3 FindGround(Vector3 position, Vector3 up, int layerMask)
 		{
-			Ray ray = new Ray(position + up, -up);
+			Ray ray = new(position + up, -up);
 			RaycastHit groundHit;
 			if (Physics.Raycast(ray, out groundHit, Mathf.Infinity, layerMask))
 			{
@@ -422,7 +429,7 @@ namespace Core
 			else if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
 			{
 				Vector3 fromCamera = worldPosition - camera.transform.position;
-				Ray cameraRay = new Ray(camera.transform.position, fromCamera.normalized);
+				Ray cameraRay = new(camera.transform.position, fromCamera.normalized);
 				float distance = canvas.planeDistance / Vector3.Dot(cameraRay.direction, camera.transform.forward);
 				distance = Mathf.Lerp(distance, distance + fromCamera.magnitude, zDepthMultiplier);
 				screenPosition = cameraRay.GetPoint(distance);
@@ -555,7 +562,7 @@ namespace Core
 			{
 				Vector2 size = Vector2Mul(rectTransform.rect.size * canvas.scaleFactor, rectTransform.localScale);
 				Vector2 bottomLeftCorner = (Vector2)rectTransform.position - Vector2Mul(rectTransform.pivot, size);
-				Rect rect = new Rect(bottomLeftCorner, size);
+				Rect rect = new(bottomLeftCorner, size);
 				return rect;
 			}
 			else
@@ -579,42 +586,53 @@ namespace Core
 
 		public static IEnumerator Fade(Transform toFade, float alpha, float fadeTime, float startAlpha = -1f, Action<float> didSetAlpha = null)
 		{
-			var start = Time.realtimeSinceStartup;
-			var end = start + fadeTime;
+			float start = Time.realtimeSinceStartup;
+			float end = start + fadeTime;
 			if (startAlpha < 0f)
+			{
 				toFade.ApplyRecursively(t =>
 				{
-					var img = t.GetComponent<Image>();
-					if (img != null)
+					if (t.TryGetComponent<Image>(out Image img))
+					{
 						startAlpha = img.color.a;
-					var cr = t.GetComponent<CanvasRenderer>();
-					if (cr != null)
+					}
+
+					if (t.TryGetComponent<CanvasRenderer>(out CanvasRenderer cr))
+					{
 						startAlpha = cr.GetAlpha();
+					}
 				});
-			var deltaAlpha = alpha - startAlpha;
+			}
+
+			float deltaAlpha = alpha - startAlpha;
 			while (Time.realtimeSinceStartup < end)
 			{
 				float progress = Mathf.Min(1f, (Time.realtimeSinceStartup - start) / fadeTime);
 				float a = startAlpha + progress * deltaAlpha;
 				SetAlphaRecursively(toFade, a);
 				if (didSetAlpha != null)
+				{
 					didSetAlpha(a);
+				}
+
 				yield return null;
 			}
 			SetAlphaRecursively(toFade, alpha);
 			if (didSetAlpha != null)
+			{
 				didSetAlpha(alpha);
+			}
 		}
 
 		public static void SetAlphaRecursively(Transform transform, float alpha)
 		{
 			transform.ApplyRecursively(t =>
 			{
-				var image = t.GetComponent<Image>();
-				var canvasRenderer = t.GetComponent<CanvasRenderer>();
+				Image image = t.GetComponent<Image>();
+				CanvasRenderer canvasRenderer = t.GetComponent<CanvasRenderer>();
 				if (image != null)
 				{
-					var color = image.color;
+					Color color = image.color;
 					color.a = alpha;
 					image.color = color;
 				}
@@ -627,27 +645,35 @@ namespace Core
 
 		public static IEnumerator DoForDuration(float duration, Action<float> onProgress, Action onComplete = null)
 		{
-			var start = Time.time;
+			float start = Time.time;
 			while (Time.time - start < duration)
 			{
-				var progress = Mathf.Clamp01((Time.time - start) / duration);
+				float progress = Mathf.Clamp01((Time.time - start) / duration);
 				if (onProgress != null)
+				{
 					onProgress(progress);
+				}
+
 				yield return null;
 			}
 			if (onProgress != null)
+			{
 				onProgress(1f);
+			}
+
 			if (onComplete != null)
+			{
 				onComplete();
+			}
 		}
 
 		public static Color DivideColors(Color c1, Color c2)
 		{
 			return new Color(
-				c2.r > Core.Util.EPSILON ? Mathf.Clamp01(c1.r / c2.r) : 0.0f,
-				c2.g > Core.Util.EPSILON ? Mathf.Clamp01(c1.g / c2.g) : 0.0f,
-				c2.b > Core.Util.EPSILON ? Mathf.Clamp01(c1.b / c2.b) : 0.0f,
-				c2.a > Core.Util.EPSILON ? Mathf.Clamp01(c1.a / c2.a) : 0.0f);
+				c2.r > EPSILON ? Mathf.Clamp01(c1.r / c2.r) : 0.0f,
+				c2.g > EPSILON ? Mathf.Clamp01(c1.g / c2.g) : 0.0f,
+				c2.b > EPSILON ? Mathf.Clamp01(c1.b / c2.b) : 0.0f,
+				c2.a > EPSILON ? Mathf.Clamp01(c1.a / c2.a) : 0.0f);
 		}
 
 		public static Color NewColor(Color color, float alpha)
@@ -715,7 +741,7 @@ namespace Core
 
 		public static Transform FindInTransformChildren(Transform parent, string name)
 		{
-			if (Core.Str.IsEmpty(name))
+			if (Str.IsEmpty(name))
 			{
 				return null;
 			}
@@ -788,12 +814,12 @@ namespace Core
 			if (Approximately0(s_EditorDPI))
 			{
 				float dpi = Screen.dpi;
-				UnityEngine.Object[] objects = Resources.FindObjectsOfTypeAll(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
+				UnityEngine.Object[] objects = Resources.FindObjectsOfTypeAll(Type.GetType("UnityEditor.GameView,UnityEditor"));
 				if (objects.Length > 0 && objects[0] is EditorWindow gameView)
 				{
 					// The game view window is larger/different aspect than the actual render area
 					Rect gameRect = gameView.position;
-					gameRect.height -= 2.0f * UnityEditor.EditorGUIUtility.singleLineHeight; // To aprox account for window header
+					gameRect.height -= 2.0f * EditorGUIUtility.singleLineHeight; // To aprox account for window header
 					float simPerReal = Screen.width > Screen.height ?
 						Screen.width / gameRect.width :
 						Screen.height / gameRect.height;
@@ -822,9 +848,9 @@ namespace Core
 				s_AndroidDPI = Screen.dpi;
 				return s_AndroidDPI;
 			}
-			AndroidJavaClass activityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+			AndroidJavaClass activityClass = new("com.unity3d.player.UnityPlayer");
 			AndroidJavaObject activity = activityClass.GetStatic<AndroidJavaObject>("currentActivity");
-			AndroidJavaObject metrics = new AndroidJavaObject("android.util.DisplayMetrics");
+			AndroidJavaObject metrics = new("android.util.DisplayMetrics");
 			activity.Call<AndroidJavaObject>("getWindowManager").Call<AndroidJavaObject>("getDefaultDisplay").Call("getMetrics", metrics);
 			s_AndroidDPI = (metrics.Get<float>("xdpi") + metrics.Get<float>("ydpi")) * 0.5f;
 			return s_AndroidDPI;
@@ -910,13 +936,13 @@ namespace Core
 
 		public static Quaternion XZLookRotation(Vector3 forward)
 		{
-			return Core.Util.SafeLookRotation(VectorXZ(forward), Vector3.up);
+			return SafeLookRotation(VectorXZ(forward), Vector3.up);
 		}
 
 		public static bool TryGetLookRotation(Vector3 forward, out Quaternion lookRotation)
 		{
 			lookRotation = Quaternion.identity;
-			if (forward.sqrMagnitude < Core.Util.VECTOR_EPSILON_SQR)
+			if (forward.sqrMagnitude < VECTOR_EPSILON_SQR)
 			{
 				return false;
 			}
@@ -926,11 +952,11 @@ namespace Core
 
 		public static Quaternion SafeLookRotation(Vector3 forward)
 		{
-			if (Vector3.SqrMagnitude(forward) < Core.Util.VECTOR_EPSILON_SQR)
+			if (Vector3.SqrMagnitude(forward) < VECTOR_EPSILON_SQR)
 			{
-				if (!Core.Util.IsRelease()) // Don't use DevException here to keep release logs from getting spammed
+				if (!IsRelease()) // Don't use DevException here to keep release logs from getting spammed
 				{
-					throw new System.InvalidOperationException($"Look rotation viewing vector is zero. This shouldn't happen.");
+					throw new InvalidOperationException($"Look rotation viewing vector is zero. This shouldn't happen.");
 				}
 				return Quaternion.identity;
 			}
@@ -940,7 +966,7 @@ namespace Core
 		public static bool TryGetLookRotation(Vector3 forward, Vector3 upwards, out Quaternion lookRotation)
 		{
 			lookRotation = Quaternion.identity;
-			if (forward.sqrMagnitude < Core.Util.VECTOR_EPSILON_SQR)
+			if (forward.sqrMagnitude < VECTOR_EPSILON_SQR)
 			{
 				return false;
 			}
@@ -950,11 +976,11 @@ namespace Core
 
 		public static Quaternion SafeLookRotation(Vector3 forward, Vector3 upwards)
 		{
-			if (Vector3.SqrMagnitude(forward) < Core.Util.VECTOR_EPSILON_SQR)
+			if (Vector3.SqrMagnitude(forward) < VECTOR_EPSILON_SQR)
 			{
-				if (!Core.Util.IsRelease()) // Don't use DevException here to keep release logs from getting spammed
+				if (!IsRelease()) // Don't use DevException here to keep release logs from getting spammed
 				{
-					throw new System.InvalidOperationException($"Look rotation viewing vector is zero. This shouldn't happen.");
+					throw new InvalidOperationException($"Look rotation viewing vector is zero. This shouldn't happen.");
 				}
 				return Quaternion.identity;
 			}
@@ -974,8 +1000,8 @@ namespace Core
 			}
 		}
 
-		private static List<SkinnedMeshRenderer> s_SkinnedRenderers = new List<SkinnedMeshRenderer>();
-		private static List<MeshRenderer> s_MeshRenderers = new List<MeshRenderer>();
+		private static List<SkinnedMeshRenderer> s_SkinnedRenderers = new();
+		private static List<MeshRenderer> s_MeshRenderers = new();
 
 		public static Material[] GetMaterials(GameObject obj, bool unskinned = true, bool skinned = true)
 		{
@@ -993,7 +1019,7 @@ namespace Core
 			}
 			int meshCount = s_MeshRenderers.Count;
 			int skinnedCount = s_SkinnedRenderers.Count;
-			List<Material> materials = new List<Material>(meshCount + skinnedCount);
+			List<Material> materials = new(meshCount + skinnedCount);
 			for (int i = 0; i < meshCount; i++)
 			{
 				materials.AddRange(s_MeshRenderers[i].materials);
@@ -1048,7 +1074,7 @@ namespace Core
 			SkinnedMeshRenderer[] skinnedRenderers = skinned ?
 				obj.GetComponentsInChildren<SkinnedMeshRenderer>() :
 				new SkinnedMeshRenderer[] { };
-			List<Renderer> renderers = new List<Renderer>(meshRenderers.Length + skinnedRenderers.Length);
+			List<Renderer> renderers = new(meshRenderers.Length + skinnedRenderers.Length);
 			renderers.AddRange(meshRenderers);
 			renderers.AddRange(skinnedRenderers);
 			return renderers;
@@ -1203,10 +1229,10 @@ namespace Core
 
 		public static bool QuaternionEquals(Quaternion q1, Quaternion q2)
 		{
-			return Core.Util.ApproximatelyLowPrecision(q1.w, q2.w)
-				&& Core.Util.ApproximatelyLowPrecision(q1.x, q2.x)
-				&& Core.Util.ApproximatelyLowPrecision(q1.y, q2.y)
-				&& Core.Util.ApproximatelyLowPrecision(q1.z, q2.z);
+			return ApproximatelyLowPrecision(q1.w, q2.w)
+				&& ApproximatelyLowPrecision(q1.x, q2.x)
+				&& ApproximatelyLowPrecision(q1.y, q2.y)
+				&& ApproximatelyLowPrecision(q1.z, q2.z);
 		}
 
 		public static bool ColorEquals(Color c1, Color c2)
@@ -1406,7 +1432,7 @@ namespace Core
 				Debug.LogError("Core.Util.DuplicateBehaviour() Behaviour is null");
 				return null;
 			}
-			System.Type type = behaviour.GetType();
+			Type type = behaviour.GetType();
 			Component destination = null;
 			Component baseComponent = owner.GetComponent(type);
 			if (baseComponent != null)
@@ -1454,14 +1480,14 @@ namespace Core
 			{
 				if (behaviour != null) // I don't know how this is possible but it is?
 				{
-					Core.Util.DuplicateBehaviour(copyTo, behaviour, allowDuplicates);
+					DuplicateBehaviour(copyTo, behaviour, allowDuplicates);
 				}
 			}
 		}
 
 		public static T CopyBehaviour<T>(T from, GameObject to, bool allowDuplicates = true) where T : MonoBehaviour
 		{
-			System.Type type = from.GetType();
+			Type type = from.GetType();
 			if (!allowDuplicates && to.GetComponent(type) != null)
 			{
 				return null;
@@ -1554,7 +1580,7 @@ namespace Core
 			}
 
 			Vector2 forward = (end - start).normalized;
-			Vector2 arcNormal = new Vector2(forward.y, -forward.x);
+			Vector2 arcNormal = new(forward.y, -forward.x);
 			if (forward.y < 0.0f || Approximately(Mathf.Sign(forward.x), Mathf.Sign(forward.y)))
 			{
 				arcNormal *= -1.0f;
@@ -1662,7 +1688,7 @@ namespace Core
 
 		public static Vector2[] TangetPoints(Circle2D circle, Vector2 collinearPoint)
 		{
-			Circle2D intersectingCircle = new Circle2D(Vector2.Lerp(collinearPoint, circle.center, 0.5f), Vector2.Distance(collinearPoint, circle.center) / 2.0f);
+			Circle2D intersectingCircle = new(Vector2.Lerp(collinearPoint, circle.center, 0.5f), Vector2.Distance(collinearPoint, circle.center) / 2.0f);
 
 			Vector2[] tangentPoints = circle.Intersection(intersectingCircle);
 
@@ -1773,8 +1799,7 @@ namespace Core
 
 		public static T GetOrAddComponent<T>(GameObject obj) where T : Component
 		{
-			T component = obj.GetComponent<T>();
-			if (component == null)
+			if (!obj.TryGetComponent<T>(out T component))
 			{
 				component = obj.AddComponent<T>();
 			}
@@ -1906,14 +1931,14 @@ namespace Core
 				endPoint = center + invNormal * radius;
 			}
 
-			List<Vector2> points = new List<Vector2>();
+			List<Vector2> points = new();
 
 			points.Add(startPoint);
-			while (Vector2.Distance(points[points.Count - 1], endPoint) > intervalLength && points.Count < 9999)
+			while (Vector2.Distance(points[^1], endPoint) > intervalLength && points.Count < 9999)
 			{
-				Vector2 normal = (center - points[points.Count - 1]).normalized;
+				Vector2 normal = (center - points[^1]).normalized;
 				Vector2 tangent = new Vector2(-normal.y, normal.x) * (clockwise ? 1.0f : -1.0f);
-				Vector2 newNormal = (center - (points[points.Count - 1] + (tangent * intervalLength))).normalized;
+				Vector2 newNormal = (center - (points[^1] + (tangent * intervalLength))).normalized;
 				Vector2 newPoint = center - (newNormal * radius);
 				points.Add(newPoint);
 			}
@@ -1924,7 +1949,7 @@ namespace Core
 
 		public Vector2[] GetCircle(float intervalLength)
 		{
-			List<Vector2> points = new List<Vector2>();
+			List<Vector2> points = new();
 			Vector2 right = center + new Vector2(radius, 0.0f);
 			Vector2 left = center + new Vector2(-radius, 0.0f);
 			points.AddRange(GetArc(right, left, intervalLength));

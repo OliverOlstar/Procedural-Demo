@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 namespace RootMotion
 {
-    public enum ShowIfMode
+	public enum ShowIfMode
     {
         Disabled = 0,
         Hidden = 1

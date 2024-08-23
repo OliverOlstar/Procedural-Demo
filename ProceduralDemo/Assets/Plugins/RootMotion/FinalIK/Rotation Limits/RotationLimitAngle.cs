@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Simple angular rotation limit.
@@ -62,10 +63,24 @@ namespace RootMotion.FinalIK {
 		 * Apply swing limits
 		 * */
 		private Quaternion LimitSwing(Quaternion rotation) {
-			if (axis == Vector3.zero) return rotation; // Ignore with zero axes
-			if (rotation == Quaternion.identity) return rotation; // Assuming initial rotation is in the reachable area
-			if (limit >= 180) return rotation;
-			
+			if (axis == Vector3.zero)
+			{
+				return rotation; // Ignore with zero axes
+			}
+
+
+			if (rotation == Quaternion.identity)
+			{
+				return rotation; // Assuming initial rotation is in the reachable area
+			}
+
+
+			if (limit >= 180)
+			{
+				return rotation;
+			}
+
+
 			Vector3 swingAxis = rotation * axis;
 			
 			// Get the limited swing axis

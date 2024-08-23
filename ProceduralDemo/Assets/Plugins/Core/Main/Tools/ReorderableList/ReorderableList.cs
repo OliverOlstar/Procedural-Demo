@@ -45,7 +45,7 @@ namespace Core
 	public class ReorderableList<T> : ReorderableListGeneric<T>
 	{
 		[SerializeField]
-		private List<T> m_List = new List<T>();
+		private List<T> m_List = new();
 		protected override List<T> List => m_List;
 	}
 
@@ -53,7 +53,7 @@ namespace Core
 	public class ReorderableListFlatClass<T> : ReorderableListGeneric<T> where T : class
 	{
 		[SerializeField, Flatten(false, false, false)]
-		private List<T> m_List = new List<T>();
+		private List<T> m_List = new();
 		protected override List<T> List => m_List;
 	}
 

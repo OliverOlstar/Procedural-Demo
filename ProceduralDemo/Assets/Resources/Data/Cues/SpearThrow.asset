@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 889639f47c956344496a415cea10090c, type: 3}
+  m_Name: SpearThrow
+  m_EditorClassIdentifier: 
+  m_Audio:
+  - m_IsEnabled: 1
+    m_Sound:
+      m_Clips:
+      - {fileID: 8300000, guid: ab54f1702f51ad046aa529d2eb441a66, type: 3}
+      m_Pitch: {x: 0.9, y: 1.2}
+      m_Priority: 0
+  m_Particle:
+  - m_IsEnabled: 1
+    m_RandomParticles:
+    - {fileID: 3131707097971858360, guid: 790a525fb1310d6418b1230e5e032546, type: 3}
+  m_CameraShake:
+  - m_IsEnabled: 1
+    m_Magnitude: 1
+    m_Roughness: 4
+    m_FadeInTime: 0.1
+    m_FadeOutTime: 0.75
+    m_PosInfluence: {x: 0.15, y: 0.15, z: 0.15}
+    m_RotInfluence: {x: 1, y: 1, z: 1}
+    m_InnerDistance: 0
+    m_MaxDistance: Infinity

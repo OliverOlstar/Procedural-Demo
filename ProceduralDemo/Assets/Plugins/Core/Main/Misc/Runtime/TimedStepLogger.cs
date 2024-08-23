@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
@@ -11,7 +9,7 @@ namespace Core
 		private float m_LoadStartTime = 0.0f;
 		private float m_LastLogTime = 0.0f;
 		private string m_ProcessName = null;
-		private List<(string, float)> m_StepDeltaTimes = new List<(string, float)>();
+		private List<(string, float)> m_StepDeltaTimes = new();
 
 		protected void OnStartInternal(string primaryTerm, string secondaryTerm = null, Color? color = null, string step = "Start")
 		{
@@ -19,7 +17,7 @@ namespace Core
 				$"[{primaryTerm}][{secondaryTerm}] ";
 			if (color.HasValue)
 			{
-				m_ProcessName = Core.DebugUtil.ColorString(color.Value, m_ProcessName);
+				m_ProcessName = DebugUtil.ColorString(color.Value, m_ProcessName);
 			}
 			m_StepDeltaTimes.Clear();
 			m_LoadStartTime = m_LastLogTime = Time.realtimeSinceStartup;
@@ -40,11 +38,11 @@ namespace Core
 			for (int i = 0; i < m_StepDeltaTimes.Count; i++)
 			{
 				(string, float) step = m_StepDeltaTimes[i];
-				Core.Str.AddNewLine(step.Item1, "\t", step.Item2.ToString("0.0"), "s");
+				Str.AddNewLine(step.Item1, "\t", step.Item2.ToString("0.0"), "s");
 				total += step.Item2;
 			}
-			Core.Str.AddLine();
-			Debug.Log($"{m_ProcessName} Timed Results\nTotal Duration: {total.ToString("0.0")}s\n{Core.Str.Finish()}");
+			Str.AddLine();
+			Debug.Log($"{m_ProcessName} Timed Results\nTotal Duration: {total.ToString("0.0")}s\n{Str.Finish()}");
 		}
 
 		protected void LogInternal(string step, string message)

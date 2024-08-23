@@ -1,11 +1,10 @@
 ﻿#if URP
-using System;
 using UnityEditor;
 using UnityEngine;
 
 namespace StylizedWater2
 {
-    [CustomEditor(typeof(StylizedWaterRenderFeature))]
+	[CustomEditor(typeof(StylizedWaterRenderFeature))]
     public class RenderFeatureEditor : Editor
     {
         private SerializedProperty screenSpaceReflectionSettings;
@@ -44,9 +43,12 @@ namespace StylizedWater2
             EditorGUILayout.Space();
             
             EditorGUILayout.PropertyField(screenSpaceReflectionSettings);
-            if(screenSpaceReflectionSettings.isExpanded) EditorGUILayout.HelpBox("This feature is available for preview, no configurable settings are available yet", MessageType.Info);
-            
-            EditorGUILayout.Space();
+            if(screenSpaceReflectionSettings.isExpanded)
+			{
+				EditorGUILayout.HelpBox("This feature is available for preview, no configurable settings are available yet", MessageType.Info);
+			}
+
+			EditorGUILayout.Space();
             
             EditorGUILayout.PropertyField(displacementPrePassSettings);
             if (displacementPrePassSettings.isExpanded)

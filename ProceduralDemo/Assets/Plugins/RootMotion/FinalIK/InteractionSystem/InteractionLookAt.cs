@@ -1,8 +1,8 @@
 using UnityEngine;
-using System.Collections;
-using RootMotion;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// Controls LookAtIK for the InteractionSystem
@@ -28,9 +28,18 @@ namespace RootMotion.FinalIK {
 		/// Look the specified target for the specified time.
 		/// </summary>
 		public void Look(Transform target, float time) {
-			if (ik == null) return;
+			if (ik == null)
+			{
+				return;
+			}
 
-			if (ik.solver.IKPositionWeight <= 0f) ik.solver.IKPosition = ik.solver.GetRoot().position + ik.solver.GetRoot().forward * 3f;
+
+			if (ik.solver.IKPositionWeight <= 0f)
+			{
+				ik.solver.IKPosition = ik.solver.GetRoot().position + ik.solver.GetRoot().forward * 3f;
+			}
+
+
 			lookAtTarget = target;
 			stopLookTime = time;
 		}
@@ -42,19 +51,45 @@ namespace RootMotion.FinalIK {
 		private bool firstFBBIKSolve; // Has the FBBIK already solved for this frame? In case it is solved more than once, for example when using the ShoulderRotator
 
 		public void OnFixTransforms() {
-			if (ik == null) return;
-			if (ik.fixTransforms) ik.solver.FixTransforms();
+			if (ik == null)
+			{
+				return;
+			}
+
+
+			if (ik.fixTransforms)
+			{
+				ik.solver.FixTransforms();
+			}
+
 		}
 
 		public void Update() {
-			if (ik == null) return;
-			if (ik.enabled) ik.enabled = false;
+			if (ik == null)
+			{
+				return;
+			}
 
-			if (lookAtTarget == null) return;
 
-			if (isPaused) stopLookTime += Time.deltaTime;
+			if (ik.enabled)
+			{
+				ik.enabled = false;
+			}
+
+
+			if (lookAtTarget == null)
+			{
+				return;
+			}
+
+
+			if (isPaused)
+			{
+				stopLookTime += Time.deltaTime;
+			}
 
 			// Interpolate the weight
+
 			float add = Time.time < stopLookTime? weightSpeed: -weightSpeed;
 			weight = Mathf.Clamp(weight + add * Time.deltaTime, 0f, 1f);
 
@@ -65,14 +100,27 @@ namespace RootMotion.FinalIK {
 			ik.solver.IKPosition = Vector3.Lerp(ik.solver.IKPosition, lookAtTarget.position, lerpSpeed * Time.deltaTime);
 
 			// Release the LookAtIK for other tasks once we're weighed out
-			if (weight <= 0f) lookAtTarget = null;
+			if (weight <= 0f)
+			{
+				lookAtTarget = null;
+			}
+
 
 			firstFBBIKSolve = true;
 		}
 	
 		public void SolveSpine() {
-			if (ik == null) return;
-			if (!firstFBBIKSolve) return;
+			if (ik == null)
+			{
+				return;
+			}
+
+
+			if (!firstFBBIKSolve)
+			{
+				return;
+			}
+
 
 			float headWeight = ik.solver.headWeight;
 			float eyesWeight = ik.solver.eyesWeight;
@@ -85,8 +133,17 @@ namespace RootMotion.FinalIK {
 		}
 
 		public void SolveHead() {
-			if (ik == null) return;
-			if (!firstFBBIKSolve) return;
+			if (ik == null)
+			{
+				return;
+			}
+
+
+			if (!firstFBBIKSolve)
+			{
+				return;
+			}
+
 
 			float bodyWeight = ik.solver.bodyWeight;
 

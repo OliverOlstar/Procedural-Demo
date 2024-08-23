@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -70,7 +69,7 @@ namespace Scriptionary
 		[Core.SerializedReferenceDrawer(Core.SerializedRefGUIStyle.Flat)]
 #endif
 		[SerializeReference]
-		private List<TItem> m_Items = new List<TItem>();
+		private List<TItem> m_Items = new();
 
 		protected override List<TItem> GetRawItems() => m_Items;
 	}
@@ -83,7 +82,7 @@ namespace Scriptionary
 //		[Sirenix.OdinInspector.DrawWithUnity]
 //#endif
 		[SerializeField]
-		private List<TItem> m_Items = new List<TItem>();
+		private List<TItem> m_Items = new();
 
 		protected override List<TItem> GetRawItems() => m_Items;
 	}

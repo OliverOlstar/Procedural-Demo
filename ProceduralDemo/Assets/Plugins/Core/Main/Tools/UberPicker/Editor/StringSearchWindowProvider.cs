@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.Experimental.GraphView;
@@ -51,14 +50,14 @@ public class StringSearchWindowProvider : ScriptableObject, ISearchWindowProvide
 	private const string NULLITEMNAME = "None";
 
 	private static readonly Core.AssetDatabaseDependentValues<string, StringSearchWindowProvider> s_CachedSearchWindows =
-		new Core.AssetDatabaseDependentValues<string, StringSearchWindowProvider>();
+		new();
 
 	public static void Show(
 		in StringSearchWindowContext context,
-		System.Action<string> onSelected)
+		Action<string> onSelected)
 	{
-		StringSearchWindowProvider window = StringSearchWindowProvider.GetOrCreate(context, onSelected);
-		SearchWindowContext context2 = new SearchWindowContext(
+		StringSearchWindowProvider window = GetOrCreate(context, onSelected);
+		SearchWindowContext context2 = new(
 			GUIUtility.GUIToScreenPoint(Event.current.mousePosition),
 			window.Width,
 			window.Height);
@@ -67,7 +66,7 @@ public class StringSearchWindowProvider : ScriptableObject, ISearchWindowProvide
 
 	public static StringSearchWindowProvider GetOrCreate(
 		in StringSearchWindowContext context,
-		System.Action<string> onSelected)
+		Action<string> onSelected)
 	{
 		if (!s_CachedSearchWindows.TryGet(context.CacheKey, out StringSearchWindowProvider provider))
 		{
@@ -81,9 +80,9 @@ public class StringSearchWindowProvider : ScriptableObject, ISearchWindowProvide
 	}
 
 	private List<SearchTreeEntry> m_Entries = null;
-	private System.Action<string> m_OnSelected;
+	private Action<string> m_OnSelected;
 
-	private void RegisterOnSelected(System.Action<string> onSelected)
+	private void RegisterOnSelected(Action<string> onSelected)
 	{
 		m_OnSelected = onSelected;
 	}
@@ -115,7 +114,7 @@ public class StringSearchWindowProvider : ScriptableObject, ISearchWindowProvide
 			}
 			else if (name == UberPickerPathCache.NULL_ITEM_NAME)
 			{
-				SearchTreeEntry entry = new SearchTreeEntry(m_NoneEntryContent);
+				SearchTreeEntry entry = new(m_NoneEntryContent);
 				entry.userData = null;
 				entry.level = level;
 				m_Entries.Add(entry);
@@ -125,7 +124,7 @@ public class StringSearchWindowProvider : ScriptableObject, ISearchWindowProvide
 				GUIContent content = Path.HasExtension(path) ? // If this is an asset path, then get it's icon
 					new GUIContent(name, AssetDatabase.GetCachedIcon(path)) :
 					new GUIContent(name, AssetDatabase.GetCachedIcon(ICONPATH));
-				SearchTreeEntry entry = new SearchTreeEntry(content);
+				SearchTreeEntry entry = new(content);
 				entry.userData = path;
 				entry.level = level;
 				m_Entries.Add(entry);
@@ -164,7 +163,7 @@ public class StringSearchWindowProvider : ScriptableObject, ISearchWindowProvide
 				}
 			}
 			largestGroupCount = Mathf.Max(largestGroupCount, groupCount);
-			largestGroupLevel = m_Paths.ItemLevels[m_Paths.ItemLevels.Length - 1];
+			largestGroupLevel = m_Paths.ItemLevels[^1];
 			if (!found)
 			{
 				break;

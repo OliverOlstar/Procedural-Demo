@@ -1,7 +1,7 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// Contains and manages a set of constraints.
@@ -77,17 +77,34 @@ namespace RootMotion.FinalIK {
 		/// Updates the constraints.
 		/// </summary>
 		public void Update() {
-			if (!IsValid()) return;
+			if (!IsValid())
+			{
+				return;
+			}
 
 			// Position
-			if (target != null) position = target.position;
+			if (target != null)
+			{
+				position = target.position;
+			}
+
 			transform.position += positionOffset;
-			if (positionWeight > 0f) transform.position = Vector3.Lerp(transform.position, position, positionWeight);
+			if (positionWeight > 0f)
+			{
+				transform.position = Vector3.Lerp(transform.position, position, positionWeight);
+			}
 
 			// Rotation
-			if (target != null) rotation = target.eulerAngles;
+			if (target != null)
+			{
+				rotation = target.eulerAngles;
+			}
+
 			transform.rotation = Quaternion.Euler(rotationOffset) * transform.rotation;
-			if (rotationWeight > 0f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(rotation), rotationWeight);
+			if (rotationWeight > 0f)
+			{
+				transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(rotation), rotationWeight);
+			}
 		}
 		
 		#endregion Main Interface

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 
 namespace Core
@@ -36,7 +35,7 @@ namespace Core
 	/// </summary>
 	public class AssetDatabaseDependentValues<K, T> where T : class
 	{
-		private Dictionary<K, AssetDatabaseDepedentValue<T>> m_Dictionary = new Dictionary<K, AssetDatabaseDepedentValue<T>>();
+		private Dictionary<K, AssetDatabaseDepedentValue<T>> m_Dictionary = new();
 
 		public bool TryGet(K key, out T value)
 		{
@@ -65,7 +64,7 @@ namespace Core
 	public class PropertyDrawerCache<T> where T : class
 	{
 		private static AssetDatabaseDependentValues<string, T> s_Cache =
-			new AssetDatabaseDependentValues<string, T>();
+			new();
 		public static string GetPropertyCacheKey(SerializedProperty property) =>
 			Str.Build(property.serializedObject.targetObject.GetType().Name, ".", property.propertyPath);
 

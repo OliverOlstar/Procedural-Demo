@@ -1,6 +1,4 @@
-using System.Drawing;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,8 +9,8 @@ namespace Core.CheatMenu
 		public string Name { get; private set; }
 		public int Priority { get; private set; }
 		public bool HideWhenNotAvailable { get; private set; }
-		private List<CheatMenuPage> m_Pages = new List<CheatMenuPage>();
-		private List<CheatMenuPage> m_AvailablePages = new List<CheatMenuPage>();
+		private List<CheatMenuPage> m_Pages = new();
+		private List<CheatMenuPage> m_AvailablePages = new();
 		private string[] m_PageNames;
 		private Func<bool> m_IsAvaliable;
 

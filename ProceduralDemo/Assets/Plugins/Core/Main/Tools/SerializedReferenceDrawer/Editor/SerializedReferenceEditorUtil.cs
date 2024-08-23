@@ -1,5 +1,4 @@
 #if UNITY_2021_1_OR_NEWER
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -9,7 +8,7 @@ namespace Core
 {
 	public static class SerializedReferenceEditorUtil
 	{
-		public static Dictionary<System.Type, Cache> s_Cache = new Dictionary<System.Type, Cache>();
+		public static Dictionary<System.Type, Cache> s_Cache = new();
 
 		public class Cache
 		{

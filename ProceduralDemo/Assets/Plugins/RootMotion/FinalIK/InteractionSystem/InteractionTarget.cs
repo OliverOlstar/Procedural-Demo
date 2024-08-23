@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using RootMotion;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/// <summary>
 	/// The target of an effector in the InteractionSystem.
@@ -151,20 +150,33 @@ namespace RootMotion.FinalIK {
 
 		// Should a curve of the Type be ignored for this effector?
 		public float GetValue(InteractionObject.WeightCurve.Type curveType) {
-			for (int i = 0; i < multipliers.Length; i++) if (multipliers[i].curve == curveType) return multipliers[i].multiplier;
+			for (int i = 0; i < multipliers.Length; i++)
+			{
+				if (multipliers[i].curve == curveType)
+				{
+					return multipliers[i].multiplier;
+				}
+			}
+
 			return 1f;
 		}
 
         // Reset the twist and swing rotation of the target
         public void ResetRotation() {
-			if (pivot != null) pivot.localRotation = defaultLocalRotation;
+			if (pivot != null)
+			{
+				pivot.localRotation = defaultLocalRotation;
+			}
 		}
 
         // Rotate this target towards a position
         public void RotateTo(Transform bone) {
-            if (pivot == null) return;
+            if (pivot == null)
+			{
+				return;
+			}
 
-            if (pivot != lastPivot) {
+			if (pivot != lastPivot) {
                 defaultLocalRotation = pivot.localRotation;
                 lastPivot = pivot;
             }
@@ -200,8 +212,12 @@ namespace RootMotion.FinalIK {
                     break;
                 case RotationMode.ThreeDOF:
                     // Free rotation around all axes
-                    if (threeDOFWeight <= 0f) break;
-                    Quaternion fromTo = QuaTools.FromToRotation(transform.rotation, bone.rotation);
+                    if (threeDOFWeight <= 0f)
+					{
+						break;
+					}
+
+					Quaternion fromTo = QuaTools.FromToRotation(transform.rotation, bone.rotation);
                     if (threeDOFWeight >= 1f)
                     {
                         pivot.rotation = fromTo * pivot.rotation;

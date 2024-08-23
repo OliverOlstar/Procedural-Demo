@@ -1,12 +1,12 @@
-﻿#if UNITY_WEBGL || (UNITY_2022_1_OR_NEWER && PLATFORM_ANDROID && ENABLE_IL2CPP)
-// No multithread
-#else
-#define ENABLE_MULTITHREAD
-#endif
+﻿// #if UNITY_WEBGL || (UNITY_2022_1_OR_NEWER && ENABLE_IL2CPP)
+// // No multithread
+// #else
+// #define ENABLE_MULTITHREAD
+// #endif
 
 using UnityEngine;
 using System.Collections.Generic;
-using System.Threading;
+// using System.Threading;
 
 [AddComponentMenu("Dynamic Bone/Dynamic Bone")]
 public class DynamicBone : MonoBehaviour
@@ -17,19 +17,17 @@ public class DynamicBone : MonoBehaviour
     public Transform m_Root = null;
     public List<Transform> m_Roots = null;
 
-#if UNITY_5_3_OR_NEWER
-    [Tooltip("Internal physics simulation rate.")]
-#endif
-    public float m_UpdateRate = 60.0f;
+    // public enum UpdateMode
+    // {
+    //     Normal,
+    //     AnimatePhysics,
+    //     UnscaledTime,
+    //     Default
+    // }
+    // public UpdateMode m_UpdateMode = UpdateMode.Default;
 
-    public enum UpdateMode
-    {
-        Normal,
-        AnimatePhysics,
-        UnscaledTime,
-        Default
-    }
-    public UpdateMode m_UpdateMode = UpdateMode.Default;
+	[SerializeField]
+	private float m_ScaledTime = 0.0f;
 
 #if UNITY_5_3_OR_NEWER
     [Tooltip("How much the bones slowed down.")]
@@ -123,14 +121,13 @@ public class DynamicBone : MonoBehaviour
     public Transform m_ReferenceObject = null;
     public float m_DistanceToObject = 20;
 
-    [HideInInspector]
-    public bool m_Multithread = true;
+    // [HideInInspector]
+    // public bool m_Multithread = true;
 
     Vector3 m_ObjectMove;
     Vector3 m_ObjectPrevPosition;
     float m_ObjectScale;
 
-    float m_Time = 0;
     float m_Weight = 1.0f;
     bool m_DistantDisabled = false;
     int m_PreUpdateCount = 0;
@@ -199,37 +196,40 @@ public class DynamicBone : MonoBehaviour
         SetupParticles();
     }
 
+//     void FixedUpdate()
+//     {
+//         if (m_UpdateMode == UpdateMode.AnimatePhysics)
+//         {
+//             PreUpdate();
+//         }
+//     }
+
+//     void Update()
+//     {
+//         if (m_UpdateMode != UpdateMode.AnimatePhysics)
+//         {
+//             PreUpdate();
+//         }
+
+// #if ENABLE_MULTITHREAD
+//         if (m_PreUpdateCount > 0 && m_Multithread)
+//         {
+//             AddPendingWork(this);
+//             m_WorkAdded = true;
+//         }
+// #endif
+//         ++s_UpdateCount;
+//     }
+
     void FixedUpdate()
-    {
-        if (m_UpdateMode == UpdateMode.AnimatePhysics)
-        {
-            PreUpdate();
-        }
-    }
+	{
+		PreUpdate();
+		if (m_PreUpdateCount == 0)
+		{
+			return;
+		}
 
-    void Update()
-    {
-        if (m_UpdateMode != UpdateMode.AnimatePhysics)
-        {
-            PreUpdate();
-        }
-
-#if ENABLE_MULTITHREAD
-        if (m_PreUpdateCount > 0 && m_Multithread)
-        {
-            AddPendingWork(this);
-            m_WorkAdded = true;
-        }
-#endif
-        ++s_UpdateCount;
-    }
-
-    void LateUpdate()
-    {
-        if (m_PreUpdateCount == 0)
-            return;
-
-        if (s_UpdateCount > 0)
+		if (s_UpdateCount > 0)
         {
             s_UpdateCount = 0;
             ++s_PrepareFrame;
@@ -250,7 +250,7 @@ public class DynamicBone : MonoBehaviour
             if (IsNeedUpdate())
             {
                 Prepare();
-                UpdateParticles();
+                UpdateParticles(Time.fixedDeltaTime * m_ScaledTime);
                 ApplyParticlesToTransforms();
             }
         }
@@ -260,18 +260,6 @@ public class DynamicBone : MonoBehaviour
 
     void Prepare()
     {
-        m_DeltaTime = Time.deltaTime;
-#if UNITY_5_3_OR_NEWER
-        if (m_UpdateMode == UpdateMode.UnscaledTime)
-        {
-            m_DeltaTime = Time.unscaledDeltaTime;
-        }
-        else if (m_UpdateMode == UpdateMode.AnimatePhysics)
-        {
-            m_DeltaTime = Time.fixedDeltaTime * m_PreUpdateCount;
-        }
-#endif
-
         m_ObjectScale = Mathf.Abs(transform.lossyScale.x);
         m_ObjectMove = transform.position - m_ObjectPrevPosition;
         m_ObjectPrevPosition = transform.position;
@@ -293,10 +281,7 @@ public class DynamicBone : MonoBehaviour
             }
         }
 
-        if (m_EffectiveColliders != null)
-        {
-            m_EffectiveColliders.Clear();
-        }
+        m_EffectiveColliders?.Clear();
 
         if (m_Colliders != null)
         {
@@ -305,10 +290,7 @@ public class DynamicBone : MonoBehaviour
                 DynamicBoneColliderBase c = m_Colliders[i];
                 if (c != null && c.enabled)
                 {
-                    if (m_EffectiveColliders == null)
-                    {
-                        m_EffectiveColliders = new List<DynamicBoneColliderBase>();
-                    }
+                    m_EffectiveColliders ??= new List<DynamicBoneColliderBase>();
                     m_EffectiveColliders.Add(c);
 
                     if (c.PrepareFrame != s_PrepareFrame)       // colliders used by many dynamic bones only prepares once
@@ -338,9 +320,11 @@ public class DynamicBone : MonoBehaviour
     void CheckDistance()
     {
         if (!m_DistantDisable)
-            return;
+		{
+			return;
+		}
 
-        Transform rt = m_ReferenceObject;
+		Transform rt = m_ReferenceObject;
         if (rt == null && Camera.main != null)
         {
             rt = Camera.main.transform;
@@ -373,7 +357,6 @@ public class DynamicBone : MonoBehaviour
 
     void OnValidate()
     {
-        m_UpdateRate = Mathf.Max(m_UpdateRate, 0);
         m_Damping = Mathf.Clamp01(m_Damping);
         m_Elasticity = Mathf.Clamp01(m_Elasticity);
         m_Stiffness = Mathf.Clamp01(m_Stiffness);
@@ -415,13 +398,17 @@ public class DynamicBone : MonoBehaviour
         }
 
         if (roots.Count != m_ParticleTrees.Count)
-            return true;
+		{
+			return true;
+		}
 
-        for (int i = 0; i < roots.Count; ++i)
+		for (int i = 0; i < roots.Count; ++i)
         {
             if (roots[i] != m_ParticleTrees[i].m_Root)
-                return true;
-        }
+			{
+				return true;
+			}
+		}
 
         return false;
     }
@@ -434,9 +421,11 @@ public class DynamicBone : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         if (!enabled)
-            return;
+		{
+			return;
+		}
 
-        if (Application.isEditor && !Application.isPlaying && transform.hasChanged)
+		if (Application.isEditor && !Application.isPlaying && transform.hasChanged)
         {
             //InitTransforms();
             SetupParticles();
@@ -488,55 +477,16 @@ public class DynamicBone : MonoBehaviour
         return m_Weight;
     }
 
-    void UpdateParticles()
+    void UpdateParticles(float pDeltaTime)
     {
         if (m_ParticleTrees.Count <= 0)
-            return;
+		{
+			return;
+		}
 
-        int loop = 1;
-        float timeVar = 1;
-        float dt = m_DeltaTime;
-
-        if (m_UpdateMode == UpdateMode.Default)
-        {
-            if (m_UpdateRate > 0)
-            {
-                timeVar = dt * m_UpdateRate;
-            }
-        }
-        else
-        {
-            if (m_UpdateRate > 0)
-            {
-                float frameTime = 1.0f / m_UpdateRate;
-                m_Time += dt;
-                loop = 0;
-
-                while (m_Time >= frameTime)
-                {
-                    m_Time -= frameTime;
-                    if (++loop >= 3)
-                    {
-                        m_Time = 0;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (loop > 0)
-        {
-            for (int i = 0; i < loop; ++i)
-            {
-                UpdateParticles1(timeVar, i);
-                UpdateParticles2(timeVar);
-            }
-        }
-        else
-        {
-            SkipUpdateParticles();
-        }
-    }
+		UpdateParticles1(pDeltaTime, 0);
+		UpdateParticles2(pDeltaTime);
+	}
 
     public void SetupParticles()
     {
@@ -553,12 +503,16 @@ public class DynamicBone : MonoBehaviour
             {
                 Transform root = m_Roots[i];
                 if (root == null)
-                    continue;
+				{
+					continue;
+				}
 
-                if (m_ParticleTrees.Exists(x => x.m_Root == root))
-                    continue;
+				if (m_ParticleTrees.Exists(x => x.m_Root == root))
+				{
+					continue;
+				}
 
-                AppendParticleTree(root);
+				AppendParticleTree(root);
             }
         }
 
@@ -578,22 +532,28 @@ public class DynamicBone : MonoBehaviour
     void AppendParticleTree(Transform root)
     {
         if (root == null)
-            return;
+		{
+			return;
+		}
 
-        var pt = new ParticleTree();
-        pt.m_Root = root;
-        pt.m_RootWorldToLocalMatrix = root.worldToLocalMatrix;
-        m_ParticleTrees.Add(pt);
+		var pt = new ParticleTree
+		{
+			m_Root = root,
+			m_RootWorldToLocalMatrix = root.worldToLocalMatrix
+		};
+		m_ParticleTrees.Add(pt);
     }
 
     void AppendParticles(ParticleTree pt, Transform b, int parentIndex, float boneLength)
     {
-        var p = new Particle();
-        p.m_Transform = b;
-        p.m_TransformNotNull = b != null;
-        p.m_ParentIndex = parentIndex;
+		var p = new Particle
+		{
+			m_Transform = b,
+			m_TransformNotNull = b != null,
+			m_ParentIndex = parentIndex
+		};
 
-        if (b != null)
+		if (b != null)
         {
             p.m_Position = p.m_PrevPosition = b.position;
             p.m_InitLocalPosition = b.localPosition;
@@ -690,18 +650,35 @@ public class DynamicBone : MonoBehaviour
             {
                 float a = p.m_BoneLength / pt.m_BoneTotalLength;
                 if (m_DampingDistrib != null && m_DampingDistrib.keys.Length > 0)
-                    p.m_Damping *= m_DampingDistrib.Evaluate(a);
-                if (m_ElasticityDistrib != null && m_ElasticityDistrib.keys.Length > 0)
-                    p.m_Elasticity *= m_ElasticityDistrib.Evaluate(a);
-                if (m_StiffnessDistrib != null && m_StiffnessDistrib.keys.Length > 0)
-                    p.m_Stiffness *= m_StiffnessDistrib.Evaluate(a);
-                if (m_InertDistrib != null && m_InertDistrib.keys.Length > 0)
-                    p.m_Inert *= m_InertDistrib.Evaluate(a);
-                if (m_FrictionDistrib != null && m_FrictionDistrib.keys.Length > 0)
-                    p.m_Friction *= m_FrictionDistrib.Evaluate(a);
-                if (m_RadiusDistrib != null && m_RadiusDistrib.keys.Length > 0)
-                    p.m_Radius *= m_RadiusDistrib.Evaluate(a);
-            }
+				{
+					p.m_Damping *= m_DampingDistrib.Evaluate(a);
+				}
+
+				if (m_ElasticityDistrib != null && m_ElasticityDistrib.keys.Length > 0)
+				{
+					p.m_Elasticity *= m_ElasticityDistrib.Evaluate(a);
+				}
+
+				if (m_StiffnessDistrib != null && m_StiffnessDistrib.keys.Length > 0)
+				{
+					p.m_Stiffness *= m_StiffnessDistrib.Evaluate(a);
+				}
+
+				if (m_InertDistrib != null && m_InertDistrib.keys.Length > 0)
+				{
+					p.m_Inert *= m_InertDistrib.Evaluate(a);
+				}
+
+				if (m_FrictionDistrib != null && m_FrictionDistrib.keys.Length > 0)
+				{
+					p.m_Friction *= m_FrictionDistrib.Evaluate(a);
+				}
+
+				if (m_RadiusDistrib != null && m_RadiusDistrib.keys.Length > 0)
+				{
+					p.m_Radius *= m_RadiusDistrib.Evaluate(a);
+				}
+			}
 
             p.m_Damping = Mathf.Clamp01(p.m_Damping);
             p.m_Elasticity = Mathf.Clamp01(p.m_Elasticity);
@@ -727,9 +704,8 @@ public class DynamicBone : MonoBehaviour
             Particle p = pt.m_Particles[i];
             if (p.m_TransformNotNull)
             {
-                p.m_Transform.localPosition = p.m_InitLocalPosition;
-                p.m_Transform.localRotation = p.m_InitLocalRotation;
-            }
+                p.m_Transform.SetLocalPositionAndRotation(p.m_InitLocalPosition, p.m_InitLocalRotation);
+			}
         }
     }
 

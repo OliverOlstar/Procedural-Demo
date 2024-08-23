@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,16 +16,14 @@ using UnityEditor.Build;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 #if URP
 using UnityEngine.Rendering.Universal;
 #endif
 
 namespace StylizedWater2
 {
-    public static class ShaderConfigurator
+	public static class ShaderConfigurator
     {
         public static class Fog
         {
@@ -74,9 +71,15 @@ namespace StylizedWater2
                     this.libraryGUID = guid;
                     this.url = url;
                     this.thumbnailBytes = thumbData;
-                    if (thumbData == string.Empty) this.thumbnail = EditorGUIUtility.IconContent("d_UnityLogo").image as Texture2D;
-                    else this.thumbnail = UI.CreateIcon(thumbData) as Texture2D;
-                }
+                    if (thumbData == string.Empty)
+					{
+						this.thumbnail = EditorGUIUtility.IconContent("d_UnityLogo").image as Texture2D;
+					}
+					else
+					{
+						this.thumbnail = UI.CreateIcon(thumbData) as Texture2D;
+					}
+				}
             }
 
             private static Integration[] _Integrations;
@@ -84,8 +87,12 @@ namespace StylizedWater2
             {
                 get
                 {
-                    if (_Integrations == null) _Integrations = GetAvailableIntegrations();
-                    return _Integrations;
+                    if (_Integrations == null)
+					{
+						_Integrations = GetAvailableIntegrations();
+					}
+
+					return _Integrations;
                 }
             }
 
@@ -126,17 +133,23 @@ namespace StylizedWater2
             {
                 for (int i = 0; i < Integrations.Length; i++)
                 {
-                    if (Integrations[i].asset == asset) return Integrations[i];
-                }
+                    if (Integrations[i].asset == asset)
+					{
+						return Integrations[i];
+					}
+				}
 
                 return null;
             }
 
             public static bool IsFogLibraryPresent(Integration integration)
             {
-                if (integration.asset == Assets.None || integration.asset == Assets.UnityFog) return true;
+                if (integration.asset == Assets.None || integration.asset == Assets.UnityFog)
+				{
+					return true;
+				}
 
-                string path = AssetDatabase.GUIDToAssetPath(integration.libraryGUID);
+				string path = AssetDatabase.GUIDToAssetPath(integration.libraryGUID);
                 
                 return path != string.Empty && AssetDatabase.LoadAssetAtPath(path, typeof(TextAsset));
             }
@@ -146,14 +159,17 @@ namespace StylizedWater2
                 for (int i = 0; i < Integrations.Length; i++)
                 {
                     //Always installed anyway
-                    if (Integrations[i].asset == Assets.None || Integrations[i].asset == Assets.UnityFog) continue;
-                    
-                    #if SWS_DEV
+                    if (Integrations[i].asset == Assets.None || Integrations[i].asset == Assets.UnityFog)
+					{
+						continue;
+					}
+
+#if SWS_DEV
                     //Gets in the way of testing and using default Unity fog
                     if(Integrations[i].asset == Assets.SCPostEffects || Integrations[i].asset == Assets.Colorful) continue;
-                    #endif
-                    
-                    if (IsFogLibraryPresent(Integrations[i]))
+#endif
+
+					if (IsFogLibraryPresent(Integrations[i]))
                     {
                         return Integrations[i];
                     }
@@ -222,9 +238,9 @@ namespace StylizedWater2
 
             public static string CreateShaderCode(string templatePath, ref string[] lines, WaterShaderImporter importer, bool tessellation = false)
             {
-                //Extension installation states
-                var underwaterInstalled = StylizedWaterEditor.UnderwaterRenderingInstalled();
-                var dynamicEffectsInstalled = StylizedWaterEditor.DynamicEffectsInstalled();
+				//Extension installation states
+				bool underwaterInstalled = StylizedWaterEditor.UnderwaterRenderingInstalled();
+				bool dynamicEffectsInstalled = StylizedWaterEditor.DynamicEffectsInstalled();
 
                 Fog.Integration fogIntegration = importer.settings.autoIntegration ? Fog.GetFirstInstalled() : Fog.GetIntegration(importer.settings.fogIntegration);
 
@@ -235,7 +251,7 @@ namespace StylizedWater2
                 string suffix = tessellation ? TESSELLATION_NAME_SUFFIX : string.Empty;
                 string shaderName = $"{prefix}{AssetInfo.ASSET_NAME}/{importer.settings.shaderName}";
 
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new();
                 for (int i = 0; i < lines.Length; i++)
                 {
                     //Ignore blank lines and comments for analysis
@@ -289,9 +305,12 @@ namespace StylizedWater2
                     {
                         foreach (WaterShaderImporter.Directive directive in importer.settings.customIncludeDirectives)
                         {
-                            if(directive.enabled == false) continue;
-                            
-                            string directivePrefix = string.Empty;
+                            if(!directive.enabled)
+							{
+								continue;
+							}
+
+							string directivePrefix = string.Empty;
 
                             switch (directive.type)
                             {
@@ -306,8 +325,11 @@ namespace StylizedWater2
                                     break;
                             }
 
-                            if (directive.value != string.Empty) AddLine($"{directivePrefix}{directive.value}");
-                        }
+                            if (directive.value != string.Empty)
+							{
+								AddLine($"{directivePrefix}{directive.value}");
+							}
+						}
                         continue;
                     }
 
@@ -458,10 +480,17 @@ namespace StylizedWater2
                     }
                     
                     //Legacy, strip line
-                    if (Matches("%multi_compile surface modifiers%")) continue;
-                    if (Matches("%multi_compile wave sim%")) continue;
+                    if (Matches("%multi_compile surface modifiers%"))
+					{
+						continue;
+					}
 
-                    if (line.StartsWith("#include "))
+					if (Matches("%multi_compile wave sim%"))
+					{
+						continue;
+					}
+
+					if (line.StartsWith("#include "))
                     {
                         string includePath = line.Replace("#include ", string.Empty);
                         //Remove parenthesis
@@ -557,9 +586,12 @@ namespace StylizedWater2
 
             int n = ShaderUtil.GetShaderMessageCount(shader);
 
-            if (n < 1) return messages;
-            
-            messages = ShaderUtil.GetShaderMessages(shader);
+            if (n < 1)
+			{
+				return messages;
+			}
+
+			messages = ShaderUtil.GetShaderMessages(shader);
             
             //Filter for errors
             messages = messages.Where(x => x.severity == ShaderCompilerMessageSeverity.Error).ToArray();
@@ -577,27 +609,27 @@ namespace StylizedWater2
             private System.Diagnostics.Stopwatch m_stripTimer = new System.Diagnostics.Stopwatch();
             #endif
             
-            private List<ShaderKeyword> StrippedKeywords = new List<ShaderKeyword>();
+            private List<ShaderKeyword> StrippedKeywords = new();
 
             //URP 10+ (2020.3)
-            private readonly ShaderKeyword _ADDITIONAL_LIGHT_SHADOWS = new ShaderKeyword("_ADDITIONAL_LIGHT_SHADOWS");
+            private readonly ShaderKeyword _ADDITIONAL_LIGHT_SHADOWS = new("_ADDITIONAL_LIGHT_SHADOWS");
 
             //URP 12+ (2021.2)
-            private readonly ShaderKeyword _REFLECTION_PROBE_BLENDING = new ShaderKeyword("_REFLECTION_PROBE_BLENDING");
-            private readonly ShaderKeyword _REFLECTION_PROBE_BOX_PROJECTION = new ShaderKeyword("_REFLECTION_PROBE_BOX_PROJECTION");
-            private readonly ShaderKeyword DYNAMICLIGHTMAP_ON = new ShaderKeyword("DYNAMICLIGHTMAP_ON");
-            private readonly ShaderKeyword DEBUG_DISPLAY = new ShaderKeyword("DEBUG_DISPLAY");
-            private readonly ShaderKeyword _CLUSTERED_RENDERING = new ShaderKeyword("_CLUSTERED_RENDERING");
-            private readonly ShaderKeyword _LIGHT_LAYERS = new ShaderKeyword("_LIGHT_LAYERS");
-            private readonly ShaderKeyword _LIGHT_COOKIES = new ShaderKeyword("_LIGHT_COOKIES");
+            private readonly ShaderKeyword _REFLECTION_PROBE_BLENDING = new("_REFLECTION_PROBE_BLENDING");
+            private readonly ShaderKeyword _REFLECTION_PROBE_BOX_PROJECTION = new("_REFLECTION_PROBE_BOX_PROJECTION");
+            private readonly ShaderKeyword DYNAMICLIGHTMAP_ON = new("DYNAMICLIGHTMAP_ON");
+            private readonly ShaderKeyword DEBUG_DISPLAY = new("DEBUG_DISPLAY");
+            private readonly ShaderKeyword _CLUSTERED_RENDERING = new("_CLUSTERED_RENDERING");
+            private readonly ShaderKeyword _LIGHT_LAYERS = new("_LIGHT_LAYERS");
+            private readonly ShaderKeyword _LIGHT_COOKIES = new("_LIGHT_COOKIES");
 
             //URP 14+ (2022.2)
-            private readonly ShaderKeyword _FORWARD_PLUS = new ShaderKeyword("_FORWARD_PLUS");
-            private readonly ShaderKeyword _WRITE_RENDERING_LAYERS = new ShaderKeyword("_WRITE_RENDERING_LAYERS");
+            private readonly ShaderKeyword _FORWARD_PLUS = new("_FORWARD_PLUS");
+            private readonly ShaderKeyword _WRITE_RENDERING_LAYERS = new("_WRITE_RENDERING_LAYERS");
             
             //URP 15+ (2023.1)
-            private readonly ShaderKeyword EVALUATE_SH_MIXED = new ShaderKeyword("EVALUATE_SH_MIXED");
-            private readonly ShaderKeyword EVALUATE_SH_VERTEX = new ShaderKeyword("EVALUATE_SH_VERTEX");
+            private readonly ShaderKeyword EVALUATE_SH_MIXED = new("EVALUATE_SH_MIXED");
+            private readonly ShaderKeyword EVALUATE_SH_VERTEX = new("EVALUATE_SH_VERTEX");
 
             //Keep in sync with actual pass name in shader!
             private const string DISPLACEMENT_PASS_NAME = "Depth or Displacement";
@@ -693,14 +725,20 @@ namespace StylizedWater2
             public void OnProcessShader(Shader shader, ShaderSnippetData snippet, IList<ShaderCompilerData> compilerDataList)
             {
 			    #if URP
-                if (UniversalRenderPipeline.asset == null || compilerDataList == null || compilerDataList.Count == 0) return;
+                if (UniversalRenderPipeline.asset == null || compilerDataList == null || compilerDataList.Count == 0)
+				{
+					return;
+				}
 
-                //Only run for specific shaders
-                if (shader.name.Contains("Stylized Water 2") == false) return;
+				//Only run for specific shaders
+				if (!shader.name.Contains("Stylized Water 2"))
+				{
+					return;
+				}
 
-                LogStart(shader, snippet, compilerDataList);
+				LogStart(shader, snippet, compilerDataList);
 
-                var inputShaderVariantCount = compilerDataList.Count;
+				int inputShaderVariantCount = compilerDataList.Count;
                 for (int i = 0; i < inputShaderVariantCount;)
                 {
                     //If any of the excluded keywords are enabled in this variant, strip it
@@ -708,10 +746,14 @@ namespace StylizedWater2
 
                     // Remove at swap back
                     if (removeInput)
-                        compilerDataList[i] = compilerDataList[--inputShaderVariantCount];
-                    else
-                        ++i;
-                }
+					{
+						compilerDataList[i] = compilerDataList[--inputShaderVariantCount];
+					}
+					else
+					{
+						++i;
+					}
+				}
 
                 if (compilerDataList is List<ShaderCompilerData> inputDataList)
                 {
@@ -720,8 +762,10 @@ namespace StylizedWater2
                 else
                 {
                     for (int i = compilerDataList.Count - 1; i >= inputShaderVariantCount; --i)
-                        compilerDataList.RemoveAt(i);
-                }
+					{
+						compilerDataList.RemoveAt(i);
+					}
+				}
 
                 LogStrippingEnd(compilerDataList.Count);
 			    #endif
@@ -743,7 +787,7 @@ namespace StylizedWater2
                     return true;
                 }
                 
-                foreach (var keyword in StrippedKeywords)
+                foreach (ShaderKeyword keyword in StrippedKeywords)
                 {
                     if (StripKeyword(shader, keyword, compilerData, snippet))
                     {
@@ -756,7 +800,7 @@ namespace StylizedWater2
 
             private bool StripPass(Shader shader, ShaderSnippetData snippet)
             {
-                if (displacementPrePassEnabled == false && snippet.passName == DISPLACEMENT_PASS_NAME)
+                if (!displacementPrePassEnabled && snippet.passName == DISPLACEMENT_PASS_NAME)
                 {
                     Log($"- Stripped Pass {snippet.passName} ({shader.name}) (Stage: {snippet.shaderType})");
                     

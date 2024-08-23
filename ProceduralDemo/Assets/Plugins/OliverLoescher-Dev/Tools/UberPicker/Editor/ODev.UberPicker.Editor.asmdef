@@ -1,0 +1,22 @@
+{
+    "name": "ODev.UberPicker.Editor",
+    "rootNamespace": "ODev.UberPicker",
+    "references": [
+        "GUID:5b10c1f9ecd537f4dbe3d211152286e8",
+        "GUID:bc0b35ed42bb82047bc482c1dd5c2975",
+        "GUID:30ae3feeeea1b4e40988473556615f1a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "ODEV_UBERPICKER"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

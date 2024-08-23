@@ -1,8 +1,9 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion {
+namespace RootMotion
+{
+
 
 	/// <summary>
 	/// Class for identifying biped bones based on most common naming conventions.
@@ -12,7 +13,7 @@ namespace RootMotion {
 		/// <summary>
 		/// Type of the bone.
 		/// </summary>
-		[System.Serializable]
+		[Serializable]
 		public enum BoneType {
 			Unassigned,
 			Spine,
@@ -26,7 +27,7 @@ namespace RootMotion {
 		/// <summary>
 		/// Bone side: Left and Right for limbs and Center for spine, head and tail.
 		/// </summary>
-		[System.Serializable]
+		[Serializable]
 		public enum BoneSide {
 			Center,
 			Left,
@@ -67,7 +68,7 @@ namespace RootMotion {
 			foreach (Transform bone in bones) {
 				if (bone != null && GetBoneType(bone.name) == boneType) {
 					Array.Resize(ref r, r.Length + 1);
-					r[r.Length - 1] = bone;
+					r[^1] = bone;
 				}
 			}
 			return r;
@@ -81,7 +82,7 @@ namespace RootMotion {
 			foreach (Transform bone in bones) {
 				if (bone != null && GetBoneSide(bone.name) == boneSide) {
 					Array.Resize(ref r, r.Length + 1);
-					r[r.Length - 1] = bone;
+					r[^1] = bone;
 				}
 			}
 			return r;
@@ -100,7 +101,12 @@ namespace RootMotion {
 		/// </summary>
 		public static Transform GetFirstBoneOfTypeAndSide(BoneType boneType, BoneSide boneSide, Transform[] bones) {
 			Transform[] b = GetBonesOfTypeAndSide(boneType, boneSide, bones);
-			if (b.Length == 0) return null;
+			if (b.Length == 0)
+			{
+				return null;
+			}
+
+
 			return b[0];
 		}
 		
@@ -125,7 +131,11 @@ namespace RootMotion {
 						break;
 					}
 				}
-				if (match) return t;
+				if (match)
+				{
+					return t;
+				}
+
 			}
 			return null;
 		}
@@ -134,13 +144,42 @@ namespace RootMotion {
 		/// Gets the type of the bone.
 		/// </summary>
 		public static BoneType GetBoneType(string boneName) {	
-			if (isSpine(boneName)) return BoneType.Spine;
-			if (isHead(boneName)) return BoneType.Head;
-			if (isArm (boneName)) return BoneType.Arm;
-			if (isLeg(boneName)) return BoneType.Leg;
-			if (isTail(boneName)) return BoneType.Tail;
-			if (isEye(boneName)) return BoneType.Eye;
-			
+			if (isSpine(boneName))
+			{
+				return BoneType.Spine;
+			}
+
+
+			if (isHead(boneName))
+			{
+				return BoneType.Head;
+			}
+
+
+			if (isArm (boneName))
+			{
+				return BoneType.Arm;
+			}
+
+
+			if (isLeg(boneName))
+			{
+				return BoneType.Leg;
+			}
+
+
+			if (isTail(boneName))
+			{
+				return BoneType.Tail;
+			}
+
+
+			if (isEye(boneName))
+			{
+				return BoneType.Eye;
+			}
+
+
 			return BoneType.Unassigned;
 		}
 		
@@ -148,8 +187,18 @@ namespace RootMotion {
 		/// Gets the bone side.
 		/// </summary>
 		public static BoneSide GetBoneSide(string boneName) {
-			if (isLeft(boneName)) return BoneSide.Left;
-			if (isRight(boneName)) return BoneSide.Right;
+			if (isLeft(boneName))
+			{
+				return BoneSide.Left;
+			}
+
+
+			if (isRight(boneName))
+			{
+				return BoneSide.Right;
+			}
+
+
 			return BoneSide.Center;
 		}
 		
@@ -200,24 +249,39 @@ namespace RootMotion {
 		}
 		
 		private static bool matchesNaming(string boneName, string[] namingConvention) {
-			if (excludesNaming(boneName, typeExclude)) return false;
-			
-			foreach(string n in namingConvention) {
-				if (boneName.Contains(n)) return true;
+			if (excludesNaming(boneName, typeExclude))
+			{
+				return false;
+			}
+
+			foreach (string n in namingConvention) {
+				if (boneName.Contains(n))
+				{
+					return true;
+				}
+
 			}
 			return false;
 		}
 		
 		private static bool excludesNaming(string boneName, string[] namingConvention) {
 			foreach(string n in namingConvention) {
-				if (boneName.Contains(n)) return true;
+				if (boneName.Contains(n))
+				{
+					return true;
+				}
+
 			}
 			return false;
 		}
 		
 		private static bool matchesLastLetter(string boneName, string[] namingConvention) {
 			foreach(string n in namingConvention) {
-				if (LastLetterIs(boneName, n)) return true;
+				if (LastLetterIs(boneName, n))
+				{
+					return true;
+				}
+
 			}
 			return false;
 		}
@@ -228,12 +292,22 @@ namespace RootMotion {
 		}
 		
 		private static string firstLetter(string boneName) {
-			if (boneName.Length > 0) return boneName.Substring(0, 1);
+			if (boneName.Length > 0)
+			{
+				return boneName.Substring(0, 1);
+			}
+
+
 			return "";
 		}
 		
 		private static string lastLetter(string boneName) {
-			if (boneName.Length > 0) return boneName.Substring(boneName.Length - 1, 1);
+			if (boneName.Length > 0)
+			{
+				return boneName.Substring(boneName.Length - 1, 1);
+			}
+
+
 			return "";
 		}
 	}

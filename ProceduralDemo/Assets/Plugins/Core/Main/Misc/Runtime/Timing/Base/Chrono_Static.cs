@@ -9,10 +9,10 @@ namespace Core
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Initialize()
 		{
-			new GameObject("Chrono").AddComponent<Core.Chrono>();
+			new GameObject("Chrono").AddComponent<Chrono>();
 		}
 
-		public static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+		public static readonly DateTime Epoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 		public static DateTime UtcNow => DateTime.UtcNow.AddMilliseconds(s_OffsetMS);
 		public static long UtcNowTimestamp => DateTimeToTimestamp(UtcNow);

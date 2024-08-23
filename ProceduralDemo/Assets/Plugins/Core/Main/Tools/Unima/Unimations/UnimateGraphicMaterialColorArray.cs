@@ -38,7 +38,7 @@ public class UnimateGraphicMaterialColorArray : UnimateTween<UnimateGraphicMater
 			    return "Property Name cannot be empty";
 		    }
         }
-		List<Graphic> graphics = new List<Graphic>();
+		List<Graphic> graphics = new();
 		if (m_Recursive)
 		{
 			gameObject.GetComponentsInChildren(graphics);
@@ -70,7 +70,7 @@ public class UnimateGraphicMaterialColorArray : UnimateTween<UnimateGraphicMater
 
 	public class Player : UnimaTweenPlayer<UnimateGraphicMaterialColorArray>
 	{
-		private List<Graphic> m_AllGraphics = new List<Graphic>();
+		private List<Graphic> m_AllGraphics = new();
 		private List<Graphic> m_Graphics = null;
 		private Color[,] m_InitialColors = null;
 		private int[] m_PropertyID = null;

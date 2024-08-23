@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnimaStateMachine<TEnum> where TEnum : System.Enum
 {
-	private Dictionary<TEnum, UnimaController> m_StateDict = new Dictionary<TEnum, UnimaController>();
+	private Dictionary<TEnum, UnimaController> m_StateDict = new();
 
 	private TEnum m_State = default;
 	public TEnum State => m_State;

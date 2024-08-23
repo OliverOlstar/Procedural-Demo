@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEditor;
 using UnityEngine.Playables;
-using System;
 
 namespace RootMotion
 {
-    public class BakerInspector : Editor
+	public class BakerInspector : Editor
     {
 
         protected void DrawKeyframeSettings(Baker script)
         {
-            if (script.isBaking) return;
-            EditorGUILayout.Space();
+            if (script.isBaking)
+			{
+				return;
+			}
+
+			EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("frameRate"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("keyReductionError"));
@@ -20,16 +22,23 @@ namespace RootMotion
 
         protected void DrawModeSettings(Baker script)
         {
-            if (script.isBaking) return;
+            if (script.isBaking)
+			{
+				return;
+			}
 
-            EditorGUILayout.Space();
+			EditorGUILayout.Space();
 
             switch(script.mode)
             {
                 case Baker.Mode.AnimationClips:
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("inheritClipSettings"));
-                    if (!serializedObject.FindProperty("inheritClipSettings").boolValue) DrawClipSettings();
-                    break;
+                    if (!serializedObject.FindProperty("inheritClipSettings").boolValue)
+					{
+						DrawClipSettings();
+					}
+
+					break;
                 default:
                     DrawClipSettings();
                     break;
@@ -71,7 +80,7 @@ namespace RootMotion
 
         private void DrawClipSettings()
         {
-            var p = serializedObject.FindProperty("clipSettings");
+			SerializedProperty p = serializedObject.FindProperty("clipSettings");
 
             EditorGUILayout.PropertyField(p, false);
 
@@ -152,8 +161,12 @@ namespace RootMotion
                         }
                     }
 
-                    if (GUILayout.Button("Bake Animation Clips")) script.BakeClip();
-                    return;
+                    if (GUILayout.Button("Bake Animation Clips"))
+					{
+						script.BakeClip();
+					}
+
+					return;
                 case Baker.Mode.AnimationStates:
                     if (script.animator == null)
                     {
@@ -176,8 +189,12 @@ namespace RootMotion
                         }
                     }
 
-                    if (GUILayout.Button("Bake Animation States")) script.BakeClip();
-                    return;
+                    if (GUILayout.Button("Bake Animation States"))
+					{
+						script.BakeClip();
+					}
+
+					return;
                 case Baker.Mode.PlayableDirector:
                     if (script.director == null)
                     {
@@ -185,19 +202,30 @@ namespace RootMotion
                         return;
                     }
 
-                    if (GUILayout.Button("Bake Timeline")) script.BakeClip();
-                    break;
+                    if (GUILayout.Button("Bake Timeline"))
+					{
+						script.BakeClip();
+					}
+
+					break;
                 case Baker.Mode.Realtime:
-                    if (GUILayout.Button("Start Baking")) script.StartBaking();
-                    return;
+                    if (GUILayout.Button("Start Baking"))
+					{
+						script.StartBaking();
+					}
+
+					return;
             }
         }
 
         protected void DrawButtons(Baker script)
         {
-            if (!script.enabled) return;
+            if (!script.enabled)
+			{
+				return;
+			}
 
-            if (script.animator == null)
+			if (script.animator == null)
             {
                 serializedObject.FindProperty("animator").objectReferenceValue = script.GetComponent<Animator>();
             }
@@ -224,8 +252,12 @@ namespace RootMotion
                 switch (script.mode)
                 {
                     case Baker.Mode.Realtime:
-                        if (GUILayout.Button("Stop Baking")) script.StopBaking();
-                        break;
+                        if (GUILayout.Button("Stop Baking"))
+						{
+							script.StopBaking();
+						}
+
+						break;
                     default:
                         GUILayout.Label("Baking Progress: " + System.Math.Round(script.bakingProgress, 2));
                         break;

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
-namespace RootMotion {
+namespace RootMotion
+{
+
 
 	/// <summary>
 	/// Contains tools for working on Transform hierarchies.
@@ -28,7 +29,11 @@ namespace RootMotion {
 		public static UnityEngine.Object ContainsDuplicate(UnityEngine.Object[] objects) {
 			for (int i = 0; i < objects.Length; i++) {
 				for (int i2 = 0; i2 < objects.Length; i2++) {
-					if (i != i2 && objects[i] == objects[i2]) return objects[i];
+					if (i != i2 && objects[i] == objects[i2])
+					{
+						return objects[i];
+					}
+
 				}
 			}
 			return null;
@@ -38,10 +43,30 @@ namespace RootMotion {
 		/// Determines whether the second Transform is an ancestor to the first Transform.
 		/// </summary>
 		public static bool IsAncestor(Transform transform, Transform ancestor) {
-			if (transform == null) return true;
-			if (ancestor == null) return true;
-			if (transform.parent == null) return false;
-			if (transform.parent == ancestor) return true;
+			if (transform == null)
+			{
+				return true;
+			}
+
+
+			if (ancestor == null)
+			{
+				return true;
+			}
+
+
+			if (transform.parent == null)
+			{
+				return false;
+			}
+
+
+			if (transform.parent == ancestor)
+			{
+				return true;
+			}
+
+
 			return IsAncestor(transform.parent, ancestor);
 		}
 
@@ -49,10 +74,22 @@ namespace RootMotion {
 		/// Returns true if the transforms contains the child
 		/// </summary>
 		public static bool ContainsChild(Transform transform, Transform child) {
-			if (transform == child) return true;
-			
+			if (transform == child)
+			{
+				return true;
+			}
+
+
 			Transform[] children = transform.GetComponentsInChildren<Transform>() as Transform[];
-			foreach (Transform c in children) if (c == child) return true;
+			foreach (Transform c in children)
+			{
+				if (c == child)
+				{
+					return true;
+				}
+			}
+
+
 			return false;
 		}
 		
@@ -63,7 +100,7 @@ namespace RootMotion {
 			if (transform.parent != null && transform.parent != blocker) {
 				if (transform.parent.position != transform.position && transform.parent.position != blocker.position) {
 					Array.Resize(ref array, array.Length + 1);
-					array[array.Length - 1] = transform.parent;
+					array[^1] = transform.parent;
 				}
 				AddAncestors(transform.parent, blocker, ref array);
 			}
@@ -73,10 +110,19 @@ namespace RootMotion {
 		/// Gets the last ancestor that has more than minChildCount number of child Transforms 
 		/// </summary>
 		public static Transform GetAncestor(Transform transform, int minChildCount) {
-			if (transform == null) return null;
+			if (transform == null)
+			{
+				return null;
+			}
+
 
 			if (transform.parent != null) {
-				if (transform.parent.childCount >= minChildCount) return transform.parent;
+				if (transform.parent.childCount >= minChildCount)
+				{
+					return transform.parent;
+				}
+
+
 				return GetAncestor(transform.parent, minChildCount);
 			}
 			return null;
@@ -86,12 +132,36 @@ namespace RootMotion {
 		/// Gets the first common ancestor up the hierarchy
 		/// </summary>
 		public static Transform GetFirstCommonAncestor(Transform t1, Transform t2) {
-			if (t1 == null) return null;
-			if (t2 == null) return null;
-			if (t1.parent == null) return null;
-			if (t2.parent == null) return null;
+			if (t1 == null)
+			{
+				return null;
+			}
 
-			if (IsAncestor(t2, t1.parent)) return t1.parent;
+
+			if (t2 == null)
+			{
+				return null;
+			}
+
+
+			if (t1.parent == null)
+			{
+				return null;
+			}
+
+
+			if (t2.parent == null)
+			{
+				return null;
+			}
+
+
+			if (IsAncestor(t2, t1.parent))
+			{
+				return t1.parent;
+			}
+
+
 			return GetFirstCommonAncestor(t1.parent, t2);
 		}
 
@@ -109,9 +179,17 @@ namespace RootMotion {
 			}
 
 			for (int i = 0; i < transforms.Length; i++) {
-				if (transforms[i] == null) return null;
+				if (transforms[i] == null)
+				{
+					return null;
+				}
 
-				if (IsCommonAncestor(transforms[i], transforms)) return transforms[i];
+
+				if (IsCommonAncestor(transforms[i], transforms))
+				{
+					return transforms[i];
+				}
+
 			}
 
 			return GetFirstCommonAncestorRecursive(transforms[0], transforms);
@@ -135,8 +213,18 @@ namespace RootMotion {
 				return null;
 			}
 
-			if (IsCommonAncestor(transform, transforms)) return transform;
-			if (transform.parent == null) return null;
+			if (IsCommonAncestor(transform, transforms))
+			{
+				return transform;
+			}
+
+
+			if (transform.parent == null)
+			{
+				return null;
+			}
+
+
 			return GetFirstCommonAncestorRecursive(transform.parent, transforms);
 		}
 
@@ -154,7 +242,11 @@ namespace RootMotion {
 					Debug.Log("Transforms[" + i + "] is null.");
 					return false;
 				}
-				if (!IsAncestor(transforms[i], transform) && transforms[i] != transform) return false;
+				if (!IsAncestor(transforms[i], transform) && transforms[i] != transform)
+				{
+					return false;
+				}
+
 			}
 			return true;
 		}

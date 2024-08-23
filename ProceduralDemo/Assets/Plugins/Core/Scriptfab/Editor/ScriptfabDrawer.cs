@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Reflection;
@@ -11,8 +9,8 @@ namespace Core
 	{
 		public static readonly GUIContent[] TOOLBAR_CONTENT =
 		{
-			new GUIContent("L", "Convert to local value"),
-			new GUIContent("G", "Convert to global Scriptable Object")
+			new("L", "Convert to local value"),
+			new("G", "Convert to global Scriptable Object")
 		};
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -55,9 +53,9 @@ namespace Core
 					if (local.managedReferenceValue != null)
 					{
 						Event e = Event.current;
-						GenericMenu menu = new GenericMenu();
+						GenericMenu menu = new();
 						Vector2 p = GUIUtility.GUIToScreenPoint(e.mousePosition);
-						Context context = new Context
+						Context context = new()
 						{
 							Position = p,
 							LocalObject = local.managedReferenceValue,
@@ -72,7 +70,7 @@ namespace Core
 				{
 					if (fab.objectReferenceValue != null)
 					{
-						SerializedObject so = new SerializedObject(fab.objectReferenceValue);
+						SerializedObject so = new(fab.objectReferenceValue);
 						SerializedProperty value = so.FindProperty("m_Type");
 						if (value.managedReferenceValue != null)
 						{
@@ -123,7 +121,7 @@ namespace Core
 
 			System.Type soType = GetScriptibleObjectType();
 			ScriptableObject createdObject = ScriptableObject.CreateInstance(soType);
-			SerializedObject sCreatedObject = new SerializedObject(createdObject);
+			SerializedObject sCreatedObject = new(createdObject);
 			sCreatedObject.FindProperty("m_Type").managedReferenceValue = local.managedReferenceValue;
 			sCreatedObject.ApplyModifiedProperties();
 			string path = AssetPickerUtilityMenu.GetCreatedObjectPath(createdObject);

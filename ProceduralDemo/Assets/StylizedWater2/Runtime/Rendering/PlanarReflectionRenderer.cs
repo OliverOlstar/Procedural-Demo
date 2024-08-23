@@ -20,8 +20,8 @@ namespace StylizedWater2
     public class PlanarReflectionRenderer : MonoBehaviour
     {
 #if URP
-        public static List<PlanarReflectionRenderer> Instances = new List<PlanarReflectionRenderer>();
-        public Dictionary<Camera, Camera> reflectionCameras = new Dictionary<Camera, Camera>();
+        public static List<PlanarReflectionRenderer> Instances = new();
+        public Dictionary<Camera, Camera> reflectionCameras = new();
         
         //Rendering
         [Tooltip("If enabled, the reflection plane will be based on this transform's up vector (green arrow).\n\nOtherwise the world's upwards direction is assumed")]
@@ -54,12 +54,12 @@ namespace StylizedWater2
         public int maximumLODLevel = 0;
         
         [SerializeField]
-        public List<WaterObject> waterObjects = new List<WaterObject>();
+        public List<WaterObject> waterObjects = new();
         [Tooltip("If enabled, the center of the rendering bounds (that wraps around the water objects) moves with the Transform position" +
                  "\n\nYou must however ensure you are only moving on the XZ axis")]
         public bool moveWithTransform;
         [HideInInspector]
-        public Bounds bounds = new Bounds();
+        public Bounds bounds = new();
 
         private float m_renderScale = 1f;
         private float m_renderRange;
@@ -129,21 +129,43 @@ namespace StylizedWater2
             
             foreach (PlanarReflectionRenderer renderer in Instances)
             {
-                if (renderScale > 0) renderer.renderScale = renderScale;
-                if (renderRange > 0) renderer.renderRange = renderRange;
-                if (maxLodLevel >= 0) renderer.maximumLODLevel = maxLodLevel;
-                renderer.InitializeValues();
+                if (renderScale > 0)
+				{
+					renderer.renderScale = renderScale;
+				}
 
-                if (enableReflections) renderer.EnableReflections();
-                if (!enableReflections) renderer.DisableReflections();
-            }
+				if (renderRange > 0)
+				{
+					renderer.renderRange = renderRange;
+				}
+
+				if (maxLodLevel >= 0)
+				{
+					renderer.maximumLODLevel = maxLodLevel;
+				}
+
+				renderer.InitializeValues();
+
+                if (enableReflections)
+				{
+					renderer.EnableReflections();
+				}
+
+				if (!enableReflections)
+				{
+					renderer.DisableReflections();
+				}
+			}
         }
 
         public void EnableReflections()
         {
-            if (!AllowReflections || PipelineUtilities.VREnabled()) return;
+            if (!AllowReflections || PipelineUtilities.VREnabled())
+			{
+				return;
+			}
 
-            RenderPipelineManager.beginCameraRendering += OnWillRenderCamera;
+			RenderPipelineManager.beginCameraRendering += OnWillRenderCamera;
             ToggleMaterialReflectionSampling(true);
         }
 
@@ -153,11 +175,14 @@ namespace StylizedWater2
             ToggleMaterialReflectionSampling(false);
 
             //Clear cameras
-            foreach (var kvp in reflectionCameras)
+            foreach (KeyValuePair<Camera, Camera> kvp in reflectionCameras)
             {
-                if (kvp.Value == null) continue;
+                if (kvp.Value == null)
+				{
+					continue;
+				}
 
-                if (kvp.Value)
+				if (kvp.Value)
                 {
                     RenderTexture.ReleaseTemporary(kvp.Value.targetTexture);
                     
@@ -176,19 +201,29 @@ namespace StylizedWater2
 
         public Bounds CalculateBounds()
         {
-            Bounds m_bounds = new Bounds(Vector3.zero, Vector3.zero);
+            Bounds m_bounds = new(Vector3.zero, Vector3.zero);
             
-            if (waterObjects == null) return m_bounds;
-            if (waterObjects.Count == 0) return m_bounds;
+            if (waterObjects == null)
+			{
+				return m_bounds;
+			}
 
-            Vector3 minSum = Vector3.one * Mathf.Infinity;
+			if (waterObjects.Count == 0)
+			{
+				return m_bounds;
+			}
+
+			Vector3 minSum = Vector3.one * Mathf.Infinity;
             Vector3 maxSum = Vector3.one * Mathf.NegativeInfinity;
             
             for (int i = 0; i < waterObjects.Count; i++)
             {
-                if (!waterObjects[i]) continue;
-                    
-                minSum = Vector3.Min(waterObjects[i].meshRenderer.bounds.min, minSum);
+                if (!waterObjects[i])
+				{
+					continue;
+				}
+
+				minSum = Vector3.Min(waterObjects[i].meshRenderer.bounds.min, minSum);
                 maxSum = Vector3.Max(waterObjects[i].meshRenderer.bounds.max, maxSum);
             }
             
@@ -209,17 +244,23 @@ namespace StylizedWater2
         {
             #if UNITY_EDITOR
             //Avoid the "Screen position outside of frustrum" error
-            if (camera.orthographic && Vector3.Dot(Vector3.up, camera.transform.up) > 0.9999f) return true;
-            
-            #if UNITY_2021_2_OR_NEWER
-            //Causes an internal error in URP's rendering code in the CopyColorPass
-            if (camera.cameraType == CameraType.SceneView && UnityEditor.SceneView.lastActiveSceneView && UnityEditor.SceneView.lastActiveSceneView.isUsingSceneFiltering) return true;
-            #endif
-            #endif
-            
-            //Skip for any special use camera's (except scene view camera)
-            //Note: Scene camera still rendering even if window not focused!
-            return (camera.cameraType != CameraType.SceneView && (camera.cameraType == CameraType.Reflection || camera.cameraType == CameraType.Preview || camera.hideFlags != HideFlags.None));
+            if (camera.orthographic && Vector3.Dot(Vector3.up, camera.transform.up) > 0.9999f)
+			{
+				return true;
+			}
+
+#if UNITY_2021_2_OR_NEWER
+			//Causes an internal error in URP's rendering code in the CopyColorPass
+			if (camera.cameraType == CameraType.SceneView && UnityEditor.SceneView.lastActiveSceneView && UnityEditor.SceneView.lastActiveSceneView.isUsingSceneFiltering)
+			{
+				return true;
+			}
+#endif
+#endif
+
+			//Skip for any special use camera's (except scene view camera)
+			//Note: Scene camera still rendering even if window not focused!
+			return (camera.cameraType != CameraType.SceneView && (camera.cameraType == CameraType.Reflection || camera.cameraType == CameraType.Preview || camera.hideFlags != HideFlags.None));
         }
 
         private void OnWillRenderCamera(ScriptableRenderContext context, Camera camera)
@@ -232,21 +273,35 @@ namespace StylizedWater2
 
             isRendering = WaterObjectsVisible(camera);
             
-            if (isRendering == false) return;
-            
-            
-            if (moveWithTransform) bounds.center = this.transform.position;
+            if (!isRendering)
+			{
+				return;
+			}
 
-            m_cameraData = camera.GetComponent<UniversalAdditionalCameraData>();
-            if (m_cameraData && m_cameraData.renderType == CameraRenderType.Overlay) return;
+			if (moveWithTransform)
+			{
+				bounds.center = this.transform.position;
+			}
 
-            reflectionCameras.TryGetValue(camera, out m_reflectionCamera);
-            if (m_reflectionCamera == null) CreateReflectionCamera(camera);
-            
-            //It's possible it is destroyed at this point when disabling reflections
-            if (!m_reflectionCamera) return;
-            
-            UnityEngine.Profiling.Profiler.BeginSample("Planar Water Reflections", camera);
+			m_cameraData = camera.GetComponent<UniversalAdditionalCameraData>();
+            if (m_cameraData && m_cameraData.renderType == CameraRenderType.Overlay)
+			{
+				return;
+			}
+
+			reflectionCameras.TryGetValue(camera, out m_reflectionCamera);
+            if (m_reflectionCamera == null)
+			{
+				CreateReflectionCamera(camera);
+			}
+
+			//It's possible it is destroyed at this point when disabling reflections
+			if (!m_reflectionCamera)
+			{
+				return;
+			}
+
+			UnityEngine.Profiling.Profiler.BeginSample("Planar Water Reflections", camera);
 
             //Render scale changed
             if (Math.Abs(renderScale - m_renderScale) > 0.02f)
@@ -265,15 +320,23 @@ namespace StylizedWater2
             
             bool fogEnabled = RenderSettings.fog && !enableFog;
             //Fog is based on clip-space z-distance and doesn't work with oblique projections
-            if (fogEnabled) SetFogState(false);
-            int maxLODLevel = QualitySettings.maximumLODLevel;
+            if (fogEnabled)
+			{
+				SetFogState(false);
+			}
+
+			int maxLODLevel = QualitySettings.maximumLODLevel;
             QualitySettings.maximumLODLevel = maximumLODLevel;
             GL.invertCulling = true;
 
             RenderReflection(context, m_reflectionCamera);
 
-            if (fogEnabled) SetFogState(true);
-            QualitySettings.maximumLODLevel = maxLODLevel;
+            if (fogEnabled)
+			{
+				SetFogState(true);
+			}
+
+			QualitySettings.maximumLODLevel = maxLODLevel;
             GL.invertCulling = false;
 
             UnityEngine.Profiling.Profiler.EndSample();
@@ -335,22 +398,28 @@ namespace StylizedWater2
         {
             index = PipelineUtilities.ValidateRenderer(index);
 
-            foreach (var kvp in reflectionCameras)
+            foreach (KeyValuePair<Camera, Camera> kvp in reflectionCameras)
             {
-                if (kvp.Value == null) continue;
-                
-                m_cameraData = kvp.Value.GetComponent<UniversalAdditionalCameraData>();
+                if (kvp.Value == null)
+				{
+					continue;
+				}
+
+				m_cameraData = kvp.Value.GetComponent<UniversalAdditionalCameraData>();
                 m_cameraData.SetRenderer(index);
             }
         }
 
         public void ToggleShadows(bool state)
         {
-            foreach (var kvp in reflectionCameras)
+            foreach (KeyValuePair<Camera, Camera> kvp in reflectionCameras)
             {
-                if (kvp.Value == null) continue;
-                
-                m_cameraData = kvp.Value.GetComponent<UniversalAdditionalCameraData>();
+                if (kvp.Value == null)
+				{
+					continue;
+				}
+
+				m_cameraData = kvp.Value.GetComponent<UniversalAdditionalCameraData>();
                 m_cameraData.renderShadows = state;
             }
         }
@@ -393,13 +462,19 @@ namespace StylizedWater2
         /// <param name="state"></param>
         public void ToggleMaterialReflectionSampling(bool state)
         {
-            if (waterObjects == null) return;
+            if (waterObjects == null)
+			{
+				return;
+			}
 
-            for (int i = 0; i < waterObjects.Count; i++)
+			for (int i = 0; i < waterObjects.Count; i++)
             {
-                if (waterObjects[i] == null) continue;
-                
-                ToggleMaterialReflectionSampling(waterObjects[i], state);
+                if (waterObjects[i] == null)
+				{
+					continue;
+				}
+
+				ToggleMaterialReflectionSampling(waterObjects[i], state);
             }
         }
 
@@ -412,7 +487,7 @@ namespace StylizedWater2
         private void CreateReflectionCamera(Camera source)
         {
             //Object creation
-            GameObject go = new GameObject($"{source.name} Planar Reflection");
+            GameObject go = new($"{source.name} Planar Reflection");
             go.hideFlags = HideFlags.DontSave | HideFlags.HideInHierarchy;
             
             Camera newCamera = go.AddComponent<Camera>();
@@ -453,7 +528,7 @@ namespace StylizedWater2
 
             float scale = GetRenderScale();
 
-            RenderTextureDescriptor rtDsc = new RenderTextureDescriptor(
+            RenderTextureDescriptor rtDsc = new(
                 (int)((float)source.scaledPixelWidth * scale),
                 (int)((float)source.scaledPixelHeight * scale), 
                 colorFormat);
@@ -478,9 +553,12 @@ namespace StylizedWater2
         {
             for (int i = 0; i < waterObjects.Count; i++)
             {
-                if (waterObjects[i] == null) continue;
-                
-                waterObjects[i].props.SetTexture(_PlanarReflectionID, cam.targetTexture);
+                if (waterObjects[i] == null)
+				{
+					continue;
+				}
+
+				waterObjects[i].props.SetTexture(_PlanarReflectionID, cam.targetTexture);
                 waterObjects[i].ApplyInstancedProperties();
             }
         }
@@ -505,13 +583,16 @@ namespace StylizedWater2
 
         private void UpdatePerspective(Camera source, Camera reflectionCam)
         {
-            if (!source || !reflectionCam) return;
+            if (!source || !reflectionCam)
+			{
+				return;
+			}
 
-            Vector3 normal = rotatable ? this.transform.up : Vector3.up;
+			Vector3 normal = rotatable ? this.transform.up : Vector3.up;
             
             Vector3 position = bounds.center + (normal * offset);
 
-            var d = -Vector3.Dot(normal, position);
+			float d = -Vector3.Dot(normal, position);
             reflectionPlane = new Vector4(normal.x, normal.y, normal.z, d);
 
             reflectionBase = Matrix4x4.identity;
@@ -582,9 +663,9 @@ namespace StylizedWater2
         // Given position/normal of the plane, calculates plane in camera space.
         private Vector4 CameraSpacePlane(Matrix4x4 worldToCameraMatrix, Vector3 pos, Vector3 normal, float sideSign)
         {
-            var offsetPos = pos + normal * offset;
-            var cameraPosition = worldToCameraMatrix.MultiplyPoint(offsetPos);
-            var cameraNormal = worldToCameraMatrix.MultiplyVector(normal).normalized * sideSign;
+			Vector3 offsetPos = pos + normal * offset;
+			Vector3 cameraPosition = worldToCameraMatrix.MultiplyPoint(offsetPos);
+			Vector3 cameraNormal = worldToCameraMatrix.MultiplyVector(normal).normalized * sideSign;
             return new Vector4(cameraNormal.x, cameraNormal.y, cameraNormal.z,
                 -Vector3.Dot(cameraPosition, cameraNormal));
         }

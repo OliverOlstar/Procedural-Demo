@@ -28,21 +28,27 @@ namespace StylizedWater2
             //Position in view
             if (SceneView.lastActiveSceneView)
             {
-                obj.transform.position = SceneView.lastActiveSceneView.camera.transform.position + (SceneView.lastActiveSceneView.camera.transform.forward * (Mathf.Max(mesh.bounds.size.x, mesh.bounds.size.z)) * 0.5f);
+                obj.transform.position = SceneView.lastActiveSceneView.camera.transform.position + ((Mathf.Max(mesh.bounds.size.x, mesh.bounds.size.z)) * 0.5f * SceneView.lastActiveSceneView.camera.transform.forward);
             }
             
-            if (Selection.activeGameObject) obj.transform.parent = Selection.activeGameObject.transform;
+            if (Selection.activeGameObject)
+			{
+				obj.transform.parent = Selection.activeGameObject.transform;
+			}
 
-            Selection.activeObject = obj;
+			Selection.activeObject = obj;
             
-            if(Application.isPlaying == false) EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-        }
+            if(!Application.isPlaying)
+			{
+				EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+			}
+		}
 
         [MenuItem("GameObject/3D Object/Water/Grid", false, 1)]
         [MenuItem("Window/Stylized Water 2/Create water grid", false, 2001)]
         public static void CreateWaterGrid()
         {
-            GameObject obj = new GameObject("Water Grid", typeof(WaterGrid));
+            GameObject obj = new("Water Grid", typeof(WaterGrid));
             Undo.RegisterCreatedObjectUndo(obj, "Created Water Grid");
 
             obj.layer = LayerMask.NameToLayer("Water");
@@ -50,21 +56,27 @@ namespace StylizedWater2
             WaterGrid grid = obj.GetComponent<WaterGrid>();
             grid.Recreate();
 
-            if (Selection.activeGameObject) obj.transform.parent = Selection.activeGameObject.transform;
-            
-            Selection.activeObject = obj;
+            if (Selection.activeGameObject)
+			{
+				obj.transform.parent = Selection.activeGameObject.transform;
+			}
+
+			Selection.activeObject = obj;
 
             //Position in view
             if (SceneView.lastActiveSceneView)
             {
-                Vector3 position = SceneView.lastActiveSceneView.camera.transform.position + (SceneView.lastActiveSceneView.camera.transform.forward * grid.scale * 0.5f);
+                Vector3 position = SceneView.lastActiveSceneView.camera.transform.position + (0.5f * grid.scale * SceneView.lastActiveSceneView.camera.transform.forward);
                 position.y = 0f;
                 
                 grid.transform.position = position;
             }
             
-            if(Application.isPlaying == false) EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-        }
+            if(!Application.isPlaying)
+			{
+				EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+			}
+		}
         
         [MenuItem("Window/Stylized Water 2/Set up render feature", false, 2000)]
         public static void SetupRenderFeature()
@@ -76,15 +88,18 @@ namespace StylizedWater2
         [MenuItem("Window/Stylized Water 2/Set up planar reflections", false, 2001)]
         public static void CreatePlanarReflectionRenderer()
         {
-            GameObject obj = new GameObject("Planar Reflections Renderer", typeof(PlanarReflectionRenderer));
+            GameObject obj = new("Planar Reflections Renderer", typeof(PlanarReflectionRenderer));
             Undo.RegisterCreatedObjectUndo(obj, "Created PlanarReflectionRenderer");
             PlanarReflectionRenderer r = obj.GetComponent<PlanarReflectionRenderer>();
             r.ApplyToAllWaterInstances();
 
             Selection.activeObject = obj;
             
-            if(Application.isPlaying == false) EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-        }
+            if(!Application.isPlaying)
+			{
+				EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+			}
+		}
         #endif
         
         [MenuItem("Assets/Create/Water/Mesh")]
@@ -127,9 +142,12 @@ namespace StylizedWater2
         public static void SelectForwardRenderer()
         {
 			#if URP
-            if (!UniversalRenderPipeline.asset) return;
+            if (!UniversalRenderPipeline.asset)
+			{
+				return;
+			}
 
-            System.Reflection.BindingFlags bindings = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+			System.Reflection.BindingFlags bindings = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
             ScriptableRendererData[] m_rendererDataList = (ScriptableRendererData[])typeof(UniversalRenderPipelineAsset).GetField("m_RendererDataList", bindings).GetValue(UniversalRenderPipeline.asset);
 
             ForwardRendererData main = m_rendererDataList[0] as ForwardRendererData;
@@ -140,9 +158,12 @@ namespace StylizedWater2
         public static void EnableDepthTexture()
         {
 			#if URP
-            if (!UniversalRenderPipeline.asset) return;
+            if (!UniversalRenderPipeline.asset)
+			{
+				return;
+			}
 
-            UniversalRenderPipeline.asset.supportsCameraDepthTexture = true;
+			UniversalRenderPipeline.asset.supportsCameraDepthTexture = true;
             EditorUtility.SetDirty(UniversalRenderPipeline.asset);
 
             if (PipelineUtilities.IsDepthTextureOptionDisabledAnywhere())
@@ -158,9 +179,12 @@ namespace StylizedWater2
         public static void EnableOpaqueTexture()
         {
 			#if URP
-            if (!UniversalRenderPipeline.asset) return;
+            if (!UniversalRenderPipeline.asset)
+			{
+				return;
+			}
 
-            UniversalRenderPipeline.asset.supportsCameraOpaqueTexture = true;
+			UniversalRenderPipeline.asset.supportsCameraOpaqueTexture = true;
             EditorUtility.SetDirty(UniversalRenderPipeline.asset);
             
             if (PipelineUtilities.IsOpaqueTextureOptionDisabledAnywhere())
@@ -178,9 +202,12 @@ namespace StylizedWater2
         /// </summary>
         public static void DisableCullingForMaterial(Material material)
         {
-            if (!material) return;
-            
-            material.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+            if (!material)
+			{
+				return;
+			}
+
+			material.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
             
             EditorUtility.SetDirty(material);
         }
@@ -203,7 +230,7 @@ namespace StylizedWater2
             #if UNITY_2023_1_OR_NEWER
             return (T)Object.FindFirstObjectByType(typeof(T));
             #elif UNITY_2020_1_OR_NEWER
-            return (T)Object.FindObjectOfType(typeof(T), false);
+            return (T)FindObjectOfType(typeof(T), false);
             #else
             return (T)Object.FindObjectOfType(typeof(T));
             #endif

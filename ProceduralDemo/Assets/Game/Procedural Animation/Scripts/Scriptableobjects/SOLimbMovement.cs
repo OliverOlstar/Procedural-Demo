@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using OliverLoescher.Util;
-using OliverLoescher.Cue;
+using ODev.Util;
+using ODev.Cue;
+using ODev.Picker;
 
 namespace PA
 {
@@ -22,7 +21,7 @@ namespace PA
 		public Vector2 LinecastUpDown = new(1, -1);
 		public LayerMask StepLayer = new();
 
-		[Header("Cues")]
+		[Header("Cues"), Asset]
 		public SOCue OnStepCue;
 	}
 }

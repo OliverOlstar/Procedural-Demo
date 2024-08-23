@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
-using RootMotion;
 
-namespace RootMotion.FinalIK {
-	
+namespace RootMotion.FinalIK
+{
+
 	/// <summary>
 	/// Hybrid %IK solver designed for mapping a character to a VR headset and 2 hand controllers.
 	/// </summary>
@@ -13,7 +12,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// A base class for all IKSolverVR body parts.
 		/// </summary>
-		[System.Serializable]
+		[Serializable]
 		public abstract class BodyPart {
 
 			protected abstract void OnRead(Vector3[] positions, Quaternion[] rotations, bool hasChest, bool hasNeck, bool hasShoulders, bool hasToes, bool hasLegs, int rootIndex, int index);
@@ -53,7 +52,10 @@ namespace RootMotion.FinalIK {
 
 			public void MovePosition(Vector3 position) {
 				Vector3 delta = position - bones[0].solverPosition;
-				foreach (VirtualBone bone in bones) bone.solverPosition += delta;
+				foreach (VirtualBone bone in bones)
+				{
+					bone.solverPosition += delta;
+				}
 			}
 
 			public void MoveRotation(Quaternion rotation) {
@@ -69,7 +71,10 @@ namespace RootMotion.FinalIK {
 			public void TranslateRoot(Vector3 newRootPos, Quaternion newRootRot) {
 				Vector3 deltaPosition = newRootPos - rootPosition;
 				rootPosition = newRootPos;
-				foreach (VirtualBone bone in bones) bone.solverPosition += deltaPosition;
+				foreach (VirtualBone bone in bones)
+				{
+					bone.solverPosition += deltaPosition;
+				}
 
 				Quaternion deltaRotation = QuaTools.FromToRotation(rootRotation, newRootRot);
 				rootRotation = newRootRot;
@@ -77,11 +82,17 @@ namespace RootMotion.FinalIK {
 			}
 
 			public void RotateTo(VirtualBone bone, Quaternion rotation, float weight = 1f) {
-				if (weight <= 0f) return;
+				if (weight <= 0f)
+				{
+					return;
+				}
 
 				Quaternion q = QuaTools.FromToRotation(bone.solverRotation, rotation);
 
-				if (weight < 1f) q = Quaternion.Slerp(Quaternion.identity, q, weight);
+				if (weight < 1f)
+				{
+					q = Quaternion.Slerp(Quaternion.identity, q, weight);
+				}
 
 				for (int i = 0; i < bones.Length; i++) {
 					if (bones[i] == bone) {

@@ -1,6 +1,4 @@
 #if UNITY_2021_1_OR_NEWER
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
@@ -76,14 +74,14 @@ namespace Core
 				EditorGUI.HelpBox(position, "NULL", MessageType.Error);
 				return;
 			}
-			GUIContent label = new GUIContent(element.managedReferenceValue.GetType().Name);
+			GUIContent label = new(element.managedReferenceValue.GetType().Name);
 			EditorGUI.PropertyField(position, element, label, true);
 		}
 
 		private void OnAddDropdownCallback(Rect buttonRect, ReorderableList reorderableList)
 		{
 			SerializedReferenceEditorUtil.Cache cache = SerializedReferenceEditorUtil.Cache.Get(m_RefType);
-			GenericMenu menu = new GenericMenu();
+			GenericMenu menu = new();
 			for (int i = 0; i < cache.TypeNames.Length; i++)
 			{
 				menu.AddItem(new GUIContent(cache.TypeNames[i]), false, OnAdd, cache.Types[i]);
@@ -112,7 +110,7 @@ namespace Core
 	{
 		public static SerialRefListDrawer Get(SerializedProperty property, GUIContent label, FieldInfo fieldInfo)
 		{
-			var key = GetKey(property);
+			(int, string) key = GetKey(property);
 			if (TryGetCache(key, out SerialRefListDrawer value))
 			{
 				return value;

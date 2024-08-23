@@ -1,0 +1,19 @@
+{
+    "name": "ODev.Tools.Editor",
+    "rootNamespace": "ODev",
+    "references": [
+        "GUID:5b10c1f9ecd537f4dbe3d211152286e8",
+        "GUID:a5db8d1f3e79cb949aa11aed96c7007b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "DISABLED"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

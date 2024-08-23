@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion {
+namespace RootMotion
+{
+
 
 	/// <summary>
 	/// Adding comments to GameObjects in the Inspector.

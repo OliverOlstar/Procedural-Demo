@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -88,7 +85,7 @@ namespace Core
 			Rect buttonRect = headerRect;
 			buttonRect.xMin = headerRect.xMax - BUTTON_WIDTH;
 			
-			GUIStyle BUTTON_STYLE = new GUIStyle(GUI.skin.label);
+			GUIStyle BUTTON_STYLE = new(GUI.skin.label);
 			BUTTON_STYLE.fontSize = 18;
 			BUTTON_STYLE.alignment = TextAnchor.MiddleCenter;
 			BUTTON_STYLE.fontStyle = FontStyle.Bold;
@@ -137,7 +134,7 @@ namespace Core
 			buttonRect.x -= REORDERABLE_HEADER_BUFFER;
 			headerRect.xMin += REORDERABLE_HEADER_BUFFER;
 
-			GUIStyle BUTTON_STYLE = new GUIStyle(GUI.skin.label);
+			GUIStyle BUTTON_STYLE = new(GUI.skin.label);
 			BUTTON_STYLE.fontSize = 18;
 			BUTTON_STYLE.alignment = TextAnchor.MiddleCenter;
 			BUTTON_STYLE.fontStyle = FontStyle.Bold;
@@ -203,12 +200,12 @@ namespace Core
 			buttonRect.x = headerRect.x;
 			headerRect.xMin += 15;
 			
-			GUIStyle BUTTON_STYLE = new GUIStyle(GUI.skin.label);
+			GUIStyle BUTTON_STYLE = new(GUI.skin.label);
 			BUTTON_STYLE.fontSize = 18;
 			BUTTON_STYLE.alignment = TextAnchor.MiddleCenter;
 			BUTTON_STYLE.fontStyle = FontStyle.Bold;
 			
-			GUIStyle BUTTON_STYLE_GREY = new GUIStyle(BUTTON_STYLE);
+			GUIStyle BUTTON_STYLE_GREY = new(BUTTON_STYLE);
 			BUTTON_STYLE_GREY.normal.textColor = Color.grey;
 			
 			if (GUI.Button(buttonRect, "\ue09d", BUTTON_STYLE_GREY))

@@ -18,7 +18,7 @@ public abstract class UnimateColorBase<TComponent> :
 	[SerializeField]
 	private Gradient m_ColorOverTime = null;
 	[SerializeField]
-	private AnimationCurve m_FromSourceToColor = new AnimationCurve(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
+	private AnimationCurve m_FromSourceToColor = new(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
 	[SerializeField]
 	private float m_Duration = 1.0f;
 	public override float Duration => m_Duration;
@@ -49,7 +49,7 @@ public abstract class UnimateColorBase<TComponent> :
 	public class Player<TPlayerComponent> : UnimaTweenPlayer<UnimateColorBase<TPlayerComponent>>
 		where TPlayerComponent : MaskableGraphic
 	{
-		private List<TPlayerComponent> m_Components = new List<TPlayerComponent>();
+		private List<TPlayerComponent> m_Components = new();
 		private Color[] m_SourceColors = null;
 
 		protected override void OnInitialize()

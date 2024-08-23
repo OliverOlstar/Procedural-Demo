@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion {
-	
+namespace RootMotion
+{
+
 	/// <summary>
 	/// Helper methods for dealing with 3-dimensional vectors.
 	/// </summary>
@@ -13,9 +13,17 @@ namespace RootMotion {
         /// </summary>
         public static float GetYaw(Vector3 forward)
         {
-            if (forward.x == 0f && forward.z == 0f) return 0f;
-            if (float.IsInfinity(forward.x) || float.IsInfinity(forward.z)) return 0;
-            return Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
+            if (forward.x == 0f && forward.z == 0f)
+			{
+				return 0f;
+			}
+
+			if (float.IsInfinity(forward.x) || float.IsInfinity(forward.z))
+			{
+				return 0;
+			}
+
+			return Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
         }
 
         /// <summary>
@@ -45,9 +53,17 @@ namespace RootMotion {
         {
             Quaternion space = Quaternion.Inverse(Quaternion.LookRotation(spaceForward, spaceUp));
             Vector3 dirLocal = space * forward;
-            if (dirLocal.x == 0f && dirLocal.z == 0f) return 0f;
-            if (float.IsInfinity(dirLocal.x) || float.IsInfinity(dirLocal.z)) return 0;
-            return Mathf.Atan2(dirLocal.x, dirLocal.z) * Mathf.Rad2Deg;
+            if (dirLocal.x == 0f && dirLocal.z == 0f)
+			{
+				return 0f;
+			}
+
+			if (float.IsInfinity(dirLocal.x) || float.IsInfinity(dirLocal.z))
+			{
+				return 0;
+			}
+
+			return Mathf.Atan2(dirLocal.x, dirLocal.z) * Mathf.Rad2Deg;
         }
 
         /// <summary>
@@ -80,8 +96,15 @@ namespace RootMotion {
         /// Optimized Vector3.Lerp
         /// </summary>
         public static Vector3 Lerp(Vector3 fromVector, Vector3 toVector, float weight) {
-			if (weight <= 0f) return fromVector;
-			if (weight >= 1f) return toVector;
+			if (weight <= 0f)
+			{
+				return fromVector;
+			}
+
+			if (weight >= 1f)
+			{
+				return toVector;
+			}
 
 			return Vector3.Lerp(fromVector, toVector, weight);
 		}
@@ -90,8 +113,15 @@ namespace RootMotion {
 		/// Optimized Vector3.Slerp
 		/// </summary>
 		public static Vector3 Slerp(Vector3 fromVector, Vector3 toVector, float weight) {
-			if (weight <= 0f) return fromVector;
-			if (weight >= 1f) return toVector;
+			if (weight <= 0f)
+			{
+				return fromVector;
+			}
+
+			if (weight >= 1f)
+			{
+				return toVector;
+			}
 
 			return Vector3.Slerp(fromVector, toVector, weight);
 		}
@@ -101,9 +131,17 @@ namespace RootMotion {
         /// </summary>
         public static Vector3 ExtractVertical(Vector3 v, Vector3 verticalAxis, float weight)
         {
-            if (weight <= 0f) return Vector3.zero;
-            if (verticalAxis == Vector3.up) return Vector3.up * v.y * weight;
-            return Vector3.Project(v, verticalAxis) * weight;
+            if (weight <= 0f)
+			{
+				return Vector3.zero;
+			}
+
+			if (verticalAxis == Vector3.up)
+			{
+				return v.y * weight * Vector3.up;
+			}
+
+			return Vector3.Project(v, verticalAxis) * weight;
         }
 
         /// <summary>
@@ -111,9 +149,17 @@ namespace RootMotion {
         /// </summary>
         public static Vector3 ExtractHorizontal(Vector3 v, Vector3 normal, float weight)
         {
-            if (weight <= 0f) return Vector3.zero;
-            if (normal == Vector3.up) return new Vector3(v.x, 0f, v.z) * weight;
-            Vector3 tangent = v;
+            if (weight <= 0f)
+			{
+				return Vector3.zero;
+			}
+
+			if (normal == Vector3.up)
+			{
+				return new Vector3(v.x, 0f, v.z) * weight;
+			}
+
+			Vector3 tangent = v;
             Vector3.OrthoNormalize(ref normal, ref tangent);
             return Vector3.Project(v, tangent) * weight;
         }
@@ -123,8 +169,12 @@ namespace RootMotion {
         /// </summary>
         public static Vector3 Flatten(Vector3 v, Vector3 normal)
         {
-            if (normal == Vector3.up) return new Vector3(v.x, 0f, v.z);
-            return v - Vector3.Project(v, normal);
+            if (normal == Vector3.up)
+			{
+				return new Vector3(v.x, 0f, v.z);
+			}
+
+			return v - Vector3.Project(v, normal);
         }
 
         /// <summary>
@@ -132,18 +182,27 @@ namespace RootMotion {
         /// </summary>
         public static Vector3 ClampDirection(Vector3 direction, Vector3 normalDirection, float clampWeight, int clampSmoothing)
         {
-            if (clampWeight <= 0) return direction;
+            if (clampWeight <= 0)
+			{
+				return direction;
+			}
 
-            if (clampWeight >= 1f) return normalDirection;
+			if (clampWeight >= 1f)
+			{
+				return normalDirection;
+			}
 
-            // Getting the angle between direction and normalDirection
-            float angle = Vector3.Angle(normalDirection, direction);
+			// Getting the angle between direction and normalDirection
+			float angle = Vector3.Angle(normalDirection, direction);
             float dot = 1f - (angle / 180f);
 
-            if (dot > clampWeight) return direction;
-           
-            // Clamping the target
-            float targetClampMlp = clampWeight > 0 ? Mathf.Clamp(1f - ((clampWeight - dot) / (1f - dot)), 0f, 1f) : 1f;
+            if (dot > clampWeight)
+			{
+				return direction;
+			}
+
+			// Clamping the target
+			float targetClampMlp = clampWeight > 0 ? Mathf.Clamp(1f - ((clampWeight - dot) / (1f - dot)), 0f, 1f) : 1f;
 
             // Calculating the clamp multiplier
             float clampMlp = clampWeight > 0 ? Mathf.Clamp(dot / clampWeight, 0f, 1f) : 1f;
@@ -165,7 +224,10 @@ namespace RootMotion {
         public static Vector3 ClampDirection(Vector3 direction, Vector3 normalDirection, float clampWeight, int clampSmoothing, out bool changed) {
 			changed = false;
 
-			if (clampWeight <= 0) return direction;
+			if (clampWeight <= 0)
+			{
+				return direction;
+			}
 
 			if (clampWeight >= 1f) {
 				changed = true;
@@ -176,7 +238,11 @@ namespace RootMotion {
 			float angle = Vector3.Angle(normalDirection, direction);
 			float dot = 1f - (angle / 180f);
 
-			if (dot > clampWeight) return direction;
+			if (dot > clampWeight)
+			{
+				return direction;
+			}
+
 			changed = true;
 			
 			// Clamping the target
@@ -201,8 +267,11 @@ namespace RootMotion {
 		public static Vector3 ClampDirection(Vector3 direction, Vector3 normalDirection, float clampWeight, int clampSmoothing, out float clampValue) {
 			clampValue = 1f;
 			
-			if (clampWeight <= 0) return direction;
-			
+			if (clampWeight <= 0)
+			{
+				return direction;
+			}
+
 			if (clampWeight >= 1f) {
 				return normalDirection;
 			}
@@ -241,8 +310,11 @@ namespace RootMotion {
 			float dot = Vector3.Dot(planePoint - origin, planeNormal);
 			float normalDot = Vector3.Dot(direction, planeNormal);
 			
-			if (normalDot == 0.0f) return Vector3.zero;
-			
+			if (normalDot == 0.0f)
+			{
+				return Vector3.zero;
+			}
+
 			float dist = dot / normalDot;
 			return origin + direction.normalized * dist;
 		}

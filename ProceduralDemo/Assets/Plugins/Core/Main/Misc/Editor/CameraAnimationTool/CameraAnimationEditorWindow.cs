@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-using System.IO;
-using System;
 using System.Linq;
 
 public class CameraAnimationEditorWindow : EditorWindow
@@ -11,7 +7,7 @@ public class CameraAnimationEditorWindow : EditorWindow
 	[MenuItem("Window/Camera Animation Editor", false, 1500)]
 	public static CameraAnimationEditorWindow Get()
 	{
-		CameraAnimationEditorWindow window = EditorWindow.GetWindow<CameraAnimationEditorWindow>("Camera Animation Editor");
+		CameraAnimationEditorWindow window = GetWindow<CameraAnimationEditorWindow>("Camera Animation Editor");
 		window.Show();
 		return window;
 	}
@@ -97,9 +93,9 @@ public class CameraAnimationEditorWindow : EditorWindow
 			string[] pathBuilder = path.Substring(7, path.Length - 13).Split('/');
 			if(pathBuilder.Length > 1)
 			{
-				sequenceNames[i] = pathBuilder[pathBuilder.Length -2] + "/";
+				sequenceNames[i] = pathBuilder[^2] + "/";
 			}
-			sequenceNames[i] += pathBuilder[pathBuilder.Length -1];
+			sequenceNames[i] += pathBuilder[^1];
 		}
 		m_SequenceIndex = EditorGUILayout.Popup(m_SequenceIndex, sequenceNames);
 		if(m_SequenceIndex >= 0)
@@ -201,8 +197,7 @@ public class CameraAnimationEditorWindow : EditorWindow
 		{
 			if(m_SceneView != null)
 			{
-				m_KeyframeCamera.transform.position = m_SceneView.camera.transform.position;
-				m_KeyframeCamera.transform.rotation = m_SceneView.camera.transform.rotation;
+				m_KeyframeCamera.transform.SetPositionAndRotation(m_SceneView.camera.transform.position, m_SceneView.camera.transform.rotation);
 			}
 		}
 		if (GUILayout.Button("Move Editor View To Camera"))
@@ -251,7 +246,7 @@ public class CameraAnimationEditorWindow : EditorWindow
 	{
 		if(m_KeyframeCamera != null)
 		{
-			GameObject.Destroy(m_KeyframeCamera.gameObject);
+			Destroy(m_KeyframeCamera.gameObject);
 			m_KeyframeCamera = null;
 		}
 	}

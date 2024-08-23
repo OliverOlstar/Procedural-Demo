@@ -94,7 +94,7 @@ namespace Core
 			string[] guids = AssetDatabase.FindAssets("t:Scene, " + m_Search);
 			for (int i = 0; i < guids.Length; ++i)
 			{
-				EditorScene editorScene = new EditorScene(guids[i]);
+				EditorScene editorScene = new(guids[i]);
 				m_Scenes.Add(editorScene);
 				if (m_SelectedScene == editorScene.AssetPath)
 				{
@@ -202,7 +202,7 @@ namespace Core
 				return;
 			}
 			string focusedControl = GUI.GetNameOfFocusedControl();
-			using (var scroll = new EditorGUILayout.ScrollViewScope(m_ScrollPosition))
+			using (EditorGUILayout.ScrollViewScope scroll = new EditorGUILayout.ScrollViewScope(m_ScrollPosition))
 			{
 				m_ScrollPosition = scroll.scrollPosition;
 				for (int i = 0; i < m_Scenes.Count; ++i)

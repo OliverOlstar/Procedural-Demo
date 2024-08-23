@@ -5,13 +5,10 @@
 //#undef MATHEMATICS
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
 
 #if MATHEMATICS
-using Unity.Mathematics;
 using static Unity.Mathematics.math;
 using Vector4 = Unity.Mathematics.float4;
 using Vector3 = Unity.Mathematics.float3;
@@ -19,14 +16,13 @@ using Vector2 = Unity.Mathematics.float2;
 #endif
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace StylizedWater2
 {
-    public static partial class Buoyancy
+	public static partial class Buoyancy
     {
-        private static WaveParameters waveParameters = new WaveParameters();
+        private static WaveParameters waveParameters = new();
         private static Material lastMaterial;
         
         private static readonly int TimeParametersID = Shader.PropertyToID("_TimeParameters");
@@ -41,10 +37,13 @@ namespace StylizedWater2
         {
             get
             {
-                if (WaterObject.CustomTime >= 0) return WaterObject.CustomTime;
-                
+                if (WaterObject.CustomTime >= 0)
+				{
+					return WaterObject.CustomTime;
+				}
+
 #if UNITY_EDITOR
-                return Application.isPlaying ? Time.time : Shader.GetGlobalVector(TimeParametersID).x;
+				return Application.isPlaying ? Time.time : Shader.GetGlobalVector(TimeParametersID).x;
 #else
                 return Time.time;
 #endif
@@ -67,12 +66,12 @@ namespace StylizedWater2
         private static Vector4 TIME;
         private static Vector2 planarPosition;
         
-        private static Vector4 amp = new Vector4(0.3f, 0.35f, 0.25f, 0.25f);
-        private static Vector4 freq = new Vector4(1.3f, 1.35f, 1.25f, 1.25f);
-        private static Vector4 speed = new Vector4(1.2f, 1.375f, 1.1f, 1);
-        private static Vector4 dir1 = new Vector4(0.3f, 0.85f, 0.85f, 0.25f);
-        private static Vector4 dir2 = new Vector4(0.1f, 0.9f, -0.5f, -0.5f);
-        private static Vector4 steepness = new Vector4(12f,12f,12f,12f);
+        private static Vector4 amp = new(0.3f, 0.35f, 0.25f, 0.25f);
+        private static Vector4 freq = new(1.3f, 1.35f, 1.25f, 1.25f);
+        private static Vector4 speed = new(1.2f, 1.375f, 1.1f, 1);
+        private static Vector4 dir1 = new(0.3f, 0.85f, 0.85f, 0.25f);
+        private static Vector4 dir2 = new(0.1f, 0.9f, -0.5f, -0.5f);
+        private static Vector4 steepness = new(12f,12f,12f,12f);
 
         //Real frequency value per wave layer
         private static Vector4 frequency;
@@ -115,7 +114,7 @@ namespace StylizedWater2
             Raycast(waterObject.material, waterObject.transform.position.y, origin, direction, dynamicMaterial, out hit);
         }
 
-        private static RaycastHit hit = new RaycastHit();
+        private static RaycastHit hit = new();
         /// <summary>
         /// Faux-raycast against the water surface
         /// </summary>
@@ -129,7 +128,7 @@ namespace StylizedWater2
         {
             Vector3 samplePos = FindWaterLevelIntersection(origin, direction, waterLevel);
 
-            float waveHeight = SampleWaves(samplePos, waterMat, waterLevel, 1f, dynamicMaterial, out var normal);
+            float waveHeight = SampleWaves(samplePos, waterMat, waterLevel, 1f, dynamicMaterial, out UnityEngine.Vector3 normal);
             samplePos.y = waveHeight;
 
             hit = Buoyancy.hit;
@@ -157,7 +156,7 @@ namespace StylizedWater2
             direction1 = dir1 * waveParameters.direction;
             direction2 = dir2 * waveParameters.direction;
 
-            frequency = freq * (1-waveParameters.distance) * 3f;
+            frequency = (1-waveParameters.distance) * 3f * freq;
 
             AB.x = steepness.x * waveParameters.steepness * direction1.x * amp.x;
             AB.y = steepness.x * waveParameters.steepness * direction1.y * amp.x;
@@ -181,7 +180,7 @@ namespace StylizedWater2
 			if(!dynamicMaterial && Application.isPlaying)
 			{
 				//Fetch the material's wave parameters, so the exact calculations can be mirrored
-				if (lastMaterial == null || lastMaterial.Equals(waterMat) == false)
+				if (lastMaterial == null || !lastMaterial.Equals(waterMat))
 				{
                     #if SWS_DEV
                     Debug.Log("SampleWaves: water material changed, re-fetching parameters");
@@ -208,7 +207,7 @@ namespace StylizedWater2
 
             for (int i = 0; i <= waveParameters.count; i++)
             {
-                var t = 1f+((float)i / (float)waveParameters.count);
+				float t = 1f+((float)i / (float)waveParameters.count);
 
                 frequency *= t;
                 
@@ -281,9 +280,12 @@ namespace StylizedWater2
         /// <returns></returns>
         public static bool CanTouchWater(Vector3 position, WaterObject waterObject)
         {
-            if (!waterObject) return false;
-            
-            return position.y < (waterObject.transform.position.y + WaveParameters.GetMaxWaveHeight(waterObject.material));
+            if (!waterObject)
+			{
+				return false;
+			}
+
+			return position.y < (waterObject.transform.position.y + WaveParameters.GetMaxWaveHeight(waterObject.material));
         }
         
         /// <summary>

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
+
 
 	/// <summary>
 	/// %IK system for multiple branched %FABRIK chains.
@@ -37,7 +38,7 @@ namespace RootMotion.FinalIK {
 		/// <summary>
 		/// The %FABRIKRoot solver.
 		/// </summary>
-		public IKSolverFABRIKRoot solver = new IKSolverFABRIKRoot();
+		public IKSolverFABRIKRoot solver = new();
 		
 		public override IKSolver GetIKSolver() {
 			return solver as IKSolver;

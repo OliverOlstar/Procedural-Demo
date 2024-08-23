@@ -1,7 +1,8 @@
 using UnityEngine;
-using System.Collections;
 
-namespace RootMotion {
+namespace RootMotion
+{
+
 
 	/// <summary>
 	/// Contains the information about which way the limbs should be bent.
@@ -25,7 +26,7 @@ namespace RootMotion {
 		public LimbOrientation leftArm, rightArm, leftLeg, rightLeg;
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="RootMotion.FinalIK.FullBodyBipedBendDirections"/> class.
+		/// Initializes a new instance of the <see cref="FinalIK.FullBodyBipedBendDirections"/> class.
 		/// </summary>
 		public BipedLimbOrientations (LimbOrientation leftArm, LimbOrientation rightArm, LimbOrientation leftLeg, LimbOrientation rightLeg) {
 			this.leftArm = leftArm;

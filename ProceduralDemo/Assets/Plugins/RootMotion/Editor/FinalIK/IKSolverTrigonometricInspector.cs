@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-namespace RootMotion.FinalIK {
+namespace RootMotion.FinalIK
+{
 
 	/*
 	 * Custom inspector and scene view tools for IKSolverTrigonometric
 	 * */
+
 	public class IKSolverTrigonometricInspector: IKSolverInspector {
 		
 		#region Public methods
@@ -46,11 +47,20 @@ namespace RootMotion.FinalIK {
 		 * Draws the scene view helpers for IKSolverTrigonometric
 		 * */
 		public static void AddScene(IKSolverTrigonometric solver, Color color, bool modifiable) {
-			if (Application.isPlaying && !solver.initiated) return;
-			if (!Application.isPlaying && !solver.IsValid()) return;
+			if (Application.isPlaying && !solver.initiated)
+			{
+				return;
+			}
+
+
+			if (!Application.isPlaying && !solver.IsValid())
+			{
+				return;
+			}
 
 			//float length = Vector3.Distance(solver.bone1.transform.position, solver.bone2.transform.position) + Vector3.Distance(solver.bone2.transform.position, solver.bone3.transform.position);
 			//float size = length * 0.05f;
+
 
 			Handles.color = color;
 			GUI.color = color;
@@ -61,24 +71,32 @@ namespace RootMotion.FinalIK {
 			// Chain lines
 			Handles.DrawLine(solver.bone1.transform.position, bendPosition);
 			Handles.DrawLine(bendPosition, endPosition);
-			
+
 			// Joints
-			Inspector.SphereCap(0, solver.bone1.transform.position, Quaternion.identity, GetHandleSize(solver.bone1.transform.position));
-			Inspector.SphereCap(0, bendPosition, Quaternion.identity, GetHandleSize(bendPosition));
-			Inspector.SphereCap(0, endPosition, Quaternion.identity, GetHandleSize(endPosition));
+			SphereCap(0, solver.bone1.transform.position, Quaternion.identity, GetHandleSize(solver.bone1.transform.position));
+			SphereCap(0, bendPosition, Quaternion.identity, GetHandleSize(bendPosition));
+			SphereCap(0, endPosition, Quaternion.identity, GetHandleSize(endPosition));
 			
 			if (Application.isPlaying && (solver.IKPositionWeight > 0 || solver.IKRotationWeight > 0)) {
 				if (modifiable) {
-					Inspector.CubeCap(0, solver.IKPosition, solver.IKRotation, GetHandleSize(solver.IKPosition));
+					CubeCap(0, solver.IKPosition, solver.IKRotation, GetHandleSize(solver.IKPosition));
 						
 					// Manipulating position and rotation
 					switch(Tools.current) {
 					case Tool.Move:
-						if (solver.target == null) solver.IKPosition = Handles.PositionHandle(solver.IKPosition, Quaternion.identity);
-						break;
+						if (solver.target == null)
+							{
+								solver.IKPosition = Handles.PositionHandle(solver.IKPosition, Quaternion.identity);
+							}
+
+							break;
 					case Tool.Rotate:
-						if (solver.target == null) solver.IKRotation = Handles.RotationHandle(solver.IKRotation, solver.IKPosition);
-						break;
+						if (solver.target == null)
+							{
+								solver.IKRotation = Handles.RotationHandle(solver.IKRotation, solver.IKPosition);
+							}
+
+							break;
 					}
 				}
 				

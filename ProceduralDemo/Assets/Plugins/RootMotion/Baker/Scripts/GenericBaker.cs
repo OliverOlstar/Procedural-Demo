@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
 namespace RootMotion
 {
-    /// <summary>
-    /// Baker for Generic/Legacy animation.
-    /// </summary>
-    public class GenericBaker : Baker
+	/// <summary>
+	/// Baker for Generic/Legacy animation.
+	/// </summary>
+	public class GenericBaker : Baker
     {
         /// <summary>
         /// If true, produced AnimationClips will be marked as Legacy and usable with the Legacy animation system.
@@ -59,9 +58,12 @@ namespace RootMotion
                     Array.Resize(ref children, children.Length + 1);
 
                     bool isRootNode = childrenAndRoot[i] == rootNode;
-                    if (isRootNode) rootChildIndex = children.Length - 1;
+                    if (isRootNode)
+					{
+						rootChildIndex = children.Length - 1;
+					}
 
-                    children[children.Length - 1] = new BakerTransform(childrenAndRoot[i], root, BakePosition(childrenAndRoot[i]), isRootNode);
+					children[^1] = new BakerTransform(childrenAndRoot[i], root, BakePosition(childrenAndRoot[i]), isRootNode);
                 }
             }
         }
@@ -77,35 +79,50 @@ namespace RootMotion
             {
                 children[i].Reset();
 
-                if (i == rootChildIndex) children[i].SetRelativeSpace(root.position, root.rotation);
-            }
+                if (i == rootChildIndex)
+				{
+					children[i].SetRelativeSpace(root.position, root.rotation);
+				}
+			}
         }
 
         protected override void OnSetLoopFrame(float time)
         {
             // TODO Change to SetLoopFrame like in HumanoidBaker
-            for (int i = 0; i < children.Length; i++) children[i].AddLoopFrame(time);
-        }
+            for (int i = 0; i < children.Length; i++)
+			{
+				children[i].AddLoopFrame(time);
+			}
+		}
 
         protected override void OnSetCurves(ref AnimationClip clip)
         {
             // TODO Length Multiplier
 
-            for (int i = 0; i < children.Length; i++) children[i].SetCurves(ref clip);
-        }
+            for (int i = 0; i < children.Length; i++)
+			{
+				children[i].SetCurves(ref clip);
+			}
+		}
 
         protected override void OnSetKeyframes(float time, bool lastFrame)
         {
-            for (int i = 0; i < children.Length; i++) children[i].SetKeyframes(time);
-        }
+            for (int i = 0; i < children.Length; i++)
+			{
+				children[i].SetKeyframes(time);
+			}
+		}
 
         // Is the specified Transform in the ignore list?
         private bool IsIgnored(Transform t)
         {
             for (int i = 0; i < ignoreList.Length; i++)
             {
-                if (t == ignoreList[i]) return true;
-            }
+                if (t == ignoreList[i])
+				{
+					return true;
+				}
+			}
             return false;
         }
 
@@ -114,8 +131,11 @@ namespace RootMotion
         {
             for (int i = 0; i < bakePositionList.Length; i++)
             {
-                if (t == bakePositionList[i]) return true;
-            }
+                if (t == bakePositionList[i])
+				{
+					return true;
+				}
+			}
             return false;
         }
 
@@ -124,7 +144,7 @@ namespace RootMotion
         {
             clip.legacy = markAsLegacy;
 
-            if (mode != Baker.Mode.AnimationClips)
+            if (mode != Mode.AnimationClips)
             {
                 clip.wrapMode = settings.loopTime ? WrapMode.Loop : WrapMode.Default;
             }
