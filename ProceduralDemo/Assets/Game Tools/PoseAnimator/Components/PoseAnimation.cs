@@ -20,5 +20,11 @@ namespace ODev.PoseAnimator
 			PlayType = pSource.PlayType;
 			Easing = pSource.Easing;
 		}
+
+		public PoseAnimation SetClipsStartIndex(int pIndex)
+		{
+			ClipsStartIndex = pIndex;
+			return this;
+		}
 	}
 }

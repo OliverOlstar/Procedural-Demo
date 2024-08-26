@@ -79,11 +79,11 @@ namespace ODev.PoseAnimator
 			float progress01 = Weights[pAnimationIndex].Progress01;
 			progress01 = GetClips(progress01, Animations[pAnimationIndex], out int clipIndexA, out int clipIndexB);
 			progress01 = Easing.Ease(Animations[pAnimationIndex].Easing, progress01);
+			// this.Log($"ClipA {clipIndexA}, ClipB {clipIndexB}, Progress {progress01}, Weight {weight01}");
 			PoseKey keyA = PoseKeys[(clipIndexA * SkeletonLength) + pIndex];
 			PoseKey keyB = PoseKeys[(clipIndexB * SkeletonLength) + pIndex];
 
 			Vector3 position = Vector3.LerpUnclamped(keyA.Position, keyB.Position, progress01);
-			// this.Log($"ClipA {clipIndexA}, ClipB {clipIndexB}, Progress {progress01}, Weight {weight01}");
 			Quaternion rotation = Quaternion.LerpUnclamped(keyA.Rotation, keyB.Rotation.normalized, progress01);
 			Vector3 scale = Vector3.LerpUnclamped(keyA.Scale, keyB.Scale, progress01);
 

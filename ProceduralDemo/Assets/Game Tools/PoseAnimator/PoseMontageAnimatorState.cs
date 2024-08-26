@@ -5,7 +5,7 @@ namespace ODev.PoseAnimator
 {
     public struct PoseMontageAnimatorState
     {
-		public int Index;
+		public int Handle;
 		public SOPoseMontage Montage;
 		public float Time;
 
@@ -40,6 +40,12 @@ namespace ODev.PoseAnimator
 		{
 			m_TimeWeightOffset = Montage.TotalSeconds - (Time + Montage.FadeOutSeconds);
 			m_TimeWeightOffset = Mathf.Max(0.0f, m_TimeWeightOffset);
+		}
+
+		public void Clear()
+		{
+			Handle = int.MinValue;
+			Montage = null;
 		}
 	}
 
