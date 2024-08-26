@@ -53,7 +53,7 @@ namespace ODev.PoseAnimator
 				}
 			}
 
-			m_ActiveMontages[0] = new MontageState()
+			m_ActiveMontages[0] = new PoseMontageAnimatorState()
 			{
 				Index = 0,
 				Montage = pMontage,
