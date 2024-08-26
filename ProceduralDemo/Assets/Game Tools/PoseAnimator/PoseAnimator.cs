@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using ODev.Picker;
 using ODev.Util;
@@ -145,7 +144,7 @@ namespace ODev.PoseAnimator
 			PoseUtil.AppendNative(ref m_PoseKeys, PoseKeys);
 			ListPool<PoseKey>.Release(PoseKeys);
 
-			this.Log($"[{pAnimation.name}] m_Animations {m_Animations.Length} | m_Weights {m_Weights.Length} | m_PoseKeys {m_PoseKeys.Length}");
+			// this.Log($"[{pAnimation.name}] m_Animations {m_Animations.Length} | m_Weights {m_Weights.Length} | m_PoseKeys {m_PoseKeys.Length}");
 			return m_Animations.Length - 1;
 		}
 

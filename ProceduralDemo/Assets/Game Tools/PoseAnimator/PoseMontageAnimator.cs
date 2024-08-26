@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Jobs;
 using Unity.Collections;
 using ODev.Util;
@@ -11,35 +9,13 @@ namespace ODev.PoseAnimator
 	[System.Serializable]
 	public class PoseMontageAnimator
 	{
-		private struct MontageState
-		{
-			public int Index;
-			public SOPoseMontage Montage;
-			public float Time;
-
-			public readonly float Progress01 => Mathf.Clamp01((Time - Montage.StartSeconds) / Montage.Seconds);
-			public readonly float Weight01()
-			{
-				if (Time < Montage.FadeInSeconds)
-				{
-					return (Time / Montage.FadeInSeconds).Clamp01();
-				}
-				if (Time > Montage.Seconds - Montage.FadeOutSeconds)
-				{
-					return ((Montage.TotalSeconds - Time) / Montage.FadeOutSeconds).Clamp01();
-				}
-				return 1.0f;
-			}
-			public readonly bool IsComplete => Montage == null || Time > Montage.TotalSeconds;
-		}
-
 		private const int MAX_MONTAGE_COUNT = 1;
 		private const int MAX_MONTAGE_POSE_COUNT = MAX_MONTAGE_COUNT * 4;
 
 		private NativeArray<PoseAnimation> m_Animations;
 		private NativeArray<PoseWeight> m_Weights;
 		private NativeArray<PoseKey> m_PoseKeys;
-		private readonly MontageState[] m_ActiveMontages = new MontageState[MAX_MONTAGE_COUNT];
+		private readonly PoseMontageAnimatorState[] m_ActiveMontages = new PoseMontageAnimatorState[MAX_MONTAGE_COUNT];
 
 		public void Initalize(int pSkeletonKeyCount)
 		{
@@ -88,9 +64,10 @@ namespace ODev.PoseAnimator
 			return 0;
 		}
 
+		[Button]
 		public void CancelMontage(int pIndex)
 		{
-			this.DevException(new System.NotImplementedException());
+			m_ActiveMontages[pIndex].StartFadeOut();
 		}
 
 		public bool IsWeightFull()
@@ -105,11 +82,7 @@ namespace ODev.PoseAnimator
 				return;
 			}
 			m_ActiveMontages[0].Time += pDeltaTime;
-			m_Weights[0] = new()
-			{
-				Weight01 = m_ActiveMontages[0].Weight01(),
-				Progress01 = m_ActiveMontages[0].Progress01,
-			};
+			m_Weights[0] = m_ActiveMontages[0].GetPoseWeight();
 		}
 
 		public JobHandle TickSchedule(NativeArray<PoseKey> pSkeletonKeys, NativeArray<PoseKey> pNextPose, JobHandle pDependsOn = default)
