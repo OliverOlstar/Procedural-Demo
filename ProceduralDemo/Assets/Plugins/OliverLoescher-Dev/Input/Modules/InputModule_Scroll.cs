@@ -2,19 +2,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
 using System;
+using UnityEngine.Events;
 
 namespace ODev.Input
 {
 	[Serializable]
-    public class InputModule_Scroll : InputModule_Base
+    public class InputModule_Scroll : InputModule_Base, IInputFloat
 	{
 		[Space, SerializeField, BoxGroup]
 		private float m_Input = 0.0f;
 		public float Input => m_Input;
 
 		// Events
-		[BoxGroup]
-		public UnityEventsUtil.FloatEvent OnChanged;
+		[SerializeField, BoxGroup]
+		private UnityEventsUtil.FloatEvent m_OnChanged;
 
 		public override void Initalize(InputAction pInputAction, Func<bool> pIsValid)
 		{
@@ -38,7 +39,10 @@ namespace ODev.Input
 				return;
 			}
 			m_Input = ctx.ReadValue<float>();
-			OnChanged?.Invoke(m_Input);
+			m_OnChanged?.Invoke(m_Input);
 		}
+
+		public void RegisterOnChanged(UnityAction<float> pAction) => m_OnChanged.AddListener(pAction);
+		public void DeregisterOnChanged(UnityAction<float> pAction) => m_OnChanged.RemoveListener(pAction);
 	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using ODev.Util;
+using ODev.Input;
 
 // TODO: Abilities canceling other abilities
 // TODO: Abilities blocking other abilities
@@ -31,7 +32,7 @@ public class PlayerAbilities
 		for (int i = 0; i < m_Abilities.Length; i++)
 		{
 			int index = i;
-			m_AbilityInstances.Add(m_Abilities[i].CreateInstance(pRoot, (bool performed) => OnAbilityInputRecieved(index, performed)));
+			m_AbilityInstances.Add(m_Abilities[i].CreateInstance(pRoot, () => OnAbilityInputRecieved(index, true), () => OnAbilityInputRecieved(index, false)));
 		}
 		m_Updateable.Register(Tick);
 	}
@@ -59,7 +60,7 @@ public class PlayerAbilities
 				{
 					continue;
 				}
-				if (!ability.InputActivate.Input)
+				if ((ability.InputActivate is IInputBool input) && input.Input)
 				{
 					ability.Deactivate();
 				}

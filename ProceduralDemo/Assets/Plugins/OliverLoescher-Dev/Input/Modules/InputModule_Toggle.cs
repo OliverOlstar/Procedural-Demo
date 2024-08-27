@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 namespace ODev.Input
 {
 	[System.Serializable]
-    public class InputModule_Toggle : InputModule_Base
+    public class InputModule_Toggle : InputModule_Base, IInputBool
 	{
 		[SerializeField, BoxGroup]
 		private bool m_IsToggle = false;
@@ -16,12 +16,12 @@ namespace ODev.Input
 		public bool Input => m_Input;
 
 		// Events
-		[BoxGroup]
-		public UnityEventsUtil.BoolEvent OnChanged;
-		[BoxGroup]
-		public UnityEvent OnPerformed;
-		[BoxGroup]
-		public UnityEvent OnCanceled;
+		[SerializeField, BoxGroup]
+		private UnityEventsUtil.BoolEvent m_OnChanged;
+		[SerializeField, BoxGroup]
+		private UnityEvent m_OnPerformed;
+		[SerializeField, BoxGroup]
+		private UnityEvent m_OnCanceled;
 
 		public override void Enable()
 		{
@@ -67,16 +67,25 @@ namespace ODev.Input
 				m_Input = pValue;
 
 				// Events
-				OnChanged.Invoke(m_Input);
+				m_OnChanged.Invoke(m_Input);
 				if (m_Input)
 				{
-					OnPerformed?.Invoke();
+					m_OnPerformed?.Invoke();
 				}
 				else
 				{
-					OnCanceled?.Invoke();
+					m_OnCanceled?.Invoke();
 				}
 			}
 		}
+
+		public void RegisterOnChanged(UnityAction<bool> pAction) => m_OnChanged.AddListener(pAction);
+		public void DeregisterOnChanged(UnityAction<bool> pAction) => m_OnChanged.RemoveListener(pAction);
+
+		public void RegisterOnPerformed(UnityAction pAction) => m_OnPerformed.AddListener(pAction);
+		public void DeregisterOnPerformed(UnityAction pAction) => m_OnPerformed.RemoveListener(pAction);
+
+		public void RegisterOnCanceled(UnityAction pAction) => m_OnCanceled.AddListener(pAction);
+		public void DeregisterOnCanceled(UnityAction pAction) => m_OnCanceled.RemoveListener(pAction);
 	}
 }

@@ -24,12 +24,12 @@ public class SOPlayerAbilityClimb : SOCharacterAbility
 	public float AccelerationPercentModify => m_AccelerationPercentModify;
 	public float DragPercentModify => m_DragPercentModify;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityClimb(pPlayer, this, pOnInputRecived);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityClimb(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
 public class PlayerAbilityClimb : CharacterAbility<SOPlayerAbilityClimb>
 {
-	public PlayerAbilityClimb(PlayerRoot pPlayer, SOPlayerAbilityClimb pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+	public PlayerAbilityClimb(PlayerRoot pPlayer, SOPlayerAbilityClimb pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
 	protected override void Initalize() { }
 	protected override void DestroyInternal() { }

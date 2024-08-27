@@ -22,16 +22,16 @@ public class SOPlayerAbilityJump : SOCharacterAbility
 	public float CancelMinVelocity => m_CancelMinVelocity;
 
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityJump(pPlayer, this, pOnInputRecived);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityJump(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
 public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 {
 	private float m_LastGroundedTime = 0.0f;
 
-	public PlayerAbilityJump(PlayerRoot pPlayer, SOPlayerAbilityJump pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+	public PlayerAbilityJump(PlayerRoot pPlayer, SOPlayerAbilityJump pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
-	public override InputModule_Toggle InputActivate => Root.Input.Jump;
+	public override IInputTrigger InputActivate => Root.Input.Jump;
 
 	protected override void Initalize()
 	{

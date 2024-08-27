@@ -23,13 +23,13 @@ public class CharacterInteractor : MonoBehaviour
 	private void OnEnable()
 	{
 		m_Updateable.Register(Tick);
-		m_Player.Input.Interact.OnPerformed.AddListener(OnPerformed);
+		m_Player.Input.Interact.RegisterOnPerformed(OnPerformed);
 	}
 
 	private void OnDisable()
 	{
 		m_Updateable.Deregister();
-		m_Player.Input.Interact.OnPerformed.RemoveListener(OnPerformed);
+		m_Player.Input.Interact.DeregisterOnPerformed(OnPerformed);
 
 		if (Func.IsApplicationQuitting)
 		{

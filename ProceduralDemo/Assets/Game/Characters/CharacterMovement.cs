@@ -170,9 +170,17 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		m_VelocityY += pVelocity.y;
 		m_VelocityXZ.z += pVelocity.z;
 	}
-	public void AddVelocityXZ(Vector3 pVelocity)
+	public void AddVelocityXZ(Vector3 pVelocity, bool pToNormal = false)
 	{
-		m_VelocityXZ += pVelocity;
+		if (!pToNormal)
+		{
+			m_VelocityXZ += pVelocity;
+			return;
+		}
+		Vector3 normal = m_Root.OnGround.IsOnGround ? m_Root.OnGround.GetAverageNormal() : Vector3.up;
+		float magnitude = pVelocity.magnitude;
+		Vector3 direction = pVelocity.ProjectOnPlane(normal);
+		m_VelocityXZ += direction.normalized * magnitude;
 	}
 	public void SetVelocityY(float pVelocity)
 	{

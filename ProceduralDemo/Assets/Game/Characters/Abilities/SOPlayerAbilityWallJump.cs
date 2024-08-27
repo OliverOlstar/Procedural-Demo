@@ -20,14 +20,14 @@ public class SOPlayerAbilityWallJump : SOCharacterAbility
 	public float CancelVelocityPercent => m_CancelVelocityPercent;
 	public float CancelMinVelocity => m_CancelMinVelocity;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityWallJump(pPlayer, this, pOnInputRecived);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityWallJump(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
 public class PlayerAbilityWallJump : CharacterAbility<SOPlayerAbilityWallJump>
 {
-	public PlayerAbilityWallJump(PlayerRoot pPlayer, SOPlayerAbilityWallJump pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+	public PlayerAbilityWallJump(PlayerRoot pPlayer, SOPlayerAbilityWallJump pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
-	public override InputModule_Toggle InputActivate => Root.Input.Jump;
+	public override IInputTrigger InputActivate => Root.Input.Jump;
 
 	protected override void Initalize()
 	{

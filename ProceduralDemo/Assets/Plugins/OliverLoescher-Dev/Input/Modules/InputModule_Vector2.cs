@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
+using UnityEngine.Events;
 
 namespace ODev.Input
 {
 	[System.Serializable]
-    public class InputModule_Vector2 : InputModule_Base
+    public class InputModule_Vector2 : InputModule_Base, IInputVector2
 	{
 		[BoxGroup, HideInEditorMode, SerializeField]
 		private Vector2 m_Input = new();
@@ -19,8 +20,8 @@ namespace ODev.Input
 		[BoxGroup, SerializeField]
 		private bool m_InvertY = false;
 
-		[BoxGroup]
-		public UnityEventsUtil.Vector2Event OnChanged;
+		[SerializeField, BoxGroup]
+		private UnityEventsUtil.Vector2Event m_OnChanged;
 
 		public override void Enable()
 		{
@@ -35,7 +36,7 @@ namespace ODev.Input
 		public override void Clear()
 		{
 			m_Input = Vector2.zero;
-			OnChanged?.Invoke(m_Input);
+			m_OnChanged?.Invoke(m_Input);
 		}
 
 		private void OnPerformed(InputAction.CallbackContext ctx)
@@ -51,7 +52,10 @@ namespace ODev.Input
 			{
 				m_Input.Normalize();
 			}
-			OnChanged?.Invoke(m_Input);
+			m_OnChanged?.Invoke(m_Input);
 		}
+
+		public void RegisterOnChanged(UnityAction<Vector2> pAction) => m_OnChanged.AddListener(pAction);
+		public void DeregisterOnChanged(UnityAction<Vector2> pAction) => m_OnChanged.RemoveListener(pAction);
 	}
 }

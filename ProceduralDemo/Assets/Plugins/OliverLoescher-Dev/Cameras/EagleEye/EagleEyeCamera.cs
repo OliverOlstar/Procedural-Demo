@@ -71,8 +71,17 @@ namespace ODev.Camera
 
 			if (m_Input != null)
 			{
-				m_Input.MoveDelta.Value.OnChanged.AddListener(OnMoveDelta);
-				m_Input.ZoomDelta.OnChanged.AddListener(OnZoomDelta);
+				m_Input.MoveDelta.Value.RegisterOnChanged(OnMoveDelta);
+				m_Input.ZoomDelta.RegisterOnChanged(OnZoomDelta);
+			}
+		}
+
+		private void OnDestroy()
+		{
+			if (m_Input != null)
+			{
+				m_Input.MoveDelta.Value.DeregisterOnChanged(OnMoveDelta);
+				m_Input.ZoomDelta.DeregisterOnChanged(OnZoomDelta);
 			}
 		}
 

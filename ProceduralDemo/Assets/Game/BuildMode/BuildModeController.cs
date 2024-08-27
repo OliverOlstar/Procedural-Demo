@@ -50,9 +50,9 @@ public class BuildModeController : MonoBehaviour
 
 	private void Start()
 	{
-		m_Root.Input.Exit.OnPerformed.AddListener(ExitMode);
-		m_Root.Input.Positive.OnPerformed.AddListener(OnPositiveInput);
-		m_Root.Input.Negative.OnPerformed.AddListener(OnNegativeInput);
+		m_Root.Input.Exit.RegisterOnPerformed(ExitMode);
+		m_Root.Input.Positive.RegisterOnPerformed(OnPositiveInput);
+		m_Root.Input.Negative.RegisterOnPerformed(OnNegativeInput);
 
 		m_SelectingState.Initalize(m_Root);
 		m_PlacingState.Initalize(m_Root);
@@ -61,9 +61,9 @@ public class BuildModeController : MonoBehaviour
 	}
 	private void OnDestroy()
 	{
-		m_Root.Input.Exit.OnPerformed.RemoveListener(ExitMode);
-		m_Root.Input.Positive.OnPerformed.RemoveListener(OnPositiveInput);
-		m_Root.Input.Negative.OnPerformed.RemoveListener(OnNegativeInput);
+		m_Root.Input.Exit.DeregisterOnPerformed(ExitMode);
+		m_Root.Input.Positive.DeregisterOnPerformed(OnPositiveInput);
+		m_Root.Input.Negative.DeregisterOnPerformed(OnNegativeInput);
 	}
 
 	public void OnExitingMode()

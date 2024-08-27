@@ -8,12 +8,12 @@ public class SOPlayerAbilityGlide : SOCharacterAbility
 	private float m_GlideForce = 20.0f;
 	public float GlideForce => m_GlideForce;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityGlide(pPlayer, this, pOnInputRecived);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityGlide(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
 public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 {
-	public PlayerAbilityGlide(PlayerRoot pPlayer, SOPlayerAbilityGlide pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+	public PlayerAbilityGlide(PlayerRoot pPlayer, SOPlayerAbilityGlide pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
 	protected override void Initalize()
 	{

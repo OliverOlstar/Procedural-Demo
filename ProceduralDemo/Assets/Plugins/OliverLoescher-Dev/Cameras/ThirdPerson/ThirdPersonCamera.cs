@@ -68,9 +68,19 @@ namespace ODev
 
             if (m_Input != null)
 			{
-				m_Input.Look.OnChanged.AddListener(OnLook);
-				m_Input.LookDelta.OnChanged.AddListener(OnLookDelta);
-				m_Input.Zoom.OnChanged.AddListener(OnZoom);
+				m_Input.Look.RegisterOnChanged(OnLook);
+				m_Input.LookDelta.RegisterOnChanged(OnLookDelta);
+				m_Input.Zoom.RegisterOnChanged(OnZoom);
+			}
+		}
+
+		private void OnDestroy()
+		{
+			if (m_Input != null)
+			{
+				m_Input.Look.DeregisterOnChanged(OnLook);
+				m_Input.LookDelta.DeregisterOnChanged(OnLookDelta);
+				m_Input.Zoom.DeregisterOnChanged(OnZoom);
 			}
 		}
 

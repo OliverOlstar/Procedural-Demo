@@ -837,6 +837,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: faf59d0f22843734d90fdbe7c80efd9e, type: 2}
     - {fileID: 11400000, guid: 4df49c86a85e10149ae56ad86a41dc97, type: 2}
     - {fileID: 11400000, guid: 7f877d85856abb34caa6d3c278af5b7d, type: 2}
+    - {fileID: 11400000, guid: 2c4fecb7b14e74142a6125637d579707, type: 2}
     m_InputBufferSeconds: 0.2
 --- !u!114 &82955120
 MonoBehaviour:
@@ -21329,7 +21330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33811a4ac3832da4c801abc55bbbd6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 11400000, guid: f26ec85136951574cb5ae5c2350ee0b1, type: 2}
+  m_Clip: {fileID: 11400000, guid: af9cded930568254fa739b240792e0c4, type: 2}
   m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Root: {fileID: 1323546782}
 --- !u!114 &752309548
@@ -48050,6 +48051,18 @@ MonoBehaviour:
     OnPerformed:
       m_PersistentCalls:
         m_Calls: []
+  attackPrimaryInput:
+    m_IsToggle: 1
+    m_Input: 0
+    OnChanged:
+      m_PersistentCalls:
+        m_Calls: []
+    OnPerformed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnCanceled:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &1618059304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63790,7 +63803,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2128706076
 Transform:
   m_ObjectHideFlags: 0

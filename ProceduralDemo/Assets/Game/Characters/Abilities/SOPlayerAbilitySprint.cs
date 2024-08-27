@@ -11,16 +11,16 @@ public class SOPlayerAbilitySprint : SOCharacterAbility
 	public FloatGameStatModifier m_Modifier = new();
 	public FloatGameStatModifier Modifier => m_Modifier;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilitySprint(pPlayer, this, pOnInputRecived);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilitySprint(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
 public class PlayerAbilitySprint : CharacterAbility<SOPlayerAbilitySprint>
 {
 	private FloatGameStatModifier m_ModifierInstance;
 
-	public PlayerAbilitySprint(PlayerRoot pPlayer, SOPlayerAbilitySprint pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+	public PlayerAbilitySprint(PlayerRoot pPlayer, SOPlayerAbilitySprint pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
-	public override InputModule_Toggle InputActivate => Root.Input.Sprint;
+	public override IInputTrigger InputActivate => Root.Input.Sprint;
 
 	protected override void Initalize()
 	{

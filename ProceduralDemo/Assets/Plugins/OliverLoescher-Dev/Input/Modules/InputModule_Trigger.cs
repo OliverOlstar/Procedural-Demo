@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Sirenix.OdinInspector;
@@ -5,10 +6,10 @@ using Sirenix.OdinInspector;
 namespace ODev.Input
 {
 	[System.Serializable]
-    public class InputModule_Trigger : InputModule_Base
+    public class InputModule_Trigger : InputModule_Base, IInputTrigger
 	{
-		[BoxGroup]
-		public UnityEvent OnPerformed;
+		[SerializeField, BoxGroup]
+		private UnityEvent m_OnPerformed;
 
 		public override void Enable()
 		{
@@ -26,7 +27,10 @@ namespace ODev.Input
 			{
 				return;
 			}
-			OnPerformed?.Invoke();
+			m_OnPerformed?.Invoke();
 		}
+
+		public void RegisterOnPerformed(UnityAction pAction) => m_OnPerformed.AddListener(pAction);
+		public void DeregisterOnPerformed(UnityAction pAction) => m_OnPerformed.RemoveListener(pAction);
 	}
 }

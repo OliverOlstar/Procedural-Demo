@@ -43,12 +43,12 @@ public class SOPlayerAbilityMantle : SOCharacterAbility
 	public float TopSlopeMin => m_TopSlopeMin;
 	public Vector2 SideSlopeLimit => m_SideSlopeLimit;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityMantle(pPlayer, this, pOnInputRecived);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityMantle(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
 public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 {
-	public PlayerAbilityMantle(PlayerRoot pPlayer, SOPlayerAbilityMantle pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+	public PlayerAbilityMantle(PlayerRoot pPlayer, SOPlayerAbilityMantle pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
 	private Transform Transform => Root.Movement.transform;
 
@@ -63,6 +63,7 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 
 	private Vector3 m_Direction;
 	private RaycastHit m_Hit;
+	private int m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;
 
 	private float m_TimeElapsed;
 	private Vector3 m_CurrentPosition;
@@ -94,7 +95,7 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 	protected override void ActivateInternal()
 	{
 		Root.Movement.enabled = false;
-		Root.Animator.PlayMontage(Data.Montage);
+		m_MontageHandle = Root.Animator.PlayMontage(Data.Montage);
 
 		m_TimeElapsed = 0.0f;
 		m_CurrentPosition = Vector3.zero;
@@ -109,6 +110,7 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 		if (m_TimeElapsed >= seconds)
 		{
 			Transform.position = m_ToPosition;
+			m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;
 			Deactivate();
 			return;
 		}
@@ -121,6 +123,12 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 		m_CurrentPosition.y = Mathf.LerpUnclamped(m_FromPosition.y, m_ToPosition.y, yProgress);
 		m_CurrentPosition.z = Mathf.LerpUnclamped(m_FromPosition.z, m_ToPosition.z, xzProgress);
 		Transform.position = m_CurrentPosition;
+
+		// if (Input.GetKey(KeyCode.Q))
+		// {
+		// 	this.Log("CANCEL");
+		// 	Deactivate();
+		// }
 	}
 
 	protected override void DeactivateInternal()
@@ -130,5 +138,6 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 		{
 			Root.Movement.AddVelocityXZ((m_ToPosition - m_FromPosition).Horizontalize() * Data.CompleteVelocity);
 		}
+		Root.Animator.CancelMontage(m_MontageHandle);
 	}
 }

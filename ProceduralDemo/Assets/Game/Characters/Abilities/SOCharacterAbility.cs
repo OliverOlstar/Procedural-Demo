@@ -32,13 +32,13 @@ public abstract class SOCharacterAbility : ScriptableObject
 		_ => throw new NotImplementedException(),
 	};
 
-	public abstract ICharacterAbility CreateInstance(PlayerRoot pRoot, UnityAction<bool> pOnInputRecived);
+	public abstract ICharacterAbility CreateInstance(PlayerRoot pRoot, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled);
 }
 
 public interface ICharacterAbility
 {
 	public bool IsActive { get; }
-	public InputModule_Toggle InputActivate { get; }
+	public IInputTrigger InputActivate { get; }
 
 	/// <summary> Calls Activate() if CanActivate() is true </summary>
 	public bool TryActivate();
@@ -53,23 +53,32 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 {
 	private readonly PlayerRoot m_Root = null;
 	private readonly TData m_Data = null;
-	private readonly UnityAction<bool> m_OnInputRecieved;
+	private readonly UnityAction m_OnInputPerformed;
+	private readonly UnityAction m_OnInputCanceled;
 	private bool m_IsActive = false;
 	private float m_CooldownTime = 0.0f;
 
 	public PlayerRoot Root => m_Root;
 	public TData Data => m_Data;
 	public bool IsActive => m_IsActive;
-	public virtual InputModule_Toggle InputActivate => null;
+	public virtual IInputTrigger InputActivate => null;
 
-	public CharacterAbility(PlayerRoot pRoot, TData pData, UnityAction<bool> pOnInputRecived)
+	public CharacterAbility(PlayerRoot pRoot, TData pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled)
 	{
 		m_Root = pRoot;
 		m_Data = pData;
-		m_OnInputRecieved = pOnInputRecived;
 		LogMethod();
-		InputActivate?.OnChanged.AddListener(m_OnInputRecieved);
+		m_OnInputPerformed = pOnInputPerformed;
+		m_OnInputCanceled = pOnInputCanceled;
 
+		if (InputActivate != null)
+		{
+			InputActivate.RegisterOnPerformed(m_OnInputPerformed);
+			if (InputActivate is IInputBool InputActivateBool)
+			{
+				InputActivateBool.RegisterOnCanceled(m_OnInputCanceled);
+			}
+		}
 		Initalize();
 	}
 
@@ -99,12 +108,19 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	void ICharacterAbility.Destory()
 	{
 		LogMethod();
-		InputActivate?.OnChanged.RemoveListener(m_OnInputRecieved);
+		if (InputActivate != null)
+		{
+			InputActivate.DeregisterOnPerformed(m_OnInputPerformed);
+			if (InputActivate is IInputBool InputActivateBool)
+			{
+				InputActivateBool.DeregisterOnCanceled(m_OnInputCanceled);
+			}
+		}
 		DestroyInternal();
 	}
 
 	public virtual void ActiveTick(float pDeltaTime) { }
-	protected virtual bool CanActivate() { return false; }
+	protected virtual bool CanActivate() { return true; }
 	protected virtual bool CanActivateUpdate() { return false; }
 	protected abstract void Initalize();
 	protected abstract void DestroyInternal();

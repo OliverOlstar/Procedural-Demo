@@ -11,16 +11,16 @@ public class SOPlayerAbilityCrouch : SOCharacterAbility
 	public FloatGameStatModifier m_SpeedModifier = new();
 	public FloatGameStatModifier SpeedModifier => m_SpeedModifier;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction<bool> pOnInputRecived) => new PlayerAbilityCrouch(pPlayer, this, pOnInputRecived);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityCrouch(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
 public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 {
 	private FloatGameStatModifier m_ModifierInstance;
 
-	public PlayerAbilityCrouch(PlayerRoot pPlayer, SOPlayerAbilityCrouch pData, UnityAction<bool> pOnInputRecived) : base(pPlayer, pData, pOnInputRecived) { }
+	public PlayerAbilityCrouch(PlayerRoot pPlayer, SOPlayerAbilityCrouch pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
-	public override InputModule_Toggle InputActivate => Root.Input.Crouch;
+	public override IInputTrigger InputActivate => Root.Input.Crouch;
 
 	protected override void Initalize()
 	{

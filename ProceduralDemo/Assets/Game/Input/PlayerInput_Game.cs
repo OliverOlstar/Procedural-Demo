@@ -71,6 +71,15 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackPrimary"",
+                    ""type"": ""Button"",
+                    ""id"": ""2d8a9d90-b355-44ba-8c0b-60db695b4b1f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -236,6 +245,28 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c19ee72-476c-4e35-ac84-3f5679853a93"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""AttackPrimary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c1b472b-e178-452d-8157-3bb14bb934f6"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""AttackPrimary"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -455,6 +486,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         m_PlayerCharacter_Sprint = m_PlayerCharacter.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerCharacter_Crouch = m_PlayerCharacter.FindAction("Crouch", throwIfNotFound: true);
         m_PlayerCharacter_Interact = m_PlayerCharacter.FindAction("Interact", throwIfNotFound: true);
+        m_PlayerCharacter_AttackPrimary = m_PlayerCharacter.FindAction("AttackPrimary", throwIfNotFound: true);
         // BuildMode
         m_BuildMode = asset.FindActionMap("BuildMode", throwIfNotFound: true);
         m_BuildMode_Exit = m_BuildMode.FindAction("Exit", throwIfNotFound: true);
@@ -527,6 +559,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCharacter_Sprint;
     private readonly InputAction m_PlayerCharacter_Crouch;
     private readonly InputAction m_PlayerCharacter_Interact;
+    private readonly InputAction m_PlayerCharacter_AttackPrimary;
     public struct PlayerCharacterActions
     {
         private @PlayerInput_Game m_Wrapper;
@@ -536,6 +569,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         public InputAction @Sprint => m_Wrapper.m_PlayerCharacter_Sprint;
         public InputAction @Crouch => m_Wrapper.m_PlayerCharacter_Crouch;
         public InputAction @Interact => m_Wrapper.m_PlayerCharacter_Interact;
+        public InputAction @AttackPrimary => m_Wrapper.m_PlayerCharacter_AttackPrimary;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCharacter; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -560,6 +594,9 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @AttackPrimary.started += instance.OnAttackPrimary;
+            @AttackPrimary.performed += instance.OnAttackPrimary;
+            @AttackPrimary.canceled += instance.OnAttackPrimary;
         }
 
         private void UnregisterCallbacks(IPlayerCharacterActions instance)
@@ -579,6 +616,9 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @AttackPrimary.started -= instance.OnAttackPrimary;
+            @AttackPrimary.performed -= instance.OnAttackPrimary;
+            @AttackPrimary.canceled -= instance.OnAttackPrimary;
         }
 
         public void RemoveCallbacks(IPlayerCharacterActions instance)
@@ -691,6 +731,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnAttackPrimary(InputAction.CallbackContext context);
     }
     public interface IBuildModeActions
     {
