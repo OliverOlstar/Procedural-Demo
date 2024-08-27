@@ -160,7 +160,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	{
 		if (Data.LogSelf)
 		{
-			GetType().Log("", pMethodName);
+			Data.Log("", pMethodName);
 		}
 	}
 	#endregion Helpers

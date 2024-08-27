@@ -9,6 +9,8 @@ namespace ODev.PoseAnimator
 	[System.Serializable]
 	public class PoseMontageAnimator
 	{
+		public const int NULL_HANDLE = int.MinValue;
+
 		private const int MAX_MONTAGE_COUNT = 2; // Active, Previous
 		private const int MAX_MONTAGE_POSE_COUNT = MAX_MONTAGE_COUNT * 4;
 
@@ -21,7 +23,7 @@ namespace ODev.PoseAnimator
 		private PoseMontageAnimatorState m_ActiveMontage = new();
 		private PoseMontageAnimatorState m_PreviousMontage = new();
 		private int m_SkeletonKeyCount;
-		private int m_NextHandle = int.MinValue;
+		private int m_NextHandle = NULL_HANDLE + 1;
 
 		public void Initalize(int pSkeletonKeyCount)
 		{
@@ -44,13 +46,13 @@ namespace ODev.PoseAnimator
 			if (pMontage == null)
 			{
 				this.LogError("Cannot play a null montage");
-				return int.MinValue;
+				return NULL_HANDLE;
 			}
 
 			int handle = ++m_NextHandle;
 			if (m_NextHandle == int.MaxValue)
 			{
-				m_NextHandle = int.MinValue;
+				m_NextHandle = NULL_HANDLE + 1;
 			}
 
 			SetActiveMontageToPrevious();

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerJump
   m_EditorClassIdentifier: 
   m_LogSelf: 0
-  m_Cooldown: 0.1
+  m_Cooldown: 0.3
   m_CooldownTrigger: 0
   m_Force: 11
   m_GraceSeconds: 0.25

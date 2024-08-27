@@ -44,7 +44,7 @@ namespace ODev.PoseAnimator
 
 		public void Clear()
 		{
-			Handle = int.MinValue;
+			Handle = PoseMontageAnimator.NULL_HANDLE;
 			Montage = null;
 		}
 	}
