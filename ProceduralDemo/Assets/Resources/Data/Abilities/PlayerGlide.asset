@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4181a7b14e7bdc64d8f2a6c7f8e6c4cc, type: 3}
   m_Name: PlayerGlide
   m_EditorClassIdentifier: 
-  m_LogSelf: 1
+  m_LogSelf: 0
   m_Cooldown: 0.25
   m_CooldownTrigger: 1
   m_AccelerationModifier:

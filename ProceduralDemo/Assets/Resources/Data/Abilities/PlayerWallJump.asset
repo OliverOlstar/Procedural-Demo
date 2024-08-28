@@ -15,7 +15,7 @@ MonoBehaviour:
   m_LogSelf: 0
   m_Cooldown: 0.3
   m_CooldownTrigger: 0
-  m_PushOffForce: 16
-  m_Force: 9
+  m_PushOffForce: 20
+  m_Force: 8
   m_CancelVelocityPercent: 1
   m_CancelMinVelocity: 99999

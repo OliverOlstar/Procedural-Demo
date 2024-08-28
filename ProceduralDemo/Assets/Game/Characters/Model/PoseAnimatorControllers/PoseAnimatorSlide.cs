@@ -21,6 +21,8 @@ public class PoseAnimatorSlide : PoseAnimatorControllerBase
 	private float m_Weight01 = 0.0f;
 	private float m_WeightVelocity = 0.0f;
 
+	private bool IsSliding => m_IsSliding || Root.OnGround.IsOnSlope;
+
 	protected override void Setup()
 	{
 		m_Handle = Animator.Add(m_Animation);
@@ -43,7 +45,7 @@ public class PoseAnimatorSlide : PoseAnimatorControllerBase
 
 	private void WeightSpringDamper(float pDeltaTime)
 	{
-		m_Weight01 = Func.SpringDamper(m_Weight01, m_IsSliding ? 1.0f : 0.0f, ref m_WeightVelocity, m_WeightSpring, m_WeightDamper, pDeltaTime);
+		m_Weight01 = Func.SpringDamper(m_Weight01, IsSliding ? 1.0f : 0.0f, ref m_WeightVelocity, m_WeightSpring, m_WeightDamper, pDeltaTime);
 		Animator.SetWeight(m_Handle, 0.0f, m_Weight01);
 	}
 

@@ -62,7 +62,7 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 	}
 	protected override bool CanActivate()
 	{
-		return Root.Movement.VelocityXZ.sqrMagnitude > Data.RequiredStartVelocity * Data.RequiredStartVelocity;
+		return !Root.OnGround.IsInAir && Root.Movement.VelocityXZ.sqrMagnitude > Data.RequiredStartVelocity * Data.RequiredStartVelocity;
 	}
 
 	protected override void ActivateInternal()

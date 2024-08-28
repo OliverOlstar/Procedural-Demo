@@ -38,6 +38,8 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 	private FloatGameStatModifier m_GravityDownModifierInstance;
 	private FloatGameStatModifier m_GravityUpModifierInstance;
 
+	private GameObject m_TempGlideObject = null;
+
 	protected override void Initalize()
 	{
 		m_AccelerationModifierInstance = FloatGameStatModifier.CreateCopy(Data.AccelerationModifier);
@@ -45,6 +47,9 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		m_MaxVelocityModifierInstance = FloatGameStatModifier.CreateCopy(Data.MaxVelocityModifier);
 		m_GravityUpModifierInstance = FloatGameStatModifier.CreateCopy(Data.GravityUpModifier);
 		m_GravityDownModifierInstance = FloatGameStatModifier.CreateCopy(Data.GravityDownModifier);
+
+		m_TempGlideObject = GameObject.Find($"{Root.name}-Glide-TestDisplay");
+		m_TempGlideObject.SetActive(false);
 	}
 
 	protected override void DestroyInternal()
@@ -67,6 +72,11 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 
 		Root.OnGround.OnAirExitEvent.AddListener(OnAirExit);
 		Root.OnWall.OnWallEnter.AddListener(OnWallEnter);
+
+		if (m_TempGlideObject != null)
+		{
+			m_TempGlideObject.SetActive(true);
+		}
 	}
 
 	protected override void DeactivateInternal()
@@ -79,6 +89,11 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 
 		Root.OnGround.OnAirExitEvent.RemoveListener(OnAirExit);
 		Root.OnWall.OnWallEnter.RemoveListener(OnWallEnter);
+
+		if (m_TempGlideObject != null)
+		{
+			m_TempGlideObject.SetActive(false);
+		}
 	}
 
 	private void OnWallEnter() => Deactivate();
