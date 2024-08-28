@@ -72,6 +72,10 @@ namespace ODev.PoseAnimator
 
 		void OnDestroy()
 		{
+			if (!m_IsInitalized)
+			{
+				return;
+			}
 			m_Handle.Complete();
 			m_Montages.Destroy();
 			

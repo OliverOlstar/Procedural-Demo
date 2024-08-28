@@ -94,7 +94,7 @@ public class PlayerAbilities
 		// this.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()} -> {pPerformed}");
 		if (pPerformed)
 		{
-			if (m_AbilityInstances[pIndex].IsActive)
+			if (m_InputActivatedThisFrame || m_AbilityInstances[pIndex].IsActive)
 			{
 				return;
 			}
@@ -113,10 +113,6 @@ public class PlayerAbilities
 
 	private void AddLastInputedAbility(int pIndex)
 	{
-		if (m_InputActivatedThisFrame)
-		{
-			return;
-		}
 		// this.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()}");
 		if (!m_LastInputedSeconds.Approximately(m_InputBufferSeconds))
 		{

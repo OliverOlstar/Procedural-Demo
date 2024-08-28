@@ -23,6 +23,8 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 	[SerializeField]
 	private PoseAnimatorCrouch m_Crouch = new();
 	[SerializeField]
+	private PoseAnimatorSlide m_Slide = new();
+	[SerializeField]
 	private CardinalWheelRadius m_WheelRadius = new();
 	[SerializeField]
 	private CenterOfMassBounce m_CenterOfMassBounce = new();
@@ -37,6 +39,7 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 		yield return m_Locomotion;
 		yield return m_Jump;
 		yield return m_Crouch;
+		yield return m_Slide;
 		yield return m_WheelRadius;
 		yield return m_CenterOfMassBounce;
 	}

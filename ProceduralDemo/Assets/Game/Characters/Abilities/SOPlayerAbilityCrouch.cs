@@ -20,25 +20,29 @@ public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 
 	public PlayerAbilityCrouch(PlayerRoot pPlayer, SOPlayerAbilityCrouch pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
-	public override IInputTrigger InputActivate => Root.Input.Crouch;
-
 	protected override void Initalize()
 	{
 		m_ModifierInstance = FloatGameStatModifier.CreateCopy(Data.SpeedModifier);
 		
 		Root.OnGround.OnAirEnterEvent.AddListener(OnAirEnter);
-		Root.OnGround.OnAirExitEvent.AddListener(OnAirExit);
+		// Root.OnGround.OnAirExitEvent.AddListener(OnAirExit);
 	}
 
 	protected override void DestroyInternal()
 	{
 		Root.OnGround.OnAirEnterEvent.RemoveListener(OnAirEnter);
-		Root.OnGround.OnAirExitEvent.RemoveListener(OnAirExit);
+		// Root.OnGround.OnAirExitEvent.RemoveListener(OnAirExit);
+	}
+
+	protected override bool CanActivateUpdate()
+	{
+		return Root.Input.Crouch.Input && !Root.OnGround.IsInAir;
 	}
 
 	protected override void ActivateInternal()
 	{
 		m_ModifierInstance.Apply(Root.Movement.MaxVelocity);
+		Root.Input.Crouch.RegisterOnCanceled(Deactivate);
 
 		// TODO: Modify collision
 		// TODO: Set animations
@@ -47,11 +51,7 @@ public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 	protected override void DeactivateInternal()
 	{
 		m_ModifierInstance.Remove(Root.Movement.MaxVelocity);
-	}
-
-	protected override bool CanActivate()
-	{
-		return !Root.OnGround.IsInAir;
+		Root.Input.Crouch.DeregisterOnCanceled(Deactivate);
 	}
 
 	private void OnAirEnter()
@@ -63,11 +63,11 @@ public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 		}
 	}
 
-	private void OnAirExit()
-	{
-		if (!IsActive && Root.Input.Crouch.Input)
-		{
-			Activate();
-		}
-	}
+	// private void OnAirExit()
+	// {
+	// 	if (!IsActive && Root.Input.Crouch.Input)
+	// 	{
+	// 		Activate();
+	// 	}
+	// }
 }

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a9109e483153744199c10c3ada1f928, type: 3}
-  m_Name: PlayerAttack1
+  m_Name: PlayerAttack
   m_EditorClassIdentifier: 
-  m_LogSelf: 0
-  m_Cooldown: 0.5
+  m_LogSelf: 1
+  m_Cooldown: 1
   m_CooldownTrigger: 0
-  m_Montage: {fileID: 11400000, guid: 995caafeede0493428cc7a8d27b4dc1b, type: 2}
+  m_Montage: {fileID: 11400000, guid: eb47990fd7c980b4e86cfe362ebf8649, type: 2}
   m_VelocityCurve:
     serializedVersion: 2
     m_Curve:
@@ -67,4 +67,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Velocity: 3
+  m_Velocity: 2
