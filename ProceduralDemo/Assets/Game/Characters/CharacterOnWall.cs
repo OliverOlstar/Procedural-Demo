@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using ODev;
 using ODev.Util;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CharacterOnWall : MonoBehaviour
 {
 	[SerializeField]
 	private PlayerRoot m_Root = null;
 	[SerializeField]
-	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Fixed, ODev.Util.Mono.Priorities.OnGround);
+	private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.OnGround);
 
 	[Header("Cast")]
 	[SerializeField]
@@ -26,6 +27,11 @@ public class CharacterOnWall : MonoBehaviour
 	private float m_Radius = 0.5f;
 	[SerializeField]
 	private float m_Height = 2.0f;
+
+	[Header("Events")]
+	public UnityEventsUtil.BoolEvent OnWallChanged = new();
+	public UnityEvent OnWallEnter = new();
+	public UnityEvent OnWallExit = new();
 
 	private RaycastHit m_HitInfo = new();
 	private bool m_IsOnWall = false;
@@ -52,7 +58,20 @@ public class CharacterOnWall : MonoBehaviour
 		{
 			return;
 		}
-		m_IsOnWall = Check() && IsValid();
+		bool isOnWall = Check() && IsValid();
+		if (m_IsOnWall != isOnWall)
+		{
+			m_IsOnWall = isOnWall;
+			if (isOnWall)
+			{
+				OnWallEnter.Invoke();
+			}
+			else
+			{
+				OnWallExit.Invoke();
+			}
+			OnWallChanged.Invoke(isOnWall);
+		}
 	}
 
 	public bool Check()

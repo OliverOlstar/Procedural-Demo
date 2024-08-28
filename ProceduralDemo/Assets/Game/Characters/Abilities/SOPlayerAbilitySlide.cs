@@ -93,7 +93,7 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 		force = Vector3.ClampMagnitude(force, Data.MaxAcceleration);
 		Root.Movement.AddVelocityXZ(pDeltaTime * force);
 
-		if (Root.Movement.VelocityXZ.sqrMagnitude < Data.RequiredEndVelocity * Data.RequiredEndVelocity)
+		if (!Root.Input.Crouch.Input || Root.Movement.VelocityXZ.sqrMagnitude < Data.RequiredEndVelocity * Data.RequiredEndVelocity)
 		{
 			Deactivate();
 		}

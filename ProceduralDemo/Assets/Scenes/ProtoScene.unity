@@ -839,6 +839,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4df49c86a85e10149ae56ad86a41dc97, type: 2}
     - {fileID: 11400000, guid: 7f877d85856abb34caa6d3c278af5b7d, type: 2}
     - {fileID: 11400000, guid: 2c4fecb7b14e74142a6125637d579707, type: 2}
+    - {fileID: 11400000, guid: 2a28813af6b098740ba1e7db42802ed6, type: 2}
     m_InputBufferSeconds: 0.2
 --- !u!114 &82955120
 MonoBehaviour:
@@ -59851,6 +59852,15 @@ MonoBehaviour:
   m_Offset: 0.75
   m_Radius: 0.5
   m_Height: 1.5
+  OnWallChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWallEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWallExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2009130281
 GameObject:
   m_ObjectHideFlags: 0

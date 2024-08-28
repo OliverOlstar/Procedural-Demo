@@ -12,7 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4181a7b14e7bdc64d8f2a6c7f8e6c4cc, type: 3}
   m_Name: PlayerGlide
   m_EditorClassIdentifier: 
-  m_LogSelf: 0
-  m_Cooldown: 0
-  m_CooldownTrigger: 0
-  m_GlideForce: 20
+  m_LogSelf: 1
+  m_Cooldown: 0.25
+  m_CooldownTrigger: 1
+  m_AccelerationModifier:
+    m_Type: 0
+    m_Add: 0
+    m_Percent: 1
+  m_DragModifier:
+    m_Type: 1
+    m_Add: 0
+    m_Percent: 0.5
+  m_MaxVelocityModifier:
+    m_Type: 0
+    m_Add: 0
+    m_Percent: 1
+  m_GravityUpModifier:
+    m_Type: 1
+    m_Add: 0
+    m_Percent: -0.5
+  m_GravityDownModifier:
+    m_Type: 1
+    m_Add: 0
+    m_Percent: -0.95
