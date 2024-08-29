@@ -1,4 +1,5 @@
 using System;
+using ODev.Util;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -43,25 +44,21 @@ public abstract class SOCharacterAbility : ScriptableObject
 		_ => throw new NotImplementedException(),
 	};
 
-	public bool ShouldCancel(AbilityTags otherTags, AbilityTags otherCancelTags)
+	public bool ShouldCancel(AbilityTags othersTags, AbilityTags othersCancelTags)
 	{
-		return (m_Tags != 0 && (otherCancelTags & m_Tags) != 0) ||
-			   (m_CanceledByTags != 0 && (otherTags & m_CanceledByTags) != 0);
+		return m_Tags.HasAnyFlag(othersCancelTags) || m_CanceledByTags.HasAnyFlag(othersTags);
 	}
-	public bool ShouldBlock(AbilityTags otherTags, AbilityTags otherBlockTags)
+	public bool ShouldBlock(AbilityTags othersTags, AbilityTags othersBlockTags)
 	{
-		return (m_Tags != 0 && (otherBlockTags & m_Tags) != 0) || 
-			   (m_CanceledByTags != 0 && (otherTags & m_BlockedByTags) != 0);
+		return m_Tags.HasAnyFlag(othersBlockTags) || m_BlockedByTags.HasAnyFlag(othersTags);
 	}
 	public void AddTags(ref AbilityTags rActiveTags, ref AbilityTags rBlockedTags)
 	{
-		rActiveTags |= m_Tags;
-		rBlockedTags |= m_BlockTags;
+		rActiveTags |= m_Tags; rBlockedTags |= m_BlockTags;
 	}
 	internal void GetTags(out AbilityTags oTags, out AbilityTags oCancelTags)
 	{
-		oTags = m_Tags;
-		oCancelTags = m_CancelTags;
+		oTags = m_Tags; oCancelTags = m_CancelTags;
 	}
 
 	public abstract ICharacterAbility CreateInstance(PlayerRoot pRoot, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled);

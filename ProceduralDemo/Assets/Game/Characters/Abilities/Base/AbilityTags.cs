@@ -16,3 +16,11 @@ public enum AbilityTags
 	Combat		= (1 << 20),
 	Attack		= (1 << 21),
 }
+
+public static class AbilityTagsExtentions
+{
+	public static bool HasAnyFlag(this AbilityTags pTags, AbilityTags pOtherTags)
+	{
+		return pTags != 0 && pOtherTags != 0 && (pOtherTags & pTags) != 0;
+	}
+}

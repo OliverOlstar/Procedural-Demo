@@ -220,5 +220,10 @@ namespace ODev.Util
 		{
 			return (pLayerMask & (1 << pLayer)) != 0;
 		}
+
+		public static bool HasAnyFlag(this int pFlags, int pOtherFlags)
+		{
+			return pOtherFlags != 0 && pFlags != 0 && (pFlags & pOtherFlags) != 0;
+		}
 	}
 }
