@@ -43,7 +43,7 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 	private FloatGameStatModifier m_ModifierInstance;
 	private FloatGameStatModifier m_AirModifierInstance;
 	private FloatGameStatModifier m_GravityDownModifierInstance;
-	private FloatGameStatModifier m_GravityUpModifierInstance;
+	// private FloatGameStatModifier m_GravityUpModifierInstance;
 
 	public PlayerAbilitySlide(PlayerRoot pPlayer, SOPlayerAbilitySlide pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
@@ -51,8 +51,8 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 	{
 		m_ModifierInstance = FloatGameStatModifier.CreateCopy(Data.DragModifier);
 		m_AirModifierInstance = FloatGameStatModifier.CreateCopy(Data.AirDragModifier);
-		m_GravityUpModifierInstance = FloatGameStatModifier.CreateCopy(Data.GravityModifier);
 		m_GravityDownModifierInstance = FloatGameStatModifier.CreateCopy(Data.GravityModifier);
+		// m_GravityUpModifierInstance = FloatGameStatModifier.CreateCopy(Data.GravityModifier);
 	}
 	protected override void DestroyInternal() { }
 
@@ -69,8 +69,8 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 	{
 		m_ModifierInstance.Apply(Root.Movement.Drag);
 		m_AirModifierInstance.Apply(Root.Movement.AirDrag);
-		m_GravityUpModifierInstance.Apply(Root.Movement.UpGravity);
 		m_GravityDownModifierInstance.Apply(Root.Movement.DownGravity);
+		// m_GravityUpModifierInstance.Apply(Root.Movement.UpGravity);
 
 		Root.Movement.MovementEnabled = false;
 		Root.Movement.AddVelocity(Root.Movement.VelocityXZ.Horizontalize() * Data.StartVelocity);
@@ -80,8 +80,8 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 	{
 		m_ModifierInstance.Remove(Root.Movement.Drag);
 		m_AirModifierInstance.Remove(Root.Movement.AirDrag);
-		m_GravityUpModifierInstance.Remove(Root.Movement.UpGravity);
 		m_GravityDownModifierInstance.Remove(Root.Movement.DownGravity);
+		// m_GravityUpModifierInstance.Remove(Root.Movement.UpGravity);
 
 		Root.Movement.MovementEnabled = true;
 	}

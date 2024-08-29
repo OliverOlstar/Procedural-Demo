@@ -24,9 +24,9 @@ MonoBehaviour:
     m_Add: 0
     m_Percent: -1
   m_GravityModifier:
-    m_Type: 0
+    m_Type: 1
     m_Add: 0
-    m_Percent: 5
+    m_Percent: 3
   m_StartVelocity: 5
   m_NormalAcceleration: 200
   m_MaxAcceleration: 100

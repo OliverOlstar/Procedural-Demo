@@ -105,6 +105,7 @@ MonoBehaviour:
   m_MaxUpDistance: 1.5
   m_GroundLayers:
     serializedVersion: 2
-    m_Bits: 73
+    m_Bits: 72
+  m_MinTimeOffGround: 0.1
   m_TopSlopeMin: 0.85
   m_SideSlopeLimit: {x: -0.5, y: 0.3}

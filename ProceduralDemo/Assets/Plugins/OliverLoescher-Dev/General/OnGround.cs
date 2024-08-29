@@ -88,7 +88,7 @@ namespace ODev
 		}
 
 		[SerializeField]
-		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Fixed, Util.Mono.Priorities.OnGround);
+		private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.OnGround);
 		[SerializeField]
 		private Transform m_Transform;
 		[SerializeField]
@@ -118,10 +118,12 @@ namespace ODev
 		private State m_State = State.None;
 		private readonly TransformFollower m_Follower = new();
 		private TransformFollower.IMotionReciver m_MotionReciever;
+		private OnGroundTimes m_Times = new();
 
 		public bool IsInAir => m_State == State.InAir;
 		public bool IsOnSlope => m_State == State.OnSlope;
 		public bool IsOnGround => m_State == State.OnGround;
+		public OnGroundTimes Times => m_Times;
 
 		private void Start()
 		{
@@ -130,11 +132,13 @@ namespace ODev
 				m_Transform = transform;
 			}
 			m_Transform.TryGetComponent(out m_MotionReciever);
+			m_Times.Initalize(this);
 		}
 
 		private void OnDestroy()
 		{
 			m_Follower.OnDestroy();
+			m_Times.Destroy();
 		}
 
 		private void OnEnable()
@@ -151,6 +155,8 @@ namespace ODev
 
 		private void Tick(float pDeltaTime)
 		{
+			m_Times.Tick(pDeltaTime);
+
 			if (CastToGrounded())
 			{
 				if (IsGroundValid())

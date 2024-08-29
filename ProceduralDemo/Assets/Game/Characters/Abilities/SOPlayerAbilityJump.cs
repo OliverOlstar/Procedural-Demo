@@ -27,8 +27,6 @@ public class SOPlayerAbilityJump : SOCharacterAbility
 
 public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 {
-	private float m_LastGroundedTime = 0.0f;
-
 	public PlayerAbilityJump(PlayerRoot pPlayer, SOPlayerAbilityJump pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
 	public override IInputTrigger InputActivate => Root.Input.Jump;
@@ -36,18 +34,16 @@ public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 	protected override void Initalize()
 	{
 		Root.OnGround.OnGroundEnterEvent.AddListener(OnGroundEnter);
-		Root.OnGround.OnGroundExitEvent.AddListener(OnGroundExit);
 	}
 
 	protected override void DestroyInternal()
 	{
 		Root.OnGround.OnGroundEnterEvent.RemoveListener(OnGroundEnter);
-		Root.OnGround.OnGroundExitEvent.RemoveListener(OnGroundExit);
 	}
 
 	protected override bool CanActivate()
 	{
-		return Root.OnGround.IsOnGround || (Time.time - m_LastGroundedTime) < Data.GraceSeconds;
+		return Root.OnGround.IsOnGround || Root.OnGround.Times.TimeOffGround < Data.GraceSeconds;
 	}
 
 	protected override void ActivateInternal()
@@ -67,10 +63,5 @@ public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 	private void OnGroundEnter()
 	{
 		Deactivate();
-	}
-
-	private void OnGroundExit()
-	{
-		m_LastGroundedTime = Time.time;
 	}
 }
