@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a30947084fda154986c7df7a2e4790e, type: 3}
   m_Name: PlayerClimb
   m_EditorClassIdentifier: 
-  LogSelf: 0
+  m_LogSelf: 0
+  m_Cooldown: 0
+  m_CooldownTrigger: 0
+  m_Tags: 1
+  m_CancelTags: 0
+  m_BlockTags: 0
   m_Force: 30
   m_MinDot: 0
   m_InputDeadZone01: 0.2

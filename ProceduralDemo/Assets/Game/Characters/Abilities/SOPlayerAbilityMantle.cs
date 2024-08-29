@@ -79,7 +79,6 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 		{
 			return false;
 		}
-		this.Log($"TimeOffGround {Root.OnGround.Times.TimeOffGround}, MinTimeOffGround {Data.MinTimeOffGround}");
 		if (Root.OnGround.Times.TimeOffGround < Data.MinTimeOffGround)
 		{
 			return false;

@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9e604eb7ee0ab40a152f2ad4f9a1ff, type: 3}
   m_Name: PlayerWallJump
   m_EditorClassIdentifier: 
-  m_LogSelf: 0
+  m_Tags: 81
+  m_CancelTags: 0
+  m_BlockTags: 0
+  m_CanceledByTags: 0
+  m_BlockedByTags: 0
   m_Cooldown: 0.3
   m_CooldownTrigger: 0
+  m_LogSelf: 0
   m_PushOffForce: 20
   m_Force: 8
   m_CancelVelocityPercent: 1

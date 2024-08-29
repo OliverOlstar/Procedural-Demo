@@ -1,53 +1,10 @@
-using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using ODev.Util;
+using ExcelDataReader.Log;
 using ODev.Input;
+using ODev.Util;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Diagnostics;
-
-public abstract class SOCharacterAbility : ScriptableObject
-{
-	private enum CooldownTrigger
-	{
-		OnActivate,
-		OnDeactive,
-		Both
-	}
-
-	[SerializeField]
-	private bool m_LogSelf = false;
-	[SerializeField]
-	private float m_Cooldown = 0.0f;
-	[SerializeField]
-	private CooldownTrigger m_CooldownTrigger = CooldownTrigger.OnActivate;
-
-	public bool LogSelf => m_LogSelf;
-	public float Cooldown => m_Cooldown;
-	public bool IsCooldownTrigger(bool pOnActive) => m_CooldownTrigger switch
-	{
-		CooldownTrigger.OnActivate => pOnActive,
-		CooldownTrigger.OnDeactive => !pOnActive,
-		CooldownTrigger.Both => true,
-		_ => throw new NotImplementedException(),
-	};
-
-	public abstract ICharacterAbility CreateInstance(PlayerRoot pRoot, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled);
-}
-
-public interface ICharacterAbility
-{
-	public bool IsActive { get; }
-	public IInputTrigger InputActivate { get; }
-
-	/// <summary> Calls Activate() if CanActivate() is true </summary>
-	public bool TryActivate();
-	public bool TryActivateUpdate();
-	public void Deactivate();
-	public void ActiveTick(float pDeltaTime);
-	public void SystemsTick(float pDeltaTime);
-	public void Destory();
-}
 
 public abstract class CharacterAbility<TData> : ICharacterAbility where TData : SOCharacterAbility
 {
@@ -59,7 +16,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	private float m_CooldownTime = 0.0f;
 
 	public PlayerRoot Root => m_Root;
-	public TData Data => m_Data;
+	protected TData Data => m_Data;
 	public bool IsActive => m_IsActive;
 	public virtual IInputTrigger InputActivate => null;
 
@@ -82,23 +39,31 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Initalize();
 	}
 
-	bool ICharacterAbility.TryActivate()
+	bool ICharacterAbility.TryActivate(AbilityTags pActiveTags, AbilityTags pBlockedTags)
 	{
-		if (!CanSystemsCanActive() || !CanActivate())
+		if (!CanSystemsCanActive(pActiveTags, pBlockedTags) || !CanActivate())
 		{
 			return false;
 		}
 		Activate();
 		return true;
 	}
-	bool ICharacterAbility.TryActivateUpdate()
+	bool ICharacterAbility.TryActivateUpdate(AbilityTags pActiveTags, AbilityTags pBlockedTags)
 	{
-		if (!CanSystemsCanActive() || !CanActivateUpdate())
+		if (!CanSystemsCanActive(pActiveTags, pBlockedTags) || !CanActivateUpdate())
 		{
 			return false;
 		}
 		Activate();
 		return true;
+	}
+	void ICharacterAbility.TryCancel(AbilityTags pActiveTags, AbilityTags pCancelTags)
+	{
+		if (Data.ShouldCancel(pActiveTags, pCancelTags))
+		{
+			LogMethod("Canceled");
+			Deactivate();
+		}
 	}
 	void ICharacterAbility.Deactivate() => Deactivate();
 	void ICharacterAbility.SystemsTick(float pDeltaTime)
@@ -127,9 +92,18 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	protected abstract void ActivateInternal();
 	protected abstract void DeactivateInternal();
 
-	private bool CanSystemsCanActive()
+	private bool CanSystemsCanActive(AbilityTags pActiveTags, AbilityTags pBlockedTags)
 	{
-		return m_CooldownTime <= 0.0f;
+		if (m_CooldownTime > 0.0f)
+		{
+			return false;
+		}
+		if (Data.ShouldBlock(pActiveTags, pBlockedTags))
+		{
+			// LogMethod("Blocked");
+			return false;
+		}
+		return true;
 	}
 
 	protected void Activate()
@@ -144,7 +118,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 
 		ActivateInternal();
 		TriggerCooldown(true);
-		m_Root.Abilities.OnAbilityActivated?.Invoke(typeof(TData));
+		m_Root.Abilities.RecievedAbilityActivated(this);
 	}
 
 	protected void Deactivate()
@@ -158,7 +132,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 
 		DeactivateInternal();
 		TriggerCooldown(false);
-		m_Root.Abilities.OnAbilityDeactivated?.Invoke(typeof(TData));
+		m_Root.Abilities.RecievedAbilityDeactivated(this);
 	}
 
 	protected void TriggerCooldown(bool pOnActive)
@@ -170,9 +144,12 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		}
 	}
 
+	public void AddTags(ref AbilityTags rActiveTags, ref AbilityTags rBlockedTags) => Data.AddTags(ref rActiveTags, ref rBlockedTags);
+	public void GetTags(out AbilityTags oTags, out AbilityTags oCancelTags) => Data.GetTags(out oTags, out oCancelTags);
+
 	#region Helpers
 	[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
-	private void LogMethod([CallerMemberName] string pMethodName = "")
+	private void LogMethod(string pMessage = "", [CallerMemberName] string pMethodName = "")
 	{
 		if (Data.LogSelf)
 		{

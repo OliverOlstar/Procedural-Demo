@@ -49,17 +49,17 @@ public class PoseAnimatorSlide : PoseAnimatorControllerBase
 		Animator.SetWeight(m_Handle, 0.0f, m_Weight01);
 	}
 
-	private void OnAbilityActivated(Type pAbilityReferenceType)
+	private void OnAbilityActivated(AbilityTags pTags)
 	{
-		if (pAbilityReferenceType == typeof(SOPlayerAbilitySlide))
+		if (pTags.HasFlag(AbilityTags.Slide))
 		{
 			m_IsSliding = true;
 		}
 	}
 
-	private void OnAbilityDeactivated(Type pAbilityReferenceType)
+	private void OnAbilityDeactivated(AbilityTags pTags)
 	{
-		if (pAbilityReferenceType == typeof(SOPlayerAbilitySlide))
+		if (pTags.HasFlag(AbilityTags.Slide))
 		{
 			m_IsSliding = false;
 		}

@@ -93,21 +93,21 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 		Animator.SetWeight(m_WalkHandle, progress, m_WalkWeight01 * m_Weight01);
 	}
 
-	private void OnAbilityActivated(Type pAbilityReferenceType)
+	private void OnAbilityActivated(AbilityTags pTags)
 	{
-		if (pAbilityReferenceType == typeof(SOPlayerAbilityJump) || pAbilityReferenceType == typeof(SOPlayerAbilityWallJump))
+		if (pTags.HasFlag(AbilityTags.Jump))
 		{
 			m_WeightVelocity += m_JumpForce;
 		}
-		else if (pAbilityReferenceType == typeof(SOPlayerAbilityCrouch))
+		else if (pTags.HasFlag(AbilityTags.Crouch))
 		{
 			m_IsCrouching = true;
 		}
 	}
 
-	private void OnAbilityDeactivated(Type pAbilityReferenceType)
+	private void OnAbilityDeactivated(AbilityTags pTags)
 	{
-		if (pAbilityReferenceType == typeof(SOPlayerAbilityCrouch))
+		if (pTags.HasFlag(AbilityTags.Crouch))
 		{
 			m_IsCrouching = false;
 		}

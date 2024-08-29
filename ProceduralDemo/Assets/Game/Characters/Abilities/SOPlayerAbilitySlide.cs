@@ -8,7 +8,7 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Slide Ability", menuName = "Character/Ability/Player Slide")]
 public class SOPlayerAbilitySlide : SOCharacterAbility
 {
-	[SerializeField]
+	[Space, SerializeField]
 	private FloatGameStatModifier m_DragModifier = new();
 	public FloatGameStatModifier DragModifier => m_DragModifier;
 	[SerializeField]

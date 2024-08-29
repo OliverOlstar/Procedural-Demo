@@ -15,6 +15,9 @@ MonoBehaviour:
   m_LogSelf: 0
   m_Cooldown: 0.25
   m_CooldownTrigger: 1
+  m_Tags: 129
+  m_CancelTags: 0
+  m_BlockTags: 0
   m_AccelerationModifier:
     m_Type: 0
     m_Add: 0

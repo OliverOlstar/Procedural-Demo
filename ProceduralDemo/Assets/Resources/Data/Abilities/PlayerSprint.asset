@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f5a91afecb52d4abb1cf3acc25f703, type: 3}
   m_Name: PlayerSprint
   m_EditorClassIdentifier: 
-  LogSelf: 0
+  m_LogSelf: 0
+  m_Cooldown: 0
+  m_CooldownTrigger: 0
+  m_Tags: 514
+  m_CancelTags: 0
+  m_BlockTags: 0
   m_Modifier:
     m_Type: 1
     m_Add: 0

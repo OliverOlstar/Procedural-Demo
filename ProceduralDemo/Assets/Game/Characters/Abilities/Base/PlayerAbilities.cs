@@ -5,15 +5,13 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using ODev.Util;
 using ODev.Input;
-
-// TODO: Abilities canceling other abilities
-// TODO: Abilities blocking other abilities
+using UnityEngine.Pool;
 
 [Serializable]
 public class PlayerAbilities
 {
-	public UnityEvent<Type> OnAbilityActivated = new();
-	public UnityEvent<Type> OnAbilityDeactivated = new();
+	public UnityEvent<AbilityTags> OnAbilityActivated = new();
+	public UnityEvent<AbilityTags> OnAbilityDeactivated = new();
 
 	[SerializeField]
 	private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.CharacterAbility);
@@ -56,7 +54,7 @@ public class PlayerAbilities
 			for (int i = 0; i < m_LastInputedAbilities.Count; i++)
 			{
 				ICharacterAbility ability = m_AbilityInstances[m_LastInputedAbilities[i]];
-				if (ability.IsActive || !ability.TryActivate())
+				if (ability.IsActive || !ability.TryActivate(m_ActiveTags, m_BlockedTags))
 				{
 					continue;
 				}
@@ -74,7 +72,7 @@ public class PlayerAbilities
 		{
 			ICharacterAbility ability = m_AbilityInstances[i];
 			ability.SystemsTick(pDeltaTime);
-			if (ability.IsActive || ability.TryActivateUpdate())
+			if (ability.IsActive || ability.TryActivateUpdate(m_ActiveTags, m_BlockedTags))
 			{
 				ability.ActiveTick(pDeltaTime);
 			}
@@ -98,7 +96,7 @@ public class PlayerAbilities
 			{
 				return;
 			}
-			if (m_AbilityInstances[pIndex].TryActivate())
+			if (m_AbilityInstances[pIndex].TryActivate(m_ActiveTags, m_BlockedTags))
 			{
 				m_InputActivatedThisFrame = true;
 				return;
@@ -120,5 +118,39 @@ public class PlayerAbilities
 		}
 		m_LastInputedSeconds = m_InputBufferSeconds;
 		m_LastInputedAbilities.Add(pIndex);
+	}
+
+	private readonly List<ICharacterAbility> m_ActiveAbilities = new();
+	private AbilityTags m_ActiveTags = new();
+	private AbilityTags m_BlockedTags = new();
+
+	internal void RecievedAbilityActivated(ICharacterAbility pAbility)
+	{
+		pAbility.GetTags(out AbilityTags tags, out AbilityTags cancelTags);
+		OnAbilityActivated.Invoke(tags);
+
+		List<ICharacterAbility> tempList = ListPool<ICharacterAbility>.Get();
+		tempList.AddRange(m_ActiveAbilities);
+		foreach (ICharacterAbility ability in tempList)
+		{
+			ability.TryCancel(tags, cancelTags);
+		}
+		ListPool<ICharacterAbility>.Release(tempList);
+		
+		m_ActiveAbilities.Add(pAbility);
+		pAbility.AddTags(ref m_ActiveTags, ref m_BlockedTags);
+	}
+	internal void RecievedAbilityDeactivated(ICharacterAbility pAbility)
+	{
+		pAbility.GetTags(out AbilityTags tags, out _);
+		OnAbilityDeactivated.Invoke(tags);
+		m_ActiveAbilities.Remove(pAbility);
+
+		m_ActiveTags = 0;
+		m_BlockedTags = 0;
+		foreach (ICharacterAbility ability in m_ActiveAbilities)
+		{
+			ability.AddTags(ref m_ActiveTags, ref m_BlockedTags);
+		}
 	}
 }

@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fccf008f4e9519f42ada262b538bc49b, type: 3}
   m_Name: PlayerSlide
   m_EditorClassIdentifier: 
-  m_LogSelf: 0
+  m_Tags: 9
+  m_CancelTags: 5
+  m_BlockTags: 4
+  m_CanceledByTags: 16
+  m_BlockedByTags: 0
   m_Cooldown: 0.5
   m_CooldownTrigger: 0
+  m_LogSelf: 0
   m_DragModifier:
     m_Type: 1
     m_Add: 0
