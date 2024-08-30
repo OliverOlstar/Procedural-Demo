@@ -4,6 +4,7 @@ using ODev;
 using ODev.Util;
 using UnityEngine;
 using UnityEngine.Events;
+using Sirenix.OdinInspector;
 
 public class CharacterOnWall : MonoBehaviour
 {
@@ -28,9 +29,11 @@ public class CharacterOnWall : MonoBehaviour
 	[SerializeField]
 	private float m_Height = 2.0f;
 
-	[Header("Events")]
+	[FoldoutGroup("Events")]
 	public UnityEventsUtil.BoolEvent OnWallChanged = new();
+	[FoldoutGroup("Events")]
 	public UnityEvent OnWallEnter = new();
+	[FoldoutGroup("Events")]
 	public UnityEvent OnWallExit = new();
 
 	private RaycastHit m_HitInfo = new();
