@@ -28,7 +28,7 @@ namespace ODev
 			}
 		}
 
-		private Util.Mono.Updateable m_Updateable = new();
+		private Mono.Updateable m_Updateable = new();
 		private Transform m_Parent;
 		private IMotionReciver m_Child;
 		private Object m_DebugObject;
@@ -43,7 +43,7 @@ namespace ODev
 		public Transform ParentTransform => m_Parent;
 		public Transform ChildTransform => m_Child.Transform;
 
-		public void Start(Transform pParent, IMotionReciver pChild, Vector3 pPoint, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
+		public void Start(Transform pParent, IMotionReciver pChild, Vector3 pPoint, bool pRotateChild, Mono.Type pUpdateType, Mono.Priorities pUpdatePriority, Object pDebugParent)
 		{
 			m_DebugObject = pDebugParent;
 			if (pChild == null)
@@ -84,7 +84,7 @@ namespace ODev
 			m_Updateable.Register(Tick);
 		}
 
-		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, bool pRotateChild, Util.Mono.Type pUpdateType, Util.Mono.Priorities pUpdatePriority, Object pDebugParent)
+		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, bool pRotateChild, Mono.Type pUpdateType, Mono.Priorities pUpdatePriority, Object pDebugParent)
 			=> Start(pParent, new TransformMotionReciver(pChild), pPoint, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
 
 		public void Stop()
