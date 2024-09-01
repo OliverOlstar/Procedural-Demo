@@ -1,3 +1,4 @@
+using ODev.Util;
 using UnityEngine;
 
 [System.Serializable]
@@ -56,5 +57,13 @@ public class PlayerSpearThrow : PlayerSpearController
 		Transform.position = hit.point - (forward * m_RaycastForwardDistance);
 		// Transform.forward = hit.normal;
 		Spear.Attach(hit.collider.transform, hit.point);
+	}
+
+	internal override void DrawGizmos()
+	{
+		Vector3 startPoint = Transform.position - (Transform.forward * m_RaycastBackDistance);
+		Vector3 endPoint = Transform.position + (Transform.forward * m_RaycastForwardDistance);
+		Gizmos.color = Colour.DarkRed;
+		Gizmos.DrawLine(startPoint, endPoint);
 	}
 }

@@ -18,6 +18,6 @@ public abstract class PlayerSpearController
 
 	protected void Log(string pMessage = "", [CallerMemberName] string pMethodName = "")
 	{
-		Spear.LogInternal(pMessage, pMethodName);
+		Spear.LogMethod(pMessage, pMethodName);
 	}
 }

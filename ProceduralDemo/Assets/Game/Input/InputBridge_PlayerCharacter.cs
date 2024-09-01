@@ -19,7 +19,7 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 	[SerializeField]
 	private InputModule_Trigger abilityPrimaryInput = new();
 	[SerializeField]
-	private InputModule_Trigger abilitySecondaryInput = new();
+	private InputModule_Toggle abilitySecondaryInput = new();
 
 	public InputModule_Vector2 Move => moveInput;
 	public InputModule_Toggle Jump => jumpInput;
@@ -27,7 +27,7 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 	public InputModule_Toggle Crouch => crouchInput;
 	public InputModule_Trigger Interact => interactInput;
 	public InputModule_Trigger AbilityPrimary => abilityPrimaryInput;
-	public InputModule_Trigger AbilitySecondary => abilitySecondaryInput;
+	public InputModule_Toggle AbilitySecondary => abilitySecondaryInput;
 
 	public override InputActionMap Actions => InputSystem.Instance?.PlayerCharacter.Get();
 	public override IEnumerable<IInputModule> GetAllInputModules()

@@ -153,4 +153,18 @@ public class PlayerAbilities
 			ability.AddTags(ref m_ActiveTags, ref m_BlockedTags);
 		}
 	}
+
+	internal void ActivateAbilityByTag(AbilityTags pTag)
+	{
+		foreach (ICharacterAbility ability in m_AbilityInstances)
+		{
+			ability.GetTags(out AbilityTags m_Tags, out _);
+			if (!m_Tags.HasAnyFlag(pTag))
+			{
+				continue;
+			}
+			ability.TryActivate(m_ActiveTags, m_BlockedTags);
+			break;
+		}
+	}
 }

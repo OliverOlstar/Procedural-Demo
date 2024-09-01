@@ -41,7 +41,7 @@ public class PlayerAbilitySpearGrapple : CharacterAbility<SOPlayerAbilitySpearGr
 	protected override void ActivateInternal()
 	{
 		m_MontageHandle = Root.Animator.PlayMontage(Data.Montage);
-		Root.Movement.SetVelocityXZ((Root.Spear.Position - Root.Movement.transform.position).normalized * Data.Force);
+		Root.Movement.SetVelocity((Root.Spear.Position - Root.Movement.transform.position).normalized * Data.Force);
 		Deactivate();
 	}
 

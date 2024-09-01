@@ -21,4 +21,4 @@ MonoBehaviour:
   m_CooldownTrigger: 0
   m_LogSelf: 0
   m_Montage: {fileID: 11400000, guid: eb47990fd7c980b4e86cfe362ebf8649, type: 2}
-  m_Force: 40
+  m_Force: 20

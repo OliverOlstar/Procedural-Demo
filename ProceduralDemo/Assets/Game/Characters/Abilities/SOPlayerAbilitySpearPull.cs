@@ -44,6 +44,6 @@ public class PlayerAbilitySpearPull : CharacterAbility<SOPlayerAbilitySpearPull>
 
 	protected override void DeactivateInternal()
 	{
-		// Root.Animator.CancelMontage(m_MontageHandle);
+		Root.Animator.CancelMontage(m_MontageHandle);
 	}
 }

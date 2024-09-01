@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -19,6 +20,21 @@ public class PlayerSpearBehaviour
 
 	public void Initalize(PlayerRoot pRoot)
 	{
+		m_Root = pRoot;
+		m_Spear.OnTriggerEnterEvent.AddListener(OnSpearTrigger);
+	}
 
+	public void Destroy()
+	{
+		m_Spear.OnTriggerEnterEvent.RemoveListener(OnSpearTrigger);
+	}
+
+	private void OnSpearTrigger(Collider pOther)
+	{
+		if (pOther.gameObject != m_Root.Movement.gameObject)
+		{
+			return;
+		}
+		m_Root.Abilities.ActivateAbilityByTag(AbilityTags.SpearJump);
 	}
 }

@@ -2,6 +2,7 @@ using ODev.Util;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.Events;
+using System.Runtime.CompilerServices;
 
 public class PlayerSpear : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class PlayerSpear : MonoBehaviour
 		Pulling
 	}
 
-	public UnityEvent<Collider> m_OnTriggerEnter = new();
+	public UnityEvent<Collider> OnTriggerEnterEvent = new();
 
 	[SerializeField]
 	private PlayerSpearStore m_Store = new();
@@ -57,7 +58,7 @@ public class PlayerSpear : MonoBehaviour
 	private void Throw() => Throw(transform.position, transform.forward);
 	public void Throw(Vector3 pPoint, Vector3 pDirection/*, float pCharge01*/)
 	{
-		this.Log($"pPoint {pPoint}, pDirection {pDirection}");
+		LogMethod($"pPoint {pPoint}, pDirection {pDirection}");
 		SwitchController(m_Throw);
 		m_Throw.Start(pPoint, pDirection);
 	}
@@ -65,7 +66,7 @@ public class PlayerSpear : MonoBehaviour
 	[Button]
 	public void Attach(Transform pAttachTo, Vector3 pHitPoint)
 	{
-		this.Log($"pAttachTo {pAttachTo}");
+		LogMethod($"pAttachTo {pAttachTo}");
 		SwitchController(m_Land);
 		m_Land.Start(pAttachTo, pHitPoint);
 	}
@@ -73,7 +74,7 @@ public class PlayerSpear : MonoBehaviour
 	[Button]
 	public void Pull(Transform pToTarget)
 	{
-		this.Log($"pToTarget {pToTarget}");
+		LogMethod($"pToTarget {pToTarget}");
 		SwitchController(m_Pull);
 		m_Pull.Start(pToTarget);
 	}
@@ -81,7 +82,7 @@ public class PlayerSpear : MonoBehaviour
 	[Button]
 	public void Store()
 	{
-		this.Log();
+		LogMethod();
 		SwitchController(m_Store);
 		m_Store.Start();
 	}
@@ -106,7 +107,7 @@ public class PlayerSpear : MonoBehaviour
 	{
 		if (ActiveState == State.Landed)
 		{
-			m_OnTriggerEnter.Invoke(pOther);
+			OnTriggerEnterEvent.Invoke(pOther);
 		}
 	}
 
@@ -115,7 +116,7 @@ public class PlayerSpear : MonoBehaviour
 		m_ActiveController?.DrawGizmos();
 	}
 
-	internal void LogInternal(string pMessage, string pMethodName)
+	internal void LogMethod(string pMessage = "", [CallerMemberName] string pMethodName = "")
 	{
 		if (m_Log)
 		{

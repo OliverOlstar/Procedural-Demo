@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8a5e0dbefc317d49a41a585ebc88db2, type: 3}
+  m_Name: PlayerSpearAirThrow
+  m_EditorClassIdentifier: 
+  m_Tags: 1057792
+  m_CancelTags: 0
+  m_BlockTags: 0
+  m_CanceledByTags: 0
+  m_BlockedByTags: 0
+  m_Cooldown: 1
+  m_CooldownTrigger: 0
+  m_LogSelf: 1
+  m_Montage: {fileID: 11400000, guid: 995caafeede0493428cc7a8d27b4dc1b, type: 2}
+  m_TimeScale: 0.1
+  m_TimeScaleDampening: 99

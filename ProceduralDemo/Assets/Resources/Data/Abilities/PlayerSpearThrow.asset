@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683b07c0599cd3c42917f48502293865, type: 3}
   m_Name: PlayerSpearThrow
   m_EditorClassIdentifier: 
-  m_Tags: 1057793
+  m_Tags: 1057792
   m_CancelTags: 0
   m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0
   m_Cooldown: 1
   m_CooldownTrigger: 0
-  m_LogSelf: 0
+  m_LogSelf: 1
   m_Montage: {fileID: 11400000, guid: 995caafeede0493428cc7a8d27b4dc1b, type: 2}

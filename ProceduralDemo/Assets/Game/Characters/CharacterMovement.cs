@@ -170,6 +170,10 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		m_VelocityY += pVelocity.y;
 		m_VelocityXZ.z += pVelocity.z;
 	}
+	public void AddVelocityY(float pVelocity)
+	{
+		m_VelocityY += pVelocity;
+	}
 	public void AddVelocityXZ(Vector3 pVelocity, bool pToNormal = false)
 	{
 		if (!pToNormal)

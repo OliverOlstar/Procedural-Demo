@@ -29,17 +29,13 @@ public class PlayerAbilitySpearThrow : CharacterAbility<SOPlayerAbilitySpearThro
 
 	protected override bool CanActivate()
 	{
-		return Root.Spear.State == PlayerSpear.State.Stored;
+		return Root.Spear.State == PlayerSpear.State.Stored && Root.OnGround.IsOnGround;
 	}
 
 	protected override void ActivateInternal()
 	{
 		Root.Animator.PlayMontage(Data.Montage);
-		Vector3 direction = Root.Camera.transform.forward;
-		if (Root.OnGround.IsOnGround)
-		{
-			direction = direction.Horizontalize();
-		}
+		Vector3 direction = Root.Camera.transform.forward.Horizontalize();
 		Root.Spear.Throw(Root.Movement.transform.position + (Vector3.up * 2.0f), direction);
 		Deactivate();
 	}
