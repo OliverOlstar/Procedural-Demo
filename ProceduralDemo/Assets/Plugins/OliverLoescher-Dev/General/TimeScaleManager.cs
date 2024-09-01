@@ -7,7 +7,7 @@ namespace ODev
 	{
 		public class TimeEvent
 		{
-			public float mTimer;
+			public float m_Timer;
 
 			private readonly int m_Handle;
 			private readonly float m_Scale;
@@ -24,7 +24,7 @@ namespace ODev
 				m_Scale = scale;
 				m_Timed = false;
 				m_ScaleTimer = false;
-				mTimer = -1.0f;
+				m_Timer = -1.0f;
 				m_AffectsAudio = affectsAudio;
 				m_FadeOut = false;
 			}
@@ -35,7 +35,7 @@ namespace ODev
 				m_Scale = scale;
 				m_Timed = true;
 				m_ScaleTimer = scaleTimer;
-				m_Time = mTimer = duration;
+				m_Time = m_Timer = duration;
 				m_AffectsAudio = affectsAudio;
 				m_FadeOut = fadeOut;
 			}
@@ -49,7 +49,7 @@ namespace ODev
 			{
 				if (m_FadeOut)
 				{
-					float delta = 1.0f - Mathf.Clamp01(mTimer / m_Time);
+					float delta = 1.0f - Mathf.Clamp01(m_Timer / m_Time);
 					delta *= delta;
 					delta = 1.0f - delta;
 					return Mathf.Lerp(1.0f, m_Scale, delta);
@@ -81,6 +81,7 @@ namespace ODev
 		private float m_PreviousRealTimeSinceStartup = 0.0f;
 		private float m_RealDeltaTime = 0.0f;
 		private float m_BaseTimeScale = 1.0f;
+		private float m_BaseFixedTimeScale = 0.02f;
 		private bool m_Paused = false;
 		private bool m_FirstFramePaused = false;
 		private bool m_AffectAudio = false;
@@ -90,6 +91,7 @@ namespace ODev
 
 		void Start()
 		{
+			m_BaseFixedTimeScale = Time.fixedDeltaTime;
 			m_PreviousRealTimeSinceStartup = Time.realtimeSinceStartup;
 		}
 
@@ -148,13 +150,13 @@ namespace ODev
 				}
 				if (m_CurrentTimeEvents[i].IsTimerScaled())
 				{
-					m_CurrentTimeEvents[i].mTimer -= Time.deltaTime;
+					m_CurrentTimeEvents[i].m_Timer -= Time.deltaTime;
 				}
 				else
 				{
-					m_CurrentTimeEvents[i].mTimer -= RealDeltaTime();
+					m_CurrentTimeEvents[i].m_Timer -= RealDeltaTime();
 				}
-				if (m_CurrentTimeEvents[i].mTimer <= 0.0f)
+				if (m_CurrentTimeEvents[i].m_Timer <= 0.0f)
 				{
 					EndTimeEvent(m_CurrentTimeEvents[i].GetHandle());
 				}
@@ -226,6 +228,7 @@ namespace ODev
 			timeScale *= m_BaseTimeScale;
 			timeScale *= m_EditorSlowMo / 100.0f;
 			Time.timeScale = timeScale;
+			Time.fixedDeltaTime = m_BaseFixedTimeScale * timeScale;
 		}
 
 		public int GetHandle()
@@ -407,11 +410,6 @@ namespace ODev
 			instance.m_EndIndex++;
 
 			instance.ResetTimeScale();
-		}
-
-		public string GetEditorSlowMo()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }
