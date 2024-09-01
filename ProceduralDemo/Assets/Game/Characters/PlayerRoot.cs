@@ -20,6 +20,8 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 	[SerializeField]
 	private PoseAnimatorController m_Animator = null;
 	[SerializeField]
+	private PlayerSpear m_Spear = null;
+	[SerializeField]
 	private CharacterInventory m_Inventory = new();
 	[SerializeField]
 	private PlayerAbilities m_Abilities = new();
@@ -31,6 +33,7 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 	public CharacterOnWall OnWall => m_OnWall;
 	public ThirdPersonCamera Camera => m_Camera;
 	public PoseAnimatorController Animator => m_Animator;
+	public PlayerSpear Spear => m_Spear;
 	public CharacterInventory Inventory => m_Inventory;
 	public PlayerBuildingInventory Buildings => PlayerBuildingInventory.Instance;
 	public PlayerAbilities Abilities => m_Abilities;

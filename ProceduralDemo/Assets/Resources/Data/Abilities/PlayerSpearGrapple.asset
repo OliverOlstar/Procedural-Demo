@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8c5b2461a39fd14b91dfea91eb9932f, type: 3}
+  m_Name: PlayerSpearGrapple
+  m_EditorClassIdentifier: 
+  m_Tags: 1
+  m_CancelTags: 0
+  m_BlockTags: 0
+  m_CanceledByTags: 0
+  m_BlockedByTags: 0
+  m_Cooldown: 1
+  m_CooldownTrigger: 0
+  m_LogSelf: 0
+  m_Montage: {fileID: 11400000, guid: eb47990fd7c980b4e86cfe362ebf8649, type: 2}
+  m_Force: 40

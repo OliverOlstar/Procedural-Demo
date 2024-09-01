@@ -24,6 +24,8 @@ public class PlayerSpear : MonoBehaviour
 	private PlayerSpearController m_ActiveController = null;
 	private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.ModelController);
 
+	public State ActiveState => m_ActiveController != null ? m_ActiveController.State : State.Stored;
+
 	private void Start()
 	{
 		m_Store.Setup(this);
@@ -43,9 +45,10 @@ public class PlayerSpear : MonoBehaviour
 	}
 
 	[Button]
-	public void Throw() => Throw(transform.position, transform.forward);
+	private void Throw() => Throw(transform.position, transform.forward);
 	public void Throw(Vector3 pPoint, Vector3 pDirection/*, float pCharge01*/)
 	{
+		this.Log($"pPoint {pPoint}, pDirection {pDirection}");
 		SwitchController(m_Throw);
 		m_Throw.Start(pPoint, pDirection);
 	}
@@ -53,6 +56,7 @@ public class PlayerSpear : MonoBehaviour
 	[Button]
 	public void Attach(Transform pAttachTo)
 	{
+		this.Log($"pAttachTo {pAttachTo}");
 		SwitchController(m_Land);
 		m_Land.Start(pAttachTo);
 	}
@@ -60,6 +64,7 @@ public class PlayerSpear : MonoBehaviour
 	[Button]
 	public void Pull(Transform pToTarget)
 	{
+		this.Log($"pToTarget {pToTarget}");
 		SwitchController(m_Pull);
 		m_Pull.Start(pToTarget);
 	}
@@ -67,6 +72,7 @@ public class PlayerSpear : MonoBehaviour
 	[Button]
 	public void Store()
 	{
+		this.Log();
 		SwitchController(m_Store);
 		m_Store.Start();
 	}
@@ -80,10 +86,19 @@ public class PlayerSpear : MonoBehaviour
 	{
 		if (pController == m_ActiveController)
 		{
-			this.LogError($"Tried switching to the already active controller {pController.State}");
-			return;
+			this.LogWarning($"Tried switching to the already active controller {pController.State}");
+			// return;
 		}
 		m_ActiveController?.Stop();
 		m_ActiveController = pController;
+	}
+	
+	private void OnTriggerEnter(Collider pOther)
+	{
+		if (ActiveState == State.Landed && pOther.TryGetComponent(out CharacterMovement movement))
+		{
+			movement.SetVelocityY(20.0f);
+			Store();
+		}
 	}
 }
