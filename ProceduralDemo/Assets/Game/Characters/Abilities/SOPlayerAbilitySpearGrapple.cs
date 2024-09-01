@@ -35,18 +35,22 @@ public class PlayerAbilitySpearGrapple : CharacterAbility<SOPlayerAbilitySpearGr
 		{
 			return false;
 		}
-		return Root.Spear.ActiveState == PlayerSpear.State.Landed || Root.Spear.ActiveState == PlayerSpear.State.Thrown;
+		return Root.Spear.State == PlayerSpear.State.Landed || Root.Spear.State == PlayerSpear.State.Thrown;
 	}
 
 	protected override void ActivateInternal()
 	{
 		m_MontageHandle = Root.Animator.PlayMontage(Data.Montage);
-		Root.Movement.AddVelocity((Root.Spear.transform.position - Root.Movement.transform.position).normalized * Data.Force);
+		Root.Movement.SetVelocityXZ((Root.Spear.Position - Root.Movement.transform.position).normalized * Data.Force);
 		Deactivate();
 	}
 
 	protected override void DeactivateInternal()
 	{
+		if (Root.Spear.State == PlayerSpear.State.Thrown)
+		{
+			Root.Spear.Pull(Root.Movement.transform);
+		}
 		// Root.Animator.CancelMontage(m_MontageHandle);
 	}
 }

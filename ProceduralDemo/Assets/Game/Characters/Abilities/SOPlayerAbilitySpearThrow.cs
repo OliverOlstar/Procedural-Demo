@@ -25,16 +25,16 @@ public class PlayerAbilitySpearThrow : CharacterAbility<SOPlayerAbilitySpearThro
 	protected override void Initalize() { }
 	protected override void DestroyInternal() { }
 
-	private int m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;
+	// private int m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;
 
 	protected override bool CanActivate()
 	{
-		return Root.Spear.ActiveState == PlayerSpear.State.Stored;
+		return Root.Spear.State == PlayerSpear.State.Stored;
 	}
 
 	protected override void ActivateInternal()
 	{
-		m_MontageHandle = Root.Animator.PlayMontage(Data.Montage);
+		Root.Animator.PlayMontage(Data.Montage);
 		Vector3 direction = Root.Camera.transform.forward;
 		if (Root.OnGround.IsOnGround)
 		{
@@ -46,6 +46,6 @@ public class PlayerAbilitySpearThrow : CharacterAbility<SOPlayerAbilitySpearThro
 
 	protected override void DeactivateInternal()
 	{
-		Root.Animator.CancelMontage(m_MontageHandle);
+		// Root.Animator.CancelMontage(m_MontageHandle);
 	}
 }

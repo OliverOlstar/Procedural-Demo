@@ -32,8 +32,8 @@ public class PlayerAbilitySpearPull : CharacterAbility<SOPlayerAbilitySpearPull>
 		{
 			return false;
 		}
-		return Root.Spear.ActiveState == PlayerSpear.State.Landed || Root.Spear.ActiveState == PlayerSpear.State.Thrown;
-	}
+		return Root.Spear.State == PlayerSpear.State.Landed || Root.Spear.State == PlayerSpear.State.Thrown;
+	} 
 
 	protected override void ActivateInternal()
 	{

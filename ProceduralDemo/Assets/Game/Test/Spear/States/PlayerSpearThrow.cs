@@ -23,9 +23,9 @@ public class PlayerSpearThrow : PlayerSpearController
 	private Vector3 m_Direction;
 	private float m_TimeElapsed = 0.0f;
 
-	public override PlayerSpear.State State => PlayerSpear.State.Thrown;
+	internal override PlayerSpear.State State => PlayerSpear.State.Thrown;
 
-	public void Start(Vector3 pPoint, Vector3 pDirection/*, float pCharge01*/)
+	internal void Start(Vector3 pPoint, Vector3 pDirection/*, float pCharge01*/)
 	{
 		m_TimeElapsed = 0.0f;
 		Transform.position = pPoint;
@@ -33,12 +33,12 @@ public class PlayerSpearThrow : PlayerSpearController
 		m_Direction = pDirection;
 	}
 
-	public override void Stop()
+	internal override void Stop()
 	{
 
 	}
 
-	public override void Tick(float pDeltaTime)
+	internal override void Tick(float pDeltaTime)
 	{
 		m_TimeElapsed += pDeltaTime;
 		Vector3 newPosition = Transform.position + (pDeltaTime * m_Speed * m_Direction);
@@ -55,6 +55,6 @@ public class PlayerSpearThrow : PlayerSpearController
 		}
 		Transform.position = hit.point - (forward * m_RaycastForwardDistance);
 		// Transform.forward = hit.normal;
-		Spear.Attach(hit.collider.transform);
+		Spear.Attach(hit.collider.transform, hit.point);
 	}
 }

@@ -11,9 +11,9 @@ public class PlayerSpearPull : PlayerSpearController
 
 	private Anim.IAnimation m_AnimHandle = null;
 
-	public override PlayerSpear.State State => PlayerSpear.State.Pulling;
+	internal override PlayerSpear.State State => PlayerSpear.State.Pulling;
 
-	public void Start(Transform pToTarget)
+	internal void Start(Transform pToTarget)
 	{
 		Vector3 startPosition = Transform.position;
 
@@ -29,7 +29,7 @@ public class PlayerSpearPull : PlayerSpearController
 		});
 	}
 
-	public override void Stop()
+	internal override void Stop()
 	{
 		m_AnimHandle.Cancel();
 		m_AnimHandle = null;

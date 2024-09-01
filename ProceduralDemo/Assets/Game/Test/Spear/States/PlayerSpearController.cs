@@ -1,14 +1,23 @@
 
+using System;
+using System.Runtime.CompilerServices;
+using ODev.Util;
 using UnityEngine;
 
 public abstract class PlayerSpearController
 {
-	public PlayerSpear Spear { get; private set; }
+	internal PlayerSpear Spear { get; private set; }
 	protected Transform Transform => Spear.transform;
 
-	public abstract PlayerSpear.State State { get; }
-	public abstract void Stop();
+	internal abstract PlayerSpear.State State { get; }
+	internal abstract void Stop();
 
-	public virtual void Setup(PlayerSpear pSpear) { Spear = pSpear; }
-	public virtual void Tick(float pDeltaTime) { }
+	internal virtual void Setup(PlayerSpear pSpear) { Spear = pSpear; }
+	internal virtual void Tick(float pDeltaTime) { }
+	internal virtual void DrawGizmos() { }
+
+	protected void Log(string pMessage = "", [CallerMemberName] string pMethodName = "")
+	{
+		Spear.LogInternal(pMessage, pMethodName);
+	}
 }

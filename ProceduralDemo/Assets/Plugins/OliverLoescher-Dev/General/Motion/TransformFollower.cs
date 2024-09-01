@@ -132,6 +132,7 @@ namespace ODev
 				m_MathTransform = new GameObject($"{m_Child.Transform.name}-TransformFollower-Math").transform;
 			}
 			m_MathTransform.position = m_Child.Transform.position;
+			m_MathTransform.rotation = m_Child.Transform.rotation;
 			m_MathTransform.position += deltaPosition;
 			if (m_RotateChild)
 			{

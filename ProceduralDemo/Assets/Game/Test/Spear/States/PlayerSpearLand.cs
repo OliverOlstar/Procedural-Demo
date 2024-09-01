@@ -6,14 +6,14 @@ public class PlayerSpearLand : PlayerSpearController
 {
 	private readonly TransformFollower m_Follower = new();
 
-	public override PlayerSpear.State State => PlayerSpear.State.Landed;
+	internal override PlayerSpear.State State => PlayerSpear.State.Landed;
 
-	public void Start(Transform pAttachTo)
+	internal void Start(Transform pAttachTo, Vector3 pHitPoint)
 	{
-		m_Follower.Start(pAttachTo, Transform, Transform.position, true, ODev.Util.Mono.Type.Fixed, ODev.Util.Mono.Priorities.World, Spear);
+		m_Follower.Start(pAttachTo, Transform, pHitPoint, true, ODev.Util.Mono.Type.Fixed, ODev.Util.Mono.Priorities.World, Spear);
 	}
 
-	public override void Stop()
+	internal override void Stop()
 	{
 		m_Follower.Stop();
 	}

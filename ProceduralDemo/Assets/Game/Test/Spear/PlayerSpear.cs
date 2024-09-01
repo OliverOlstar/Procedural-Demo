@@ -1,6 +1,7 @@
 using ODev.Util;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.Events;
 
 public class PlayerSpear : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class PlayerSpear : MonoBehaviour
 		Pulling
 	}
 
+	public UnityEvent<Collider> m_OnTriggerEnter = new();
+
 	[SerializeField]
 	private PlayerSpearStore m_Store = new();
 	[SerializeField]
@@ -20,6 +23,8 @@ public class PlayerSpear : MonoBehaviour
 	private PlayerSpearLand m_Land = new();
 	[SerializeField]
 	private PlayerSpearPull m_Pull = new();
+	[SerializeField]
+	private bool m_Log = false;
 
 	private PlayerSpearController m_ActiveController = null;
 	private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.ModelController);
@@ -33,6 +38,10 @@ public class PlayerSpear : MonoBehaviour
 		m_Land.Setup(this);
 		m_Pull.Setup(this);
 		Store();
+	}
+	private void OnDestroy()
+	{
+		m_ActiveController?.Stop();
 	}
 
 	private void OnEnable()
@@ -54,11 +63,11 @@ public class PlayerSpear : MonoBehaviour
 	}
 
 	[Button]
-	public void Attach(Transform pAttachTo)
+	public void Attach(Transform pAttachTo, Vector3 pHitPoint)
 	{
 		this.Log($"pAttachTo {pAttachTo}");
 		SwitchController(m_Land);
-		m_Land.Start(pAttachTo);
+		m_Land.Start(pAttachTo, pHitPoint);
 	}
 
 	[Button]
@@ -92,13 +101,25 @@ public class PlayerSpear : MonoBehaviour
 		m_ActiveController?.Stop();
 		m_ActiveController = pController;
 	}
-	
+
 	private void OnTriggerEnter(Collider pOther)
 	{
-		if (ActiveState == State.Landed && pOther.TryGetComponent(out CharacterMovement movement))
+		if (ActiveState == State.Landed)
 		{
-			movement.SetVelocityY(20.0f);
-			Store();
+			m_OnTriggerEnter.Invoke(pOther);
+		}
+	}
+
+	private void OnDrawGizmos()
+	{
+		m_ActiveController?.DrawGizmos();
+	}
+
+	internal void LogInternal(string pMessage, string pMethodName)
+	{
+		if (m_Log)
+		{
+			this.Log(pMessage, pMethodName);
 		}
 	}
 }

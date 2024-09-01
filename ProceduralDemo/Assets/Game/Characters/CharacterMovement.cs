@@ -182,6 +182,12 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 		Vector3 direction = pVelocity.ProjectOnPlane(normal);
 		m_VelocityXZ += direction.normalized * magnitude;
 	}
+	public void SetVelocity(Vector3 pVelocity)
+	{
+		m_VelocityXZ = pVelocity;
+		m_VelocityXZ.y = 0.0f;
+		m_VelocityY = pVelocity.y;
+	}
 	public void SetVelocityY(float pVelocity)
 	{
 		m_VelocityY = pVelocity;
