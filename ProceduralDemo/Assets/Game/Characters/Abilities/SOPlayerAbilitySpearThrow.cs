@@ -5,8 +5,8 @@ using ODev.Util;
 using UnityEngine;
 using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "New Attack Ability", menuName = "Character/Ability/Player Attack")]
-public class SOPlayerAbilityAttack : SOCharacterAbility
+[CreateAssetMenu(fileName = "New Spear Throw Ability", menuName = "Character/Ability/Player Spear Throw")]
+public class SOPlayerAbilitySpearThrow : SOCharacterAbility
 {
 	[Space, SerializeField, AssetNonNull]
 	private SOPoseMontage m_Montage = null;
@@ -20,12 +20,12 @@ public class SOPlayerAbilityAttack : SOCharacterAbility
 	public AnimationCurve VelocityCurve => m_VelocityCurve;
 	public float Velocity => m_Velocity;
 
-	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityAttack(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
+	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilitySpearThrow(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
-public class PlayerAbilityAttack : CharacterAbility<SOPlayerAbilityAttack>
+public class PlayerAbilitySpearThrow : CharacterAbility<SOPlayerAbilitySpearThrow>
 {
-	public PlayerAbilityAttack(PlayerRoot pPlayer, SOPlayerAbilityAttack pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
+	public PlayerAbilitySpearThrow(PlayerRoot pPlayer, SOPlayerAbilitySpearThrow pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
 	public override IInputTrigger InputActivate => Root.Input.AbilityPrimary;
 
