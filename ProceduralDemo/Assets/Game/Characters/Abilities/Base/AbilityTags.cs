@@ -13,7 +13,13 @@ public enum AbilityTags
 	WallJump	= (1 << 6),
 	Glide		= (1 << 7),
 	Mantle 		= (1 << 8),
+	WallCling	= (1 << 9),
 	Combat		= (1 << 20),
+	Spear		= (1 << 10),
+	SpearJump	= (1 << 11),
+	SpearPull	= (1 << 12),
+	SpearThrow	= (1 << 13),
+	SpearGrapple= (1 << 14),
 	Attack		= (1 << 21),
 }
 

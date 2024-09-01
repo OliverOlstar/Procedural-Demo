@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2753f4a4f9a9a488a36fd0c03ea796, type: 3}
   m_Name: PlayerSpearPull
   m_EditorClassIdentifier: 
-  m_Tags: 1048577
+  m_Tags: 5121
   m_CancelTags: 0
   m_BlockTags: 0
   m_CanceledByTags: 0

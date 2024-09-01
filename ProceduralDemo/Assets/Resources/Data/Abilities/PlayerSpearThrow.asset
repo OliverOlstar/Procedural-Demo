@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 683b07c0599cd3c42917f48502293865, type: 3}
   m_Name: PlayerSpearThrow
   m_EditorClassIdentifier: 
-  m_Tags: 3145728
+  m_Tags: 3154945
   m_CancelTags: 0
   m_BlockTags: 0
   m_CanceledByTags: 0
