@@ -18,6 +18,6 @@ MonoBehaviour:
   m_CanceledByTags: 0
   m_BlockedByTags: 0
   m_Cooldown: 1
-  m_CooldownTrigger: 0
+  m_CooldownTrigger: 1
   m_LogSelf: 0
   m_Montage: {fileID: 11400000, guid: 995caafeede0493428cc7a8d27b4dc1b, type: 2}

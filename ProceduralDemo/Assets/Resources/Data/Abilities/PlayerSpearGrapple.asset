@@ -17,9 +17,9 @@ MonoBehaviour:
   m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0
-  m_Cooldown: 0.5
+  m_Cooldown: 0.75
   m_CooldownTrigger: 1
-  m_LogSelf: 0
+  m_LogSelf: 1
   m_Montage: {fileID: 11400000, guid: 1ed7dd360f1acb243bcabf2cef47457c, type: 2}
   m_Force: 30
   m_MaxUpDistance: 0

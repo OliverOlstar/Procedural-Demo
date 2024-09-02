@@ -63,6 +63,7 @@ public class PlayerAbilitySpearGrapple : CharacterAbility<SOPlayerAbilitySpearGr
 		Root.Movement.GravityEnabled = false;
 
 		m_MontageHandle = Root.Animator.PlayMontage(Data.Montage);
+		Root.Spear.SetRopeLength(Data.MaxDistance);
 		Root.Spear.SetRopeActive(true);
 
 		m_TimeElapsed = 0.0f;

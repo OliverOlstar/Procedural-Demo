@@ -60,7 +60,7 @@ public class PlayerAbilities
 				{
 					continue;
 				}
-				if ((ability.InputActivate is IInputBool input) && input.Input)
+				if ((ability.InputActivate is IInputBool input) && !input.Input)
 				{
 					ability.Deactivate();
 				}

@@ -42,11 +42,12 @@ public class PlayerSpearThrow : PlayerSpearController
 	internal override void Tick(float pDeltaTime)
 	{
 		m_TimeElapsed += pDeltaTime;
+
 		Vector3 newPosition = Transform.position + (pDeltaTime * m_Speed * m_Direction);
 		newPosition.y -= Mathf.Lerp(0.0f, pDeltaTime * m_Gravity, (m_TimeElapsed - m_GravityDelay) / m_GravitySeconds);
 		Vector3 forward = newPosition - Transform.position;
 
-		Vector3 startPoint = Transform.position - (m_Direction * m_RaycastBackDistance);
+		Vector3 startPoint = Transform.position - (forward * m_RaycastBackDistance);
 		Vector3 endPoint = newPosition + (forward * m_RaycastForwardDistance);
 		if (!Physics.Linecast(startPoint, endPoint, out RaycastHit hit, m_Layers))
 		{
@@ -54,7 +55,8 @@ public class PlayerSpearThrow : PlayerSpearController
 			Transform.position = newPosition;
 			return;
 		}
-		Transform.position = hit.point - (forward * m_RaycastForwardDistance);
+		Transform.forward = forward;
+		Transform.position = hit.point /*+ (forward * m_RaycastForwardDistance)*/;
 		// Transform.forward = hit.normal;
 		Spear.Attach(hit.collider.transform, hit.point);
 	}
