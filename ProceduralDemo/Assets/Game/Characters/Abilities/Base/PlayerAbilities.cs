@@ -10,7 +10,9 @@ using UnityEngine.Pool;
 [Serializable]
 public class PlayerAbilities
 {
+	[FoldoutGroup("Events")]
 	public UnityEvent<AbilityTags> OnAbilityActivated = new();
+	[FoldoutGroup("Events")]
 	public UnityEvent<AbilityTags> OnAbilityDeactivated = new();
 
 	[SerializeField]

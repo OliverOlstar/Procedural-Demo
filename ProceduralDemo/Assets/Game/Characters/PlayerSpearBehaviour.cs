@@ -6,6 +6,8 @@ public class PlayerSpearBehaviour
 {
 	[SerializeField]
 	private PlayerSpear m_Spear = null;
+	[SerializeField]
+	private SpringRope m_Rope = null;
 
 	private PlayerRoot m_Root;
 
@@ -17,6 +19,11 @@ public class PlayerSpearBehaviour
 	public void Attach(Transform pAttachTo, Vector3 pHitPoint) => Spear.Attach(pAttachTo, pHitPoint);
 	public void Pull(Transform pToTarget) => Spear.Pull(pToTarget);
 	public void Store() => Spear.Store();
+
+	public void SetRopeActive(bool pActive)
+	{
+		m_Rope.IsGrappling = pActive;
+	}
 
 	public void Initalize(PlayerRoot pRoot)
 	{
