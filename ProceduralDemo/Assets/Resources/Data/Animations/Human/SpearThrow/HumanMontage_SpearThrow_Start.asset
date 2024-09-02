@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70e63f62a899d044abbc9f877cac8534, type: 3}
+  m_Name: HumanMontage_SpearThrow_Start
+  m_EditorClassIdentifier: 
+  m_Animation: {fileID: 11400000, guid: e6ea8ba141db09348ba0f13e8dacf788, type: 2}
+  m_StartSeconds: 0
+  m_Seconds: 0.25
+  m_EndSeconds: 99
+  m_FadeInSeconds: 0.05
+  m_FadeOutSeconds: 0.1

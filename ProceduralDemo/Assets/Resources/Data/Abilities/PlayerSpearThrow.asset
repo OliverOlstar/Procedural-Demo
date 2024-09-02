@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerSpearThrow
   m_EditorClassIdentifier: 
   m_Tags: 1057792
-  m_CancelTags: 0
+  m_CancelTags: 1048577
   m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0

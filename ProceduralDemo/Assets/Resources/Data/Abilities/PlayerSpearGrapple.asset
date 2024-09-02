@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerSpearGrapple
   m_EditorClassIdentifier: 
   m_Tags: 17409
-  m_CancelTags: 0
+  m_CancelTags: 1
   m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0

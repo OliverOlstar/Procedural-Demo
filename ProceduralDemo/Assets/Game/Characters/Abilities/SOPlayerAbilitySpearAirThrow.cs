@@ -10,13 +10,16 @@ using UnityEngine.Events;
 public class SOPlayerAbilitySpearAirThrow : SOCharacterAbility
 {
 	[Space, SerializeField, AssetNonNull]
-	private SOPoseMontage m_Montage = null;
+	private SOPoseMontage m_MontageStart = null;
+	[SerializeField, AssetNonNull]
+	private SOPoseMontage m_MontageEnd = null;
 	[SerializeField]
 	private float m_TimeScale = 0.15f;
 	[SerializeField]
 	private float m_TimeScaleDampening = 1.0f;
 
-	public SOPoseMontage Montage => m_Montage;
+	public SOPoseMontage MontageStart => m_MontageStart;
+	public SOPoseMontage MontageEnd => m_MontageEnd;
 	public float TimeScale => m_TimeScale;
 	public float TimeScaleDampening => m_TimeScaleDampening;
 
@@ -32,7 +35,6 @@ public class PlayerAbilitySpearAirThrow : CharacterAbility<SOPlayerAbilitySpearA
 	protected override void Initalize() { }
 	protected override void DestroyInternal() { }
 
-	private int m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;
 	private int m_TimeScaleHandle = TimeScaleManager.INVALID_HANDLE;
 	private float m_TimeScale = 1.0f;
 
@@ -43,20 +45,27 @@ public class PlayerAbilitySpearAirThrow : CharacterAbility<SOPlayerAbilitySpearA
 
 	protected override void ActivateInternal()
 	{
-		m_MontageHandle = Root.Animator.PlayMontage(Data.Montage);
+		Root.Animator.PlayMontage(Data.MontageStart);
 		m_TimeScale = 1.0f;
 		m_TimeScaleHandle = TimeScaleManager.StartTimeEvent(m_TimeScale);
 	}
 
 	public override void ActiveTick(float pDeltaTime)
 	{
-		m_TimeScale = Mathf.Lerp(m_TimeScale, Data.TimeScale, pDeltaTime * Data.TimeScaleDampening);
+		// TODO: Change Sensitivity
+
+		m_TimeScale = Mathf.Lerp(m_TimeScale, Data.TimeScale, (pDeltaTime / m_TimeScale) * Data.TimeScaleDampening);
 		TimeScaleManager.UpdateTimeEvent(m_TimeScaleHandle, m_TimeScale);
+
+		if (!CanActivate())
+		{
+			Deactivate();
+		}
 	}
 
 	protected override void DeactivateInternal()
 	{
-		Root.Animator.CancelMontage(m_MontageHandle);
+		Root.Animator.PlayMontage(Data.MontageEnd);
 		TimeScaleManager.EndTimeEvent(m_TimeScaleHandle);
 		m_TimeScaleHandle = TimeScaleManager.INVALID_HANDLE;
 		
