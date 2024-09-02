@@ -13,6 +13,8 @@ public class SOPlayerAbilitySpearGrapple : SOCharacterAbility
 	private SOPoseMontage m_Montage = null;
 	[SerializeField]
 	private float m_Force = 10.0f;
+	[SerializeField, Range(0.0f, 5.0f)]
+	private float m_MaxUpDistance = 0.0f;
 	[SerializeField]
 	private float m_Delay = 0.25f;
 	[SerializeField]
@@ -22,6 +24,7 @@ public class SOPlayerAbilitySpearGrapple : SOCharacterAbility
 
 	public SOPoseMontage Montage => m_Montage;
 	public float Force => m_Force;
+	public float MaxUpDistance => m_MaxUpDistance;
 	public float Delay => m_Delay;
 	public float MaxDistance => m_MaxDistance;
 	public float MinDistance => m_MinDistance;
@@ -85,7 +88,7 @@ public class PlayerAbilitySpearGrapple : CharacterAbility<SOPlayerAbilitySpearGr
 			Root.Spear.Pull(Root.Movement.transform);
 		}
 		Vector3 difference = Root.Spear.Position - Root.Movement.transform.position;
-		difference.y = 0.0f;
+		difference.y = Mathf.Min(Data.MaxUpDistance, difference.y);
 		Vector3 velocity = difference.normalized * Data.Force;
 		Root.Movement.SetVelocity(velocity);
 	}

@@ -17,10 +17,12 @@ MonoBehaviour:
   m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0
-  m_Cooldown: 1
-  m_CooldownTrigger: 0
+  m_Cooldown: 0.5
+  m_CooldownTrigger: 1
   m_LogSelf: 0
   m_Montage: {fileID: 11400000, guid: 1ed7dd360f1acb243bcabf2cef47457c, type: 2}
   m_Force: 30
+  m_MaxUpDistance: 0
   m_Delay: 0.25
-  m_MaxDistance: 20
+  m_MaxDistance: 30
+  m_MinDistance: 2
