@@ -36,7 +36,7 @@ namespace ODev.Util
 		public static float SpringDamper(this float pFrom, float pTo, ref float rVelocity, float pSpring, float pDamper, float pDeltaTime)
 		{
 			float differance = pTo - pFrom;
-			if (differance > Math.NEARZERO || differance < -Math.NEARZERO)
+			if (!differance.IsNearZero())
 			{
 				float force = differance * pSpring;
 				rVelocity += (force - (rVelocity * pDamper)) * pDeltaTime;
@@ -51,7 +51,7 @@ namespace ODev.Util
 		public static Vector2 SpringDamper(this Vector2 pFrom, Vector2 pTo, ref Vector2 rVelocity, float pSpring, float pDamper, float pDeltaTime)
 		{
 			Vector2 differance = pTo - pFrom;
-			if (differance.sqrMagnitude > Math.NEARZERO)
+			if (!differance.IsNearZero())
 			{
 				Vector2 force = differance * pSpring;
 				rVelocity += (force - (rVelocity * pDamper)) * pDeltaTime;
@@ -60,7 +60,7 @@ namespace ODev.Util
 			{
 				rVelocity -= pDamper * pDeltaTime * rVelocity;
 			}
-			if (rVelocity.sqrMagnitude > Math.NEARZERO)
+			if (!rVelocity.IsNearZero())
 			{
 				pFrom += rVelocity * pDeltaTime;
 			}
@@ -69,7 +69,7 @@ namespace ODev.Util
 		public static Vector3 SpringDamper(this Vector3 pFrom, Vector3 pTo, ref Vector3 rVelocity, float pSpring, float pDamper, float pDeltaTime)
 		{
 			Vector3 differance = pTo - pFrom;
-			if (differance.sqrMagnitude > Math.NEARZERO)
+			if (!differance.IsNearZero())
 			{
 				Vector3 force = differance * pSpring;
 				rVelocity += (force - (rVelocity * pDamper)) * pDeltaTime;
@@ -78,7 +78,7 @@ namespace ODev.Util
 			{
 				rVelocity -= pDamper * pDeltaTime * rVelocity;
 			}
-			if (rVelocity.sqrMagnitude > Math.NEARZERO)
+			if (!rVelocity.IsNearZero())
 			{
 				pFrom += rVelocity * pDeltaTime;
 			}
