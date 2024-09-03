@@ -19,7 +19,7 @@ MonoBehaviour:
   m_BlockedByTags: 0
   m_Cooldown: 0.5
   m_CooldownTrigger: 0
-  m_LogSelf: 1
+  m_LogSelf: 0
   m_DragModifier:
     m_Type: 1
     m_Add: 0

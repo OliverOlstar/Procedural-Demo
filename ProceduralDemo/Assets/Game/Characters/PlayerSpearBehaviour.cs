@@ -10,11 +10,14 @@ public class PlayerSpearBehaviour
 	private SpringRope m_Rope = null;
 
 	private PlayerRoot m_Root;
+	private bool m_PlayerIsInTrigger = false;
 
 	public PlayerSpear Spear => m_Spear;
 	public Vector3 Position => m_Spear.transform.position;
 	public Vector3 Forward => m_Spear.transform.forward;
 	public PlayerSpear.State State => m_Spear.ActiveState;
+	public bool PlayerIsInTrigger => m_PlayerIsInTrigger;
+
 	public void Throw(Vector3 pPoint, Vector3 pDirection/*, float pCharge01*/) => Spear.Throw(pPoint, pDirection);
 	public void Attach(Transform pAttachTo, Vector3 pHitPoint) => Spear.Attach(pAttachTo, pHitPoint);
 	public void Pull(Transform pToTarget) => Spear.Pull(pToTarget);
@@ -27,20 +30,38 @@ public class PlayerSpearBehaviour
 	public void Initalize(PlayerRoot pRoot)
 	{
 		m_Root = pRoot;
-		m_Spear.OnTriggerEnterEvent.AddListener(OnSpearTrigger);
+		m_Spear.OnStateChangeEvent.AddListener(OnStateChange);
+		m_Spear.OnTriggerEnterEvent.AddListener(OnTriggerEnter);
+		m_Spear.OnTriggerExitEvent.AddListener(OnTriggerExit);
 	}
 
 	public void Destroy()
 	{
-		m_Spear.OnTriggerEnterEvent.RemoveListener(OnSpearTrigger);
+		m_Spear.OnStateChangeEvent.RemoveListener(OnStateChange);
+		m_Spear.OnTriggerEnterEvent.RemoveListener(OnTriggerEnter);
+		m_Spear.OnTriggerExitEvent.RemoveListener(OnTriggerExit);
 	}
 
-	private void OnSpearTrigger(Collider pOther)
+	private void OnTriggerEnter(Collider pOther)
 	{
 		if (pOther.gameObject != m_Root.Movement.gameObject)
 		{
 			return;
 		}
-		m_Root.Abilities.ActivateAbilityByTag(AbilityTags.SpearJump);
+		m_PlayerIsInTrigger = true;
+	}
+
+	private void OnTriggerExit(Collider pOther)
+	{
+		if (pOther.gameObject != m_Root.Movement.gameObject)
+		{
+			return;
+		}
+		m_PlayerIsInTrigger = false;
+	}
+
+	private void OnStateChange(PlayerSpear.State pState)
+	{
+		m_PlayerIsInTrigger = false;
 	}
 }

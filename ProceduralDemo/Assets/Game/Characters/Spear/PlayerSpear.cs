@@ -14,7 +14,9 @@ public class PlayerSpear : MonoBehaviour
 		Pulling
 	}
 
+	public UnityEvent<State> OnStateChangeEvent = new();
 	public UnityEvent<Collider> OnTriggerEnterEvent = new();
+	public UnityEvent<Collider> OnTriggerExitEvent = new();
 
 	[SerializeField]
 	private PlayerSpearStore m_Store = new();
@@ -61,6 +63,7 @@ public class PlayerSpear : MonoBehaviour
 		LogMethod($"pPoint {pPoint}, pDirection {pDirection}");
 		SwitchController(m_Throw);
 		m_Throw.Start(pPoint, pDirection);
+		OnStateChangeEvent.Invoke(m_ActiveController.State);
 	}
 
 	[Button]
@@ -69,6 +72,7 @@ public class PlayerSpear : MonoBehaviour
 		LogMethod($"pAttachTo {pAttachTo}");
 		SwitchController(m_Land);
 		m_Land.Start(pAttachTo, pHitPoint);
+		OnStateChangeEvent.Invoke(m_ActiveController.State);
 	}
 
 	[Button]
@@ -77,6 +81,7 @@ public class PlayerSpear : MonoBehaviour
 		LogMethod($"pToTarget {pToTarget}");
 		SwitchController(m_Pull);
 		m_Pull.Start(pToTarget);
+		OnStateChangeEvent.Invoke(m_ActiveController.State);
 	}
 
 	[Button]
@@ -85,6 +90,7 @@ public class PlayerSpear : MonoBehaviour
 		LogMethod();
 		SwitchController(m_Store);
 		m_Store.Start();
+		OnStateChangeEvent.Invoke(m_ActiveController.State);
 	}
 
 	private void Tick(float pDeltaTime)
@@ -105,10 +111,12 @@ public class PlayerSpear : MonoBehaviour
 
 	private void OnTriggerEnter(Collider pOther)
 	{
-		if (ActiveState == State.Landed)
-		{
-			OnTriggerEnterEvent.Invoke(pOther);
-		}
+		OnTriggerEnterEvent.Invoke(pOther);
+	}
+
+	private void OnTriggerExit(Collider pOther)
+	{
+		OnTriggerExitEvent.Invoke(pOther);
 	}
 
 	private void OnDrawGizmos()

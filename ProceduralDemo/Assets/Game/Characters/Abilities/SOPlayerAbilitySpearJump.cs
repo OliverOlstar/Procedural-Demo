@@ -23,8 +23,15 @@ public class PlayerAbilitySpearJump : CharacterAbility<SOPlayerAbilitySpearJump>
 {
 	public PlayerAbilitySpearJump(PlayerRoot pPlayer, SOPlayerAbilitySpearJump pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
+	public override IInputTrigger InputActivate => Root.Input.Jump;
+
 	protected override void Initalize() { }
 	protected override void DestroyInternal() { }
+
+	protected override bool CanActivate()
+	{
+		return Root.Spear.PlayerIsInTrigger && Root.Spear.State == PlayerSpear.State.Landed;
+	}
 
 	// private int m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;
 
