@@ -20,7 +20,8 @@ public class PlayerSpearBehaviour
 	public void Pull(Transform pToTarget) => Spear.Pull(pToTarget);
 	public void Store() => Spear.Store();
 
-	public void SetRopeActive(bool pActive) => m_Rope.IsActive = pActive;
+	public void RopeLaunch() => m_Rope.Launch();
+	public void RopeReturn() => m_Rope.Return();
 	public void SetRopeLength(float pLength) => m_Rope.SetMaxLength(pLength);
 
 	public void Initalize(PlayerRoot pRoot)

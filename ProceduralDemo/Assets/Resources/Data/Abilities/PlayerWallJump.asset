@@ -17,8 +17,8 @@ MonoBehaviour:
   m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0
-  m_Cooldown: 0.3
-  m_CooldownTrigger: 0
+  m_Cooldown: 0.25
+  m_CooldownTrigger: 1
   m_LogSelf: 0
   m_PushOffForce: 20
   m_Force: 8

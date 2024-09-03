@@ -12,6 +12,8 @@ public class PlayerSpearThrow : PlayerSpearController
 	private float m_GravitySeconds = 2.0f;
 	[SerializeField]
 	private float m_GravityDelay = 5.0f;
+	[SerializeField]
+	private float m_HitOffset = -1.0f;
 
 	[Header("Raycast")]
 	[SerializeField]
@@ -56,7 +58,7 @@ public class PlayerSpearThrow : PlayerSpearController
 			return;
 		}
 		Transform.forward = forward;
-		Transform.position = hit.point /*+ (forward * m_RaycastForwardDistance)*/;
+		Transform.position = hit.point + (forward * m_HitOffset);
 		// Transform.forward = hit.normal;
 		Spear.Attach(hit.collider.transform, hit.point);
 	}

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SpringRope : UpdateableMonoBehaviour
 {
-	public bool IsActive = false;
-
 	[Space, SerializeField]
 	private Transform m_Target = null;
 	[SerializeField]
@@ -30,46 +28,46 @@ public class SpringRope : UpdateableMonoBehaviour
 	[SerializeField]
 	private float m_MaxLength = float.PositiveInfinity;
 
+	private bool m_IsActive = false;
 	private float m_Value = 0.0f;
 	private LineRenderer m_LineRenderer;
-	private Vector3 m_CurrentGrapplePosition;
+	private Vector3 m_CurrentPosition;
 
 	void Awake()
 	{
 		m_LineRenderer = GetComponent<LineRenderer>();
 	}
 
+	public void Launch()
+	{
+		m_Value = 0.0f;
+		m_Velocity = 15.0f;
+		m_CurrentPosition = m_Source.position;
+		m_LineRenderer.positionCount = m_Quality + 1;
+		m_IsActive = true;
+	}
+
+	public void Return()
+	{
+		m_LineRenderer.positionCount = 0;
+		m_IsActive = false;
+	}
+
 	protected override void Tick(float pDeltaTime)
 	{
 		// If not grappling, don't draw rope
-		if (!IsActive)
+		if (!m_IsActive)
 		{
-			m_CurrentGrapplePosition = m_Source.position;
-			m_Value = 0.0f;
-			m_Velocity = 0.0f;
-			if (m_LineRenderer.positionCount > 0)
-			{
-				m_LineRenderer.positionCount = 0;
-			}
 			return;
-		}
-
-		if (m_LineRenderer.positionCount == 0)
-		{
-			m_Velocity = 15.0f;
-			m_LineRenderer.positionCount = m_Quality + 1;
 		}
 
 		m_Value = Func.SpringDamper(m_Value, 0.0f, ref m_Velocity, m_Strength, m_Damper, pDeltaTime);
 
-		Vector3 targetPoint = m_Target.position;
-		Vector3 sourcePosition = m_Source.position;
-		Vector3 difference = targetPoint - sourcePosition;
+		Vector3 difference = m_Target.position - m_Source.position;
 		difference = Vector3.ClampMagnitude(difference, m_MaxLength);
 		Vector3 up = Quaternion.LookRotation(difference.normalized) * Vector3.up;
 
-
-		m_CurrentGrapplePosition = Vector3.Lerp(m_CurrentGrapplePosition, sourcePosition + difference, pDeltaTime * m_PositionDampening);
+		m_CurrentPosition = Vector3.Lerp(m_CurrentPosition, m_Source.position + difference, pDeltaTime * m_PositionDampening);
 
 		float inverseQuality = 1.0f / m_Quality;
 		for (int i = 0; i < m_Quality + 1; i++)
@@ -77,7 +75,7 @@ public class SpringRope : UpdateableMonoBehaviour
 			float delta = i * inverseQuality;
 			Vector3 offset = m_AffectCurve.Evaluate(delta) * m_Value * m_WaveHeight * Mathf.Sin(delta * m_WaveCount * Mathf.PI) * up;
 
-			m_LineRenderer.SetPosition(i, Vector3.Lerp(sourcePosition, m_CurrentGrapplePosition, delta) + offset);
+			m_LineRenderer.SetPosition(i, Vector3.Lerp(m_Source.position, m_CurrentPosition, delta) + offset);
 		}
 	}
 

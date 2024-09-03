@@ -30,6 +30,8 @@ public class SOPlayerAbilityMantle : SOCharacterAbility
 	[Header("Valid")]
 	[SerializeField]
 	private float m_MinTimeOffGround = 0.5f;
+	[SerializeField]
+	private float m_MinVelocity = -1.0f;
 	[SerializeField, Range(0.0f, 1.0f)]
 	private float m_TopSlopeMin = 0.5f;
 	[SerializeField, MinMaxSlider(-1.0f, 1.0f, ShowFields = true)]
@@ -43,6 +45,7 @@ public class SOPlayerAbilityMantle : SOCharacterAbility
 	public float MaxUpDistance => m_MaxUpDistance;
 	public LayerMask HitLayers => m_GroundLayers;
 	public float MinTimeOffGround => m_MinTimeOffGround;
+	public float MinVelocity => m_MinVelocity;
 	public float TopSlopeMin => m_TopSlopeMin;
 	public Vector2 SideSlopeLimit => m_SideSlopeLimit;
 
@@ -75,7 +78,7 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 
 	protected override bool CanActivateUpdate()
 	{
-		if (!Root.OnWall.IsOnWall || Root.OnGround.IsOnGround || Root.Movement.VelocityY < -1.0f)
+		if (!Root.OnWall.IsOnWall || Root.OnGround.IsOnGround || Root.Movement.VelocityY < Data.MinVelocity)
 		{
 			return false;
 		}

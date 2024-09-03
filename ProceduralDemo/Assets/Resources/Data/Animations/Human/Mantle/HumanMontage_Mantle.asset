@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Animation: {fileID: 11400000, guid: b5e8a69d648b71c4eb8a12b8b2af0006, type: 2}
   m_StartSeconds: 0.25
-  m_Seconds: 0.35
+  m_Seconds: 0.4
   m_EndSeconds: 0.25
   m_FadeInSeconds: 0.25
   m_FadeOutSeconds: 0.25

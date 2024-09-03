@@ -116,9 +116,9 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		m_IsActive = true;
 		LogMethod();
 
-		ActivateInternal();
-		TriggerCooldown(true);
 		m_Root.Abilities.RecievedAbilityActivated(this);
+		TriggerCooldown(true);
+		ActivateInternal();
 	}
 
 	protected void Deactivate()

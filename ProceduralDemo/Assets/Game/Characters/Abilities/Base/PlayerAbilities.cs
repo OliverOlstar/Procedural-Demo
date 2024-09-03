@@ -27,6 +27,10 @@ public class PlayerAbilities
 	private float m_LastInputedSeconds = 0.0f;
 	private bool m_InputActivatedThisFrame = false;
 
+	private readonly List<ICharacterAbility> m_ActiveAbilities = new();
+	private AbilityTags m_ActiveTags = new();
+	private AbilityTags m_BlockedTags = new();
+
 	public void Initalize(PlayerRoot pRoot)
 	{
 		for (int i = 0; i < m_Abilities.Length; i++)
@@ -45,6 +49,28 @@ public class PlayerAbilities
 		}
 		m_AbilityInstances.Clear();
 		m_Updateable.Deregister();
+	}
+	
+	public void ActivateAbilityByTag(AbilityTags pTag)
+	{
+		foreach (ICharacterAbility ability in m_AbilityInstances)
+		{
+			ability.GetTags(out AbilityTags m_Tags, out _);
+			if (!m_Tags.HasAnyFlag(pTag))
+			{
+				continue;
+			}
+			ability.TryActivate(m_ActiveTags, m_BlockedTags);
+			break;
+		}
+	}
+
+	public void CancelAllAbilities()
+	{
+		for (int i = 0; i < m_AbilityInstances.Count; i++)
+		{
+			m_AbilityInstances[i].Deactivate();
+		}
 	}
 
 	private void Tick(float pDeltaTime)
@@ -81,14 +107,6 @@ public class PlayerAbilities
 		}
 	}
 
-	public void CancelAllAbilities()
-	{
-		for (int i = 0; i < m_AbilityInstances.Count; i++)
-		{
-			m_AbilityInstances[i].Deactivate();
-		}
-	}
-
 	internal void OnAbilityInputRecieved(int pIndex, bool pPerformed)
 	{
 		// this.Log($"{pIndex} {m_AbilityInstances[pIndex].GetType()} -> {pPerformed}");
@@ -122,10 +140,6 @@ public class PlayerAbilities
 		m_LastInputedAbilities.Add(pIndex);
 	}
 
-	private readonly List<ICharacterAbility> m_ActiveAbilities = new();
-	private AbilityTags m_ActiveTags = new();
-	private AbilityTags m_BlockedTags = new();
-
 	internal void RecievedAbilityActivated(ICharacterAbility pAbility)
 	{
 		pAbility.GetTags(out AbilityTags tags, out AbilityTags cancelTags);
@@ -153,20 +167,6 @@ public class PlayerAbilities
 		foreach (ICharacterAbility ability in m_ActiveAbilities)
 		{
 			ability.AddTags(ref m_ActiveTags, ref m_BlockedTags);
-		}
-	}
-
-	internal void ActivateAbilityByTag(AbilityTags pTag)
-	{
-		foreach (ICharacterAbility ability in m_AbilityInstances)
-		{
-			ability.GetTags(out AbilityTags m_Tags, out _);
-			if (!m_Tags.HasAnyFlag(pTag))
-			{
-				continue;
-			}
-			ability.TryActivate(m_ActiveTags, m_BlockedTags);
-			break;
 		}
 	}
 }

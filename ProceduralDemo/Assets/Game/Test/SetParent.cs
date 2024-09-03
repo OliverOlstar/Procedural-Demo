@@ -9,7 +9,7 @@ public class SetParent : MonoBehaviour
 	[SerializeField]
 	private Vector3 m_Offset = Vector3.up;
 
-    void Start()
+    private void Awake()
     {
         transform.SetParent(m_Parent);
 		transform.localPosition = m_Offset;

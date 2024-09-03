@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerJump
   m_EditorClassIdentifier: 
   m_Tags: 49
-  m_CancelTags: 0
+  m_CancelTags: 1
   m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0
@@ -21,6 +21,6 @@ MonoBehaviour:
   m_CooldownTrigger: 0
   m_LogSelf: 0
   m_Force: 11
-  m_GraceSeconds: 0.25
+  m_GraceSeconds: 0.35
   m_CancelVelocityPercent: 0.5
   m_CancelMinVelocity: 7

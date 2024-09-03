@@ -23,11 +23,11 @@ MonoBehaviour:
   m_AccelerationModifier:
     m_Type: 0
     m_Add: 0
-    m_Percent: 1
+    m_Percent: -0.75
   m_DragModifier:
     m_Type: 1
     m_Add: 0
-    m_Percent: 0.5
+    m_Percent: -0.5
   m_MaxVelocityModifier:
     m_Type: 0
     m_Add: 0
@@ -35,8 +35,8 @@ MonoBehaviour:
   m_GravityUpModifier:
     m_Type: 1
     m_Add: 0
-    m_Percent: -0.05
+    m_Percent: -0.3
   m_GravityDownModifier:
     m_Type: 1
     m_Add: 0
-    m_Percent: -0.95
+    m_Percent: -0.98

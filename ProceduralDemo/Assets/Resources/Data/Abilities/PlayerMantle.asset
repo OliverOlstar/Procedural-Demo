@@ -112,5 +112,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 72
   m_MinTimeOffGround: 0.1
+  m_MinVelocity: -5
   m_TopSlopeMin: 0.85
   m_SideSlopeLimit: {x: -0.5, y: 0.3}
