@@ -49,8 +49,8 @@ public class PlayerAbilitySpearPull : CharacterAbility<SOPlayerAbilitySpearPull>
 	{
 		if (pState == PlayerSpear.State.Stored)
 		{
-			Deactivate();
 			Root.Abilities.ActivateAbilityByTag(AbilityTags.SpearThrow);
+			Deactivate();
 		}
 	}
 }

@@ -16,12 +16,12 @@ public class SOPlayerAbilitySpearAirThrow : SOCharacterAbility
 	[SerializeField]
 	private float m_TimeScale = 0.15f;
 	[SerializeField]
-	private float m_TimeScaleDampening = 1.0f;
+	private float m_TimeScaleSeconds = 1.0f;
 
 	public SOPoseMontage MontageStart => m_MontageStart;
 	public SOPoseMontage MontageEnd => m_MontageEnd;
 	public float TimeScale => m_TimeScale;
-	public float TimeScaleDampening => m_TimeScaleDampening;
+	public float TimeScaleSeconds => m_TimeScaleSeconds;
 
 	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilitySpearAirThrow(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
@@ -37,6 +37,8 @@ public class PlayerAbilitySpearAirThrow : CharacterAbility<SOPlayerAbilitySpearA
 
 	private int m_TimeScaleHandle = TimeScaleManager.INVALID_HANDLE;
 	private float m_TimeScale = 1.0f;
+	
+	private float m_TimeScaleVelocity = 0.0f;
 
 	protected override bool CanActivate()
 	{
@@ -48,13 +50,14 @@ public class PlayerAbilitySpearAirThrow : CharacterAbility<SOPlayerAbilitySpearA
 		Root.Animator.PlayMontage(Data.MontageStart);
 		m_TimeScale = 1.0f;
 		m_TimeScaleHandle = TimeScaleManager.StartTimeEvent(m_TimeScale);
+		m_TimeScaleVelocity = 0.0f;
 	}
 
 	public override void ActiveTick(float pDeltaTime)
 	{
 		// TODO: Change Sensitivity
 
-		m_TimeScale = Mathf.Lerp(m_TimeScale, Data.TimeScale, (pDeltaTime / m_TimeScale) * Data.TimeScaleDampening);
+		m_TimeScale = Mathf.SmoothDamp(m_TimeScale, Data.TimeScale, ref m_TimeScaleVelocity, Data.TimeScaleSeconds, float.PositiveInfinity, (pDeltaTime / m_TimeScale));
 		TimeScaleManager.UpdateTimeEvent(m_TimeScaleHandle, m_TimeScale);
 
 		if (!CanActivate())
