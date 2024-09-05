@@ -365,7 +365,7 @@ namespace ODev
 			}
 
 			instance.ResetTimeScale();
-			Log($"Ending time event: {handle}");
+			// Log($"Ending time event: {handle}");
 		}
 
 		public static void EndAllTimeEvents()

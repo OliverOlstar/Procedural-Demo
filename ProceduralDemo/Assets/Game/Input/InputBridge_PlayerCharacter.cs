@@ -20,6 +20,8 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 	private InputModule_Trigger abilityPrimaryInput = new();
 	[SerializeField]
 	private InputModule_Toggle abilitySecondaryInput = new();
+	[SerializeField]
+	private InputModule_Toggle abilityTertiaryInput = new();
 
 	public InputModule_Vector2 Move => moveInput;
 	public InputModule_Toggle Jump => jumpInput;
@@ -28,6 +30,7 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 	public InputModule_Trigger Interact => interactInput;
 	public InputModule_Trigger AbilityPrimary => abilityPrimaryInput;
 	public InputModule_Toggle AbilitySecondary => abilitySecondaryInput;
+	public InputModule_Toggle AbilityTertiary => abilityTertiaryInput;
 
 	public override InputActionMap Actions => InputSystem.Instance?.PlayerCharacter.Get();
 	public override IEnumerable<IInputModule> GetAllInputModules()
@@ -39,6 +42,7 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 		yield return interactInput;
 		yield return abilityPrimaryInput;
 		yield return abilitySecondaryInput;
+		yield return abilityTertiaryInput;
 	}
 
 	protected override void Awake()
@@ -51,6 +55,7 @@ public class InputBridge_PlayerCharacter : InputBridge_Base
 		interactInput.Initalize(input.Interact, IsValid);
 		abilityPrimaryInput.Initalize(input.AbilityPrimary, IsValid);
 		abilitySecondaryInput.Initalize(input.AbilitySecondary, IsValid);
+		abilityTertiaryInput.Initalize(input.AbilityTertiary, IsValid);
 
 		base.Awake();
 	}

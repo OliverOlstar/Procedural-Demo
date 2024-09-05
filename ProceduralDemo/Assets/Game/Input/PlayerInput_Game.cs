@@ -89,6 +89,15 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AbilityTertiary"",
+                    ""type"": ""Button"",
+                    ""id"": ""b55ab616-0327-4369-8b91-04471f139aca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -298,6 +307,28 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""AbilitySecondary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fa30e893-f0f4-496e-940d-2de8fba85d9b"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""AbilityTertiary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40c47b9d-76aa-4539-830c-3c31fa4f51ff"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""AbilityTertiary"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -519,6 +550,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         m_PlayerCharacter_Interact = m_PlayerCharacter.FindAction("Interact", throwIfNotFound: true);
         m_PlayerCharacter_AbilityPrimary = m_PlayerCharacter.FindAction("AbilityPrimary", throwIfNotFound: true);
         m_PlayerCharacter_AbilitySecondary = m_PlayerCharacter.FindAction("AbilitySecondary", throwIfNotFound: true);
+        m_PlayerCharacter_AbilityTertiary = m_PlayerCharacter.FindAction("AbilityTertiary", throwIfNotFound: true);
         // BuildMode
         m_BuildMode = asset.FindActionMap("BuildMode", throwIfNotFound: true);
         m_BuildMode_Exit = m_BuildMode.FindAction("Exit", throwIfNotFound: true);
@@ -593,6 +625,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCharacter_Interact;
     private readonly InputAction m_PlayerCharacter_AbilityPrimary;
     private readonly InputAction m_PlayerCharacter_AbilitySecondary;
+    private readonly InputAction m_PlayerCharacter_AbilityTertiary;
     public struct PlayerCharacterActions
     {
         private @PlayerInput_Game m_Wrapper;
@@ -604,6 +637,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_PlayerCharacter_Interact;
         public InputAction @AbilityPrimary => m_Wrapper.m_PlayerCharacter_AbilityPrimary;
         public InputAction @AbilitySecondary => m_Wrapper.m_PlayerCharacter_AbilitySecondary;
+        public InputAction @AbilityTertiary => m_Wrapper.m_PlayerCharacter_AbilityTertiary;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCharacter; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -634,6 +668,9 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @AbilitySecondary.started += instance.OnAbilitySecondary;
             @AbilitySecondary.performed += instance.OnAbilitySecondary;
             @AbilitySecondary.canceled += instance.OnAbilitySecondary;
+            @AbilityTertiary.started += instance.OnAbilityTertiary;
+            @AbilityTertiary.performed += instance.OnAbilityTertiary;
+            @AbilityTertiary.canceled += instance.OnAbilityTertiary;
         }
 
         private void UnregisterCallbacks(IPlayerCharacterActions instance)
@@ -659,6 +696,9 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @AbilitySecondary.started -= instance.OnAbilitySecondary;
             @AbilitySecondary.performed -= instance.OnAbilitySecondary;
             @AbilitySecondary.canceled -= instance.OnAbilitySecondary;
+            @AbilityTertiary.started -= instance.OnAbilityTertiary;
+            @AbilityTertiary.performed -= instance.OnAbilityTertiary;
+            @AbilityTertiary.canceled -= instance.OnAbilityTertiary;
         }
 
         public void RemoveCallbacks(IPlayerCharacterActions instance)
@@ -773,6 +813,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnAbilityPrimary(InputAction.CallbackContext context);
         void OnAbilitySecondary(InputAction.CallbackContext context);
+        void OnAbilityTertiary(InputAction.CallbackContext context);
     }
     public interface IBuildModeActions
     {

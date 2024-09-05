@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Tags: 17409
   m_CancelTags: 1
-  m_BlockTags: 128
+  m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0
   m_Cooldown: 0.5

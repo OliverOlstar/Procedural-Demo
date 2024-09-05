@@ -36,7 +36,7 @@ public class PlayerAbilitySpearGrapple : CharacterAbility<SOPlayerAbilitySpearGr
 {
 	public PlayerAbilitySpearGrapple(PlayerRoot pPlayer, SOPlayerAbilitySpearGrapple pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
-	public override IInputTrigger InputActivate => Root.Input.AbilitySecondary;
+	public override IInputTrigger InputActivate => Root.Input.AbilityTertiary;
 
 	protected override void Initalize() { }
 	protected override void DestroyInternal() { }
