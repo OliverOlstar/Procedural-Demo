@@ -60,8 +60,10 @@ public class PlayerAbilities
 			{
 				continue;
 			}
-			ability.TryActivate(m_ActiveTags, m_BlockedTags);
-			break;
+			if (ability.TryActivate(m_ActiveTags, m_BlockedTags))
+			{
+				break;
+			}
 		}
 	}
 

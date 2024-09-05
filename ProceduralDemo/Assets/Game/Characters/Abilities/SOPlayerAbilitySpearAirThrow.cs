@@ -40,7 +40,7 @@ public class PlayerAbilitySpearAirThrow : CharacterAbility<SOPlayerAbilitySpearA
 
 	protected override bool CanActivate()
 	{
-		return Root.Spear.State == PlayerSpear.State.Stored && !Root.OnGround.IsOnGround;
+		return Root.Spear.State == PlayerSpear.State.Stored /*&& !Root.OnGround.IsOnGround*/;
 	}
 
 	protected override void ActivateInternal()
@@ -70,6 +70,10 @@ public class PlayerAbilitySpearAirThrow : CharacterAbility<SOPlayerAbilitySpearA
 		m_TimeScaleHandle = TimeScaleManager.INVALID_HANDLE;
 		
 		Vector3 direction = Root.Camera.transform.forward;
+		if (m_TimeScale > 0.5f)
+		{
+			direction = direction.Horizontalize();
+		}
 		Root.Spear.Throw(Root.Movement.transform.position + (Vector3.up * 2.0f), direction);
 	}
 }

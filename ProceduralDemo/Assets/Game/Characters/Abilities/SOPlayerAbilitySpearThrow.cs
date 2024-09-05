@@ -29,7 +29,8 @@ public class PlayerAbilitySpearThrow : CharacterAbility<SOPlayerAbilitySpearThro
 
 	protected override bool CanActivate()
 	{
-		return Root.Spear.State == PlayerSpear.State.Stored && Root.OnGround.IsOnGround;
+		return false;
+		// return Root.Spear.State == PlayerSpear.State.Stored && Root.OnGround.IsOnGround;
 	}
 
 	protected override void ActivateInternal()

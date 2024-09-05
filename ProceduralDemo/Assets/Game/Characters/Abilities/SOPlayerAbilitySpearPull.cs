@@ -1,3 +1,4 @@
+using System;
 using ODev.Input;
 using ODev.Picker;
 using ODev.PoseAnimator;
@@ -28,10 +29,6 @@ public class PlayerAbilitySpearPull : CharacterAbility<SOPlayerAbilitySpearPull>
 
 	protected override bool CanActivate()
 	{
-		if (!Root.OnGround.IsOnGround)
-		{
-			return false;
-		}
 		return Root.Spear.State == PlayerSpear.State.Landed || Root.Spear.State == PlayerSpear.State.Thrown;
 	} 
 
@@ -39,11 +36,21 @@ public class PlayerAbilitySpearPull : CharacterAbility<SOPlayerAbilitySpearPull>
 	{
 		m_MontageHandle = Root.Animator.PlayMontage(Data.Montage);
 		Root.Spear.Pull(Root.Animator.transform);
-		Deactivate();
+		Root.Spear.Spear.OnStateChangeEvent.AddListener(OnSpearStateChanged);
 	}
 
 	protected override void DeactivateInternal()
 	{
+		Root.Spear.Spear.OnStateChangeEvent.RemoveListener(OnSpearStateChanged);
 		// Root.Animator.CancelMontage(m_MontageHandle);
+	}
+
+	private void OnSpearStateChanged(PlayerSpear.State pState)
+	{
+		if (pState == PlayerSpear.State.Stored)
+		{
+			Deactivate();
+			Root.Abilities.ActivateAbilityByTag(AbilityTags.SpearThrow);
+		}
 	}
 }
