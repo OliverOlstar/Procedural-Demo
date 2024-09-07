@@ -42,7 +42,7 @@ public class PlayerAbilitySpearJump : CharacterAbility<SOPlayerAbilitySpearJump>
 			Root.Animator.PlayMontage(Data.Montage);
 		}
 		Root.Movement.SetVelocityY(Data.Force);
-		Root.Spear.Store();
+		// Root.Spear.Store();
 		Deactivate();
 	}
 

@@ -73,7 +73,7 @@ public class PlayerAbilitySpearAirThrow : CharacterAbility<SOPlayerAbilitySpearA
 		m_TimeScaleHandle = TimeScaleManager.INVALID_HANDLE;
 		
 		Vector3 direction = Root.Camera.transform.forward;
-		if (m_TimeScale > 0.5f)
+		if (m_TimeScale > 0.5f && Root.OnGround.IsOnGround)
 		{
 			direction = direction.Horizontalize();
 		}
