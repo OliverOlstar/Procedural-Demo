@@ -17,10 +17,18 @@ public class SOPlayerAbilitySpearJump : SOCharacterAbility
 	[SerializeField]
 	private float m_ChargeSeconds = 0.6f;
 
+	[Header("Position")]
+	[SerializeField]
+	private float m_UpOffset = 0.5f;
+	[SerializeField]
+	private float m_BackOffset = 0.5f;
+
 	public SOPoseMontage Montage => m_Montage;
 	public float Force => m_Force;
 	public float Dampening => m_Dampening;
 	public float ChargeSeconds => m_ChargeSeconds;
+	public float UpOffset => m_UpOffset;
+	public float BackOffset => m_BackOffset;
 
 	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilitySpearJump(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
@@ -36,27 +44,42 @@ public class PlayerAbilitySpearJump : CharacterAbility<SOPlayerAbilitySpearJump>
 
 	protected override bool CanActivateUpdate()
 	{
-		return Root.Spear.PlayerIsInTrigger && Root.Spear.State == PlayerSpear.State.Landed;
+		return Root.Spear.PlayerIsInTrigger && Root.Spear.State == PlayerSpear.State.Landed && Root.Movement.VelocityY < 1.0f && Root.OnGround.IsInAir;
 	}
 
 	// private int m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;
-	private float m_HeldTimeElapsed = 0.0f;
+	private float m_HeldTimeElapsed = -1.0f;
 
 	protected override void ActivateInternal()
 	{
 		Root.Movement.GravityEnabled = false;
 		Root.Movement.MovementEnabled = false;
-		m_HeldTimeElapsed = 0.0f;
+		Root.Movement.SetVelocity(Vector3.zero);
+		m_HeldTimeElapsed = -1.0f;
 
+		Root.Input.Jump.RegisterOnPerformed(OnJumpInput);
 		Root.Input.Jump.RegisterOnCanceled(Deactivate);
+	}
+
+	private void OnJumpInput()
+	{
+		m_HeldTimeElapsed = 0.0f;
 	}
 
 	public override void ActiveTick(float pDeltaTime)
 	{
-		Vector3 offset = Vector3.Lerp(Root.Movement.transform.position, Root.Spear.Position + Vector3.up, pDeltaTime * Data.Dampening) - Root.Movement.transform.position;
+		if (!Root.Movement.Velocity.IsNearZero())
+		{
+			m_HeldTimeElapsed = -1.0f;
+			Deactivate();
+			return;
+		}
+
+		Vector3 targetPositon = Root.Spear.Position + new Vector3(0.0f, Data.UpOffset, 0.0f) + (-Root.Spear.Forward * Data.BackOffset);
+		Vector3 offset = Vector3.Lerp(Root.Movement.transform.position, targetPositon, pDeltaTime * Data.Dampening) - Root.Movement.transform.position;
 		Root.Movement.AddDisplacement(offset, Quaternion.identity);
 
-		if (Root.Input.Jump.Input)
+		if (m_HeldTimeElapsed >= 0.0f && Root.Input.Jump.Input)
 		{
 			m_HeldTimeElapsed += pDeltaTime;
 		}
@@ -68,10 +91,11 @@ public class PlayerAbilitySpearJump : CharacterAbility<SOPlayerAbilitySpearJump>
 		Root.Movement.MovementEnabled = true;
 
 		// Root.Animator.CancelMontage(m_MontageHandle);
+		Root.Input.Jump.DeregisterOnPerformed(OnJumpInput);
 		Root.Input.Jump.DeregisterOnCanceled(Deactivate);
 		Root.Spear.ClearInTrigger();
 
-		if (!m_HeldTimeElapsed.IsNearZero())
+		if (m_HeldTimeElapsed > 0.0f)
 		{
 			if (Data.Montage != null)
 			{
