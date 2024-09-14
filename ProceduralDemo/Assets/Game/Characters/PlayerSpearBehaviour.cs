@@ -64,4 +64,9 @@ public class PlayerSpearBehaviour
 	{
 		m_PlayerIsInTrigger = false;
 	}
+
+	public void ClearInTrigger()
+	{
+		m_PlayerIsInTrigger = false;
+	}
 }

@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: PlayerSpearJump
   m_EditorClassIdentifier: 
   m_Tags: 2065
-  m_CancelTags: 0
-  m_BlockTags: 0
+  m_CancelTags: 1
+  m_BlockTags: 144
   m_CanceledByTags: 0
   m_BlockedByTags: 0
   m_Cooldown: 0
   m_CooldownTrigger: 0
-  m_LogSelf: 0
+  m_LogSelf: 1
   m_Montage: {fileID: 0}
   m_Force: 18
+  m_Dampening: 15
+  m_ChargeSeconds: 0.6
