@@ -62,7 +62,17 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 	}
 	protected override bool CanActivate()
 	{
-		return !Root.OnGround.IsInAir && Root.Movement.VelocityXZ.sqrMagnitude > Data.RequiredStartVelocity * Data.RequiredStartVelocity;
+		if (Root.OnGround.IsInAir)
+		{
+			return false;
+		}
+		if (Root.Movement.VelocityXZ.sqrMagnitude > Data.RequiredStartVelocity * Data.RequiredStartVelocity)
+		{
+			return true;
+		}
+		float angle = Vector3.Dot(Root.OnGround.GetAverageNormal(), Root.Animator.transform.forward.Horizontalize());
+		this.Log($"Angle {angle}");
+		return angle > 0.02f;
 	}
 
 	protected override void ActivateInternal()
