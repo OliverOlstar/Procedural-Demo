@@ -19,7 +19,7 @@ MonoBehaviour:
   m_BlockedByTags: 0
   m_Cooldown: 0.25
   m_CooldownTrigger: 1
-  m_LogSelf: 1
+  m_LogSelf: 0
   m_MontageStart: {fileID: 11400000, guid: 0e911b8df37e551439c9c83906d0e364, type: 2}
   m_MontageEnd: {fileID: 11400000, guid: 88eb3a96c729c794c84fcfc0ee8796f5, type: 2}
   m_TimeScale: 0.05

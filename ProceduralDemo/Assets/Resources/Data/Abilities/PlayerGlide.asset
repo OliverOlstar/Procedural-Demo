@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Tags: 129
   m_CancelTags: 1082624
-  m_BlockTags: 65536
+  m_BlockTags: 0
   m_CanceledByTags: 0
   m_BlockedByTags: 0
   m_Cooldown: 0.25
@@ -39,4 +39,6 @@ MonoBehaviour:
   m_GravityDownModifier:
     m_Type: 1
     m_Add: 0
-    m_Percent: -0.98
+    m_Percent: -0.75
+  m_MinStartYVelocity: -0.5
+  m_StartYForce: 8

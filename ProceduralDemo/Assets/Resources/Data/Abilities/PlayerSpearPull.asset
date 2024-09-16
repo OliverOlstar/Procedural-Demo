@@ -19,5 +19,5 @@ MonoBehaviour:
   m_BlockedByTags: 0
   m_Cooldown: 1
   m_CooldownTrigger: 0
-  m_LogSelf: 1
+  m_LogSelf: 0
   m_Montage: {fileID: 11400000, guid: 1ed7dd360f1acb243bcabf2cef47457c, type: 2}

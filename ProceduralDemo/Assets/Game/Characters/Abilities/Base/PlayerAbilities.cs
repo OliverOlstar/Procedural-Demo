@@ -121,6 +121,7 @@ public class PlayerAbilities
 			if (m_AbilityInstances[pIndex].TryActivate(m_ActiveTags, m_BlockedTags))
 			{
 				m_InputActivatedThisFrame = true;
+				m_LastInputedAbilities.Clear();
 				return;
 			}
 			AddLastInputedAbility(pIndex);

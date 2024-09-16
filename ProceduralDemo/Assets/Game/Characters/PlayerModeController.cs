@@ -40,6 +40,11 @@ public class PlayerModeController : MonoBehaviour
 		m_CurrMode = pToMode;
 		m_CurrMode.EnableMode();
 	}
-	public void SwitchToBuild() => SwitchMode(m_BuildMode);
+	public void SwitchToBuild(Vector3 pCameraPosition)
+	{
+		m_BuildMode.SetupMode(pCameraPosition);
+		SwitchMode(m_BuildMode);
+	}
+
 	public void SwitchToPlayer() => SwitchMode(m_PlayerMode);
 }

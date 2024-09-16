@@ -1,3 +1,4 @@
+using System;
 using ODev.GameStats;
 using ODev.Input;
 using UnityEngine;
@@ -22,6 +23,14 @@ public class SOPlayerAbilityGlide : SOCharacterAbility
 	private FloatGameStatModifier m_GravityDownModifier = new();
 	public FloatGameStatModifier GravityDownModifier => m_GravityDownModifier;
 
+	[Space, SerializeField]
+	private float m_MinStartYVelocity = 0.0f;
+	public float MinStartYVelocity => m_MinStartYVelocity;
+	[SerializeField]
+	private float m_StartYForce = 0.0f;
+	public float StartYForce => m_StartYForce;
+
+
 	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityGlide(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
 
@@ -38,6 +47,7 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 	private FloatGameStatModifier m_GravityUpModifierInstance;
 
 	private GameObject m_TempGlideObject = null;
+	private bool m_WasOnGround = false;
 
 	protected override void Initalize()
 	{
@@ -49,16 +59,23 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 
 		m_TempGlideObject = GameObject.Find($"{Root.name}-Glide-TestDisplay");
 		m_TempGlideObject.SetActive(false);
+
+		Root.OnGround.OnGroundEnterEvent.AddListener(OnGroundEnter);
 	}
 
 	protected override void DestroyInternal()
 	{
+		Root.OnGround.OnGroundEnterEvent.RemoveListener(OnGroundEnter);
+	}
 
+	private void OnGroundEnter()
+	{
+		m_WasOnGround = true;
 	}
 
 	protected override bool CanActivate()
 	{
-		return !Root.OnGround.IsOnGround && !Root.OnWall.IsOnWall;
+		return !Root.OnGround.IsOnGround;
 	}
 
 	protected override void ActivateInternal()
@@ -70,12 +87,21 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		m_GravityDownModifierInstance.Apply(Root.Movement.DownGravity);
 
 		Root.OnGround.OnAirExitEvent.AddListener(OnAirExit);
-		Root.OnWall.OnWallEnter.AddListener(OnWallEnter);
 
 		if (m_TempGlideObject != null)
 		{
 			m_TempGlideObject.SetActive(true);
 		}
+
+		if (m_WasOnGround)
+		{
+			Root.Movement.SetVelocityY(Mathf.Max(Root.Movement.VelocityY, Data.StartYForce));
+		}
+		else
+		{
+			Root.Movement.SetVelocityY(Mathf.Max(Root.Movement.VelocityY, Data.MinStartYVelocity));
+		}
+		m_WasOnGround = false;
 	}
 
 	protected override void DeactivateInternal()
@@ -87,7 +113,6 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		m_GravityDownModifierInstance.Remove(Root.Movement.DownGravity);
 
 		Root.OnGround.OnAirExitEvent.RemoveListener(OnAirExit);
-		Root.OnWall.OnWallEnter.RemoveListener(OnWallEnter);
 
 		if (m_TempGlideObject != null)
 		{
@@ -95,6 +120,5 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		}
 	}
 
-	private void OnWallEnter() => Deactivate();
 	private void OnAirExit() => Deactivate();
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ODev.Camera;
 using ODev.Util;
 using UnityEngine;
 
@@ -16,12 +17,15 @@ public class BuildModeRoot : MonoBehaviour, PlayerModeController.IMode
 	private BuildModeRaycaster m_Raycaster = null;
 	[SerializeField]
 	private BuildModeDisplayer m_Displayer = null;
+	[SerializeField]
+	private EagleEyeCamera m_Camera = null;
 
 	public PlayerModeController Mode => m_Mode;
 	public InputBridge_BuildMode Input => m_Input;
 	public BuildModeController Contoller => m_Controller;
 	public BuildModeRaycaster Raycaster => m_Raycaster;
 	public BuildModeDisplayer Displayer => m_Displayer;
+	public EagleEyeCamera Camera => m_Camera;
 
 	void PlayerModeController.IMode.DisableMode()
 	{
@@ -40,5 +44,10 @@ public class BuildModeRoot : MonoBehaviour, PlayerModeController.IMode
 		{
 			screen.Open(new BuildModeScreenContext(m_Controller.SwitchToStatePlacing));
 		}
+	}
+
+	public void SetupMode(Vector3 pCameraPosition)
+	{
+		m_Camera.transform.position = pCameraPosition;
 	}
 }

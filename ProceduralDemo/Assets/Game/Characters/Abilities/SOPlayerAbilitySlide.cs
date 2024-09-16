@@ -71,7 +71,6 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 			return true;
 		}
 		float angle = Vector3.Dot(Root.OnGround.GetAverageNormal(), Root.Animator.transform.forward.Horizontalize());
-		this.Log($"Angle {angle}");
 		return angle > 0.02f;
 	}
 
@@ -83,7 +82,8 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 		// m_GravityUpModifierInstance.Apply(Root.Movement.UpGravity);
 
 		Root.Movement.MovementEnabled = false;
-		Root.Movement.AddVelocity(Root.Movement.VelocityXZ.Horizontalize() * Data.StartVelocity);
+		Vector3 direction = Root.Animator.transform.forward.Horizontal().ProjectOnPlane(Root.OnGround.GetAverageNormal()).normalized;
+		Root.Movement.AddVelocity(direction * Data.StartVelocity);
 	}
 
 	protected override void DeactivateInternal()
@@ -98,10 +98,10 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 
 	public override void ActiveTick(float pDeltaTime)
 	{
-		Vector3 force = Vector3.Project(Root.OnGround.GetAverageNormal(), Root.Movement.VelocityXZ.Horizontalize());
-		force *= Data.NormalAcceleration;
-		force = Vector3.ClampMagnitude(force, Data.MaxAcceleration);
-		Root.Movement.AddVelocityXZ(pDeltaTime * force);
+		Vector3 direction = Root.Animator.transform.forward.Horizontalize().ProjectOnPlane(Root.OnGround.GetAverageNormal());
+		float force = Vector3.Project(Root.OnGround.GetAverageNormal(), Root.Animator.transform.forward.Horizontalize()).magnitude;
+		force = Mathf.Min(force * Data.NormalAcceleration, Data.MaxAcceleration);
+		Root.Movement.AddVelocityXZ(pDeltaTime * force * direction);
 
 		if (!Root.Input.Crouch.Input || Root.Movement.VelocityXZ.sqrMagnitude < Data.RequiredEndVelocity * Data.RequiredEndVelocity)
 		{

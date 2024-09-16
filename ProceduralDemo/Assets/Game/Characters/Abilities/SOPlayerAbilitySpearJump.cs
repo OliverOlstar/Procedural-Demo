@@ -57,13 +57,21 @@ public class PlayerAbilitySpearJump : CharacterAbility<SOPlayerAbilitySpearJump>
 		Root.Movement.SetVelocity(Vector3.zero);
 		m_HeldTimeElapsed = -1.0f;
 
-		Root.Input.Jump.RegisterOnPerformed(OnJumpInput);
-		Root.Input.Jump.RegisterOnCanceled(Deactivate);
+		Root.Input.Jump.RegisterOnPerformed(OnJumpInputPreformed);
+		Root.Input.Jump.RegisterOnCanceled(OnJumpInputCanceled);
 	}
 
-	private void OnJumpInput()
+	private void OnJumpInputPreformed()
 	{
 		m_HeldTimeElapsed = 0.0f;
+	}
+
+	private void OnJumpInputCanceled()
+	{
+		if (m_HeldTimeElapsed >= 0.0f)
+		{
+			Deactivate();
+		}
 	}
 
 	public override void ActiveTick(float pDeltaTime)
@@ -91,8 +99,8 @@ public class PlayerAbilitySpearJump : CharacterAbility<SOPlayerAbilitySpearJump>
 		Root.Movement.MovementEnabled = true;
 
 		// Root.Animator.CancelMontage(m_MontageHandle);
-		Root.Input.Jump.DeregisterOnPerformed(OnJumpInput);
-		Root.Input.Jump.DeregisterOnCanceled(Deactivate);
+		Root.Input.Jump.DeregisterOnPerformed(OnJumpInputPreformed);
+		Root.Input.Jump.DeregisterOnCanceled(OnJumpInputCanceled);
 		Root.Spear.ClearInTrigger();
 
 		if (m_HeldTimeElapsed > 0.0f)

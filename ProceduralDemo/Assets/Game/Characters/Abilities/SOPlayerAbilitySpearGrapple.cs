@@ -91,7 +91,14 @@ public class PlayerAbilitySpearGrapple : CharacterAbility<SOPlayerAbilitySpearGr
 		Vector3 difference = Root.Spear.Position - Root.Movement.transform.position;
 		difference.y = Mathf.Min(Data.MaxUpDistance, difference.y);
 		Vector3 velocity = difference.normalized * Data.Force;
-		Root.Movement.SetVelocity(velocity);
+		if (Root.Movement.Velocity.sqrMagnitude < velocity.sqrMagnitude)
+		{
+			Root.Movement.SetVelocity(velocity);
+		}
+		else
+		{
+			Root.Movement.AddVelocity(velocity * pDeltaTime);
+		}
 	}
 
 	protected override void DeactivateInternal()

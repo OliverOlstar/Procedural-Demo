@@ -21,4 +21,4 @@ MonoBehaviour:
   m_MaxAngle: 90
   m_MinAngle: 45
   CanPlaceOnTerrain: 1
-  CanPlaceOnObject: 1
+  CanPlaceOnBuilding: 1

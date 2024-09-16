@@ -107,7 +107,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_CompleteVelocity: 12
   m_ForwardDistance: 1.1
-  m_MaxUpDistance: 1.5
+  m_MaxUpDistance: 1.8
   m_GroundLayers:
     serializedVersion: 2
     m_Bits: 72

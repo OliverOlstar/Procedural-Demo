@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpringXZ: 1
   DamperXZ: 0.05
-  SpringY: 2
-  DamperY: 0.06
+  SpringY: 25
+  DamperY: 3
   RotationDampening: 8
   RotationBlendXZ: 1
   RotationBlendY: 0.25
