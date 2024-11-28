@@ -67,11 +67,11 @@ namespace ODev.Camera
 			Vector3 bounceOffset = Vector3.zero;
 			if (m_DoBounce)
 			{
-				m_BounceProgress += Time.deltaTime * m_BounceFrequncy * v;
+                m_BounceProgress += UnityEngine.Time.deltaTime * m_BounceFrequncy * v;
 				bounceOffset = Vector3.up * m_BounceCurve.Evaluate(m_BounceProgress);
 			}
 
-			m_MoveValue = Mathf.Lerp(m_MoveValue, Mathf.Clamp01(v), Time.deltaTime * m_MoveDampening);
+            m_MoveValue = Mathf.Lerp(m_MoveValue, Mathf.Clamp01(v), UnityEngine.Time.deltaTime * m_MoveDampening);
 			transform.localPosition = Vector3.Lerp(m_InitalRelOffset, m_MoveRelOffset + bounceOffset, m_MoveValue);
 
 		}
@@ -79,7 +79,7 @@ namespace ODev.Camera
 		private float Calculate(float pValue, float pTarget, float pMax, float pDampening)
 		{
 			pTarget = Mathf.Clamp(pTarget, -pMax, pMax);
-			pValue = Mathf.Lerp(pValue, pTarget, Time.deltaTime * m_TiltDampening.x);
+			pValue = Mathf.Lerp(pValue, pTarget, UnityEngine.Time.deltaTime * m_TiltDampening.x);
 			return pValue;
 		}
 

@@ -23,7 +23,7 @@ namespace ODev
 
 		private void Update()
 		{
-			Transform.localPosition = Vector3.Lerp(Transform.localPosition, Offset, m_Dampening * Time.deltaTime);
+            Transform.localPosition = Vector3.Lerp(Transform.localPosition, Offset, m_Dampening * UnityEngine.Time.deltaTime);
 		}
 
 		public void SetOffset(Vector3 pOffset) => Offset = pOffset;

@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using ODev;
-using ODev.Util;
+using ODev.Update;
 using UnityEngine;
 
 public class CharacterModel : UpdateableMonoBehaviour

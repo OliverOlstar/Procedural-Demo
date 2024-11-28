@@ -1,4 +1,5 @@
 using ODev.Util;
+using ODev.Update;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.Events;
@@ -30,7 +31,7 @@ public class PlayerSpear : MonoBehaviour
 	private bool m_Log = false;
 
 	private PlayerSpearController m_ActiveController = null;
-	private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.ModelController);
+	private Updateable m_Updateable = new(Type.Fixed, Priority.ModelController);
 
 	public State ActiveState => m_ActiveController != null ? m_ActiveController.State : State.Stored;
 

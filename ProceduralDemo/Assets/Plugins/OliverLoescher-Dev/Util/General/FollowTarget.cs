@@ -5,7 +5,7 @@ namespace ODev
 	public class FollowTarget : MonoBehaviour
 	{
 		[SerializeField]
-		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Default, Util.Mono.Priorities.Camera);
+		private Update.Updateable m_Updateable = new(Update.Type.Default, Update.Priority.Camera);
 
 		[Header("Position")]
 		public Transform PosTarget = null;

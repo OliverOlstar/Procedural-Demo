@@ -88,7 +88,7 @@ namespace ODev
 		}
 
 		[SerializeField]
-		private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.OnGround);
+		private Update.Updateable m_Updateable = new(Update.Type.Fixed, Update.Priority.OnGround);
 		[SerializeField]
 		private Transform m_Transform;
 		[SerializeField]

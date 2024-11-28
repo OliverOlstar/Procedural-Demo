@@ -7,7 +7,7 @@ namespace ODev.Input
 	public abstract class InputBridge_Base : MonoBehaviour
 	{
 		[SerializeField]
-		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Early, Util.Mono.Priorities.Input);
+		private Update.Updateable m_Updateable = new(Update.Type.Early, Update.Priority.Input);
 
 		public abstract InputActionMap Actions { get; }
 		public abstract IEnumerable<IInputModule> GetAllInputModules();

@@ -11,8 +11,8 @@ namespace ODev.PoseAnimator
 {
 	public class PoseAnimator : MonoBehaviour
 	{
-		private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.PoseAnimator);
-		private Mono.Updateable m_UpdateableComplete = new(Mono.Type.Fixed, Mono.Priorities.PoseAnimator + 1);
+		private Update.Updateable m_Updateable = new(Update.Type.Fixed, Update.Priority.PoseAnimator);
+		private Update.Updateable m_UpdateableComplete = new(Update.Type.Fixed, Update.Priority.PoseAnimator + 1);
 
 		[SerializeField]
 		private Transform m_Root = null;

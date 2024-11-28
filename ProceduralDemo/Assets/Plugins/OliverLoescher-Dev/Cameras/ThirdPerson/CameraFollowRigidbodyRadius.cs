@@ -7,7 +7,7 @@ namespace ODev
 		[SerializeField]
 		private Rigidbody m_Target = null;
 		[SerializeField]
-		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
+		private Update.Updateable m_Updateable = new(Update.Type.Late, Update.Priority.Camera);
 
 		[Header("Look")]
 		[SerializeField]

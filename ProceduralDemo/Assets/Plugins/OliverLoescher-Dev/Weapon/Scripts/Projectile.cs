@@ -81,7 +81,7 @@ namespace ODev.Weapon
 			bool updateRot = false;
 			if (Data.BulletGravity > 0)
 			{
-				MyRigidbody.AddForce(Data.BulletGravity * Time.fixedDeltaTime * Vector3.down, ForceMode.VelocityChange);
+                MyRigidbody.AddForce(Data.BulletGravity * UnityEngine.Time.fixedDeltaTime * Vector3.down, ForceMode.VelocityChange);
 				updateRot = true;
 			}
 

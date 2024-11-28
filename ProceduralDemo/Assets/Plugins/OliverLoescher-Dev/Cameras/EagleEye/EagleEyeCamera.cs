@@ -9,7 +9,7 @@ namespace ODev.Camera
 		[SerializeField]
 		private InputBridge_EagleEye m_Input = null;
 		[SerializeField, DisableInPlayMode]
-		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
+		private Update.Updateable m_Updateable = new(Update.Type.Late, Update.Priority.Camera);
 
 		[Header("Follow")]
 		public Transform CameraTransform = null; // Should be child

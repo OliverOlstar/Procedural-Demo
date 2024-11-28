@@ -32,8 +32,8 @@ namespace ODev.Util
 		private static readonly List<IAnimationInternal> s_VisualAnimations = new();
 		private static readonly List<IAnimationInternal> s_PhysicsAnimations = new();
 
-		private static Mono.Updateable s_Updateable = new(Mono.Type.Late, Mono.Priorities.ModelController);
-		private static Mono.Updateable s_FixedUpdateable = new(Mono.Type.Fixed, Mono.Priorities.World);
+		private static Update.Updateable s_Updateable = new(Update.Type.Late, Update.Priority.ModelController);
+		private static Update.Updateable s_FixedUpdateable = new(Update.Type.Fixed, Update.Priority.World);
 		private static bool s_IsInitalized = false;
 
 		private static void Initalize()
@@ -45,8 +45,8 @@ namespace ODev.Util
 			s_VisualAnimations.Clear();
 			s_PhysicsAnimations.Clear();
 			s_IsInitalized = true;
-			s_Updateable.Register((float pDeltaTime) => Tick(pDeltaTime, s_VisualAnimations, "VisualTick"));
-			s_FixedUpdateable.Register((float pDeltaTime) => Tick(pDeltaTime, s_PhysicsAnimations, "PhysicsTick"));
+			s_Updateable.Register(pDeltaTime => Tick(pDeltaTime, s_VisualAnimations, "VisualTick"));
+			s_FixedUpdateable.Register(pDeltaTime => Tick(pDeltaTime, s_PhysicsAnimations, "PhysicsTick"));
 			Application.quitting += OnQuit;
 		}
 

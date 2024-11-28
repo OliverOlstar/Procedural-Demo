@@ -10,7 +10,7 @@ namespace PA
 	public class PARoot : MonoBehaviour
 	{
 		[SerializeField, DisableInPlayMode]
-		private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Late, ODev.Util.Mono.Priorities.ModelController);
+		private ODev.Update.Updateable m_Updateable = new(ODev.Update.Type.Late, ODev.Update.Priority.ModelController);
 
 		private bool m_IsInitalized = false;
 

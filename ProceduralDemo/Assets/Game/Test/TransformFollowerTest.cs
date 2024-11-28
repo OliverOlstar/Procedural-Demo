@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ODev;
 using ODev.Util;
+using ODev.Update;
 using UnityEngine;
 
 public class TransformFollowerTest : MonoBehaviour, TransformFollower.IMotionReciver
@@ -11,7 +12,7 @@ public class TransformFollowerTest : MonoBehaviour, TransformFollower.IMotionRec
 	[SerializeField]
 	private CharacterController m_Controller = null;
 	[SerializeField]
-	private ODev.Util.Mono.Updateable m_Updateable = new();
+	private Updateable m_Updateable = new(default, default);
 
 	private readonly TransformFollower m_Follower = new();
 

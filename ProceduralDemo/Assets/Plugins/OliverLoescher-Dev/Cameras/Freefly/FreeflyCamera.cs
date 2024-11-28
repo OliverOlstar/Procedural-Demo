@@ -33,12 +33,12 @@ namespace ODev.Camera
 		{
 			if (m_MoveInputHorizontal != Vector2.zero || m_MoveInputVertical != 0.0f)
 			{
-				DoMove(m_MoveInputHorizontal, m_MoveInputVertical, (m_SprintInput ? m_SprintSpeed : m_MoveSpeed) * Time.fixedDeltaTime);
+                DoMove(m_MoveInputHorizontal, m_MoveInputVertical, (m_SprintInput ? m_SprintSpeed : m_MoveSpeed) * UnityEngine.Time.fixedDeltaTime);
 			}
 
 			if (m_LookInput != Vector2.zero)
 			{
-				DoRotateCamera(m_SensitivityUpdate * Time.fixedDeltaTime * m_LookInput);
+                DoRotateCamera(m_SensitivityUpdate * UnityEngine.Time.fixedDeltaTime * m_LookInput);
 			}
 		}
 

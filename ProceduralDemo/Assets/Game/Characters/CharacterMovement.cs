@@ -1,12 +1,13 @@
 using ODev;
 using ODev.Util;
 using ODev.GameStats;
+using ODev.Update;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 {
 	[SerializeField]
-	private Mono.Updateable m_Updateable = new(Mono.Type.Early, Mono.Priorities.CharacterController);
+	private Updateable m_Updateable = new(Type.Early, Priority.CharacterController);
 	[SerializeField]
 	private CharacterController m_Controller = null;
 	[SerializeField]

@@ -44,7 +44,7 @@ namespace ODev
             while (color.a < 1.0f)
             {
                 yield return null;
-                color.a += Time.deltaTime * 5.0f;
+                color.a += UnityEngine.Time.deltaTime * 5.0f;
                 m_Text.color = color;
             }
 
@@ -53,7 +53,7 @@ namespace ODev
             while (color.a > 0.0f)
             {
                 yield return null;
-                color.a -= Time.deltaTime * 5.0f;
+                color.a -= UnityEngine.Time.deltaTime * 5.0f;
                 m_Text.color = color;
             }
 

@@ -1,5 +1,5 @@
-﻿using ODev;
-using ODev.Util;
+﻿using ODev.Util;
+using ODev.Update;
 using UnityEngine;
 
 public class SpringRope : UpdateableMonoBehaviour

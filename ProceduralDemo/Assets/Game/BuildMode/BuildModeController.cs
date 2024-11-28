@@ -36,7 +36,7 @@ public class BuildModeController : MonoBehaviour
 	[SerializeField]
 	private BuildModeRoot m_Root = null;
 	[SerializeField]
-	private Mono.Updateable m_Updateable = new();
+	private ODev.Update.Updateable m_Updateable = new(default, default);
 
 	private void OnEnable()
 	{

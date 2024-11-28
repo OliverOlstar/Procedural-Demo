@@ -23,15 +23,15 @@ namespace ODev.Weapon
 
 		public override void OnUpdate(float pDeltaTime)
 		{
-			if (m_IsShooting && Time.time >= NextCanShootTime)
+			if (m_IsShooting && UnityEngine.Time.time >= NextCanShootTime)
 			{
-				m_Shoot.Invoke();
+                m_Shoot.Invoke();
 			}
 		}
 
 		public override void OnShoot()
 		{
-			NextCanShootTime = Time.time + m_SecondsBetweenShots;
+            NextCanShootTime = UnityEngine.Time.time + m_SecondsBetweenShots;
 		}
 	}
 }

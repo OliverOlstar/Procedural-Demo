@@ -1,15 +1,13 @@
 using UnityEngine;
 
-namespace ODev
+namespace ODev.Update
 {
 	public abstract class UpdateableMonoBehaviour : MonoBehaviour
 	{
 		[SerializeField]
-		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Default, Util.Mono.Priorities.Default);
+		private Updateable m_Updateable = new(Type.Default, Priority.Default);
 
 		protected virtual void OnEnable() => SetUpdateEnabled(true);
-		// protected virtual void OnDestroy() => SetUpdateEnabled(false);
-		// protected virtual void OnEnable() => SetUpdateEnabled(true);
 		protected virtual void OnDisable() => SetUpdateEnabled(false);
 
 		protected abstract void Tick(float pDeltaTime);

@@ -130,7 +130,7 @@ namespace ODev
 
 			while (m_Value < Mathf.Min(m_MaxValue, m_RechargeValueTo))
 			{
-				m_Value += Time.deltaTime * m_RechargeRate;
+                m_Value += UnityEngine.Time.deltaTime * m_RechargeRate;
 				m_Value = Mathf.Min(m_Value, m_MaxValue);
 
 				foreach (BarValue bar in m_UIBars)

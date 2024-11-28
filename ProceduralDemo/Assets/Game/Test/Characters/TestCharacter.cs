@@ -1,5 +1,6 @@
 using ODev;
 using ODev.Util;
+using ODev.Update;
 using UnityEngine;
 
 public class TestCharacter : UpdateableMonoBehaviour

@@ -9,7 +9,7 @@ namespace ODev
         [SerializeField] 
 		private InputBridge_Camera m_Input = null;
 		[SerializeField]
-		private Util.Mono.Updateable m_Updateable = new(Util.Mono.Type.Late, Util.Mono.Priorities.Camera);
+		private Update.Updateable m_Updateable = new(Update.Type.Late, Update.Priority.Camera);
 
 		[Header("Follow")]
         public Transform FollowTransform = null;

@@ -23,10 +23,10 @@ namespace ODev
 
         void Update()
         {
-            transform.position = Vector3.Lerp(transform.position, m_Target.position + m_FollowOffset, m_FollowDampening * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, m_Target.position + m_FollowOffset, m_FollowDampening * UnityEngine.Time.deltaTime);
 
             Vector3 lookAtTarget = m_Target.transform.position + (m_Target.velocity * m_LookVelocity) + m_LookOffset;
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookAtTarget - transform.position), Time.deltaTime * m_LookDampening);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookAtTarget - transform.position), UnityEngine.Time.deltaTime * m_LookDampening);
         }
 
         private void OnDrawGizmosSelected() 

@@ -58,9 +58,9 @@ namespace ODev
 
 		private void UpdateInAir()
 		{
-			m_Velocity.y -= m_Gravity * Time.fixedDeltaTime; // Gravity
+            m_Velocity.y -= m_Gravity * UnityEngine.Time.fixedDeltaTime; // Gravity
 
-			m_Character.Move(m_Velocity * Time.fixedDeltaTime);
+            m_Character.Move(m_Velocity * UnityEngine.Time.fixedDeltaTime);
 
 			if (m_Character.isGrounded)
 			{

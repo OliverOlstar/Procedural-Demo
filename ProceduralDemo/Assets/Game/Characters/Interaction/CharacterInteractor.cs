@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ODev.Util;
+using ODev.Update;
 using System.Linq;
 using ODev;
 
@@ -9,7 +10,7 @@ using ODev;
 public class CharacterInteractor : MonoBehaviour
 {
 	[SerializeField]
-	private ODev.Util.Mono.Updateable m_Updateable = new(ODev.Util.Mono.Type.Default, ODev.Util.Mono.Priorities.Interactator);
+	private Updateable m_Updateable = new(Type.Default, Priority.Interactator);
 	[SerializeField]
 	private float m_ScoreDistanceScalar = 0.25f;
 	[SerializeField]

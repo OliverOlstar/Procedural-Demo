@@ -2047,6 +2047,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2068,6 +2069,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 36419576}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 36419574}
@@ -2907,6 +2909,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2928,6 +2931,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 53369079}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 53369077}
@@ -3639,6 +3643,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3660,6 +3665,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 56395978}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 56395976}
@@ -4344,6 +4350,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4365,6 +4372,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 60221218}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 60221216}
@@ -6093,6 +6101,7 @@ MonoBehaviour:
     m_Updateable:
       m_Type: 3
       m_Priority: 375
+      m_IntervalSeconds: 0
     m_Abilities:
     - {fileID: 11400000, guid: 45a1424d68a59be4cace99a48814b565, type: 2}
     - {fileID: 11400000, guid: c1d7f5b8421c3914c978e16021c5afec, type: 2}
@@ -10473,6 +10482,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10494,6 +10504,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 157854902}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 157854900}
@@ -13147,6 +13158,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -13168,6 +13180,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 183145259}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 183145257}
@@ -13842,6 +13855,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -13863,6 +13877,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 183897823}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 183897821}
@@ -14582,6 +14597,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14603,6 +14619,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 195547507}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 195547505}
@@ -16843,6 +16860,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -16864,6 +16882,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 206415275}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 206415273}
@@ -19389,6 +19408,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -19410,6 +19430,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 259333918}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 259333916}
@@ -21063,6 +21084,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -21084,6 +21106,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 276449366}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 276449364}
@@ -23146,6 +23169,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -23167,6 +23191,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 308311022}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 308311020}
@@ -24177,6 +24202,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 1
     m_Priority: -2000
+    m_IntervalSeconds: 0
   m_MoveInput:
     m_Input: {x: 0, y: 0}
     m_Scalar: {x: 1, y: 1}
@@ -24236,6 +24262,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 1
     m_Priority: -2000
+    m_IntervalSeconds: 0
   m_ExitInput:
     m_OnPerformed:
       m_PersistentCalls:
@@ -27720,6 +27747,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -27741,6 +27769,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 375441794}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 375441792}
@@ -30999,6 +31028,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -31020,6 +31050,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 399766715}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 399766713}
@@ -31855,6 +31886,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -31876,6 +31908,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 407105561}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 407105559}
@@ -32604,6 +32637,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -32625,6 +32659,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 409861739}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 409861737}
@@ -34242,6 +34277,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -34263,6 +34299,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 435659015}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 435659013}
@@ -34957,6 +34994,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -34978,6 +35016,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 444886646}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 444886644}
@@ -40044,6 +40083,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -40065,6 +40105,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 516845152}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 516845150}
@@ -43747,6 +43788,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -43768,6 +43810,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 597289001}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 597288999}
@@ -45805,6 +45848,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -45826,6 +45870,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 621100443}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 621100441}
@@ -46916,6 +46961,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -46937,6 +46983,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 650027214}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 650027212}
@@ -50778,6 +50825,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 500
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 752309548}
   m_Animation: {fileID: 11400000, guid: 043d54bfd2b2be642a04919c13c165d7, type: 2}
   m_Progress01: 0.25
@@ -50904,6 +50952,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 350
+    m_IntervalSeconds: 0
 --- !u!143 &759287567
 CharacterController:
   m_ObjectHideFlags: 0
@@ -57609,6 +57658,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -57630,6 +57680,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 790747059}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 790747057}
@@ -59995,6 +60046,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -60016,6 +60068,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 810344383}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 810344381}
@@ -62101,6 +62154,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -62122,6 +62176,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 843668746}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 843668744}
@@ -64775,6 +64830,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -64796,6 +64852,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 896487052}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 896487050}
@@ -65475,6 +65532,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -65496,6 +65554,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 897238461}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 897238459}
@@ -66170,6 +66229,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -66191,6 +66251,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 898646186}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 898646184}
@@ -66895,6 +66956,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -66916,6 +66978,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 907740370}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 907740368}
@@ -67040,6 +67103,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 400
+    m_IntervalSeconds: 0
   CameraTransform: {fileID: 1622617842}
   m_ChildOffset: {x: 0, y: 15, z: -10}
   m_MoveSpeed: 25
@@ -67690,6 +67754,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -67711,6 +67776,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 917690741}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 917690739}
@@ -68400,6 +68466,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -68421,6 +68488,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 923167884}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 923167882}
@@ -69095,6 +69163,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -69116,6 +69185,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 923412840}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 923412838}
@@ -72606,6 +72676,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_TimeScale: 1
 --- !u!1 &969683244 stripped
 GameObject:
@@ -73225,6 +73296,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -73246,6 +73318,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 969683251}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 969683249}
@@ -75023,6 +75096,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -75044,6 +75118,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 987368966}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 987368964}
@@ -75723,6 +75798,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -75744,6 +75820,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 991014379}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 991014377}
@@ -77365,6 +77442,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -77386,6 +77464,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1005931931}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1005931929}
@@ -80006,6 +80085,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -80027,6 +80107,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1039460419}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1039460417}
@@ -80701,6 +80782,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -80722,6 +80804,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1040740270}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1040740268}
@@ -81545,6 +81628,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 700
+    m_IntervalSeconds: 0
   PosTarget: {fileID: 2004640775}
   PosOffset: {x: 0, y: 1, z: 0}
   PosDampening: 0
@@ -81566,6 +81650,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 700
+    m_IntervalSeconds: 0
   m_ScoreDistanceScalar: 1
   m_Player: {fileID: 82955119}
 --- !u!54 &1084266603
@@ -83852,6 +83937,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   m_Target: {fileID: 841119737}
   m_Source: {fileID: 1843811116}
   m_Quality: 300
@@ -84667,6 +84753,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -84688,6 +84775,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1129761479}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1129761477}
@@ -86480,6 +86568,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -86501,6 +86590,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1142469287}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1142469285}
@@ -88028,6 +88118,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -88049,6 +88140,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1161111714}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1161111712}
@@ -89039,6 +89131,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -89060,6 +89153,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1184156252}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1184156250}
@@ -90808,6 +90902,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -90829,6 +90924,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1220016300}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1220016298}
@@ -92483,6 +92579,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -92504,6 +92601,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1246923188}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1246923186}
@@ -93183,6 +93281,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -93204,6 +93303,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1249560132}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1249560130}
@@ -93986,6 +94086,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -94007,6 +94108,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1253777427}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1253777425}
@@ -96190,6 +96292,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -96211,6 +96314,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1293830958}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1293830956}
@@ -100545,6 +100649,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -100566,6 +100671,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1367862354}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1367862352}
@@ -101712,6 +101818,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -101733,6 +101840,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1385962632}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1385962630}
@@ -103293,6 +103401,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -103314,6 +103423,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1398582346}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1398582344}
@@ -104423,6 +104533,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -104444,6 +104555,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1415257702}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1415257700}
@@ -104619,6 +104731,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   m_Root: {fileID: 82955119}
   m_Transform: {fileID: 1429430995}
   m_Rotation:
@@ -105302,6 +105415,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -105323,6 +105437,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1438210231}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1438210229}
@@ -106032,6 +106147,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -106053,6 +106169,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1442957351}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1442957349}
@@ -107515,6 +107632,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -107536,6 +107654,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1501856745}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1501856743}
@@ -107687,6 +107806,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
 --- !u!4 &1505374711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400010, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
@@ -111326,6 +111446,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 1
     m_Priority: -2000
+    m_IntervalSeconds: 0
   moveInput:
     m_Input: {x: 0, y: 0}
     m_Scalar: {x: 1, y: 1}
@@ -111417,6 +111538,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 1
     m_Priority: -2000
+    m_IntervalSeconds: 0
   m_LookInput:
     m_Input: {x: 0, y: 0}
     m_Scalar: {x: 200, y: 200}
@@ -112136,6 +112258,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -112157,6 +112280,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1625873346}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1625873344}
@@ -112963,6 +113087,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -112984,6 +113109,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1634223923}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1634223921}
@@ -114601,6 +114727,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -114622,6 +114749,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1648311597}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1648311595}
@@ -116119,6 +116247,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -116140,6 +116269,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1660772704}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1660772702}
@@ -118422,6 +118552,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -118443,6 +118574,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1731722153}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1731722151}
@@ -119257,6 +119389,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -119278,6 +119411,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1740093401}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1740093399}
@@ -120156,6 +120290,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -120177,6 +120312,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1751863974}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1751863972}
@@ -122936,6 +123072,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -122957,6 +123094,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1809060242}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1809060240}
@@ -123108,6 +123246,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 1000
+    m_IntervalSeconds: 0
   FollowTransform: {fileID: 2004640775}
   m_Offset: {x: 0, y: 0.5, z: 0}
   CameraTransform: {fileID: 97841468}
@@ -124804,6 +124943,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -124825,6 +124965,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1869590805}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1869590803}
@@ -126183,6 +126324,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -126204,6 +126346,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1877535706}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1877535704}
@@ -126878,6 +127021,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -126899,6 +127043,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1878450654}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1878450652}
@@ -131044,6 +131189,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -131065,6 +131211,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 1930860607}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 1930860605}
@@ -136463,6 +136610,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 400
+    m_IntervalSeconds: 0
   m_Controller: {fileID: 2004640779}
   m_Root: {fileID: 82955119}
   MovementEnabled: 1
@@ -136512,6 +136660,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 350
+    m_IntervalSeconds: 0
   m_Transform: {fileID: 2004640775}
   m_Lines: []
   m_Spheres:
@@ -136583,6 +136732,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 350
+    m_IntervalSeconds: 0
   m_Distance: 0.7
   m_WallLayer:
     serializedVersion: 2
@@ -137233,6 +137383,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -137254,6 +137405,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 2008835975}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 2008835973}
@@ -138934,6 +139086,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -138955,6 +139108,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 2027866671}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 2027866669}
@@ -140462,6 +140616,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -140483,6 +140638,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 2042396726}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 2042396724}
@@ -142687,6 +142843,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -142708,6 +142865,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 2088717935}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 2088717933}
@@ -143990,6 +144148,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -144011,6 +144170,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 2127166088}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 2127166086}
@@ -145019,6 +145179,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 2134169959}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 2134169962}
@@ -145076,6 +145237,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -146418,6 +146580,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 3
     m_Priority: 500
+    m_IntervalSeconds: 0
   OnAngleChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -146439,6 +146602,7 @@ MonoBehaviour:
   m_Updateable:
     m_Type: 0
     m_Priority: 0
+    m_IntervalSeconds: 0
   m_Animator: {fileID: 2141724390}
   m_Root: {fileID: 82955119}
   m_Wheel: {fileID: 2141724388}
@@ -146640,6 +146804,10 @@ PrefabInstance:
     - target: {fileID: 947880392646566173, guid: 82a01f1a8967b5c458d8988ac1c6fde8, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516547801772731042, guid: 82a01f1a8967b5c458d8988ac1c6fde8, type: 3}
+      propertyPath: m_Updateable.m_IntervalSeconds
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5868817798301073507, guid: 82a01f1a8967b5c458d8988ac1c6fde8, type: 3}
       propertyPath: m_LocalPosition.x

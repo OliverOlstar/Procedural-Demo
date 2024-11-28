@@ -91,8 +91,8 @@ namespace ODev
 
 		void Start()
 		{
-			m_BaseFixedTimeScale = Time.fixedDeltaTime;
-			m_PreviousRealTimeSinceStartup = Time.realtimeSinceStartup;
+            m_BaseFixedTimeScale = UnityEngine.Time.fixedDeltaTime;
+            m_PreviousRealTimeSinceStartup = UnityEngine.Time.realtimeSinceStartup;
 		}
 
 		static void PressedResume() => Instance.UnPause();
@@ -150,7 +150,7 @@ namespace ODev
 				}
 				if (m_CurrentTimeEvents[i].IsTimerScaled())
 				{
-					m_CurrentTimeEvents[i].m_Timer -= Time.deltaTime;
+                    m_CurrentTimeEvents[i].m_Timer -= UnityEngine.Time.deltaTime;
 				}
 				else
 				{
@@ -164,8 +164,8 @@ namespace ODev
 
 			ResetTimeScale();
 
-			m_RealDeltaTime = (Time.realtimeSinceStartup - m_PreviousRealTimeSinceStartup) * m_BaseTimeScale;
-			m_PreviousRealTimeSinceStartup = Time.realtimeSinceStartup;
+            m_RealDeltaTime = (UnityEngine.Time.realtimeSinceStartup - m_PreviousRealTimeSinceStartup) * m_BaseTimeScale;
+            m_PreviousRealTimeSinceStartup = UnityEngine.Time.realtimeSinceStartup;
 		}
 
 		public float RealDeltaTime()
@@ -181,7 +181,7 @@ namespace ODev
 		{
 			if (!Exists)
 			{
-				return Time.deltaTime;
+				return UnityEngine.Time.deltaTime;
 			}
 			return Instance.RealDeltaTime();
 		}
@@ -201,7 +201,7 @@ namespace ODev
 		void ActualPause()
 		{
 			m_FirstFramePaused = true;
-			Time.timeScale = 0.0f;
+            UnityEngine.Time.timeScale = 0.0f;
 		}
 
 		void ResetTimeScale()
@@ -227,8 +227,8 @@ namespace ODev
 
 			timeScale *= m_BaseTimeScale;
 			timeScale *= m_EditorSlowMo / 100.0f;
-			Time.timeScale = timeScale;
-			Time.fixedDeltaTime = m_BaseFixedTimeScale * timeScale;
+            UnityEngine.Time.timeScale = timeScale;
+            UnityEngine.Time.fixedDeltaTime = m_BaseFixedTimeScale * timeScale;
 		}
 
 		public int GetHandle()
@@ -283,7 +283,7 @@ namespace ODev
 			TimeScaleManager tem = Instance;
 			if (tem.m_AffectAudio)
 			{
-				return Time.timeScale;
+				return UnityEngine.Time.timeScale;
 			}
 			else
 			{

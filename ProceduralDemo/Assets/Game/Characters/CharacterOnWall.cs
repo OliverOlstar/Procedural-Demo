@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using ODev;
 using ODev.Util;
+using ODev.Update;
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
@@ -11,7 +10,7 @@ public class CharacterOnWall : MonoBehaviour
 	[SerializeField]
 	private PlayerRoot m_Root = null;
 	[SerializeField]
-	private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.OnGround);
+	private Updateable m_Updateable = new(Type.Fixed, Priority.OnGround);
 
 	[Header("Cast")]
 	[SerializeField]

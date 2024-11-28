@@ -43,7 +43,7 @@ private Rigidbody rigid = null;
             Vector3 velocity = rigid.velocity - lastVelocity;
             lastVelocity = rigid.velocity;
 
-            DoSpring(velocity, Time.deltaTime);
+            DoSpring(velocity, UnityEngine.Time.deltaTime);
         }
 
 		private void FixedUpdate() 
@@ -52,8 +52,8 @@ private Rigidbody rigid = null;
             Vector3 relMotion = transform.InverseTransformDirection(motion);
             lastPosition = transform.parent.position;
 
-            DoTilt(relMotion, Time.fixedDeltaTime);
-            DoFOV(Time.fixedDeltaTime);
+            DoTilt(relMotion, UnityEngine.Time.fixedDeltaTime);
+            DoFOV(UnityEngine.Time.fixedDeltaTime);
         }
 
 		private void DoTilt(Vector3 pRelMotion, float pDeltaTime)

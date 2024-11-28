@@ -18,7 +18,7 @@ namespace ODev.Weapon
 
 		public override void OnUpdate(in float pDeltaTime)
 		{
-			m_Spread01 = Mathf.Max(0, m_Spread01 - (Time.deltaTime * m_SpreadDecrease));
+            m_Spread01 = Mathf.Max(0, m_Spread01 - (UnityEngine.Time.deltaTime * m_SpreadDecrease));
 		}
 	}
 }

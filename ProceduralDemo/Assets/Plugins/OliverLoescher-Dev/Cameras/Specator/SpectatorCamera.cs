@@ -117,7 +117,7 @@ namespace ODev.Camera
 					//inputBridge.ClearInputs();
 					break;
 				case Mode.FirstPerson:
-					m_CanInputTime = Time.time + 0.4f;
+                    m_CanInputTime = UnityEngine.Time.time + 0.4f;
 
 					m_FirstPersonCamera.gameObject.SetActive(true);
 					m_FreeflyCamera.gameObject.SetActive(false);
@@ -128,7 +128,7 @@ namespace ODev.Camera
 					m_FirstPersonCamera.RotTarget = Targets[m_TargetIndex].FirstPersonTarget;
 					break;
 				case Mode.ThirdPerson:
-					m_CanInputTime = Time.time + 0.4f;
+                    m_CanInputTime = UnityEngine.Time.time + 0.4f;
 
 					m_ThirdPersonCamera.gameObject.SetActive(true);
 					m_FirstPersonCamera.gameObject.SetActive(false);
@@ -190,7 +190,7 @@ namespace ODev.Camera
 		#region Input
 		protected virtual void OnLook(Vector2 pInput)
 		{
-			if (Time.time < m_CanInputTime)
+			if (UnityEngine.Time.time < m_CanInputTime)
 			{
 				return;
 			}
@@ -206,7 +206,7 @@ namespace ODev.Camera
 		}
 		protected virtual void OnLookDelta(Vector2 pInput)
 		{
-			if (Time.time < m_CanInputTime)
+			if (UnityEngine.Time.time < m_CanInputTime)
 			{
 				return;
 			}
@@ -223,7 +223,7 @@ namespace ODev.Camera
 
 		protected virtual void OnMove(Vector2 pInput)
 		{
-			if (Time.time < m_CanInputTime)
+			if (UnityEngine.Time.time < m_CanInputTime)
 			{
 				return;
 			}
@@ -235,7 +235,7 @@ namespace ODev.Camera
 		}
 		protected virtual void OnMoveVertical(float pInput)
 		{
-			if (Time.time < m_CanInputTime)
+			if (UnityEngine.Time.time < m_CanInputTime)
 			{
 				return;
 			}
@@ -248,7 +248,7 @@ namespace ODev.Camera
 
 		protected virtual void OnZoom(float pInput)
 		{
-			if (Time.time < m_CanInputTime)
+			if (UnityEngine.Time.time < m_CanInputTime)
 			{
 				return;
 			}
@@ -261,7 +261,7 @@ namespace ODev.Camera
 
 		protected virtual void OnSprint(bool pInput)
 		{
-			if (Time.time < m_CanInputTime)
+			if (UnityEngine.Time.time < m_CanInputTime)
 			{
 				return;
 			}
@@ -279,7 +279,7 @@ namespace ODev.Camera
 
 		protected virtual void OnTarget()
 		{
-			if (Time.time < m_CanInputTime)
+			if (UnityEngine.Time.time < m_CanInputTime)
 			{
 				return;
 			}

@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using ODev.Util;
 using ODev.Input;
+using ODev.Update;
 using UnityEngine.Pool;
 
 [Serializable]
@@ -16,7 +17,7 @@ public class PlayerAbilities
 	public UnityEvent<AbilityTags> OnAbilityDeactivated = new();
 
 	[SerializeField]
-	private Mono.Updateable m_Updateable = new(Mono.Type.Fixed, Mono.Priorities.CharacterAbility);
+	private Updateable m_Updateable = new(ODev.Update.Type.Fixed, Priority.CharacterAbility);
 	[SerializeField, DisableInPlayMode, ODev.Picker.AssetNonNull]
 	private SOCharacterAbility[] m_Abilities = new SOCharacterAbility[0];
 	[SerializeField]

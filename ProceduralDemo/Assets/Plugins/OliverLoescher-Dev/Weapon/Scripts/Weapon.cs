@@ -88,8 +88,8 @@ namespace ODev.Weapon
 			{
 				return;
 			}
-			m_ShootStart.OnUpdate(Time.deltaTime);
-			m_Spread.OnUpdate(Time.deltaTime);
+            m_ShootStart.OnUpdate(UnityEngine.Time.deltaTime);
+            m_Spread.OnUpdate(UnityEngine.Time.deltaTime);
 		}
 
 		public void Shoot()

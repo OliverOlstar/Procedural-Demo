@@ -7,9 +7,9 @@ namespace ODev.Weapon
 	{
 		public override void ShootStart()
 		{
-			if (ShootType.NextCanShootTime <= Time.time)
+			if (ShootType.NextCanShootTime <= UnityEngine.Time.time)
 			{
-				ShootType.ShootStart();
+                ShootType.ShootStart();
 			}
 		}
 	}
