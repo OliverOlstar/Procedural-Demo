@@ -32,7 +32,7 @@ public class TestThrow : MonoBehaviour
 	{
 		bool isAiming = Input.GetKey(KeyCode.Mouse0) && (state == State.Has || state == State.Aiming);
 		AimCamera.SetActive(isAiming);
-		Time.timeScale = Mathf.SmoothDamp(Time.timeScale, isAiming ? AimTimeScale : 1.0f, ref timeScaleVelocity, TimeScaleSmoothTime);
+		// Time.timeScale = Mathf.SmoothDamp(Time.timeScale, isAiming ? AimTimeScale : 1.0f, ref timeScaleVelocity, TimeScaleSmoothTime);
 		switch (state)
 		{
 			case State.Has:

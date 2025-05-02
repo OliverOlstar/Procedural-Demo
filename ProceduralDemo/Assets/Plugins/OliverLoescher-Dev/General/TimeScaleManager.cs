@@ -1,4 +1,5 @@
 using System;
+using ODev.Util;
 using UnityEngine;
 
 namespace ODev
@@ -91,8 +92,8 @@ namespace ODev
 
 		void Start()
 		{
-            m_BaseFixedTimeScale = UnityEngine.Time.fixedDeltaTime;
-            m_PreviousRealTimeSinceStartup = UnityEngine.Time.realtimeSinceStartup;
+            m_BaseFixedTimeScale = Time.fixedDeltaTime;
+            m_PreviousRealTimeSinceStartup = Time.realtimeSinceStartup;
 		}
 
 		static void PressedResume() => Instance.UnPause();
@@ -150,7 +151,7 @@ namespace ODev
 				}
 				if (m_CurrentTimeEvents[i].IsTimerScaled())
 				{
-                    m_CurrentTimeEvents[i].m_Timer -= UnityEngine.Time.deltaTime;
+                    m_CurrentTimeEvents[i].m_Timer -= Time.deltaTime;
 				}
 				else
 				{
@@ -164,8 +165,8 @@ namespace ODev
 
 			ResetTimeScale();
 
-            m_RealDeltaTime = (UnityEngine.Time.realtimeSinceStartup - m_PreviousRealTimeSinceStartup) * m_BaseTimeScale;
-            m_PreviousRealTimeSinceStartup = UnityEngine.Time.realtimeSinceStartup;
+            m_RealDeltaTime = (Time.realtimeSinceStartup - m_PreviousRealTimeSinceStartup) * m_BaseTimeScale;
+            m_PreviousRealTimeSinceStartup = Time.realtimeSinceStartup;
 		}
 
 		public float RealDeltaTime()
@@ -181,7 +182,7 @@ namespace ODev
 		{
 			if (!Exists)
 			{
-				return UnityEngine.Time.deltaTime;
+				return Time.deltaTime;
 			}
 			return Instance.RealDeltaTime();
 		}
@@ -201,7 +202,7 @@ namespace ODev
 		void ActualPause()
 		{
 			m_FirstFramePaused = true;
-            UnityEngine.Time.timeScale = 0.0f;
+            Time.timeScale = 0.0f;
 		}
 
 		void ResetTimeScale()
@@ -213,7 +214,7 @@ namespace ODev
 			}
 
 			float timeScale = m_EndIndex == -1 ? 1.0f : m_CurrentTimeEvents[0].GetScale();
-			m_AffectAudio = m_EndIndex == -1 ? false : m_CurrentTimeEvents[0].ShouldAffectAudio();
+			m_AffectAudio = m_EndIndex != -1 && m_CurrentTimeEvents[0].ShouldAffectAudio();
 			// Go with slowest time event
 			for (int i = 1; i <= m_EndIndex; i++)
 			{
@@ -227,8 +228,9 @@ namespace ODev
 
 			timeScale *= m_BaseTimeScale;
 			timeScale *= m_EditorSlowMo / 100.0f;
-            UnityEngine.Time.timeScale = timeScale;
-            UnityEngine.Time.fixedDeltaTime = m_BaseFixedTimeScale * timeScale;
+            Time.timeScale = timeScale;
+			this.Log("TimeScale: " + Time.timeScale);
+            Time.fixedDeltaTime = m_BaseFixedTimeScale * timeScale;
 		}
 
 		public int GetHandle()
@@ -283,7 +285,7 @@ namespace ODev
 			TimeScaleManager tem = Instance;
 			if (tem.m_AffectAudio)
 			{
-				return UnityEngine.Time.timeScale;
+				return Time.timeScale;
 			}
 			else
 			{

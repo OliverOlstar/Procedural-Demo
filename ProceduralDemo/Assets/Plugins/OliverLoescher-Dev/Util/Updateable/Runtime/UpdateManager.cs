@@ -77,18 +77,18 @@ namespace ODev.Update
 
         private void Update()
         {
-            UpdateInternal(s_EarlyUpdatables, Time.unscaledDeltaTime, "MonoUtil.EarlyUpdate()");
-            UpdateInternal(s_Updatables, Time.unscaledDeltaTime, "MonoUtil.Update()");
+            UpdateInternal(s_EarlyUpdatables, Time.deltaTime, "MonoUtil.EarlyUpdate()");
+            UpdateInternal(s_Updatables, Time.deltaTime, "MonoUtil.Update()");
         }
 
         private void LateUpdate()
         {
-            UpdateInternal(s_LateUpdatables, Time.unscaledDeltaTime, "MonoUtil.LateUpdate()");
+            UpdateInternal(s_LateUpdatables, Time.deltaTime, "MonoUtil.LateUpdate()");
         }
 
         private void FixedUpdate()
         {
-            UpdateInternal(s_FixedUpdatables, Time.fixedUnscaledDeltaTime, "MonoUtil.FixedUpdate()");
+            UpdateInternal(s_FixedUpdatables, Time.fixedDeltaTime, "MonoUtil.FixedUpdate()");
         }
 
         private void UpdateInternal(List<Updateable> pUpdatables, in float pDeltaTime, string pProfilerName)

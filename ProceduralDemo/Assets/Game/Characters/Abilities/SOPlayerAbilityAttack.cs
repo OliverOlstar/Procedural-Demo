@@ -8,7 +8,7 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Attack Ability", menuName = "Character/Ability/Player Attack")]
 public class SOPlayerAbilityAttack : SOCharacterAbility
 {
-	[Space, SerializeField, AssetNonNull]
+	[Space, SerializeField, Asset]
 	private SOPoseMontage m_Montage = null;
 
 	[Space, SerializeField]
