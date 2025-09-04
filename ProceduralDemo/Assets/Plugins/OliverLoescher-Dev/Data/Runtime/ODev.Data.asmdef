@@ -1,0 +1,20 @@
+{
+    "name": "Core.Data",
+    "rootNamespace": "",
+    "references": [
+        "ODev",
+        "ODev.DebugOptions",
+        "ODev.UberPicker"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "ODEV_DATA"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

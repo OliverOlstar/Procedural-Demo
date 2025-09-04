@@ -2,7 +2,17 @@
 
 public class BillboardToMainCamera : MonoBehaviour
 {
+	public enum Style
+	{
+		FaceCamera,
+		MatchDirection
+	}
+
 	private Transform m_MyCamera = null;
+	[SerializeField]
+	private Style m_Style = Style.MatchDirection;
+	[SerializeField]
+	private bool m_LockY = false;
 
 	void Start()
 	{
@@ -11,12 +21,27 @@ public class BillboardToMainCamera : MonoBehaviour
 
 	void LateUpdate()
 	{
-		Vector3 dir = transform.position - m_MyCamera.transform.position;
-		dir.y = 0;
+		Vector3 direction;
 
-		if (dir != Vector3.zero)
+		switch (m_Style)
 		{
-			transform.rotation = Quaternion.LookRotation(dir);
+			case Style.FaceCamera:
+				direction = transform.position - m_MyCamera.transform.position;
+				break;
+			case Style.MatchDirection:
+				direction = m_MyCamera.transform.forward;
+				break;
+			default:
+				throw new System.NotImplementedException();
+		}
+
+		if (m_LockY)
+		{
+			direction.y = 0;
+		}
+		if (direction != Vector3.zero)
+		{
+			transform.rotation = Quaternion.LookRotation(direction);
 		}
 	}
 }

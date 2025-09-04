@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ODev.Util
 {
@@ -19,6 +21,16 @@ namespace ODev.Util
 			return colour;
 		}
 
+		public static void SetAlpha(this Image pImage, float pAlpha01)
+		{
+			pImage.color = new Color(pImage.color.r, pImage.color.b, pImage.color.b, pAlpha01);
+		}
+
+		public static void SetAlpha(this TMP_Text pText, float pAlpha01)
+		{
+			pText.color = new Color(pText.color.r, pText.color.b, pText.color.b, pAlpha01);
+		}
+
 		public static Color Yellow
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -28,6 +40,11 @@ namespace ODev.Util
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => new(1f, 1f, 1f, 1f);
+		}
+		public static Color ClearWhite
+		{
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			get => new(1f, 1f, 1f, 0f);
 		}
 		public static Color Magenta
 		{

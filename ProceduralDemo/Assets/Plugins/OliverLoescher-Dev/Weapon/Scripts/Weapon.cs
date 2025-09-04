@@ -292,9 +292,9 @@ namespace ODev.Weapon
 		}
 
 		#region Helpers
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
 		protected void Log(string pMessage, [CallerMemberName] string pMethodName = "") => this.Log(pMessage, pMethodName);
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
 		protected void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => this.LogError(pMessage, pMethodName);
 		#endregion
 	}

@@ -1,109 +1,127 @@
+using System;
 using ODev.Util;
 using Sirenix.OdinInspector;
-using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 
-namespace ODev.Update
+namespace ODev.Updateables
 {
     [Serializable]
-    public class Updateable
+    public class Updateable : IComparable<Updateable>
     {
         [SerializeField, DisableInPlayMode]
-        private Type m_Type;
+        private UpdateableType m_Type;
         [SerializeField, DisableInPlayMode]
-        private Priority m_Priority;
+        private UpdateablePriority m_Priority;
         [SerializeField, DisableInPlayMode]
         private float m_IntervalSeconds;
 
         private Action<float> m_Action;
-        private Func<bool> m_CanUpdate;
-        private float m_TimeElapsed;
+        private Func<bool> m_Predicate;
+        private float m_TimeElapse = 0.0f;
 
-        public Action<float> Action => m_Action;
-        public Type Type => m_Type;
-        public Priority Priority => m_Priority;
+        public UpdateableType Type => m_Type;
+        public UpdateablePriority Priority => m_Priority;
         public float IntervalSeconds => m_IntervalSeconds;
         public bool IsRegistered => m_Action != null;
-        public float TimeSinceLastUpdate => m_TimeElapsed;
+        public float TimeSinceLastUpdate => m_TimeElapse;
 
-        public Updateable(Type pType, Priority pPriority, float pIntervalSeconds = 0.0f)
+        public Updateable(UpdateableType type, UpdateablePriority priority, float intervalSeconds = 0.0f)
         {
             m_Action = null;
-            m_CanUpdate = null;
-            m_TimeElapsed = 0;
+            m_Predicate = null;
+            m_TimeElapse = 0.0f;
 
-            m_Type = pType;
-            m_Priority = pPriority;
-            m_IntervalSeconds = pIntervalSeconds;
+            m_Type = type;
+            m_Priority = priority;
+            m_IntervalSeconds = intervalSeconds;
         }
 
-        public void SetProperties(Type pType, Priority pPriority, float pIntervalSeconds = 0.0f)
+        public void SetProperties(UpdateableType type, UpdateablePriority priority, float intervalSeconds = 0.0f)
         {
-            if (m_Action != null)
+            if (IsRegistered)
             {
                 this.LogError("Tried setting properties when already registered");
                 return;
             }
-            m_Type = pType;
-            m_Priority = pPriority;
-            m_IntervalSeconds = pIntervalSeconds;
+            m_Type = type;
+            m_Priority = priority;
+            m_IntervalSeconds = intervalSeconds;
         }
 
-        public void Register(Action<float> pAciton, Func<bool> pCanUpdate = null)
+        public void SetInterval(float intervalSeconds)
         {
-            if (pAciton == null)
+            m_IntervalSeconds = intervalSeconds;
+        }
+
+        public void Register(Action<float> pAciton, Func<bool> pPredicate = null)
+        {
+            Assert.IsNotNull(pAciton, "Action is null");
+            bool registered = IsRegistered;
+            if (registered)
             {
-                this.DevException("Was passed a null action");
-                return;
-            }
-            if (IsRegistered)
-            {
-                if (m_Action.Method == pAciton.Method)
-                {
-                    this.LogWarning("Was passed the same method which was already registered, skipping");
-                    return;
-                }
-                Deregister(); // Remove old action before registering the new one
+                m_Action = null;
             }
             m_Action = pAciton;
-            m_CanUpdate = pCanUpdate;
-            m_TimeElapsed = 0.0f;
-            UpdateManager.RegisterUpdate(this);
+            m_Predicate = pPredicate;
+            m_TimeElapse = 0.0f;
+            if (!registered)
+            {
+                UpdateableManager.Instance.Register(this);
+            }
         }
 
         public void Deregister()
         {
-            if (m_Action == null)
+            if (!IsRegistered)
             {
-                this.LogWarning("Tried deregistering when not registered");
                 return;
             }
-            UpdateManager.DeregisterUpdate(this);
+            UpdateableManager.Instance?.Unregister(this);
             m_Action = null;
+            m_Predicate = null;
         }
 
-        internal void TryUpdate(float pDeltaTime)
+        internal void TryUpdate(float deltaTime)
         {
-            m_TimeElapsed += pDeltaTime;
-            if (m_TimeElapsed < m_IntervalSeconds)
+            if (m_Action == null)
+            {
+                this.LogError("Action is null, this should never happen. Please fix!");
+                UpdateableManager.Instance.Unregister(this);
+                m_Predicate = null;
+                return;
+            }
+            // if (!m_Action.Target)
+            // {
+            //     this.LogWarning($"{nameof(m_Action)} is not alive, unregistering");
+            //     Deregister();
+            //     return;
+            // }
+
+            m_TimeElapse += deltaTime;
+            if (m_TimeElapse < m_IntervalSeconds)
             {
                 return;
             }
-            if (m_CanUpdate != null && !m_CanUpdate.Invoke())
+            if (m_Predicate == null || m_Predicate.Invoke())
             {
-                return;
+                m_Action.Invoke(m_TimeElapse);
             }
-            m_Action.Invoke(m_TimeElapsed);
-            m_TimeElapsed = 0.0f;
+            m_TimeElapse = 0.0f;
+        }
+
+        int IComparable<Updateable>.CompareTo(Updateable other)
+        {
+            return other.Priority.CompareTo(Priority);
         }
 
         public override string ToString()
         {
-            if (m_Action == null)
+            if (!IsRegistered)
             {
-                return $"Updateable(Action: NULL, Type: {m_Type}, Priority: {m_Priority}, Interval: {m_IntervalSeconds})";
+                return $"{nameof(Updateable)}(Action: NULL, Type: {m_Type}, Priority: {m_Priority}, Interval: {m_IntervalSeconds})";
             }
-            return $"Updateable(Action: {m_Action.Target} - {m_Action.Method.Name}, Type: {m_Type}, Priority: {m_Priority}, Interval: {m_IntervalSeconds})";
+            return $"{nameof(Updateable)}(Action: {m_Action.Method.Name}, Type: {m_Type}, Priority: {m_Priority}, Interval: {m_IntervalSeconds})";
         }
     }
 }

@@ -4,7 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - material: {fileID: 2100000, guid: 972a361d962d56442a42f82fe7747489, type: 2}
+  - m_Material: {fileID: 2100000, guid: 972a361d962d56442a42f82fe7747489, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

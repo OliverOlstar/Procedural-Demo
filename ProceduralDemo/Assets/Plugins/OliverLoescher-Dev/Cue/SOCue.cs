@@ -15,6 +15,8 @@ namespace ODev.Cue
 		private CueParticle[] m_Particle = new CueParticle[0];
 		[SerializeField]
 		private CueCameraShake[] m_CameraShake = new CueCameraShake[0];
+		[SerializeField]
+		private CueHitStop[] m_HitStop = new CueHitStop[0];
 
 		public static void Play(SOCue pCue, in CueContext pContext)
 		{
@@ -31,6 +33,10 @@ namespace ODev.Cue
 				module.Play(pContext, pCue);
 			}
 			foreach (CueModule module in pCue.m_CameraShake)
+			{
+				module.Play(pContext, pCue);
+			}
+			foreach (CueModule module in pCue.m_HitStop)
 			{
 				module.Play(pContext, pCue);
 			}

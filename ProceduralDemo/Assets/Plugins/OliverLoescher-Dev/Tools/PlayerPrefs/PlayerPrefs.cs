@@ -1,23 +1,28 @@
 
+using System;
+using System.Collections.Generic;
+using ODev.Util;
+using UnityEngine.Events;
+
 namespace ODev.PlayerPrefs
 {
 	public static class PlayerPrefs
 	{
 		private static string m_KeyPrefix = string.Empty;
 
-		public delegate void PrefixChangedEvent();
-		public static event PrefixChangedEvent OnPrefixChanged;
+		public static UnityEvent OnPrefixChanged = new();
 
 		private const int DEFAULT_INT = 0;
 		private const float DEFAULT_FLOAT = 0.0f;
 		private const string DEFAULT_STRING = null;
 
+		#region KeyPrefix
 		public static string GetKeyPrefix() => m_KeyPrefix;
 		public static void SetKeyPrefix(string prefix)
 		{
 			if (m_KeyPrefix != prefix)
 			{
-				UnityEngine.Debug.Log($"[PlayerPrefs] Global key prefix changed from '{m_KeyPrefix}' to '{prefix}'");
+				typeof(PlayerPrefs).Log($"Global key prefix changed from '{m_KeyPrefix}' to '{prefix}'");
 				m_KeyPrefix = prefix;
 				OnPrefixChanged.Invoke();
 			}
@@ -28,10 +33,11 @@ namespace ODev.PlayerPrefs
 		{
 			return m_KeyPrefix + key;
 		}
+		#endregion KeyPrefix
 
-		// Int
+		#region Int
 		public static void SetInt(string key, int value)
-			=> UnityEngine.PlayerPrefs.SetInt(GetRealKey(key), value);
+			=> SetInt(GetRealKey(key), value);
 		public static int GetInt(string key, int defaultValue)
 			=> UnityEngine.PlayerPrefs.GetInt(GetRealKey(key), defaultValue);
 		public static int GetInt(string key)
@@ -42,7 +48,10 @@ namespace ODev.PlayerPrefs
 			=> TryGetGlobalInt(GetRealKey(key), defaultValue, out value);
 
 		public static void SetGlobalInt(string key, int value)
-			=> UnityEngine.PlayerPrefs.SetInt(key, value);
+		{
+			UnityEngine.PlayerPrefs.SetInt(key, value);
+			PlayerPrefsRegistry.AddKey(key);
+		}
 		public static int GetGlobalInt(string key, int defaultValue)
 			=> UnityEngine.PlayerPrefs.GetInt(key, defaultValue);
 		public static int GetGlobalInt(string key)
@@ -59,10 +68,11 @@ namespace ODev.PlayerPrefs
 			value = defaultValue;
 			return false;
 		}
+		#endregion Int
 
-		// Float
+		#region Float
 		public static void SetFloat(string key, float value)
-			=> UnityEngine.PlayerPrefs.SetFloat(GetRealKey(key), value);
+			=> SetGlobalFloat(GetRealKey(key), value);
 		public static float GetFloat(string key, float defaultValue)
 			=> UnityEngine.PlayerPrefs.GetFloat(GetRealKey(key), defaultValue);
 		public static float GetFloat(string key)
@@ -73,7 +83,10 @@ namespace ODev.PlayerPrefs
 			=> TryGetGlobalFloat(GetRealKey(key), defaultValue, out value);
 
 		public static void SetGlobalFloat(string key, float value)
-			=> UnityEngine.PlayerPrefs.SetFloat(key, value);
+		{
+			UnityEngine.PlayerPrefs.SetFloat(key, value);
+			PlayerPrefsRegistry.AddKey(key);
+		}
 		public static float GetGlobalFloat(string key, float defaultValue)
 			=> UnityEngine.PlayerPrefs.GetFloat(key, defaultValue);
 		public static float GetGlobalFloat(string key)
@@ -90,10 +103,11 @@ namespace ODev.PlayerPrefs
 			value = defaultValue;
 			return false;
 		}
+		#endregion Float
 
-		// String
+		#region String
 		public static void SetString(string key, string value)
-			=> UnityEngine.PlayerPrefs.SetString(GetRealKey(key), value);
+			=> SetGlobalString(GetRealKey(key), value);
 		public static string GetString(string key, string defaultValue)
 			=> UnityEngine.PlayerPrefs.GetString(GetRealKey(key), defaultValue);
 		public static string GetString(string key)
@@ -104,7 +118,10 @@ namespace ODev.PlayerPrefs
 			=> TryGetGlobalString(GetRealKey(key), defaultValue, out value);
 
 		public static void SetGlobalString(string key, string value)
-			=> UnityEngine.PlayerPrefs.SetString(key, value);
+		{
+			UnityEngine.PlayerPrefs.SetString(key, value);
+			PlayerPrefsRegistry.AddKey(key);
+		}
 		public static string GetGlobalString(string key, string defaultValue)
 			=> UnityEngine.PlayerPrefs.GetString(key, defaultValue);
 		public static string GetGlobalString(string key)
@@ -121,22 +138,68 @@ namespace ODev.PlayerPrefs
 			value = defaultValue;
 			return false;
 		}
+		#endregion String
 
-		// Key
+		#region Key
 		public static bool HasKey(string key)
 			=> UnityEngine.PlayerPrefs.HasKey(GetRealKey(key));
 		public static void DeleteKey(string key)
-			=> UnityEngine.PlayerPrefs.DeleteKey(GetRealKey(key));
+		{
+			UnityEngine.PlayerPrefs.DeleteKey(GetRealKey(key));
+			PlayerPrefsRegistry.DeleteKey(key);
+		}
 
 		public static bool HasGlobalKey(string key)
 			=> UnityEngine.PlayerPrefs.HasKey(key);
 		public static void DeleteGlobalKey(string key)
-			=> UnityEngine.PlayerPrefs.DeleteKey(key);
+		{
+			UnityEngine.PlayerPrefs.DeleteKey(key);
+			PlayerPrefsRegistry.DeleteKey(key);
+		}
+		
+		public static IEnumerable<string> GetAllKeys()
+		{
+			foreach (string key in PlayerPrefsRegistry.GetAllKeys())
+			{
+				yield return key;
+			}
+		}
 
-		// Other
+		public static IEnumerable<string> GetAllKeys(Predicate<string> pPredicate)
+		{
+			foreach (string key in PlayerPrefsRegistry.GetAllKeys())
+			{
+				if (pPredicate(key))
+				{
+					yield return key;
+				}
+			}
+		}
+		#endregion Key
+
+		#region Other
+		public static void DeleteWhere(Predicate<string> pPredicate)
+		{
+			foreach (string key in PlayerPrefsRegistry.DeleteWhere(pPredicate))
+			{
+				UnityEngine.PlayerPrefs.DeleteKey(key);
+			}
+		}
+
+#if UNITY_EDITOR
+		[UnityEditor.MenuItem("ODev/PlayerPrefs/Delete All")]
+#endif
 		public static void DeleteAll()
-			=> UnityEngine.PlayerPrefs.DeleteAll();
+		{
+			UnityEngine.PlayerPrefs.DeleteAll();
+			PlayerPrefsRegistry.DeleteAll();
+		}
+
 		public static void Save()
-			=> UnityEngine.PlayerPrefs.Save();
+		{
+			PlayerPrefsRegistry.SaveRegistry();
+			UnityEngine.PlayerPrefs.Save();
+		}
+		#endregion Other
 	}
 }

@@ -15,9 +15,9 @@ namespace ODev.Input
 		public InputModule_Toggle Toggle => m_Toggle;
 		public T Value => m_Value;
 
-		public void Initalize(InputAction pInputAction, InputAction pToggleInputAction, Func<bool> pIsValid)
+		public void Initalize(InputAction pInputAction, InputAction pToggleInputAction, Func<bool> pToggleIsValid, Func<bool> pIsValid)
 		{
-			m_Toggle.Initalize(pToggleInputAction, pIsValid);
+			m_Toggle.Initalize(pToggleInputAction, pToggleIsValid);
 			m_Value.Initalize(pInputAction, pIsValid);
 		}
 

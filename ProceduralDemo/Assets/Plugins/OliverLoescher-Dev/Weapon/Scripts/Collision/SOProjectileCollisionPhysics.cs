@@ -10,7 +10,7 @@ namespace ODev.Weapon
 			pProjectile.MyRigidbody.useGravity = true;
 			pProjectile.HitboxCollider.enabled = false;
 			pProjectile.PhysicsCollider.enabled = true;
-			pProjectile.transform.position += pProjectile.MyRigidbody.velocity.normalized * -0.25f;
+			pProjectile.transform.position += pProjectile.MyRigidbody.linearVelocity.normalized * -0.25f;
 			rActiveSelf = false;
 			base.DoCollision(pProjectile, pOther, ref rCanDamage, ref rActiveSelf);
 			return false;

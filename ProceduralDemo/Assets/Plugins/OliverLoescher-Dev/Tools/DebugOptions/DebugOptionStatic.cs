@@ -11,10 +11,13 @@ namespace ODev.Debug
 			public const string Log = "Log";
 			public const string Draw = "Draw";
 			public const string Editor = "Editor";
+			public const string Quality = "Quality";
 			public const string Data = "Data";
 			public const string Cheat = "Cheat";
+			public const string Game = "Game";
 			public const string Build = "Build";
 			public const string Misc = "Misc";
+			public const string Boot = "Boot";
 
 			public static readonly HashSet<string> EditorOnlyGroups = new()
 			{

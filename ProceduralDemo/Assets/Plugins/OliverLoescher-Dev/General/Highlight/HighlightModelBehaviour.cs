@@ -1,11 +1,14 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.Rendering;
+using ODev.Updateables;
 
 namespace ODev
 {
 	public class HighlightModelBehaviour : MonoBehaviour
     {
+		[SerializeField]
+		private Updateable m_Updateable = new (UpdateableType.Late, UpdateablePriority.ModelController);
 		[SerializeField]
 		private MeshFilter[] m_MeshRenderers = new MeshFilter[1];
 		[SerializeField, Required]
@@ -32,7 +35,17 @@ namespace ODev
 			enabled = false;
 		}
 
-		private void LateUpdate()
+		private void OnEnable()
+		{
+			m_Updateable.Register(Tick);
+		}
+
+		private void OnDisable()
+		{
+			m_Updateable.Deregister();
+		}
+
+		private void Tick(float pDeltaTime)
 		{
 			foreach (MeshFilter renderer in m_MeshRenderers)
 			{

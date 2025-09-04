@@ -52,11 +52,11 @@ namespace ODev
 		protected virtual void OnStart() { }
 		protected virtual void OnDestroy() { }
 
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
 		protected static void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(typeof(T), pMessage, pMethodName);
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
 		protected static void LogWarning(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogWarning(typeof(T), pMessage, pMethodName);
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
 		protected static void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(typeof(T), pMessage, pMethodName);
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
 		protected static void DevException(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.DevException(typeof(T), pMessage, pMethodName);

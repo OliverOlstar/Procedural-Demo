@@ -118,7 +118,7 @@ namespace ODev
 
 			// If you know how fast your character is trying to move,
 			// then you can also multiply the push velocity by that.
-			body.velocity = pushDir * m_PushPower; // Apply the push
+			body.linearVelocity = pushDir * m_PushPower; // Apply the push
 		}
 	}
 }

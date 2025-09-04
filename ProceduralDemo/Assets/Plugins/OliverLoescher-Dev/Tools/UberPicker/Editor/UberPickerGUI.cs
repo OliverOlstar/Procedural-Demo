@@ -4,6 +4,10 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using ODev.Util;
+
+using AssetDatabase = UnityEditor.AssetDatabase;
+using GUI = UnityEngine.GUI;
 
 namespace ODev.Picker
 {
@@ -144,9 +148,9 @@ namespace ODev.Picker
 			// ie. Stats append a small picker to the end of another property drawer
 			bool hasLabel = !string.IsNullOrEmpty(label.text);
 
-			UberPickerPathCache pickerPaths = UberPickerPathCache.GetPaths(property, attribute, pathSource);
-			int? selectedIndex = pickerPaths.TryGetIndexForSelection(selection, selectionType);
-			string selectedPath = selectedIndex.HasValue ? pickerPaths.Paths[selectedIndex.Value] : null;
+			// UberPickerPathCache pickerPaths = UberPickerPathCache.GetPaths(property, attribute, pathSource);
+			// int? selectedIndex = pickerPaths.TryGetIndexForSelection(selection, selectionType);
+			// string selectedPath = selectedIndex.HasValue ? pickerPaths.Paths[selectedIndex.Value] : null;
 
 			//if (hasLabel && label.image == null && !string.IsNullOrEmpty(selectedPath))
 			//{
@@ -156,7 +160,7 @@ namespace ODev.Picker
 
 			if (pathSource.TryGetUnityObjectType(out Type objectType))
 			{
-				if (DragAndDrop.objectReferences.Length > 0)
+				if (DragAndDrop.objectReferences.Length > 0 && UberPickerPathCache.TryGetPaths(property, attribute, pathSource, out UberPickerPathCache pickerPaths))
 				{
 					string dragObjectPath = AssetDatabase.GetAssetPath(DragAndDrop.objectReferences[0]);
 					int? dragIndex = pickerPaths.TryGetIndexForSelection(dragObjectPath, UberPickerPathCache.Select.Path);
@@ -166,6 +170,10 @@ namespace ODev.Picker
 						{
 							TryDrawFoldoutInspector(property, objectType, label, position, originalPosition, out _);
 						}
+
+						int? selectedIndex = pickerPaths.TryGetIndexForSelection(selection, selectionType);
+						string selectedPath = selectedIndex.HasValue ? pickerPaths.Paths[selectedIndex.Value] : null;
+
 						UnityEngine.Object selected = string.IsNullOrEmpty(selectedPath) ? null :
 							AssetDatabase.LoadAssetAtPath(selectedPath, DragAndDrop.objectReferences[0].GetType());
 						UnityEngine.Object newSelection = hasLabel ?
@@ -178,14 +186,14 @@ namespace ODev.Picker
 						return;
 					}
 				}
-				if (!string.IsNullOrEmpty(selectedPath) && AttachAssetSelectButton(ref position))
+				if (!string.IsNullOrEmpty(selection) && AttachAssetSelectButton(ref position))
 				{
-					EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath(selectedPath, typeof(UnityEngine.Object)));
+					EditorGUIUtility.PingObject(AssetDatabase.LoadAssetAtPath(selection, typeof(UnityEngine.Object)));
 				}
-				AssetPickerUtilityMenu.TryAttachMenu(ref position, property, objectType, selectedPath, onSelected);
+				AssetPickerUtilityMenu.TryAttachMenu(ref position, property, objectType, selection, onSelected);
 			}
 
-			if (!attribute.AllowNull && !selectedIndex.HasValue)
+			if (!attribute.AllowNull && string.IsNullOrEmpty(selection))
 			{
 				AttachNullWarning(ref position);
 			}
@@ -195,36 +203,53 @@ namespace ODev.Picker
 			{
 				TryDrawFoldoutInspector(property, objectType, label, position, originalPosition, out labelPosition);
 			}
-			if (pickerPaths.ItemLevels == null)
-			{
-				if (!string.IsNullOrEmpty(attribute.OverrideFirstName))
-				{
-					pickerPaths.Names[0] = selectedIndex.HasValue ? UberPickerPathCache.NULL_ITEM_NAME : attribute.OverrideFirstName;
-				}
-				int index =
-					selectedIndex.HasValue ? selectedIndex.Value :
-					attribute.AllowNull ? 0 :
-					-1;
-				int newIndex = hasLabel ?
-					EditorGUI.Popup(position, " ", index, pickerPaths.Names) :
-					EditorGUI.Popup(position, index, pickerPaths.Names);
-				if (newIndex != index)
-				{
-					onSelected.Invoke(property, pickerPaths.Paths[newIndex]);
-				}
-			}
-			else
+			// if (pickerPaths.ItemLevels == null)
+			// {
+			// 	if (!string.IsNullOrEmpty(attribute.OverrideFirstName))
+			// 	{
+			// 		pickerPaths.Names[0] = selectedIndex.HasValue ? UberPickerPathCache.NULL_ITEM_NAME : attribute.OverrideFirstName;
+			// 	}
+			// 	int index =
+			// 		selectedIndex.HasValue ? selectedIndex.Value :
+			// 		attribute.AllowNull ? 0 :
+			// 		-1;
+			// 	int newIndex = hasLabel ?
+			// 		EditorGUI.Popup(position, " ", index, pickerPaths.Names) :
+			// 		EditorGUI.Popup(position, index, pickerPaths.Names);
+			// 	if (newIndex != index)
+			// 	{
+			// 		onSelected.Invoke(property, pickerPaths.Paths[newIndex]);
+			// 	}
+			// }
+			// else
 			{
 				// Title is always index 0, "None" element is index 1 when allowing nulls
-				string name =
-					selectedIndex.HasValue ? pickerPaths.Names[selectedIndex.Value] :
-					!attribute.AllowNull ? "" :
-					!string.IsNullOrEmpty(attribute.OverrideFirstName) ? attribute.OverrideFirstName :
-					"";
+				string name;
+				if (!string.IsNullOrEmpty(selection))
+				{
+					name = selection;
+				}
+				else
+				{
+					if (!attribute.AllowNull)
+					{
+						name = string.Empty;
+					}
+					else
+					{
+						name = !string.IsNullOrEmpty(attribute.OverrideFirstName) ? attribute.OverrideFirstName : string.Empty;
+					}
+				}
+
 				Rect buttonPosition = position;
 				buttonPosition.xMin += labelPosition.width;
 				if (GUI.Button(buttonPosition, name, EditorStyles.popup))
 				{
+					if (!UberPickerPathCache.TryGetPaths(property, attribute, pathSource, out UberPickerPathCache pickerPaths))
+					{
+						typeof(UberPickerGUI).LogError("No paths found. Cannot open!");
+						return;
+					}
 					UberPickerSearchWindowProvider pickerWindow = UberPickerSearchWindowProvider.GetOrCreate(property, pickerPaths, onSelected);
 					SearchWindowContext context = new(
 						GUIUtility.GUIToScreenPoint(Event.current.mousePosition),

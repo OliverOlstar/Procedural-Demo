@@ -1,15 +1,15 @@
 using UnityEngine;
-using Cinemachine;
 using Sirenix.OdinInspector;
+using Unity.Cinemachine;
 
 namespace ODev.Camera
 {
-	public class FirstPersonCameraInertia : MonoBehaviour
+    public class FirstPersonCameraInertia : MonoBehaviour
     {
         [SerializeField]
-private CinemachineVirtualCamera myCamera = null;
+        private CinemachineCamera myCamera = null;
         [SerializeField]
-private Rigidbody rigid = null;
+        private Rigidbody rigid = null;
         private Vector3 lastVelocity;
         private Vector3 lastPosition;
 
@@ -33,35 +33,35 @@ private Rigidbody rigid = null;
         {
             lastPosition = transform.position;
             if (myCamera != null)
-			{
-                myCamera.m_Lens.FieldOfView = fovMinMax.x;
+            {
+                myCamera.Lens.FieldOfView = fovMinMax.x;
             }
         }
 
-		private void LateUpdate()
+        private void LateUpdate()
         {
-            Vector3 velocity = rigid.velocity - lastVelocity;
-            lastVelocity = rigid.velocity;
+            Vector3 velocity = rigid.linearVelocity - lastVelocity;
+            lastVelocity = rigid.linearVelocity;
 
-            DoSpring(velocity, UnityEngine.Time.deltaTime);
+            DoSpring(velocity, Time.deltaTime);
         }
 
-		private void FixedUpdate() 
+        private void FixedUpdate()
         {
             Vector3 motion = transform.parent.position - lastPosition;
             Vector3 relMotion = transform.InverseTransformDirection(motion);
             lastPosition = transform.parent.position;
 
-            DoTilt(relMotion, UnityEngine.Time.fixedDeltaTime);
-            DoFOV(UnityEngine.Time.fixedDeltaTime);
+            DoTilt(relMotion, Time.fixedDeltaTime);
+            DoFOV(Time.fixedDeltaTime);
         }
 
-		private void DoTilt(Vector3 pRelMotion, float pDeltaTime)
+        private void DoTilt(Vector3 pRelMotion, float pDeltaTime)
         {
             Vector3 rot = transform.localEulerAngles;
             rot.z = pRelMotion.x * -tiltMagnitude;
-			rot.z = Mathf.Clamp(rot.z, -tiltMax, tiltMax);
-			rot.z = Mathf.Lerp(Util.Func.SafeAngle(transform.localEulerAngles.z), rot.z, pDeltaTime * tiltDampening);
+            rot.z = Mathf.Clamp(rot.z, -tiltMax, tiltMax);
+            rot.z = Mathf.Lerp(Util.Func.SafeAngle(transform.localEulerAngles.z), rot.z, pDeltaTime * tiltDampening);
             transform.localRotation = Quaternion.Euler(rot);
         }
 
@@ -76,13 +76,13 @@ private Rigidbody rigid = null;
         }
 
         private void DoFOV(float pDeltaTime)
-		{
+        {
             if (myCamera == null)
-			{
+            {
                 return;
-			}
-            float fov01 = Util.Func.SmoothStep(fovVelocity, Util.Math.Horizontalize(rigid.velocity).magnitude);
-            myCamera.m_Lens.FieldOfView = Mathf.Lerp(myCamera.m_Lens.FieldOfView, Mathf.Lerp(fovMinMax.x, fovMinMax.y, fov01), pDeltaTime * fovDampening);
+            }
+            float fov01 = Util.Func.SmoothStep(fovVelocity, Util.Math.Horizontalize(rigid.linearVelocity).magnitude);
+            myCamera.Lens.FieldOfView = Mathf.Lerp(myCamera.Lens.FieldOfView, Mathf.Lerp(fovMinMax.x, fovMinMax.y, fov01), pDeltaTime * fovDampening);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ODev.Updateables;
 using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -32,8 +33,8 @@ namespace ODev.Util
 		private static readonly List<IAnimationInternal> s_VisualAnimations = new();
 		private static readonly List<IAnimationInternal> s_PhysicsAnimations = new();
 
-		private static Update.Updateable s_Updateable = new(Update.Type.Late, Update.Priority.ModelController);
-		private static Update.Updateable s_FixedUpdateable = new(Update.Type.Fixed, Update.Priority.World);
+		private static Updateable s_Updateable = new(UpdateableType.Late, UpdateablePriority.ModelController);
+		private static Updateable s_FixedUpdateable = new(UpdateableType.Fixed, UpdateablePriority.World);
 		private static bool s_IsInitalized = false;
 
 		private static void Initalize()

@@ -1,3 +1,4 @@
+using ODev.Updateables;
 using UnityEngine;
 
 namespace ODev
@@ -7,7 +8,7 @@ namespace ODev
 		[SerializeField]
 		private Rigidbody m_Target = null;
 		[SerializeField]
-		private Update.Updateable m_Updateable = new(Update.Type.Late, Update.Priority.Camera);
+		private Updateable m_Updateable = new(UpdateableType.Late, UpdateablePriority.Camera);
 
 		[Header("Look")]
 		[SerializeField]
@@ -41,7 +42,7 @@ namespace ODev
 			offset.y = m_FollowHeight; // y
 			transform.position = Vector3.Lerp(transform.position, m_Target.position + offset, m_FollowDampening * pDeltaTime);
 
-			Vector3 lookAtTarget = m_Target.transform.position + (m_Target.velocity * m_LookVelocity) + m_LookOffset;
+			Vector3 lookAtTarget = m_Target.transform.position + (m_Target.linearVelocity * m_LookVelocity) + m_LookOffset;
 			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookAtTarget - transform.position), pDeltaTime * m_LookDampening);
 		}
 
@@ -52,7 +53,7 @@ namespace ODev
 				return;
 			}
 			// transform.position = target.position + followOffset;
-			transform.LookAt(m_Target.transform.position + (m_Target.velocity * m_LookVelocity) + m_LookOffset);
+			transform.LookAt(m_Target.transform.position + (m_Target.linearVelocity * m_LookVelocity) + m_LookOffset);
 		}
 	}
 }

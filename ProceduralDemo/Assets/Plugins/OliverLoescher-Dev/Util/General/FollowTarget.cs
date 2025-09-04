@@ -1,3 +1,4 @@
+using ODev.Updateables;
 using UnityEngine;
 
 namespace ODev
@@ -5,7 +6,7 @@ namespace ODev
 	public class FollowTarget : MonoBehaviour
 	{
 		[SerializeField]
-		private Update.Updateable m_Updateable = new(Update.Type.Default, Update.Priority.Camera);
+		private Updateable m_Updateable = new(UpdateableType.Default, UpdateablePriority.Camera);
 
 		[Header("Position")]
 		public Transform PosTarget = null;

@@ -22,6 +22,15 @@ namespace ODev.Util
 			s_IsApplicationQuitting = true;
 			Application.quitting -= Quit;
 		}
+
+		public static void QuitApplication()
+		{
+			Application.Quit();
+
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#endif
+		}
 		#endregion Application
 
 		public static bool IsRelease()
@@ -125,7 +134,6 @@ namespace ODev.Util
 			rDictionary.Remove(pKey);
 			return pValue;
 		}
-		
 
 		public static T GetOrAddComponent<T>(this GameObject pObject) where T : Component
 		{
@@ -143,12 +151,16 @@ namespace ODev.Util
 			pComponent = pObject.GetComponentInChildren<T>();
 			return pComponent != null;
 		}
+		public static bool TryGetComponentInChildren<T>(this Component pObject, out T pComponent) where T : Component
+			=> TryGetComponentInChildren<T>(pObject.gameObject, out pComponent);
 
 		public static bool TryGetComponentInParent<T>(this GameObject pObject, out T pComponent) where T : Component
 		{
 			pComponent = pObject.GetComponentInParent<T>();
 			return pComponent != null;
 		}
+		public static bool TryGetComponentInParent<T>(this Component pObject, out T pComponent) where T : Component
+			=> TryGetComponentInParent<T>(pObject.gameObject, out pComponent);
 
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(this T[] pElements, int pStartAtIndex, T pElement = null) where T : class
@@ -156,7 +168,7 @@ namespace ODev.Util
 
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(this List<T> pElements, int pStartAtIndex, T pElement = null) where T : class
-			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => pItem == pElement);
+			=> For(pElements, pStartAtIndex, (T pItem, int _) => pItem == pElement);
 
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(ref T[] rElements, int pStartAtIndex, Func<T, bool> pPredicate)
@@ -164,7 +176,7 @@ namespace ODev.Util
 
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(this List<T> pElements, int pStartAtIndex, Func<T, bool> pPredicate)
-			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => !pPredicate(pItem));
+			=> For(pElements, pStartAtIndex, (T pItem, int _) => !pPredicate(pItem));
 
 		/// <summary> Iterate through collection starting at an index, returning false in predicate ends the loop </summary>
 		public static int Foreach<T>(this T[] pElements, int pStartAtIndex, Func<T, int, bool> pPredicate)
@@ -192,7 +204,7 @@ namespace ODev.Util
 		}
 
 		/// <summary> Iterate through collection starting at an index, returning false in predicate ends the loop </summary>
-		public static int Foreach<T>(this List<T> pElements, int pStartAtIndex, Func<T, int, bool> pPredicate)
+		public static int For<T>(this List<T> pElements, int pStartAtIndex, Func<T, int, bool> pPredicate)
 		{
 			if (pElements.IsNullOrEmpty())
 			{
@@ -224,6 +236,16 @@ namespace ODev.Util
 		public static bool HasAnyFlag(this int pFlags, int pOtherFlags)
 		{
 			return pOtherFlags != 0 && pFlags != 0 && (pFlags & pOtherFlags) != 0;
+		}
+
+		public static string BytesToString(byte[] bytes)
+		{
+			string s = null;
+			foreach (byte b in bytes)
+			{
+				s += b.ToString("x2");
+			}
+			return s;
 		}
 	}
 }

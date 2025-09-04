@@ -54,7 +54,7 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "2e3f0408-2fdf-48ad-9123-1d488b8368be",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -63,7 +63,7 @@
                     "name": "ModeToggle",
                     "type": "Button",
                     "id": "9cc8fff5-ec13-4746-9ff0-add64d6d0e5e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -72,7 +72,7 @@
                     "name": "TargetToggle",
                     "type": "Button",
                     "id": "c600d64c-88f6-4354-9459-9343bca35844",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -300,6 +300,39 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "Shoulders Axis",
+                    "id": "a6e8b7e0-a1a0-45b3-a2e0-4dcc5b5a78b7",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "5b2ae575-dccb-4f87-b314-458a16e078a6",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d9870b38-cbd8-433f-a216-a134b5955a76",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "d40e392d-d99f-4a6b-b921-ba4669cd9736",
                     "path": "<Gamepad>/buttonEast",
@@ -335,10 +368,32 @@
                 {
                     "name": "",
                     "id": "633eb6a4-4830-4493-b1ad-e6107c539c3f",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "TargetToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "425c6666-7d81-4351-b4fd-87cd906d2463",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "TargetToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9e3eacb5-568e-43af-84e6-9a709c4b9081",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
                     "action": "TargetToggle",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -438,7 +493,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MoveDelta",
+                    "name": "MousePosition",
+                    "type": "PassThrough",
+                    "id": "79502849-b0e1-40b2-986b-2efa9ea95755",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseDelta",
                     "type": "PassThrough",
                     "id": "536ea923-e53a-46b3-b65b-51d2f268a901",
                     "expectedControlType": "Vector2",
@@ -450,7 +514,7 @@
                     "name": "MoveDeltaButton",
                     "type": "Button",
                     "id": "4fc64eb2-411e-4ed5-96a0-607a222a3b73",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -477,7 +541,34 @@
                     "name": "Rotate",
                     "type": "PassThrough",
                     "id": "c61cf329-0707-4a7a-bb62-4279bdba83e2",
-                    "expectedControlType": "Analog",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateDeltaButton",
+                    "type": "Button",
+                    "id": "039eb1dc-bb5e-41ce-85ba-0a5f6305b536",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Sprint",
+                    "type": "Button",
+                    "id": "e031a17b-59e9-4e48-87fe-0079168378d1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "85a4fe06-0a52-4589-8fa1-303d96b1fb0e",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -557,7 +648,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "MoveDelta",
+                    "action": "MouseDelta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -586,7 +677,7 @@
                 {
                     "name": "",
                     "id": "8b1e5e51-282e-43a9-a2c9-14db5d3335d4",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -597,7 +688,7 @@
                 {
                     "name": "QE",
                     "id": "f1e1aff7-5f92-4a6d-8fcf-8a4217c514b2",
-                    "path": "1DAxis",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -606,23 +697,45 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "97169752-759f-4ef7-9e3f-e5834dd20be5",
+                    "name": "Left",
+                    "id": "c2755607-84d1-4d43-9fbd-a9c82f0320db",
                     "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
-                    "id": "ef2ddf7b-cb73-4d17-91e1-8f193fad2fd1",
+                    "name": "Right",
+                    "id": "a49c7b10-c7cd-4669-a21c-ffd10d73d879",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Up",
+                    "id": "8ed0a8f3-942d-476e-a089-40536120cc7c",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Down",
+                    "id": "0070209d-b6ea-424d-b0ff-0cebc3108e6c",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -630,7 +743,7 @@
                 {
                     "name": "",
                     "id": "7c9db5c8-d257-4e5f-80f4-394814b25abd",
-                    "path": "<Gamepad>/dpad/x",
+                    "path": "<Gamepad>/dpad",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -640,11 +753,11 @@
                 },
                 {
                     "name": "",
-                    "id": "faae9dc5-6e3a-48f2-bbf9-0ec904bd2b01",
-                    "path": "<Gamepad>/rightStick/x",
+                    "id": "d2efaaad-2ebb-49cc-b3c8-b2473a6d1673",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": ";Gamepad",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -654,9 +767,75 @@
                     "id": "29820657-fd4d-4570-8c77-51fdbfab8d2e",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Invert",
                     "groups": "Keyboard&Mouse",
                     "action": "ZoomDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5d9c1f78-f74b-4e7b-a5d7-38e2fc0a05f3",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e057b4fe-4d24-42d7-8a05-4d1ee14aee96",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aba9ce07-e3ed-422f-8899-25e8a45dd72a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c0c370ba-54d3-4264-a470-4365df154f37",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "24f3c7db-1dc1-4212-a07e-f9ece2211d58",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "RotateDeltaButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b3a7e903-38a0-4020-92e0-2ab105a8e4f5",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "MousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -670,7 +849,7 @@
                     "name": "Pause",
                     "type": "Button",
                     "id": "efe39817-ed10-48fb-873c-835d089b38d6",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

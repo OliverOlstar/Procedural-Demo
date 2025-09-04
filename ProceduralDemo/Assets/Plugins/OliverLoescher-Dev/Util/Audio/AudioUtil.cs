@@ -12,7 +12,7 @@ namespace ODev.Util
 			[SerializeField]
 			private AudioClip[] m_Clips = new AudioClip[0];
 			[SerializeField, Range(0, 1)] 
-			private readonly float m_Volume = 1.0f;
+			private float m_Volume = 1.0f;
 			[SerializeField, MinMaxSlider(0, 3, true)]
 			private Vector2 m_Pitch = new(0.9f, 1.2f);
 			[SerializeField]

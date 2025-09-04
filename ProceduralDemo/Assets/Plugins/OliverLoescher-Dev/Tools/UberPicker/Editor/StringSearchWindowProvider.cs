@@ -51,18 +51,12 @@ namespace ODev.Picker
 		private const string NULLICONPATH = "Assets/Editor/Textures/SearchWindowNoneIcon.png";
 		private const string NULLITEMNAME = "None";
 
-		private static readonly ODev.AssetDatabaseDependentValues<string, StringSearchWindowProvider> s_CachedSearchWindows =
-			new();
+		private static readonly AssetDatabaseDependentValues<string, StringSearchWindowProvider> s_CachedSearchWindows = new();
 
-		public static void Show(
-			in StringSearchWindowContext context,
-			Action<string> onSelected)
+		public static void Show(in StringSearchWindowContext context, Action<string> onSelected)
 		{
 			StringSearchWindowProvider window = GetOrCreate(context, onSelected);
-			SearchWindowContext context2 = new(
-				GUIUtility.GUIToScreenPoint(Event.current.mousePosition),
-				window.Width,
-				window.Height);
+			SearchWindowContext context2 = new(GUIUtility.GUIToScreenPoint(Event.current.mousePosition), window.Width, window.Height);
 			SearchWindow.Open(context2, window);
 		}
 
@@ -72,8 +66,11 @@ namespace ODev.Picker
 		{
 			if (!s_CachedSearchWindows.TryGet(context.CacheKey, out StringSearchWindowProvider provider))
 			{
+				if (!UberPickerPathCache.TryGetPaths(context.PathCacheKey, context, context, out UberPickerPathCache cachePaths))
+				{
+					return provider;
+				}
 				provider = CreateInstance<StringSearchWindowProvider>();
-				UberPickerPathCache cachePaths = UberPickerPathCache.GetPaths(context.PathCacheKey, context, context);
 				provider.Init(cachePaths);
 				s_CachedSearchWindows.Set(context.CacheKey, provider);
 			}

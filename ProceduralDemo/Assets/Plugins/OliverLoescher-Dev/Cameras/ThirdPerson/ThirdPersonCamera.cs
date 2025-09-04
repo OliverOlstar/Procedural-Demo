@@ -1,6 +1,7 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using ODev.Util;
+using ODev.Updateables;
 
 namespace ODev
 {
@@ -9,7 +10,7 @@ namespace ODev
         [SerializeField] 
 		private InputBridge_Camera m_Input = null;
 		[SerializeField]
-		private Update.Updateable m_Updateable = new(Update.Type.Late, Update.Priority.Camera);
+		private Updateable m_Updateable = new(UpdateableType.Late, UpdateablePriority.Camera);
 
 		[Header("Follow")]
         public Transform FollowTransform = null;

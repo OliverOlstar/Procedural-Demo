@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ODev.Util;
 using Sirenix.OdinInspector;
 
 namespace ODev.Weapon
@@ -60,7 +59,7 @@ namespace ODev.Weapon
 		public void Init(Vector3 pPosition, Vector3 pDirection, GameObject pSender, SOTeam pTeam = null)
 		{
 			transform.SetPositionAndRotation(pPosition, Quaternion.LookRotation(pDirection));
-			MyRigidbody.velocity = pDirection.normalized * Util.Random.Range(Data.ShootForce);
+			MyRigidbody.linearVelocity = pDirection.normalized * Util.Random.Range(Data.ShootForce);
 			transform.position += transform.forward * m_SpawnOffsetZ;
 
 			m_StartPos = transform.position;
@@ -87,7 +86,7 @@ namespace ODev.Weapon
 
 			if (updateRot)
 			{
-				transform.rotation = Quaternion.LookRotation(MyRigidbody.velocity);
+				transform.rotation = Quaternion.LookRotation(MyRigidbody.linearVelocity);
 			}
 		}
 
@@ -163,11 +162,11 @@ namespace ODev.Weapon
 
 			if (UnityEngine.Random.value > Data.CritChance01)
 			{
-				damageable.Damage(Data.Damage, Sender, transform.position, MyRigidbody.velocity);
+				damageable.Damage(Data.Damage, Sender, transform.position, MyRigidbody.linearVelocity);
 			}
 			else
 			{
-				damageable.Damage(Mathf.RoundToInt(Data.CritDamageMultiplier * Data.Damage), Sender, transform.position, MyRigidbody.velocity, m_CritColor);
+				damageable.Damage(Mathf.RoundToInt(Data.CritDamageMultiplier * Data.Damage), Sender, transform.position, MyRigidbody.linearVelocity, m_CritColor);
 			}
 		}
 

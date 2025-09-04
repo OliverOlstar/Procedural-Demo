@@ -5,7 +5,7 @@ namespace ODev.Debug
 {
 	public class DebugOptionsWindow : EditorWindow
 	{
-		[MenuItem("Window/Debug/Options")]
+		[MenuItem("ODev/Debug/Options")]
 		static void CreateWizard()
 		{
 			DebugOptionsWindow window = GetWindow<DebugOptionsWindow>("Debug Options");

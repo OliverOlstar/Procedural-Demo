@@ -1,27 +1,45 @@
 using ODev.Util;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace ODev
 {
-	public class AudioPool : MonoBehaviourSingletonAuto<AudioPool>
+	public class AudioPool : MonoBehaviourSingleton<AudioPool>
     {
-		private static int s_NameIndex = -1;
+		private static int s_NameIndex = 0;
 
 		private readonly List<AudioSource> m_Sources = new();
 		private int m_LastIndex = -1;
+
+		[SerializeField]
+		private AudioMixerGroup m_AudioMixerGroup = null;
+		[Space, SerializeField]
 		private Transform m_ActiveSourcesTransform;
+		[SerializeField]
 		private Transform m_ReleasedSourcesTransform;
 
-		private void Start()
+        protected override void Awake()
+        {
+			base.Awake();
+			Reset();
+        }
+
+        private void Reset()
 		{
-			m_ActiveSourcesTransform = new GameObject("Active").transform;
-			m_ActiveSourcesTransform.SetParent(transform);
-			m_ReleasedSourcesTransform = new GameObject("Released").transform;
-			m_ReleasedSourcesTransform.SetParent(transform);
+			if (m_ActiveSourcesTransform == null)
+			{
+				m_ActiveSourcesTransform = new GameObject("Active").transform;
+				m_ActiveSourcesTransform.SetParent(transform);
+			}
+			if (m_ReleasedSourcesTransform == null)
+			{
+				m_ReleasedSourcesTransform = new GameObject("Released").transform;
+				m_ReleasedSourcesTransform.SetParent(transform);
+			}
 		}
 
-		public static AudioSource ClaimSource()
+        public static AudioSource ClaimSource()
 		{
 			AudioPool pool = Instance;
 			int index = pool.GetFreeSourceIndex();
@@ -52,7 +70,16 @@ namespace ODev
 				m_LastIndex = 0;
 			}
 
-			int index = Func.IndexOf(m_Sources, m_LastIndex, (AudioSource pSource) => !pSource.isPlaying);
+			int index = Func.IndexOf(m_Sources, m_LastIndex, (AudioSource pSource) =>
+			{
+				if (pSource == null)
+				{
+					m_Sources.Remove(pSource);
+					this.LogWarning("AudioSource was destroyed, removing from pool");
+					return false;
+				}
+				return !pSource.isPlaying;
+			});
 			if (index >= 0)
 			{
 				m_LastIndex = index;
@@ -68,7 +95,8 @@ namespace ODev
 		{
 			GameObject gameObject = new($"Pooled AudioSource ({s_NameIndex++})");
 			gameObject.transform.SetParent(m_ActiveSourcesTransform);
-			AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
+			AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+			audioSource.outputAudioMixerGroup = m_AudioMixerGroup;
 			return audioSource;
 		}
 	}

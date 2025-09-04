@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ODev.Updateables;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,7 @@ namespace ODev.Input
 	public abstract class InputBridge_Base : MonoBehaviour
 	{
 		[SerializeField]
-		private Update.Updateable m_Updateable = new(Update.Type.Early, Update.Priority.Input);
+		private Updateable m_Updateable = new(UpdateableType.Early, UpdateablePriority.Input);
 
 		public abstract InputActionMap Actions { get; }
 		public abstract IEnumerable<IInputModule> GetAllInputModules();

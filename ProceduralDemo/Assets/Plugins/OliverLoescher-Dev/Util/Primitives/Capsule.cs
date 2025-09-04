@@ -116,7 +116,7 @@ namespace ODev
 		{
 			pPosition += Center;
 			Vector3 up = Up * ((Height * 0.5f) - Radius);
-			Util.Debug.GizmoCapsule(pPosition + up, pPosition - up, Radius);
+			Util.Gizmos2.GizmoCapsule(pPosition + up, pPosition - up, Radius);
 		}
 	}
 

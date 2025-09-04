@@ -1,3 +1,4 @@
+using ODev.Updateables;
 using ODev.Util;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace ODev
 			}
 		}
 
-		private readonly Update.Updateable m_Updateable = new(default, default);
+		private readonly Updateable m_Updateable = new(default, default);
 		private Transform m_Parent;
 		private IMotionReciver m_Child;
 		private Object m_DebugObject;
@@ -43,7 +44,7 @@ namespace ODev
 		public Transform ParentTransform => m_Parent;
 		public Transform ChildTransform => m_Child.Transform;
 
-		public void Start(Transform pParent, IMotionReciver pChild, Vector3 pPoint, bool pRotateChild, Update.Type pUpdateType, Update.Priority pUpdatePriority, Object pDebugParent)
+		public void Start(Transform pParent, IMotionReciver pChild, Vector3 pPoint, bool pRotateChild, UpdateableType pUpdateType, UpdateablePriority pUpdatePriority, Object pDebugParent)
 		{
 			m_DebugObject = pDebugParent;
 			if (pChild == null)
@@ -84,7 +85,7 @@ namespace ODev
 			m_Updateable.Register(Tick);
 		}
 
-		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, bool pRotateChild, Update.Type pUpdateType, Update.Priority pUpdatePriority, Object pDebugParent)
+		public void Start(Transform pParent, Transform pChild, Vector3 pPoint, bool pRotateChild, UpdateableType pUpdateType, UpdateablePriority pUpdatePriority, Object pDebugParent)
 			=> Start(pParent, new TransformMotionReciver(pChild), pPoint, pRotateChild, pUpdateType, pUpdatePriority, pDebugParent);
 
 		public void Stop()

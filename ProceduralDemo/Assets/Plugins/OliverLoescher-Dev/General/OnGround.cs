@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System;
 using ODev.Util;
+using ODev.Updateables;
 
 namespace ODev
 {
@@ -88,7 +89,7 @@ namespace ODev
 		}
 
 		[SerializeField]
-		private Update.Updateable m_Updateable = new(Update.Type.Fixed, Update.Priority.OnGround);
+		private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.OnGround);
 		[SerializeField]
 		private Transform m_Transform;
 		[SerializeField]

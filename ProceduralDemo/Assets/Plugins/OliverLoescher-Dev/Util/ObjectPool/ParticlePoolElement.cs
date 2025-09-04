@@ -18,7 +18,7 @@ namespace ODev
 
 		private void Reset()
 		{
-			SetStoppingAction(GetComponent<ParticleSystem>());
+			SetStoppingAction(m_Particle != null ? m_Particle : GetComponent<ParticleSystem>());
 		}
 
 		private void SetStoppingAction(in ParticleSystem pParticle)

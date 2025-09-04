@@ -62,7 +62,7 @@ namespace ODev.Camera
 			rot.x = Calculate(Util.Func.SafeAngle(rot.x), motion.x * m_TiltMagnitude.y, m_TiltMax.y, m_TiltDampening.y);
 			transform.localRotation = Quaternion.Euler(rot);
 
-			float v = Mathf.Min(m_MaxMagnitude, m_Rigidbody.velocity.sqrMagnitude) * m_TargetMagnitude;
+			float v = Mathf.Min(m_MaxMagnitude, m_Rigidbody.linearVelocity.sqrMagnitude) * m_TargetMagnitude;
 
 			Vector3 bounceOffset = Vector3.zero;
 			if (m_DoBounce)

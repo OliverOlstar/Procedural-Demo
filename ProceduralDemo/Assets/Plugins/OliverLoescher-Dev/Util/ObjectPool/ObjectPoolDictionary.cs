@@ -80,7 +80,10 @@ namespace ODev
 					{
 						// Return first to pool, then take it back out
 						item = m_ItemsOut[0];
-						item.element?.ReturnToPool();
+						if (item.element != null)
+						{
+							item.element.ReturnToPool();
+						}
 						m_ItemsIn.Remove(item);
 					}
 					else
@@ -106,7 +109,7 @@ namespace ODev
 			public void CheckInObject(PoolElement pElement, bool pDisable = true)
 			{
 				pElement.gameObject.transform.SetParent(pElement.Parent, true);
-				pElement.gameObject.transform.localScale = Util.Math.Inverse(pElement.Parent.lossyScale);
+				// pElement.gameObject.transform.localScale = Util.Math.Inverse(pElement.Parent.lossyScale);
 				if (pElement.gameObject.activeSelf)
 				{
 					pElement.gameObject.SetActive(!pDisable);
@@ -158,7 +161,7 @@ namespace ODev
 		}
 
 		#region Singleton
-		public static ObjectPoolDictionary s_Instance = null;
+		private static ObjectPoolDictionary s_Instance = null;
 
 		public static ObjectPoolDictionary Instance
 		{

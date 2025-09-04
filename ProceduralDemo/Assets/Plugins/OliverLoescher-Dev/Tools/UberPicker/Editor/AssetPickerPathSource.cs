@@ -38,7 +38,7 @@ public class AssetPickerPathSource : IAssetPickerPathSource
 			Type type = GetUnderlyingType(types[i]);
 			typesNames[i] = type.Name;
 
-			if (typeof(Component).IsAssignableFrom(type))
+			if (typeof(Component).Is(type))
 			{
 				type = typeof(GameObject);
 			}
@@ -55,7 +55,7 @@ public class AssetPickerPathSource : IAssetPickerPathSource
 	}
 
 	string IAssetPickerPathSource.GetSearchWindowTitle() => m_Title;
-	char[] IAssetPickerPathSource.GetPathSperators() => new char[] { '/', '\\' };
+	char[] IAssetPickerPathSource.GetPathSperators() => new char[] { '/', '\\', '_' };
 
 	List<string> IAssetPickerPathSource.GetPaths()
 	{
@@ -66,9 +66,9 @@ public class AssetPickerPathSource : IAssetPickerPathSource
 		}
 		if (!string.IsNullOrEmpty(m_PathPrefix))
 		{
-			for (int i = paths.Count - 1; i > 0; i--)
+			for (int i = paths.Count - 1; i >= 0; i--)
 			{
-				if (!paths[i].StartsWith(m_PathPrefix))
+				if (!paths[i].Contains(m_PathPrefix))
 				{
 					paths.RemoveAt(i);
 				}

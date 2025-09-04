@@ -1,3 +1,4 @@
+using ODev.Updateables;
 using UnityEngine;
 
 namespace ODev.Update
@@ -5,7 +6,7 @@ namespace ODev.Update
 	public abstract class UpdateableMonoBehaviour : MonoBehaviour
 	{
 		[SerializeField]
-		private Updateable m_Updateable = new(Type.Default, Priority.Default);
+		private Updateable m_Updateable = new(UpdateableType.Default, UpdateablePriority.Default);
 
 		protected virtual void OnEnable() => SetUpdateEnabled(true);
 		protected virtual void OnDisable() => SetUpdateEnabled(false);

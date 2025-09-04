@@ -1,29 +1,44 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using UnityEngine.Pool;
+using ODev.Util;
 
 namespace ODev.Picker
 {
-	public class UberPickerPathCache : ODev.PropertyDrawerCache<UberPickerPathCache>
+	public class UberPickerPathCache : PropertyDrawerCache<UberPickerPathCache>
 	{
 		public const int MAX_ITEMS_IN_DROPDOWN = 30;
 		public const string NULL_ICON_PATH = "Assets/Editor/Textures/SearchWindowNoneIcon.png";
 		public const string NULL_ITEM_NAME = "None";
 
-		public static UberPickerPathCache GetPaths(
+		public static bool TryGetPaths(
 			string cacheKey,
 			IAssetPickerAttribute attribute,
-			IAssetPickerPathSource pathSource)
+			IAssetPickerPathSource pathSource,
+			out UberPickerPathCache pickerPaths)
 		{
-			if (TryGetCache(cacheKey, out UberPickerPathCache pickerPaths))
+			if (TryGetCache(cacheKey, out pickerPaths))
 			{
-				return pickerPaths;
+				// typeof(UberPickerPathCache).Log($"Found cache for \"{cacheKey}\"");
+				return true;
 			}
+			// typeof(UberPickerPathCache).Log($"Getting caching for \"{cacheKey}\"");
+
 			List<string> pathList = pathSource.GetPaths();
+			if (pathList == null || pathList.Count == 0)
+			{
+				pickerPaths = null;
+				return false;
+			}
+
 			if (pathList.Count <= MAX_ITEMS_IN_DROPDOWN || attribute.ForceFlatten)
 			{
-				List<string> nameList = new(pathList.Count + 1);
-				List<int> levelList = new(pathList.Count + 1);
+				var nameList = ListPool<string>.Get();
+				var levelList = ListPool<int>.Get();
+				nameList.Capacity = pathList.Count + 1;
+				levelList.Capacity = pathList.Count + 1;
+
 				// Elements
 				foreach (string path in pathList)
 				{
@@ -43,6 +58,9 @@ namespace ODev.Picker
 					levelList.Insert(1, 1);
 				}
 				pickerPaths = new UberPickerPathCache(nameList.ToArray(), pathList.ToArray(), levelList.ToArray());
+
+				ListPool<string>.Release(pathList);
+				ListPool<int>.Release(levelList);
 			}
 			else
 			{
@@ -63,16 +81,17 @@ namespace ODev.Picker
 				pickerPaths = new UberPickerPathCache(itemNames.ToArray(), itemPaths.ToArray(), itemLevels.ToArray());
 			}
 			SetCache(cacheKey, pickerPaths);
-			return pickerPaths;
+			return true;
 		}
 
-		public static UberPickerPathCache GetPaths(
+		public static bool TryGetPaths(
 			SerializedProperty property,
 			IAssetPickerAttribute attribute,
-			IAssetPickerPathSource pathSource)
+			IAssetPickerPathSource pathSource,
+			out UberPickerPathCache pickerPaths)
 		{
 			string cacheKey = GetPropertyCacheKey(property);
-			return GetPaths(cacheKey, attribute, pathSource);
+			return TryGetPaths(cacheKey, attribute, pathSource, out pickerPaths);
 		}
 
 		public enum Select

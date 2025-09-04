@@ -25,14 +25,14 @@ namespace ODev
         {
             transform.position = Vector3.Lerp(transform.position, m_Target.position + m_FollowOffset, m_FollowDampening * UnityEngine.Time.deltaTime);
 
-            Vector3 lookAtTarget = m_Target.transform.position + (m_Target.velocity * m_LookVelocity) + m_LookOffset;
+            Vector3 lookAtTarget = m_Target.transform.position + (m_Target.linearVelocity * m_LookVelocity) + m_LookOffset;
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(lookAtTarget - transform.position), UnityEngine.Time.deltaTime * m_LookDampening);
         }
 
         private void OnDrawGizmosSelected() 
         {
             transform.position = m_Target.position + m_FollowOffset;
-            transform.LookAt(m_Target.transform.position + (m_Target.velocity * m_LookVelocity) + m_LookOffset);
+            transform.LookAt(m_Target.transform.position + (m_Target.linearVelocity * m_LookVelocity) + m_LookOffset);
         }
     }
 }

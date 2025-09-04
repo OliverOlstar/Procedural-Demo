@@ -50,10 +50,10 @@ namespace ODev.Input
 		}
 		private void OnCanceledEvent(InputAction.CallbackContext ctx)
 		{
-			if (!m_IsValid.Invoke())
-			{
-				return;
-			}
+			// if (!m_IsValid.Invoke())
+			// {
+			// 	return;
+			// }
 			if (!m_IsToggle)
 			{
 				Set(false);
@@ -62,20 +62,21 @@ namespace ODev.Input
 
 		private void Set(bool pValue)
 		{
-			if (m_Input != pValue)
+			if (m_Input == pValue)
 			{
-				m_Input = pValue;
+				return;
+			}
+			m_Input = pValue;
 
-				// Events
-				m_OnChanged.Invoke(m_Input);
-				if (m_Input)
-				{
-					m_OnPerformed?.Invoke();
-				}
-				else
-				{
-					m_OnCanceled?.Invoke();
-				}
+			// Events
+			m_OnChanged.Invoke(m_Input);
+			if (m_Input)
+			{
+				m_OnPerformed?.Invoke();
+			}
+			else
+			{
+				m_OnCanceled?.Invoke();
 			}
 		}
 

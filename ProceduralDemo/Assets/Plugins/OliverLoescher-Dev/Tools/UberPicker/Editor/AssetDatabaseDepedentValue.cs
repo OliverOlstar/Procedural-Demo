@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ODev.Util;
 using UnityEditor;
 
 namespace ODev
@@ -13,7 +14,7 @@ namespace ODev
 
 		public bool TryGet(out T value)
 		{
-			if (m_Version == AssetDatabase.GlobalArtifactDependencyVersion)
+			if (m_Version == UnityEditor.AssetDatabase.GlobalArtifactDependencyVersion)
 			{
 				value = m_Value;
 				return true;
@@ -26,7 +27,7 @@ namespace ODev
 		public void Set(T value)
 		{
 			m_Value = value;
-			m_Version = AssetDatabase.GlobalArtifactDependencyVersion;
+			m_Version = UnityEditor.AssetDatabase.GlobalArtifactDependencyVersion;
 		}
 	}
 
@@ -64,7 +65,18 @@ namespace ODev
 	public class PropertyDrawerCache<T> where T : class
 	{
 		private static readonly AssetDatabaseDependentValues<string, T> s_Cache = new();
-		public static string GetPropertyCacheKey(SerializedProperty property) => $"{property.serializedObject.targetObject.GetType().Name}.{property.propertyPath}";
+		public static string GetPropertyCacheKey(SerializedProperty property)
+		{
+			Str.Add(property.serializedObject.targetObject.GetType().Name);
+			Str.Add(".");
+			string[] paths = property.propertyPath.Split('[', ']');
+			for (int i = 0; i < paths.Length; i += 2)
+			{
+				string path = paths[i];
+				Str.Add(path);
+			}
+			return Str.Finish();
+		}
 
 		public static bool TryGetCache(string key, out T cache)
 		{

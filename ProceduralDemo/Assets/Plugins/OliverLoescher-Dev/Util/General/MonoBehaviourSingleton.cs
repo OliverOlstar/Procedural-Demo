@@ -6,8 +6,8 @@ namespace ODev
 {
     public abstract class MonoBehaviourSingleton<T> : MonoBehaviour where T : MonoBehaviourSingleton<T>, new()
     {
-        private static T s_Instance = null;
-        private static ISingleton s_InstanceInterface = null;
+        protected static T s_Instance = null;
+        // private static ISingleton s_InstanceInterface = null;
 		
 		protected virtual new bool DontDestroyOnLoad => false;
 
@@ -15,7 +15,7 @@ namespace ODev
         {
             get
             {
-				s_InstanceInterface?.OnAccessed();
+				// s_InstanceInterface?.OnAccessed();
                 return s_Instance;
             }
         }
@@ -26,7 +26,7 @@ namespace ODev
 		{
 			if (s_Instance != null)
 			{
-				LogExeception("There is already an instance of this, destroying self");
+				LogWarning("There is already an instance of this, destroying self");
 				Destroy(this);
 				return;
 			}
@@ -44,14 +44,14 @@ namespace ODev
 				return;
 			}
 			s_Instance = null;
-			s_InstanceInterface = null;
+			// s_InstanceInterface = null;
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
         protected static void Log(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.Log(s_Instance, pMessage, pMethodName);
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
         protected static void LogWarning(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogWarning(s_Instance, pMessage, pMethodName);
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
         protected static void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.LogError(s_Instance, pMessage, pMethodName);
 		[Conditional("ENABLE_DEBUG_EXCEPTIONS"), HideInCallstack]
         protected static void LogExeception(string pMessage, [CallerMemberName] string pMethodName = "") => Util.Debug.DevException(s_Instance, pMessage, pMethodName);

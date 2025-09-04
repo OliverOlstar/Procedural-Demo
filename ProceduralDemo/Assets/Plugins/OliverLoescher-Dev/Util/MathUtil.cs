@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,6 +42,7 @@ namespace ODev.Util
 			}
 			return pValue;
 		}
+		public static int Clamp(this int pValue, int pMin, int pMax) => Mathf.Clamp(pValue, pMin, pMax);
 		public static int Clamp(this int pValue, Vector2 pClamp) => Mathf.Clamp(pValue, (int)pClamp.x, (int)pClamp.y);
 		public static int Clamp(this int pValue, Vector2Int pClamp) => Mathf.Clamp(pValue, pClamp.x, pClamp.y);
 		public static int ClampMax(this int pValue, int pMax) => Mathf.Min(pValue, pMax);
@@ -150,6 +152,37 @@ namespace ODev.Util
 				}
 			}
 			return value;
+		}
+		
+		/// <summary> Does a binary search on a sorted list </summary>
+		/// <returns> Index of the item that is closest to the target that is not greater than the target </returns>
+		public static int BinaryFindNearest<T>(T target, List<T> collection) where T : IComparable<T>
+		{
+			if (collection == null || collection.Count == 0)
+			{
+				return 0;
+			}
+
+			int first = 0;
+			int last = collection.Count - 1;
+			int mid = 0;
+
+			while (first <= last)
+			{
+				mid = (first + last) / 2;
+				switch (target.CompareTo(collection[mid]))
+				{
+					case 1:
+						last = mid - 1;
+						continue;
+					case -1:
+						first = mid + 1;
+						continue;
+					default:
+						return mid;
+				}
+			}
+			return target.CompareTo(collection[mid]) == -1 ? mid + 1 : mid;
 		}
 
 		#region Lerp

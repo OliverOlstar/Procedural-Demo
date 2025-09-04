@@ -210,7 +210,7 @@ namespace ODev.CheatMenu
 			return x.Priority.CompareTo(y.Priority);
 		}
 
-		[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
 		private void Log(string message)
 		{
 			if (CheatMenu.DebugOptions.LogCheatMenu.IsSet())

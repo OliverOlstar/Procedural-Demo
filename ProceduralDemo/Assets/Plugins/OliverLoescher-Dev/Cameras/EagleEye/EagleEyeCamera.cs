@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 using ODev.Util;
+using ODev.Updateables;
 
 namespace ODev.Camera
 {
@@ -9,7 +10,7 @@ namespace ODev.Camera
 		[SerializeField]
 		private InputBridge_EagleEye m_Input = null;
 		[SerializeField, DisableInPlayMode]
-		private Update.Updateable m_Updateable = new(Update.Type.Late, Update.Priority.Camera);
+		private Updateable m_Updateable = new(UpdateableType.Late, UpdateablePriority.Camera);
 
 		[Header("Follow")]
 		public Transform CameraTransform = null; // Should be child
@@ -49,9 +50,9 @@ namespace ODev.Camera
 		private float m_CollisionZoomSpacing = 1.0f;
 
 		private Vector3 m_TargetPosition;
-		private float currZoom = 0.5f;
+		private float m_CurrentZoom = 0.5f;
 
-		private float RotateInput => m_Input.Rotate.Input;
+		private Vector2 RotateInput => m_Input.Rotate.Input;
 
 		private void Reset()
 		{
@@ -64,8 +65,7 @@ namespace ODev.Camera
 
 		private void Start()
 		{
-			m_TargetPosition = m_LookTransform.position;
-			currZoom = m_ChildOffset.magnitude;
+			m_CurrentZoom = m_ChildOffset.magnitude;
 			CameraTransform.localPosition = m_ChildOffset;
 			CameraTransform.LookAt(transform.position);
 
@@ -100,7 +100,7 @@ namespace ODev.Camera
 			Zoom(m_ZoomSpeed * pDeltaTime * m_Input.Zoom.Input);
 			DoMoveUpdate(pDeltaTime);
 			DoZoomUpdate(pDeltaTime);
-			RotateCamera(RotateInput * m_RotateSpeed * pDeltaTime);
+			RotateCamera(RotateInput.y * m_RotateSpeed * pDeltaTime);
 			DoCollision();
 		}
 
@@ -123,13 +123,13 @@ namespace ODev.Camera
 		{
 			if (!pInput.IsNearZero())
 			{
-				currZoom = Mathf.Clamp(currZoom + pInput, m_ZoomDistanceClamp.x, m_ZoomDistanceClamp.y);
+				m_CurrentZoom = Mathf.Clamp(m_CurrentZoom + pInput, m_ZoomDistanceClamp.x, m_ZoomDistanceClamp.y);
 			}
 		}
 
 		private void DoZoomUpdate(in float pDeltaTime)
 		{
-			CameraTransform.localPosition = Vector3.Lerp(CameraTransform.localPosition, m_ChildOffset.normalized * currZoom, pDeltaTime * m_ZoomDampening);
+			CameraTransform.localPosition = Vector3.Lerp(CameraTransform.localPosition, m_ChildOffset.normalized * m_CurrentZoom, pDeltaTime * m_ZoomDampening);
 		}
 
 		private void RotateCamera(float pInput)
@@ -150,14 +150,14 @@ namespace ODev.Camera
 			{
 				float magnitude = (m_ZoomDistanceClamp.y - hit.distance) + m_CollisionRadius;
 				CameraTransform.localPosition = m_ChildOffset.normalized * magnitude;
-				currZoom = magnitude + m_CollisionZoomSpacing;
+				m_CurrentZoom = magnitude + m_CollisionZoomSpacing;
 			}
 		}
 
 		#region Input
 		public void OnMoveDelta(Vector2 pInput)
 		{
-			Move((1 + currZoom - m_ZoomDistanceClamp.x) * m_MoveDeltaSpeed * pInput);
+			Move((1 + m_CurrentZoom - m_ZoomDistanceClamp.x) * m_MoveDeltaSpeed * pInput);
 		}
 
 		public void OnZoomDelta(float pInput)
