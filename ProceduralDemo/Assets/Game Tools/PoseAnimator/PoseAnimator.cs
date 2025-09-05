@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ODev.Picker;
+using ODev.Updateables;
 using ODev.Util;
 using Unity.Collections;
 using Unity.Jobs;
@@ -11,8 +12,8 @@ namespace ODev.PoseAnimator
 {
 	public class PoseAnimator : MonoBehaviour
 	{
-		private Update.Updateable m_Updateable = new(Update.Type.Fixed, Update.Priority.PoseAnimator);
-		private Update.Updateable m_UpdateableComplete = new(Update.Type.Fixed, Update.Priority.PoseAnimator + 1);
+		private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.PoseAnimator);
+		private Updateable m_UpdateableComplete = new(UpdateableType.Fixed, UpdateablePriority.PoseAnimator + 1);
 
 		[SerializeField]
 		private Transform m_Root = null;
