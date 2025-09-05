@@ -4,8 +4,15 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences: []
-  executionOrder: 15300
+  executionOrder: 10110
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16743
+  packageName: Dynamic Bone
+  packageVersion: 1.3.4
+  assetPath: Assets/Plugins/DynamicBone/Scripts/DynamicBonePlaneCollider.cs
+  uploadId: 662028

@@ -75,11 +75,9 @@ public class DynamicBonePlaneCollider : DynamicBoneColliderBase
     void OnDrawGizmosSelected()
     {
         if (!enabled)
-		{
-			return;
-		}
+            return;
 
-		Prepare();
+        Prepare();
 
         if (m_Bound == Bound.Outside)
         {
