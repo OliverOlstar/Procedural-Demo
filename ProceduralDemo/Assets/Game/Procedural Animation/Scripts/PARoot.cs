@@ -4,13 +4,14 @@ using Sirenix.OdinInspector;
 using RootMotion.FinalIK;
 using ODev.Util;
 using ODev.Picker;
+using ODev.Updateables;
 
 namespace PA
 {
 	public class PARoot : MonoBehaviour
 	{
 		[SerializeField, DisableInPlayMode]
-		private ODev.Update.Updateable m_Updateable = new(ODev.Update.Type.Late, ODev.Update.Priority.ModelController);
+		private Updateable m_Updateable = new(UpdateableType.Late, UpdateablePriority.ModelController);
 
 		private bool m_IsInitalized = false;
 

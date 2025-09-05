@@ -1,4 +1,5 @@
 using System;
+using ODev.Updateables;
 using ODev.Util;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ public class BuildModeController : MonoBehaviour
 	[SerializeField]
 	private BuildModeRoot m_Root = null;
 	[SerializeField]
-	private ODev.Update.Updateable m_Updateable = new(default, default);
+	private Updateable m_Updateable = new(default, default);
 
 	private void OnEnable()
 	{

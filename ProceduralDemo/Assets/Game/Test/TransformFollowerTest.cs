@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using ODev;
 using ODev.Util;
-using ODev.Update;
 using UnityEngine;
+using ODev.Updateables;
 
 public class TransformFollowerTest : MonoBehaviour, TransformFollower.IMotionReciver
 {

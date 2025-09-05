@@ -5,12 +5,13 @@ using ODev.Util;
 using ODev.Update;
 using System.Linq;
 using ODev;
+using ODev.Updateables;
 
 [RequireComponent(typeof(Collider))]
 public class CharacterInteractor : MonoBehaviour
 {
 	[SerializeField]
-	private Updateable m_Updateable = new(Type.Default, Priority.Interactator);
+	private Updateable m_Updateable = new(UpdateableType.Default, UpdateablePriority.Interactator);
 	[SerializeField]
 	private float m_ScoreDistanceScalar = 0.25f;
 	[SerializeField]

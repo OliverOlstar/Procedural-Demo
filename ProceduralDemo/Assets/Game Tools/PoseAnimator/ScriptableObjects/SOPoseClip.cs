@@ -20,7 +20,7 @@ namespace ODev.PoseAnimator
 			m_Keys = pKeys;
 			EditorUtility.SetDirty(this);
 			EditorUtility.SetDirty(this);
-			AssetDatabase.SaveAssetIfDirty(this);
+			UnityEditor.AssetDatabase.SaveAssetIfDirty(this);
 		}
 
 		public PoseKey GetKey(int pIndex)

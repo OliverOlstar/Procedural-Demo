@@ -37,7 +37,7 @@ namespace ODev.PoseAnimator
 			m_Clip.SetKeys(keys);
 
 			EditorUtility.SetDirty(m_Clip);
-			AssetDatabase.SaveAssetIfDirty(m_Clip);
+			UnityEditor.AssetDatabase.SaveAssetIfDirty(m_Clip);
 		}
 
 		[Button]

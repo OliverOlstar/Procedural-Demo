@@ -1,16 +1,16 @@
 using ODev;
 using ODev.Util;
-using ODev.Update;
 using UnityEngine;
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
+using ODev.Updateables;
 
 public class CharacterOnWall : MonoBehaviour
 {
 	[SerializeField]
 	private PlayerRoot m_Root = null;
 	[SerializeField]
-	private Updateable m_Updateable = new(Type.Fixed, Priority.OnGround);
+	private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.OnGround);
 
 	[Header("Cast")]
 	[SerializeField]
@@ -108,7 +108,7 @@ public class CharacterOnWall : MonoBehaviour
 
 		// ODev.Util.Debug.GizmoCapsule(pointA, pointB, m_Radius);
 		Gizmos.color = Check() ? Color.red : Color.green;
-		ODev.Util.Debug.GizmoCapsule(pointA + endOffset, pointB + endOffset, m_Radius);
+		Gizmos2.GizmoCapsule(pointA + endOffset, pointB + endOffset, m_Radius);
 		Gizmos.DrawLine(pointA, pointA + endOffset);
 		Gizmos.DrawLine(pointB, pointB + endOffset);
 	}

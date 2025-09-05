@@ -31,7 +31,7 @@ namespace RootMotion.FinalIK
 				}
 
 
-				return animator.updateMode == AnimatorUpdateMode.AnimatePhysics;
+				return animator.updateMode == AnimatorUpdateMode.Fixed;
 			}
 		}
 

@@ -30,7 +30,7 @@ namespace ODev.PoseAnimator
 			m_Skeleton.SetBones(bones.ToArray());
 
 			EditorUtility.SetDirty(m_Skeleton);
-			AssetDatabase.SaveAssetIfDirty(m_Skeleton);
+			UnityEditor.AssetDatabase.SaveAssetIfDirty(m_Skeleton);
 		}
 
 		[Button]

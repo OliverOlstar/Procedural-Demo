@@ -3,7 +3,7 @@ using ODev;
 using ODev.Util;
 using ODev.Cue;
 using ODev.Picker;
-using ODev.Update;
+using ODev.Updateables;
 
 public class TestSpear : MonoBehaviour, TransformFollower.IMotionReciver
 {
@@ -223,7 +223,7 @@ public class TestSpear : MonoBehaviour, TransformFollower.IMotionReciver
 				// transform.SetPositionAndRotation(hit.point - (0.4f * transform.localScale.z * transform.forward), Quaternion.LookRotation(-hit.normal));
 				trigger.enabled = true;
 
-				follower.Start(hit.transform, this, hit.point, true, Type.Default, Priority.CharacterController, this);
+				follower.Start(hit.transform, this, hit.point, true, UpdateableType.Default, UpdateablePriority.CharacterController, this);
 			}
 			SOCue.Play(hitCue, new CueContext(hit.point));
 			return;

@@ -1,5 +1,5 @@
 using ODev;
-using ODev.Update;
+using ODev.Updateables;
 using UnityEngine;
 
 [System.Serializable]
@@ -11,7 +11,7 @@ public class PlayerSpearLand : PlayerSpearController
 
 	internal void Start(Transform pAttachTo, Vector3 pHitPoint)
 	{
-		m_Follower.Start(pAttachTo, Transform, pHitPoint, true, Type.Fixed, Priority.World, Spear);
+		m_Follower.Start(pAttachTo, Transform, pHitPoint, true, UpdateableType.Fixed, UpdateablePriority.World, Spear);
 	}
 
 	internal override void Stop()
