@@ -778,7 +778,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 0
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -805,7 +805,7 @@ ModelImporter:
     normalImportMode: 2
     tangentImportMode: 2
     normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
   referencedClips: []
@@ -1527,3 +1527,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/2Hand-Axe/RPG-Character@2Hand-Axe-GetHit-L1.FBX
+  uploadId: 754562

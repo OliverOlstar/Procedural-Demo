@@ -758,7 +758,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: Motion
+    motionNodeName: Exporter
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
@@ -1560,3 +1560,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/Armed/RPG-Character@Armed-Idle-Pistol-R-Injured1.FBX
+  uploadId: 754562

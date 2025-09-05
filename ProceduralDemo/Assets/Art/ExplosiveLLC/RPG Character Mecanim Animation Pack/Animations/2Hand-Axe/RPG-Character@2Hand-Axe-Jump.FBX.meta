@@ -740,16 +740,16 @@ ModelImporter:
       to improve retargeting quality.\n\t'B_Spine' has translation animation that
       will be discarded.\n\t'B_Neck' has translation animation that will be discarded.\n"
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftUpperArm
-      average position error 3.1 mm and maximum position error 4.9 mm at time 0:15
-      (83.3%) Frame 15\n\tLeftLowerArm average position error 3.1 mm and maximum
-      position error 4.9 mm at time 0:15 (83.3%) Frame 15\n\tLeftHand average position
-      error 3.1 mm and maximum position error 4.9 mm at time 0:15 (83.3%) Frame 15\n\tRightUpperArm
-      average position error 3.1 mm and maximum position error 4.9 mm at time 0:16
-      (88.9%) Frame 16\n\tRightLowerArm average position error 3.1 mm and maximum
-      position error 4.9 mm at time 0:16 (88.9%) Frame 16\n\tRightHand average position
-      error 3.1 mm and maximum position error 4.9 mm at time 0:15 (83.3%) Frame 15\n\tHead
-      average position error 3.1 mm and maximum position error 4.9 mm at time 0:16
-      (88.9%) Frame 16\n"
+      average position error 3.8 mm and maximum position error 6.0 mm at time 0:27
+      (79.4%) Frame 27\n\tLeftLowerArm average position error 3.9 mm and maximum
+      position error 5.9 mm at time 0:27 (79.4%) Frame 27\n\tLeftHand average position
+      error 3.8 mm and maximum position error 6.0 mm at time 0:27 (79.4%) Frame 27\n\tRightUpperArm
+      average position error 3.8 mm and maximum position error 6.0 mm at time 0:27
+      (79.4%) Frame 27\n\tRightLowerArm average position error 3.9 mm and maximum
+      position error 6.0 mm at time 0:27 (79.4%) Frame 27\n\tRightHand average position
+      error 3.8 mm and maximum position error 6.0 mm at time 0:27 (79.4%) Frame 27\n\tHead
+      average position error 3.8 mm and maximum position error 6.0 mm at time 0:27
+      (79.4%) Frame 27\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -797,7 +797,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 0
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -824,7 +824,7 @@ ModelImporter:
     normalImportMode: 2
     tangentImportMode: 2
     normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
   referencedClips: []
@@ -1546,3 +1546,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/2Hand-Axe/RPG-Character@2Hand-Axe-Jump.FBX
+  uploadId: 754562

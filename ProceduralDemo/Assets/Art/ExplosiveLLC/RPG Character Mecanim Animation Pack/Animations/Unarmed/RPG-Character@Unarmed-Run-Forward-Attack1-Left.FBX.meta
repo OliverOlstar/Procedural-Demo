@@ -720,8 +720,7 @@ ModelImporter:
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'B_Spine' has translation animation that
-      will be discarded.\n\t'B_Spine1' has translation animation that will be discarded.\n\t'B_Neck'
-      has translation animation that will be discarded.\n"
+      will be discarded.\n\t'B_Spine1' has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -1540,3 +1539,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/Unarmed/RPG-Character@Unarmed-Run-Forward-Attack1-Left.FBX
+  uploadId: 754562

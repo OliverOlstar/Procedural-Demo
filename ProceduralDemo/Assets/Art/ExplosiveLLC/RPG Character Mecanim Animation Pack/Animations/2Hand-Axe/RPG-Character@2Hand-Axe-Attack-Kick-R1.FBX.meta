@@ -389,19 +389,20 @@ ModelImporter:
       to improve retargeting quality.\n\t'B_Spine' has translation animation that
       will be discarded.\n\t'B_Spine1' has translation animation that will be discarded.\n"
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tRightLowerLeg
-      average position error 3.3 mm and maximum position error 11.0 mm at time 0:20
-      (66.7%) Frame 20\n\tLeftUpperArm average position error 5.3 mm and maximum
-      position error 6.5 mm at time 0: 5 (16.7%) Frame 5\n\tLeftLowerArm average
-      position error 5.4 mm and maximum position error 6.5 mm at time 0: 5 (16.7%)
-      Frame 5\n\tLeftHand average position error 5.3 mm and maximum position error
-      6.5 mm at time 0: 5 (16.7%) Frame 5\n\tRightUpperArm average position error
-      5.3 mm and maximum position error 6.5 mm at time 0: 5 (16.7%) Frame 5\n\tRightLowerArm
-      average position error 5.4 mm and maximum position error 7.1 mm at time 0:
-      8 (26.7%) Frame 8\n\tRightHand average position error 5.3 mm and maximum position
-      error 6.5 mm at time 0: 5 (16.7%) Frame 5\n\tHead average position error 5.3
-      mm and maximum position error 6.6 mm at time 0: 5 (16.7%) Frame 5\n\tRightFoot
-      average orientation error 0.2 deg and maximum orientation error 2.3 deg at
-      time 0:10 (33.3%) Frame 10\n"
+      average position error 7.5 mm and maximum position error 64.6 mm at time 0:16
+      (53.3%) Frame 16\n\tRightFoot average position error 0.5 mm and maximum position
+      error 5.8 mm at time 0:16 (53.3%) Frame 16\n\tLeftUpperArm average position
+      error 5.2 mm and maximum position error 6.4 mm at time 0: 7 (23.3%) Frame 7\n\tLeftLowerArm
+      average position error 5.2 mm and maximum position error 6.4 mm at time 0:
+      7 (23.3%) Frame 7\n\tLeftHand average position error 5.2 mm and maximum position
+      error 6.4 mm at time 0: 7 (23.3%) Frame 7\n\tRightUpperArm average position
+      error 5.2 mm and maximum position error 6.4 mm at time 0: 7 (23.3%) Frame 7\n\tRightLowerArm
+      average position error 5.1 mm and maximum position error 6.4 mm at time 0:
+      7 (23.3%) Frame 7\n\tRightHand average position error 5.2 mm and maximum position
+      error 6.4 mm at time 0: 7 (23.3%) Frame 7\n\tHead average position error 5.2
+      mm and maximum position error 6.4 mm at time 0: 7 (23.3%) Frame 7\n\tRightFoot
+      average orientation error 0.3 deg and maximum orientation error 2.3 deg at
+      time 0:12 (40.0%) Frame 12\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -456,7 +457,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 0
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -483,7 +484,7 @@ ModelImporter:
     normalImportMode: 2
     tangentImportMode: 2
     normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
   referencedClips: []
@@ -1205,3 +1206,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/2Hand-Axe/RPG-Character@2Hand-Axe-Attack-Kick-R1.FBX
+  uploadId: 754562

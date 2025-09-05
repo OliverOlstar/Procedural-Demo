@@ -721,11 +721,11 @@ ModelImporter:
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftUpperArm
       average position error 3.0 mm and maximum position error 3.0 mm at time 0:
       5 (20.8%) Frame 5\n\tLeftLowerArm average position error 2.9 mm and maximum
-      position error 3.0 mm at time 0: 3 (12.5%) Frame 3\n\tLeftHand average position
+      position error 3.0 mm at time 0: 4 (16.7%) Frame 4\n\tLeftHand average position
       error 3.0 mm and maximum position error 3.0 mm at time 0: 5 (20.8%) Frame 5\n\tRightUpperArm
       average position error 3.0 mm and maximum position error 3.0 mm at time 0:
       5 (20.8%) Frame 5\n\tRightLowerArm average position error 3.0 mm and maximum
-      position error 3.2 mm at time 0: 4 (16.7%) Frame 4\n\tRightHand average position
+      position error 3.1 mm at time 0: 5 (20.8%) Frame 5\n\tRightHand average position
       error 3.0 mm and maximum position error 3.0 mm at time 0: 5 (20.8%) Frame 5\n\tHead
       average position error 3.0 mm and maximum position error 3.0 mm at time 0:
       5 (20.8%) Frame 5\n"
@@ -1539,3 +1539,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/Unarmed/RPG-Character@Unarmed-Run-Forward.FBX
+  uploadId: 754562

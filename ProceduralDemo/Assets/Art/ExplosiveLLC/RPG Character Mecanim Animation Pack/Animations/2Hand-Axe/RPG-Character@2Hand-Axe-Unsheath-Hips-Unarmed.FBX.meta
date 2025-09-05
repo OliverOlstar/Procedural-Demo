@@ -384,10 +384,24 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'B_Spine' has translation animation that
+      will be discarded.\n"
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftLowerLeg
-      average position error 0.2 mm and maximum position error 1.8 mm at time 0:13
-      (43.3%) Frame 13\n"
+      average position error 0.5 mm and maximum position error 5.3 mm at time 1:
+      0 (100.0%) Frame 30\n\tRightLowerLeg average position error 0.5 mm and maximum
+      position error 4.9 mm at time 1: 0 (100.0%) Frame 30\n\tLeftUpperArm average
+      position error 9.2 mm and maximum position error 12.4 mm at time 0:18 (60.0%)
+      Frame 18\n\tLeftLowerArm average position error 9.2 mm and maximum position
+      error 12.4 mm at time 0:18 (60.0%) Frame 18\n\tLeftHand average position error
+      9.2 mm and maximum position error 12.4 mm at time 0:18 (60.0%) Frame 18\n\tRightUpperArm
+      average position error 9.2 mm and maximum position error 12.4 mm at time 0:18
+      (60.0%) Frame 18\n\tRightLowerArm average position error 9.2 mm and maximum
+      position error 12.5 mm at time 0:18 (60.0%) Frame 18\n\tRightHand average position
+      error 9.2 mm and maximum position error 12.4 mm at time 0:18 (60.0%) Frame
+      18\n\tHead average position error 9.2 mm and maximum position error 12.4 mm
+      at time 0:18 (60.0%) Frame 18\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -442,7 +456,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 0
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -469,7 +483,7 @@ ModelImporter:
     normalImportMode: 2
     tangentImportMode: 2
     normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
   referencedClips: []
@@ -1191,3 +1205,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/2Hand-Axe/RPG-Character@2Hand-Axe-Unsheath-Hips-Unarmed.FBX
+  uploadId: 754562

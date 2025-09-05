@@ -389,14 +389,14 @@ ModelImporter:
       to improve retargeting quality.\n\t'B_Spine' has translation animation that
       will be discarded.\n"
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tRightLowerLeg
-      average position error 0.3 mm and maximum position error 2.5 mm at time 0:15
+      average position error 0.3 mm and maximum position error 2.8 mm at time 0:15
       (31.2%) Frame 15\n\tLeftUpperArm average position error 19.8 mm and maximum
-      position error 20.5 mm at time 0: 4 (8.3%) Frame 4\n\tLeftLowerArm average
-      position error 19.8 mm and maximum position error 20.5 mm at time 0:26 (54.2%)
-      Frame 26\n\tLeftHand average position error 19.8 mm and maximum position error
-      20.5 mm at time 0: 4 (8.3%) Frame 4\n\tRightUpperArm average position error
-      19.8 mm and maximum position error 20.5 mm at time 0: 4 (8.3%) Frame 4\n\tRightLowerArm
-      average position error 19.8 mm and maximum position error 20.6 mm at time 1:
+      position error 20.5 mm at time 0: 3 (6.3%) Frame 3\n\tLeftLowerArm average
+      position error 19.8 mm and maximum position error 20.5 mm at time 0:27 (56.2%)
+      Frame 27\n\tLeftHand average position error 19.8 mm and maximum position error
+      20.5 mm at time 0: 2 (4.2%) Frame 2\n\tRightUpperArm average position error
+      19.8 mm and maximum position error 20.5 mm at time 0: 3 (6.3%) Frame 3\n\tRightLowerArm
+      average position error 19.9 mm and maximum position error 20.6 mm at time 1:
       7 (77.1%) Frame 37\n\tRightHand average position error 19.8 mm and maximum
       position error 20.5 mm at time 0: 3 (6.3%) Frame 3\n\tHead average position
       error 19.8 mm and maximum position error 20.5 mm at time 0: 2 (4.2%) Frame
@@ -448,7 +448,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 0
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -475,7 +475,7 @@ ModelImporter:
     normalImportMode: 2
     tangentImportMode: 2
     normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
   referencedClips: []
@@ -1197,3 +1197,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/2Hand-Axe/RPG-Character@2Hand-Axe-Death1.FBX
+  uploadId: 754562

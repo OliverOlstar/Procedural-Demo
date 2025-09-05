@@ -724,14 +724,14 @@ ModelImporter:
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftUpperArm
       average position error 3.2 mm and maximum position error 5.6 mm at time 0:
       0 (0.0%) Frame 0\n\tLeftLowerArm average position error 3.2 mm and maximum
-      position error 5.7 mm at time 0: 0 (0.0%) Frame 0\n\tLeftHand average position
-      error 3.2 mm and maximum position error 5.6 mm at time 0: 0 (0.0%) Frame 0\n\tRightUpperArm
-      average position error 3.2 mm and maximum position error 5.6 mm at time 0:24
-      (100.0%) Frame 24\n\tRightLowerArm average position error 3.2 mm and maximum
-      position error 5.6 mm at time 0:12 (50.0%) Frame 12\n\tRightHand average position
+      position error 5.7 mm at time 0:24 (100.0%) Frame 24\n\tLeftHand average position
       error 3.2 mm and maximum position error 5.6 mm at time 0:24 (100.0%) Frame
-      24\n\tHead average position error 3.2 mm and maximum position error 5.6 mm
-      at time 0: 0 (0.0%) Frame 0\n"
+      24\n\tRightUpperArm average position error 3.2 mm and maximum position error
+      5.6 mm at time 0: 0 (0.0%) Frame 0\n\tRightLowerArm average position error
+      3.2 mm and maximum position error 5.6 mm at time 0:12 (50.0%) Frame 12\n\tRightHand
+      average position error 3.2 mm and maximum position error 5.6 mm at time 0:24
+      (100.0%) Frame 24\n\tHead average position error 3.2 mm and maximum position
+      error 5.6 mm at time 0: 0 (0.0%) Frame 0\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -793,7 +793,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 0
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -820,7 +820,7 @@ ModelImporter:
     normalImportMode: 2
     tangentImportMode: 2
     normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
   referencedClips: []
@@ -1542,3 +1542,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/Relax/RPG-Character@Relax-Walk-Forward.FBX
+  uploadId: 754562

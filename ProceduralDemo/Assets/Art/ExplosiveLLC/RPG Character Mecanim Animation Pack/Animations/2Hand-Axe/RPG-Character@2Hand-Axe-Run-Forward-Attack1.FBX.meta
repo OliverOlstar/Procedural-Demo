@@ -728,12 +728,27 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: Motion
+    motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
-    animationRetargetingWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'B_Spine' has translation animation that
+      will be discarded.\nEvent FootL has a time (0.853976) outside the clip's valid
+      range (0.000000..0.800000). It will never be fired"
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tLeftLowerLeg
+      average position error 0.3 mm and maximum position error 2.0 mm at time 0:
+      0 (0.0%) Frame 0\n\tLeftUpperArm average position error 7.0 mm and maximum
+      position error 18.1 mm at time 0:21 (87.5%) Frame 21\n\tLeftLowerArm average
+      position error 7.0 mm and maximum position error 18.1 mm at time 0:21 (87.5%)
+      Frame 21\n\tLeftHand average position error 7.0 mm and maximum position error
+      18.1 mm at time 0:21 (87.5%) Frame 21\n\tRightUpperArm average position error
+      7.0 mm and maximum position error 18.1 mm at time 0:21 (87.5%) Frame 21\n\tRightLowerArm
+      average position error 7.0 mm and maximum position error 18.1 mm at time 0:21
+      (87.5%) Frame 21\n\tRightHand average position error 7.0 mm and maximum position
+      error 18.1 mm at time 0:21 (87.5%) Frame 21\n\tHead average position error
+      7.0 mm and maximum position error 18.1 mm at time 0:21 (87.5%) Frame 21\n"
     animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -802,7 +817,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 0
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -829,7 +844,7 @@ ModelImporter:
     normalImportMode: 2
     tangentImportMode: 2
     normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
   referencedClips: []
@@ -1551,3 +1566,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/2Hand-Axe/RPG-Character@2Hand-Axe-Run-Forward-Attack1.FBX
+  uploadId: 754562

@@ -389,10 +389,10 @@ ModelImporter:
       to improve retargeting quality.\n\t'B_Spine' has translation animation that
       will be discarded.\n"
     animationRetargetingWarnings: "\nRetargeting quality report for clip 'Take 001':\n\tRightLowerLeg
-      average position error 2.6 mm and maximum position error 11.0 mm at time 0:20
-      (66.7%) Frame 20\n\tLeftUpperArm average position error 6.8 mm and maximum
+      average position error 2.6 mm and maximum position error 11.0 mm at time 0:15
+      (50.0%) Frame 15\n\tLeftUpperArm average position error 6.8 mm and maximum
       position error 16.9 mm at time 0:14 (46.7%) Frame 14\n\tLeftLowerArm average
-      position error 6.9 mm and maximum position error 16.9 mm at time 0:14 (46.7%)
+      position error 6.8 mm and maximum position error 16.9 mm at time 0:14 (46.7%)
       Frame 14\n\tLeftHand average position error 6.8 mm and maximum position error
       16.9 mm at time 0:14 (46.7%) Frame 14\n\tRightUpperArm average position error
       6.8 mm and maximum position error 16.9 mm at time 0:14 (46.7%) Frame 14\n\tRightLowerArm
@@ -456,7 +456,7 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    sortHierarchyByName: 0
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 0
     importCameras: 0
@@ -483,7 +483,7 @@ ModelImporter:
     normalImportMode: 2
     tangentImportMode: 2
     normalCalculationMode: 0
-    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 2
     normalSmoothingSource: 0
   referencedClips: []
@@ -1205,3 +1205,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 63772
+  packageName: RPG Character Mecanim Animation Pack
+  packageVersion: 7.1.0
+  assetPath: Assets/Art/ExplosiveLLC/RPG Character Mecanim Animation Pack/Animations/2Hand-Axe/RPG-Character@2Hand-Axe-Attack-Kick-R2.FBX
+  uploadId: 754562
