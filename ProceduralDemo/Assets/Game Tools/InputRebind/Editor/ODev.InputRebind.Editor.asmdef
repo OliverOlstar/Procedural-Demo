@@ -1,0 +1,19 @@
+{
+    "name": "ODev.InputRebind.Editor",
+    "rootNamespace": "ODev.InputRebind.Editor",
+    "references": [
+        "GUID:f87a73cc12b58eb4783ed1c0df5f18ef",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

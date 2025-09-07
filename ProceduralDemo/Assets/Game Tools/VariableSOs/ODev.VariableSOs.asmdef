@@ -1,0 +1,17 @@
+{
+    "name": "ODev.VariableSOs",
+    "rootNamespace": "ODev.VariableSOs",
+    "references": [
+        "GUID:5b10c1f9ecd537f4dbe3d211152286e8",
+        "GUID:ad968d605628d06499b62cdc30f11cf8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
