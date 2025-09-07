@@ -20,25 +20,10 @@ MonoBehaviour:
   m_Cooldown: 0.25
   m_CooldownTrigger: 1
   m_LogSelf: 0
-  m_AccelerationModifier:
-    m_Type: 0
-    m_Add: 0
-    m_Percent: -0.75
-  m_DragModifier:
-    m_Type: 1
-    m_Add: 0
-    m_Percent: -0.5
-  m_MaxVelocityModifier:
-    m_Type: 0
-    m_Add: 0
-    m_Percent: 1
-  m_GravityUpModifier:
-    m_Type: 1
-    m_Add: 0
-    m_Percent: -0.3
-  m_GravityDownModifier:
-    m_Type: 1
-    m_Add: 0
-    m_Percent: -0.75
+  m_AccelerationModifier: {fileID: 11400000, guid: c17535b1d1e0d9a4e8ee9e7deca6a1dd, type: 2}
+  m_DragModifier: {fileID: 11400000, guid: 77c876d9162df1b4cad5dcea10c06d24, type: 2}
+  m_MaxVelocityModifier: {fileID: 11400000, guid: 7d2f115dbc8b3994f995d73d523d652a, type: 2}
+  m_GravityUpModifier: {fileID: 11400000, guid: 7e2dd1d0fd59b2945a9997c11af95408, type: 2}
+  m_GravityDownModifier: {fileID: 11400000, guid: 15b035a2652f088448ea062746183611, type: 2}
   m_MinStartYVelocity: -0.5
   m_StartYForce: 8

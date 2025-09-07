@@ -1,12 +1,13 @@
 using ODev.GameStats;
+using ODev.Picker;
 using UnityEngine;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Crouch Ability", menuName = "Character/Ability/Player Crouch")]
 public class SOPlayerAbilityCrouch : SOCharacterAbility
 {
-	[SerializeField]
-	public FloatGameStatModifier m_SpeedModifier = new();
+	[SerializeField, AssetNonNull]
+	public FloatGameStatModifier m_SpeedModifier;
 	public FloatGameStatModifier SpeedModifier => m_SpeedModifier;
 
 	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilityCrouch(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
@@ -14,14 +15,10 @@ public class SOPlayerAbilityCrouch : SOCharacterAbility
 
 public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 {
-	private FloatGameStatModifier m_ModifierInstance;
-
 	public PlayerAbilityCrouch(PlayerRoot pPlayer, SOPlayerAbilityCrouch pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
 	protected override void Initalize()
 	{
-		m_ModifierInstance = FloatGameStatModifier.CreateCopy(Data.SpeedModifier);
-		
 		Root.OnGround.OnAirEnterEvent.AddListener(OnAirEnter);
 		// Root.OnGround.OnAirExitEvent.AddListener(OnAirExit);
 	}
@@ -39,7 +36,7 @@ public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 
 	protected override void ActivateInternal()
 	{
-		m_ModifierInstance.Apply(Root.Movement.MaxVelocity);
+		Data.SpeedModifier.Apply(Root.Movement.MaxVelocity);
 		Root.Input.Crouch.RegisterOnCanceled(Deactivate);
 
 		// TODO: Modify collision
@@ -48,7 +45,7 @@ public class PlayerAbilityCrouch : CharacterAbility<SOPlayerAbilityCrouch>
 
 	protected override void DeactivateInternal()
 	{
-		m_ModifierInstance.Remove(Root.Movement.MaxVelocity);
+		Data.SpeedModifier.Remove(Root.Movement.MaxVelocity);
 		Root.Input.Crouch.DeregisterOnCanceled(Deactivate);
 	}
 

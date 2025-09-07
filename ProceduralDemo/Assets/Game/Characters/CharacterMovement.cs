@@ -17,9 +17,9 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	[Header("Stats")]
 	public bool MovementEnabled = true;
 	// public FloatGameStat Speed = new(10.0f);
-	public FloatGameStat Acceleration = new(20.0f);
-	public FloatGameStat Drag = new(1.0f);
-	public FloatGameStat MaxVelocity = new(10.0f);
+	public FloatGameStat Acceleration;
+	public FloatGameStat Drag;
+	public FloatGameStat MaxVelocity;
 
 	[Space, SerializeField]
 	private float m_SlopeAcceleration = 2.0f;
@@ -29,15 +29,15 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	private float m_SlopeMaxVelocity = 5.0f;
 
 	[Space]
-	public FloatGameStat AirAcceleration = new(20.0f);
-	public FloatGameStat AirDrag = new(1.0f);
-	public FloatGameStat AirMaxVelocity = new(10.0f);
+	public FloatGameStat AirAcceleration;
+	public FloatGameStat AirDrag;
+	public FloatGameStat AirMaxVelocity;
 
 	[Space]
 	public bool GravityEnabled = true;
-	public FloatGameStat UpGravity = new(-19.62f);
-	public FloatGameStat DownGravity = new(-19.62f);
-	public FloatGameStat TerminalGravity = new(-30.0f);
+	public FloatGameStat UpGravity;
+	public FloatGameStat DownGravity;
+	public FloatGameStat TerminalGravity;
 
 	private Vector3 m_RecievedDisplacement = Vector3.zero;
 	private Vector3 m_VelocityXZ;

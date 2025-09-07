@@ -1,6 +1,7 @@
 using System;
 using ODev.GameStats;
 using ODev.Input;
+using ODev.Picker;
 using ODev.Util;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,14 +9,14 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Slide Ability", menuName = "Character/Ability/Player Slide")]
 public class SOPlayerAbilitySlide : SOCharacterAbility
 {
-	[Space, SerializeField]
-	private FloatGameStatModifier m_DragModifier = new();
+	[Space, SerializeField, AssetNonNull]
+	private FloatGameStatModifier m_DragModifier;
 	public FloatGameStatModifier DragModifier => m_DragModifier;
-	[SerializeField]
-	private FloatGameStatModifier m_AirDragModifier = new();
+	[SerializeField, AssetNonNull]
+	private FloatGameStatModifier m_AirDragModifier;
 	public FloatGameStatModifier AirDragModifier => m_AirDragModifier;
-	[SerializeField]
-	private FloatGameStatModifier m_GravityModifier = new();
+	[SerializeField, AssetNonNull]
+	private FloatGameStatModifier m_GravityModifier;
 	public FloatGameStatModifier GravityModifier => m_GravityModifier;
 
 	[Space, SerializeField]
@@ -40,20 +41,9 @@ public class SOPlayerAbilitySlide : SOCharacterAbility
 
 public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 {
-	private FloatGameStatModifier m_ModifierInstance;
-	private FloatGameStatModifier m_AirModifierInstance;
-	private FloatGameStatModifier m_GravityDownModifierInstance;
-	// private FloatGameStatModifier m_GravityUpModifierInstance;
-
 	public PlayerAbilitySlide(PlayerRoot pPlayer, SOPlayerAbilitySlide pData, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) : base(pPlayer, pData, pOnInputPerformed, pOnInputCanceled) { }
 
-	protected override void Initalize()
-	{
-		m_ModifierInstance = FloatGameStatModifier.CreateCopy(Data.DragModifier);
-		m_AirModifierInstance = FloatGameStatModifier.CreateCopy(Data.AirDragModifier);
-		m_GravityDownModifierInstance = FloatGameStatModifier.CreateCopy(Data.GravityModifier);
-		// m_GravityUpModifierInstance = FloatGameStatModifier.CreateCopy(Data.GravityModifier);
-	}
+	protected override void Initalize() { }
 	protected override void DestroyInternal() { }
 
 	protected override bool CanActivateUpdate()
@@ -76,9 +66,9 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 
 	protected override void ActivateInternal()
 	{
-		m_ModifierInstance.Apply(Root.Movement.Drag);
-		m_AirModifierInstance.Apply(Root.Movement.AirDrag);
-		m_GravityDownModifierInstance.Apply(Root.Movement.DownGravity);
+		Data.DragModifier.Apply(Root.Movement.Drag);
+		Data.AirDragModifier.Apply(Root.Movement.AirDrag);
+		Data.GravityModifier.Apply(Root.Movement.DownGravity);
 		// m_GravityUpModifierInstance.Apply(Root.Movement.UpGravity);
 
 		Root.Movement.MovementEnabled = false;
@@ -88,9 +78,9 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 
 	protected override void DeactivateInternal()
 	{
-		m_ModifierInstance.Remove(Root.Movement.Drag);
-		m_AirModifierInstance.Remove(Root.Movement.AirDrag);
-		m_GravityDownModifierInstance.Remove(Root.Movement.DownGravity);
+		Data.DragModifier.Remove(Root.Movement.Drag);
+		Data.AirDragModifier.Remove(Root.Movement.AirDrag);
+		Data.GravityModifier.Remove(Root.Movement.DownGravity);
 		// m_GravityUpModifierInstance.Remove(Root.Movement.UpGravity);
 
 		Root.Movement.MovementEnabled = true;

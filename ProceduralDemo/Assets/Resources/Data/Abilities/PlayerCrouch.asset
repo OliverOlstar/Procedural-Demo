@@ -20,7 +20,4 @@ MonoBehaviour:
   m_Cooldown: 0
   m_CooldownTrigger: 0
   m_LogSelf: 0
-  m_SpeedModifier:
-    m_Type: 1
-    m_Add: 0
-    m_Percent: -0.4
+  m_SpeedModifier: {fileID: 11400000, guid: 1be21b4f326c2594390d537317aab41a, type: 2}

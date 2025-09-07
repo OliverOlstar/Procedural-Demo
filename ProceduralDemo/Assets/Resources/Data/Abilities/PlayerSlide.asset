@@ -20,18 +20,9 @@ MonoBehaviour:
   m_Cooldown: 0
   m_CooldownTrigger: 0
   m_LogSelf: 0
-  m_DragModifier:
-    m_Type: 1
-    m_Add: 0
-    m_Percent: -0.7
-  m_AirDragModifier:
-    m_Type: 1
-    m_Add: 0
-    m_Percent: -1
-  m_GravityModifier:
-    m_Type: 1
-    m_Add: 0
-    m_Percent: 0.5
+  m_DragModifier: {fileID: 11400000, guid: 480aa2c2dd79ef24ca4180448fa1a4a9, type: 2}
+  m_AirDragModifier: {fileID: 11400000, guid: 799c522cb6bd6cd4a8b6c430047099e5, type: 2}
+  m_GravityModifier: {fileID: 11400000, guid: c940e7c3fdfb27542bd68a0b30e55583, type: 2}
   m_StartVelocity: 3
   m_NormalAcceleration: 250
   m_MaxAcceleration: 60

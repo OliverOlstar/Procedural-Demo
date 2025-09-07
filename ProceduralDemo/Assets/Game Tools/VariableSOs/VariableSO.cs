@@ -12,7 +12,7 @@ namespace ODev.VariableSOs
     public class VariableSO<T> : VariableSO
     {
         [SerializeField] protected T m_DefaultValue;
-        [SerializeField] protected T m_Value;
+        [SerializeField, HideInEditorMode] protected T m_Value;
 
         public event Action<T> OnValueChanged = delegate { };
 
