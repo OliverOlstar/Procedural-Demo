@@ -1,15 +1,12 @@
 using ODev.Util;
+using ODev.VariableSOs;
 using UnityEngine;
 
 namespace ODev.GameStats
 {
-	[System.Serializable]
-	public class IntGameStatModifier : GameStatModifier<IntGameStat, int> { }
-	[System.Serializable]
-	public class FloatGameStatModifier : GameStatModifier<FloatGameStat, float> { }
-
-	public abstract class GameStatModifier<TStat, TValue> where TStat : GameStat<TValue>
-    {
+	[CreateAssetMenu(menuName = "Variables/GameStat/FloatGameStatModifier", fileName = "FloatGameStatModifier", order = 0)]
+	public class FloatGameStatModifier : FloatVariableSO
+	{
 		public enum Type
 		{
 			Addition,
@@ -17,70 +14,44 @@ namespace ODev.GameStats
 		}
 
 		[SerializeField]
-		private Type m_Type;
-		[SerializeField]
-		private TValue m_Add = default;
-		[SerializeField]
-		private float m_Percent = 1.0f;
+		private Type m_Method;
 
-		private int? m_ModifyKey;
-
-		public void Apply(TStat pStat)
+		public void Apply(FloatGameStat pStat)
 		{
-			if (m_ModifyKey.HasValue)
-			{
-				this.LogError("Tried adding modify when we already have one added");
-				return;
-			}
-			switch (m_Type)
+			switch (m_Method)
 			{
 				case Type.Addition:
-					m_ModifyKey = pStat.AddModify(m_Add);
+					pStat.AddModify(this);
 					break;
 				case Type.Percent:
-					m_ModifyKey = pStat.AddPercentModify(m_Percent);
+					pStat.AddPercentModify(this);
 					break;
 				default:
-					this.DevException(new System.NotImplementedException(m_Type.ToString()));
+					this.DevException(new System.NotImplementedException(m_Method.ToString()));
 					return;
 			}
 		}
 
-		public void Remove(TStat pStat)
+		public void Remove(FloatGameStat pStat)
 		{
-			if (!m_ModifyKey.HasValue)
-			{
-				this.LogError("Tried removing modify when don't have one");
-				return;
-			}
-			bool success;
-			switch (m_Type)
+			switch (m_Method)
 			{
 				case Type.Addition:
-					success = pStat.TryRemoveModify(m_ModifyKey.Value);
+					pStat.TryRemoveModify(this);
 					break;
 				case Type.Percent:
-					success = pStat.TryRemovePercentModify(m_ModifyKey.Value);
+					pStat.TryRemovePercentModify(this);
 					break;
 				default:
-					this.DevException(new System.NotImplementedException(m_Type.ToString()));
+					this.DevException(new System.NotImplementedException(m_Method.ToString()));
 					return;
 			}
-			if (!success)
-			{
-				this.LogError("Failed to remove modify");
-			}
-			m_ModifyKey = null;
 		}
 
-		public static T CreateCopy<T>(T pCopyFrom) where T : GameStatModifier<TStat, TValue>, new()
+		public FloatGameStatModifier CreateCopy()
 		{
-			return new T()
-			{
-				m_Type = pCopyFrom.m_Type,
-				m_Add = pCopyFrom.m_Add,
-				m_Percent = pCopyFrom.m_Percent
-			};
+			var instance = Instantiate(this);
+			return instance;
 		}
-    }
+	}
 }

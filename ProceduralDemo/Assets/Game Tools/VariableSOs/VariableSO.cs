@@ -11,12 +11,13 @@ namespace ODev.VariableSOs
 
     public class VariableSO<T> : VariableSO
     {
-        [SerializeField] protected T _defaultValue;
-        [SerializeField] private T _value;
-        public T Value => _value;
-        public virtual T DefaultValue => _defaultValue;
+        [SerializeField] protected T m_DefaultValue;
+        [SerializeField] protected T m_Value;
 
-        public event Action<T> ValueChanged = delegate { };
+        public event Action<T> OnValueChanged = delegate { };
+
+        public virtual T Value => m_Value;
+        public virtual T DefaultValue => m_DefaultValue;
 
         protected virtual void OnDisable()
         {
@@ -32,19 +33,19 @@ namespace ODev.VariableSOs
 
 		public override void ResetToDefault()
         {
-            SetValue(_defaultValue);
+            SetValue(m_DefaultValue);
         }
 
         public virtual void SetValue(T value)
         {
-            _value = value;
-            ValueChanged?.Invoke(value);
+            m_Value = value;
+            OnValueChanged?.Invoke(value);
         }
 
         [Button]
         private void CallValueChanged()
         {
-            ValueChanged?.Invoke(_value);
+            OnValueChanged?.Invoke(m_Value);
         }
     }
 }

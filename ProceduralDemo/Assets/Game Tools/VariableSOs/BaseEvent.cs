@@ -6,48 +6,49 @@ namespace Events
     public abstract class BaseEvent<T> : ScriptableObject
     {
         public T Value { get; private set; }
-        private event Action<T> _action;
+
+        private event Action<T> m_Action;
 
         public void Register(Action<T> listener)
         {
-            _action += listener;
+            m_Action += listener;
         }
 
         public void UnRegister(Action<T> listener)
         {
-            _action -= listener;
+            m_Action -= listener;
         }
         
         public void UnRegisterAll()
         {
-            _action = delegate { };
+            m_Action = delegate { };
         }
 
         public void Fire(T data)
         {
             Value = data;
-            _action?.Invoke(data);
+            m_Action?.Invoke(data);
         }
     }
     
     [CreateAssetMenu(menuName = "Events/EmptyEvent", fileName = "EmptyEvent", order = 0)]
     public sealed class BaseEvent : ScriptableObject
     {
-        private event Action _action;
+        private event Action m_Action;
 
         public void Register(Action listener)
         {
-            _action += listener;
+            m_Action += listener;
         }
 
         public void UnRegister(Action listener)
         {
-            _action -= listener;
+            m_Action -= listener;
         }
         
         public void Fire()
         {
-            _action?.Invoke();
+            m_Action?.Invoke();
         }
     }
 }
