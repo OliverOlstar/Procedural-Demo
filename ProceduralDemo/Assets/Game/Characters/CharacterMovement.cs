@@ -1,9 +1,9 @@
 using ODev;
 using ODev.Util;
 using ODev.GameStats;
-using ODev.Update;
 using UnityEngine;
 using ODev.Updateables;
+using ODev.Picker;
 
 public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 {
@@ -17,8 +17,11 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	[Header("Stats")]
 	public bool MovementEnabled = true;
 	// public FloatGameStat Speed = new(10.0f);
+	[AssetNonNull]
 	public FloatGameStat Acceleration;
+	[AssetNonNull]
 	public FloatGameStat Drag;
+	[AssetNonNull]
 	public FloatGameStat MaxVelocity;
 
 	[Space, SerializeField]
@@ -28,15 +31,20 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 	[SerializeField]
 	private float m_SlopeMaxVelocity = 5.0f;
 
-	[Space]
+	[Space, AssetNonNull]
 	public FloatGameStat AirAcceleration;
+	[AssetNonNull]
 	public FloatGameStat AirDrag;
+	[AssetNonNull]
 	public FloatGameStat AirMaxVelocity;
 
 	[Space]
 	public bool GravityEnabled = true;
+	[AssetNonNull]
 	public FloatGameStat UpGravity;
+	[AssetNonNull]
 	public FloatGameStat DownGravity;
+	[AssetNonNull]
 	public FloatGameStat TerminalGravity;
 
 	private Vector3 m_RecievedDisplacement = Vector3.zero;

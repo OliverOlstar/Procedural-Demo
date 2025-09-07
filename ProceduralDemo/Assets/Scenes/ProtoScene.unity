@@ -137201,37 +137201,19 @@ MonoBehaviour:
   m_Controller: {fileID: 2004640779}
   m_Root: {fileID: 82955119}
   MovementEnabled: 1
-  Acceleration:
-    m_BaseValue: 200
-    m_CurrValue: 20
-  Drag:
-    m_BaseValue: 6
-    m_CurrValue: 1
-  MaxVelocity:
-    m_BaseValue: 7
-    m_CurrValue: 10
+  Acceleration: {fileID: 11400000, guid: 96b4e6ac260d7ac4780367be88b31968, type: 2}
+  Drag: {fileID: 11400000, guid: 40089502bcf925a468263936c1808ccf, type: 2}
+  MaxVelocity: {fileID: 11400000, guid: 90c5b01a4e830774788c893f3020b28b, type: 2}
   m_SlopeAcceleration: 100
   m_SlopeDrag: 20
   m_SlopeMaxVelocity: 5
-  AirAcceleration:
-    m_BaseValue: 20
-    m_CurrValue: 20
-  AirDrag:
-    m_BaseValue: 1
-    m_CurrValue: 1
-  AirMaxVelocity:
-    m_BaseValue: 10
-    m_CurrValue: 10
+  AirAcceleration: {fileID: 11400000, guid: 872881c3082fd3844aacea1059ae70a1, type: 2}
+  AirDrag: {fileID: 11400000, guid: 748f3dd093cdfb04cac6cc66dc770e50, type: 2}
+  AirMaxVelocity: {fileID: 11400000, guid: 196d67aded0bcb2419f2c42c0fcc1707, type: 2}
   GravityEnabled: 1
-  UpGravity:
-    m_BaseValue: -20
-    m_CurrValue: -19.62
-  DownGravity:
-    m_BaseValue: -30
-    m_CurrValue: -19.62
-  TerminalGravity:
-    m_BaseValue: -30
-    m_CurrValue: -30
+  UpGravity: {fileID: 11400000, guid: b86ea4943f98b51479cd4e9d269bf678, type: 2}
+  DownGravity: {fileID: 11400000, guid: 642f066518d093d41abfeaecc2d32bd4, type: 2}
+  TerminalGravity: {fileID: 11400000, guid: d6fd598e48ed7fe44a8b018871c487b4, type: 2}
 --- !u!114 &2004640778
 MonoBehaviour:
   m_ObjectHideFlags: 0
