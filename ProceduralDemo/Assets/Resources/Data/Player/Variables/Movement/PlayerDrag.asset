@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerDrag
   m_EditorClassIdentifier: 
   m_DefaultValue: 6
-  m_Value: 0
+  m_Value: 6
   m_AddModifiers: []
   m_PercentModifiers: []
