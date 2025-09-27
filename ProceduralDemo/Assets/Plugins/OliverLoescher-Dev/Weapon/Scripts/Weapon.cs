@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ODev.Util;
 using UnityEngine;
-using UnityEngine.Events;
-using Sirenix.OdinInspector;
-using System.Runtime.CompilerServices;
+using System;
 
 namespace ODev.Weapon
 {
@@ -19,32 +17,24 @@ namespace ODev.Weapon
 			RandomAllOnce
 		}
 
-		[SerializeField, Required]
-		private SOWeapon m_Data = null;
-		public SOTeam Team = null;
-		[ShowIf("@muzzlePoints.Length > 1"), SerializeField]
-		protected MultiMuzzleType m_MultiMuzzleType = MultiMuzzleType.RandomNotOneAfterItself;
+		public event Action OnShoot = delegate { };
+		public event Action OnFailedShoot = delegate { };
+
+		[SerializeField] private SOWeapon m_Data = null;
+		[SerializeField] private SOTeam m_Team = null;
+		[SerializeField] protected MultiMuzzleType m_MultiMuzzleType = MultiMuzzleType.RandomNotOneAfterItself;
 		public bool CanShoot = true;
 
 		[Header("References")]
-		[SerializeField]
-		protected Transform[] m_MuzzlePoints = new Transform[1];
-		[SerializeField]
-		private ParticleSystem m_MuzzleFlash = null;
-		[ShowIf("@muzzleFlash != null"), SerializeField]
-		private Vector3 m_MuzzleFlashRelOffset = new();
+		[SerializeField] protected Transform[] m_MuzzlePoints = new Transform[1];
+		[SerializeField] private ParticleSystem m_MuzzleFlash = null;
+		[SerializeField] private Vector3 m_MuzzleFlashRelOffset = new();
 
-		[Space]
-		public GameObject Sender = null;
-		[SerializeField]
-		private Rigidbody m_RecoilBody = null;
-
-		[FoldoutGroup("Unity Events")] public UnityEvent OnShoot;
-		[FoldoutGroup("Unity Events")] public UnityEvent OnFailedShoot;
+		[Space] public GameObject m_Sender = null;
+		[SerializeField] private Rigidbody m_RecoilBody = null;
 
 		private SOWeaponShootStartBase m_ShootStart = null;
 		private SOWeaponSpreadBase m_Spread = null;
-		public bool IsShooting { get; private set; } = false;
 
 		public SOWeapon Data => m_Data;
 
@@ -61,7 +51,7 @@ namespace ODev.Weapon
 
 		private void Reset()
 		{
-			Sender = gameObject;
+			m_Sender = gameObject;
 		}
 
 		protected virtual void Init() { }
@@ -88,8 +78,8 @@ namespace ODev.Weapon
 			{
 				return;
 			}
-            m_ShootStart.OnUpdate(UnityEngine.Time.deltaTime);
-            m_Spread.OnUpdate(UnityEngine.Time.deltaTime);
+            m_ShootStart.OnUpdate(Time.deltaTime);
+            m_Spread.OnUpdate(Time.deltaTime);
 		}
 
 		public void Shoot()
@@ -137,6 +127,19 @@ namespace ODev.Weapon
 		{
 			for (int i = 0; i < m_Data.ProjectilesPerShot; i++)
 			{
+				switch (m_Data.MyBulletType)
+				{
+					case SOWeapon.BulletType.Projectile:
+						break;
+					case SOWeapon.BulletType.RaycastProjectile:
+						break;
+					case SOWeapon.BulletType.Raycast:
+						break;
+
+					default:
+						this.DevException(new NotImplementedException(System.Enum.GetName(typeof(SOWeapon.BulletType), m_Data.MyBulletType)));
+						return;
+				}
 				if (m_Data.MyBulletType == SOWeapon.BulletType.Raycast)
 				{
 					SpawnRaycast(pMuzzle.position, pMuzzle.forward);
@@ -161,7 +164,7 @@ namespace ODev.Weapon
 			projectile.SetActive(true);
 
 			Projectile projectileScript = projectile.GetComponentInChildren<Projectile>();
-			projectileScript.Init(pPoint, pDirection, Sender);
+			projectileScript.Init(pPoint, pDirection, m_Sender);
 
 			// Audio
 			m_Data.ShotSound.Play(transform.position); // TODO Move this incase bulletsPerShot > 1
@@ -177,15 +180,14 @@ namespace ODev.Weapon
 			{
 				ApplyParticleFX(hit.point, Quaternion.FromToRotation(Vector3.forward, hit.normal), hit.collider);
 
-				// push object if rigidbody
-				Rigidbody hitRb = hit.collider.attachedRigidbody;
+				// // push object if rigidbody
+				// Rigidbody hitRb = hit.collider.attachedRigidbody;
 				// if (hitRb != null)
-				//	 hitRb.AddForceAtPosition(data.hitForce * dir, hit.point);
+				// 	 hitRb.AddForceAtPosition(m_Data.hitForce * dir, hit.point);
 
-				// Damage my script if possible
-				IDamageable a = hit.collider.GetComponent<IDamageable>();
-				// if (a != null)
-				//	 a.Damage(data.damage, sender, hit.point, hit.normal);
+				// // Damage my script if possible
+				// if (hit.collider.TryGetComponent<IDamageable>(out var a))
+				// 	a.Damage(m_Data.damage, Sender, hit.point, hit.normal);
 			}
 		}
 
@@ -211,7 +213,6 @@ namespace ODev.Weapon
 					{
 						m_LastMuzzleIndex = 0;
 					}
-
 					return m_MuzzlePoints[m_LastMuzzleIndex];
 
 				case MultiMuzzleType.PingPong: // PingPong ////////////////////////////////
@@ -234,14 +235,14 @@ namespace ODev.Weapon
 					return m_MuzzlePoints[m_LastMuzzleIndex];
 
 				case MultiMuzzleType.Random: // Random ////////////////////////////////////
-					return m_MuzzlePoints[Random.Range(0, m_MuzzlePoints.Length)];
+					return m_MuzzlePoints[UnityEngine.Random.Range(0, m_MuzzlePoints.Length)];
 
 				case MultiMuzzleType.RandomNotOneAfterItself: // RandomNotOneAfterItself //
-					int i = Random.Range(0, m_MuzzlePoints.Length);
+					int i = UnityEngine.Random.Range(0, m_MuzzlePoints.Length);
 					if (i == m_LastMuzzleIndex)
 					{
 						// If is previous offset to new index
-						i += Random.Range(1, m_MuzzlePoints.Length);
+						i += UnityEngine.Random.Range(1, m_MuzzlePoints.Length);
 						// If past max, loop back around
 						if (i >= m_MuzzlePoints.Length)
 						{
@@ -262,7 +263,7 @@ namespace ODev.Weapon
 					}
 
 					// Get random index from list of unused indexes
-					int a = Random.Range(0, m_MuzzleIndexList.Count);
+					int a = UnityEngine.Random.Range(0, m_MuzzleIndexList.Count);
 					int b = m_MuzzleIndexList[a];
 					m_MuzzleIndexList.RemoveAt(a);
 					return m_MuzzlePoints[b];
@@ -286,16 +287,16 @@ namespace ODev.Weapon
 				{
 					continue;
 				}
-				(m_Spread == null ? m_Data.Spread : m_Spread).DrawGizmos(transform, m);
+				if (m_Spread != null)
+				{
+					m_Spread.DrawGizmos(transform, m);
+				}
+				else if (m_Data.Spread != null)
+				{
+					m_Data.Spread.DrawGizmos(transform, m);
+				}
 			}
 #endif
 		}
-
-		#region Helpers
-		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
-		protected void Log(string pMessage, [CallerMemberName] string pMethodName = "") => this.Log(pMessage, pMethodName);
-		[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
-		protected void LogError(string pMessage, [CallerMemberName] string pMethodName = "") => this.LogError(pMessage, pMethodName);
-		#endregion
 	}
 }

@@ -7,7 +7,7 @@ namespace Events
     {
         public T Value { get; private set; }
 
-        private event Action<T> m_Action;
+        private event Action<T> m_Action = delegate { };
 
         public void Register(Action<T> listener)
         {
@@ -27,7 +27,7 @@ namespace Events
         public void Fire(T data)
         {
             Value = data;
-            m_Action?.Invoke(data);
+            m_Action.Invoke(data);
         }
     }
     

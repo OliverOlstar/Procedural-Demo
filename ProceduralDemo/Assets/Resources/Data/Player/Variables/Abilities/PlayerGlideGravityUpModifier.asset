@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerGlideGravityUpModifier
   m_EditorClassIdentifier: 
   m_DefaultValue: -0.3
-  m_Value: 0
+  m_Value: -0.5
   m_Method: 1

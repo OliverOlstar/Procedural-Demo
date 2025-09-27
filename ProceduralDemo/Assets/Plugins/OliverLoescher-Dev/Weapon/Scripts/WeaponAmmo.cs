@@ -1,21 +1,16 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
-using Sirenix.OdinInspector;
+using System;
 
 namespace ODev.Weapon
 {
 	[RequireComponent(typeof(Weapon))]
 	public class WeaponAmmo : MonoBehaviour
 	{
-		[FoldoutGroup("Unity Events")]
-		public UnityEvent OnReload;
-		[FoldoutGroup("Unity Events")]
-		public UnityEvent OnStartOverHeat;
-		[FoldoutGroup("Unity Events")]
-		public UnityEvent OnEndOverHeat;
-		[FoldoutGroup("Unity Events")]
-		public UnityEvent OnOutOfAmmo;
+		public event Action OnReload = delegate { };
+		public event Action OnStartOverHeat = delegate { };
+		public event Action OnEndOverHeat = delegate { };
+		public event Action OnOutOfAmmo = delegate { };
 
 		private Weapon m_Weapon = null;
 		private int m_TotalAmmo;
@@ -24,11 +19,16 @@ namespace ODev.Weapon
 
 		private void Start()
 		{
-			m_Weapon = GetComponent<Weapon>();
-			m_Weapon.OnShoot.AddListener(OnShoot);
+			TryGetComponent(out m_Weapon);
+			m_Weapon.OnShoot += OnShoot;
 
 			m_ClipAmmo = m_Weapon.Data.ClipAmmo;
 			m_TotalAmmo = m_Weapon.Data.TotalAmmo - m_ClipAmmo;
+		}
+
+		private void OnDestroy()
+		{
+			m_Weapon.OnShoot -= OnShoot;
 		}
 
 		public void OnShoot()
