@@ -45,7 +45,7 @@ public class BuildModeController : MonoBehaviour
 	}
 	private void OnDisable()
 	{
-		m_Updateable.Deregister();
+		m_Updateable.UnRegister();
 	}
 
 	private void Start()

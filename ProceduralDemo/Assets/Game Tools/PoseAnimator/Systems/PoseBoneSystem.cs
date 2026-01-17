@@ -7,18 +7,12 @@ namespace ODev.PoseAnimator
 {
 	public struct PoseBoneSystem : IJobParallelFor
 	{
-		[ReadOnly]
-		public NativeArray<PoseKey> SkeletonKeys;
-		[ReadOnly]
-		public int SkeletonLength;
-		[ReadOnly]
-		public NativeArray<PoseAnimation> Animations;
-		[ReadOnly]
-		public NativeArray<PoseWeight> Weights;
-		[ReadOnly]
-		public NativeArray<PoseKey> PoseKeys;
-		[ReadOnly]
-		public bool UseNextPoseAsTheBase;
+		[ReadOnly] public NativeArray<PoseKey> SkeletonKeys;
+		[ReadOnly] public int SkeletonLength;
+		[ReadOnly] public NativeArray<PoseAnimation> Animations;
+		[ReadOnly] public NativeArray<PoseWeight> Weights;
+		[ReadOnly] public NativeArray<PoseKey> PoseKeys;
+		[ReadOnly] public bool UseNextPoseAsTheBase;
 
 		public NativeArray<PoseKey> NextPose;
 

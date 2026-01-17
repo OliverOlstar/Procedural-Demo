@@ -71,14 +71,17 @@ namespace ODev.Updateables
             }
         }
 
-        public void Deregister()
+        public void UnRegister()
         {
             if (!IsRegistered)
             {
                 return;
             }
-            UpdateableManager.Instance?.Unregister(this);
-            m_Action = null;
+			if (UpdateableManager.Exists)
+			{
+				UpdateableManager.Instance.Unregister(this);
+			}
+			m_Action = null;
             m_Predicate = null;
         }
 

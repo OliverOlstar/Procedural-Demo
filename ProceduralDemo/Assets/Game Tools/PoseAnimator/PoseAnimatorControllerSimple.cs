@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using ODev.Picker;
 using ODev.Update;
 using UnityEngine;
@@ -8,15 +6,11 @@ namespace ODev.PoseAnimator
 {
     public class PoseAnimatorControllerSimple : UpdateableMonoBehaviour
 	{
-		[SerializeField]
-		private PoseAnimator m_Animator = null;
-		[SerializeField, AssetNonNull]
-		private SOPoseAnimation m_Animation = null;
+		[SerializeField] private PoseAnimator m_Animator = null;
+		[SerializeField, AssetNonNull] private SOPoseAnimation m_Animation = null;
 
-		[Space, SerializeField, Range(0.0f, 1.0f)]
-		private float m_Progress01 = 0.0f;
-		[SerializeField]
-		private float m_Progress = 0.0f;
+		[Space, SerializeField, Range(0.0f, 1.0f)] private float m_Progress01 = 0.0f;
+		[SerializeField] private float m_Progress = 0.0f;
 
 		private int m_Handle = -1;
 
@@ -24,7 +18,7 @@ namespace ODev.PoseAnimator
 
 		private void Start()
 		{
-			m_Handle = m_Animator.Add(m_Animation);
+			m_Handle = m_Animator.GetHandle(m_Animation);
 		}
 
 		protected override void Tick(float pDeltaTime)

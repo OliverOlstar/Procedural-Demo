@@ -31,8 +31,8 @@ public class PoseAnimatorLocomotion : PoseAnimatorControllerBase
 
 	protected override void Setup()
 	{
-		m_WalkHandle = Animator.Add(m_WalkAnimation);
-		m_RunHandle = Animator.Add(m_RunAnimation);
+		m_WalkHandle = Animator.GetHandle(m_WalkAnimation);
+		m_RunHandle = Animator.GetHandle(m_RunAnimation);
 		Controller.WheelRadius.AddWheelRadius(m_WalkHandle, 1.0f);
 		Controller.WheelRadius.AddWheelRadius(m_RunHandle, 2.0f);
 		Controller.CenterOfMassBounce.AddBounce(m_WalkHandle, m_WalkBounceHeight);

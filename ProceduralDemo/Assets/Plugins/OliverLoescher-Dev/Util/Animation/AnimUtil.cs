@@ -56,8 +56,8 @@ namespace ODev.Util
 			s_VisualAnimations.Clear();
 			s_PhysicsAnimations.Clear();
 			s_IsInitalized = false;
-			s_Updateable.Deregister();
-			s_FixedUpdateable.Deregister();
+			s_Updateable.UnRegister();
+			s_FixedUpdateable.UnRegister();
 			Application.quitting -= OnQuit;
 		}
 

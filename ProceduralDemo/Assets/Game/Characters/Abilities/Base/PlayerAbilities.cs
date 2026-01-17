@@ -50,7 +50,7 @@ public class PlayerAbilities
 			m_AbilityInstances[i].Destory();
 		}
 		m_AbilityInstances.Clear();
-		m_Updateable.Deregister();
+		m_Updateable.UnRegister();
 	}
 	
 	public void ActivateAbilityByTag(AbilityTags pTag)

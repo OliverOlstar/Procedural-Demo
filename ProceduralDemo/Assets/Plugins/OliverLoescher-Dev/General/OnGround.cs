@@ -149,7 +149,7 @@ namespace ODev
 
 		private void OnDisable()
 		{
-			m_Updateable.Deregister();
+			m_Updateable.UnRegister();
 			SetState(State.None);
 		}
 

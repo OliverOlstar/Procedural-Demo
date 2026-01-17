@@ -55,7 +55,7 @@ public class PlayerSpear : MonoBehaviour
 	}
 	private void OnDisable()
 	{
-		m_Updateable.Deregister();
+		m_Updateable.UnRegister();
 	}
 
 	[Button]

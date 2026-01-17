@@ -25,7 +25,7 @@ public class PoseAnimatorSlide : PoseAnimatorControllerBase
 
 	protected override void Setup()
 	{
-		m_Handle = Animator.Add(m_Animation);
+		m_Handle = Animator.GetHandle(m_Animation);
 		Controller.CenterOfMassBounce.AddBounce(m_Handle, 0.0f);
 
 		Root.Abilities.OnAbilityActivated.AddListener(OnAbilityActivated);

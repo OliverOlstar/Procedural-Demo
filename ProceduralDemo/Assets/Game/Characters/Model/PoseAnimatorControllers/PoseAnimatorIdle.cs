@@ -15,7 +15,7 @@ public class PoseAnimatorIdle : PoseAnimatorControllerBase
 
 	protected override void Setup()
 	{
-		m_IdleHandle = Animator.Add(m_IdleAnimation);
+		m_IdleHandle = Animator.GetHandle(m_IdleAnimation);
 	}
 
 	public override void Destroy() { }

@@ -25,7 +25,7 @@ public class TransformFollowerTest : MonoBehaviour, TransformFollower.IMotionRec
 	private void OnDestroy()
 	{
 		m_Follower.Stop();
-		m_Updateable.Deregister();
+		m_Updateable.UnRegister();
 	}
 
 	private void Tick(float pDeltaTime)

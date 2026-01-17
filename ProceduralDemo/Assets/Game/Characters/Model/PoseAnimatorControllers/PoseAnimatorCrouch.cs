@@ -44,8 +44,8 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 
 	protected override void Setup()
 	{
-		m_IdleHandle = Animator.Add(m_IdleAnimation);
-		m_WalkHandle = Animator.Add(m_WalkAnimation);
+		m_IdleHandle = Animator.GetHandle(m_IdleAnimation);
+		m_WalkHandle = Animator.GetHandle(m_WalkAnimation);
 		Controller.WheelRadius.AddWheelRadius(m_WalkHandle, m_WalkWheelRadius);
 		Controller.CenterOfMassBounce.AddBounce(m_IdleHandle, 0.0f);
 

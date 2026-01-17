@@ -1,7 +1,6 @@
 using Unity.Jobs;
 using Unity.Collections;
 using ODev.Util;
-using UnityEngine;
 using Sirenix.OdinInspector;
 
 namespace ODev.PoseAnimator

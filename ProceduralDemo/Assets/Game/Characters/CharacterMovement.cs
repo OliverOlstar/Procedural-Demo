@@ -90,7 +90,7 @@ public class CharacterMovement : MonoBehaviour, TransformFollower.IMotionReciver
 
 	private void OnDisable()
 	{
-		m_Updateable.Deregister();
+		m_Updateable.UnRegister();
 		m_Controller.enabled = false;
 		m_VelocityXZ = Vector3.zero;
 		m_VelocityY = 0.0f;

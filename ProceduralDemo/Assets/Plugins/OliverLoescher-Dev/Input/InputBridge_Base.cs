@@ -48,7 +48,7 @@ namespace ODev.Input
 			{
 				Actions.Disable();
 			}
-			m_Updateable.Deregister();
+			m_Updateable.UnRegister();
 			OnDisabled();
 		}
 		protected virtual void OnDisabled() { }

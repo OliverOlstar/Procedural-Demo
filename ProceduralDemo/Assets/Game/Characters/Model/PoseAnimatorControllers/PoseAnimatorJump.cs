@@ -25,7 +25,7 @@ public class PoseAnimatorJump : PoseAnimatorControllerBase
 
 	protected override void Setup()
 	{
-		m_JumpHandle = Animator.Add(m_JumpAnimation);
+		m_JumpHandle = Animator.GetHandle(m_JumpAnimation);
 	}
 
 	public override void Destroy() { }

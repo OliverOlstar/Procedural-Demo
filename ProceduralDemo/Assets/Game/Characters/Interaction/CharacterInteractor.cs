@@ -30,7 +30,7 @@ public class CharacterInteractor : MonoBehaviour
 
 	private void OnDisable()
 	{
-		m_Updateable.Deregister();
+		m_Updateable.UnRegister();
 		m_Player.Input.Interact.DeregisterOnPerformed(OnPerformed);
 
 		if (Func.IsApplicationQuitting)

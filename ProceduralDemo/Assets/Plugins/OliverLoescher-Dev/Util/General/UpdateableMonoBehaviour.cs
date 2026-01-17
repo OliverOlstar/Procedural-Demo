@@ -21,7 +21,7 @@ namespace ODev.Update
 			}
 			else
 			{
-				m_Updateable.Deregister();
+				m_Updateable.UnRegister();
 			}
 		}
 	}

@@ -98,7 +98,7 @@ namespace ODev
 			m_Parent = null;
 			m_Child = null;
 
-			m_Updateable.Deregister();
+			m_Updateable.UnRegister();
 		}
 
 		public void ChangeParent(Transform pParent)

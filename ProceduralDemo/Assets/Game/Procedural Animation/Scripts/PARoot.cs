@@ -72,7 +72,7 @@ namespace PA
 		}
 		private void OnDestroy()
 		{
-			m_Updateable.Deregister();
+			m_Updateable.UnRegister();
 			m_IsInitalized = false;
 		}
 

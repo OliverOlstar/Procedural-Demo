@@ -42,7 +42,7 @@ namespace ODev
 
 		private void OnDisable()
 		{
-			m_Updateable.Deregister();
+			m_Updateable.UnRegister();
 		}
 
 		private void Tick(float pDeltaTime)

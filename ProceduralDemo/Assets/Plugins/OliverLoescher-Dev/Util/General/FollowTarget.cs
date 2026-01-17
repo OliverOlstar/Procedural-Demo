@@ -27,7 +27,7 @@ namespace ODev
 
 		private void OnDestroy()
 		{
-			m_Updateable.Deregister();
+			m_Updateable.UnRegister();
 		}
 
 		private void Tick(float pDeltaTime) 

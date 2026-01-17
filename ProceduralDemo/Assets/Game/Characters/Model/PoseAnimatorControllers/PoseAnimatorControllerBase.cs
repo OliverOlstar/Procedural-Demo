@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using ODev.PoseAnimator;
-using UnityEngine;
 
 [System.Serializable]
 public abstract class PoseAnimatorControllerBase
