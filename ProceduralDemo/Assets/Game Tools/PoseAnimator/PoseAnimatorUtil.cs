@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -162,6 +163,17 @@ namespace ODev.PoseAnimator
 			{
 				pArray[i + pStartIndex] = pItems[i];
 			}
+		}
+
+		internal static void ResizeNative<T>(ref NativeArray<T> pArray, int pCapacity) where T : struct
+		{
+			NativeArray<T> newArray = new(pCapacity, Allocator.Persistent);
+			for (int i = 0; i < pArray.Length; i++)
+			{
+				newArray[i] = pArray[i];
+			}
+			pArray.Dispose();
+			pArray = newArray;
 		}
 	}
 }

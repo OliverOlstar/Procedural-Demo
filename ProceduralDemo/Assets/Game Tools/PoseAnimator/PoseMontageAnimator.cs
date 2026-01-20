@@ -74,7 +74,7 @@ namespace ODev.PoseAnimator
 				// this.Log($"clipStartIndex {clipStartIndex}");
 				for (int i = 0; i < m_SkeletonKeyCount; i++)
 				{
-					PoseKey key = clip.Clip.GetKey(i);
+					PoseKey key = clip.Clip.Keys[i];
 					// this.Log($"Set Key {clipStartIndex + i}");
 					m_PoseKeys[clipStartIndex + i] = new PoseKey() { Position = key.Position, Rotation = key.Rotation, Scale = key.Scale };
 				}

@@ -12,21 +12,16 @@ namespace ODev.PoseAnimator
 		[ReadOnly] public NativeArray<PoseAnimation> Animations;
 		[ReadOnly] public NativeArray<PoseWeight> Weights;
 		[ReadOnly] public NativeArray<PoseKey> PoseKeys;
+		[ReadOnly] public NativeArray<bool> IsAnimating;
 		[ReadOnly] public bool UseNextPoseAsTheBase;
 
 		public NativeArray<PoseKey> NextPose;
 
-		public void Execute(int pIndex)
+		public void Execute(int pAnimatorIndex)
 		{
-			Vector3 position = Vector3.zero;
-			Quaternion rotation = Quaternion.identity;
-			Vector3 scale = Vector3.zero;
-			if (UseNextPoseAsTheBase)
+			if (!IsAnimating[pAnimatorIndex])
 			{
-				position = NextPose[pIndex].Position;
-				rotation = NextPose[pIndex].Rotation;
-				scale = NextPose[pIndex].Scale;
-				RemoveSkeletonKey(pIndex, ref position, ref rotation, ref scale);
+				return;
 			}
 
 			int firstAnimationIndex = 0;
@@ -38,44 +33,65 @@ namespace ODev.PoseAnimator
 					break;
 				}
 			}
-			
-			for (int i = firstAnimationIndex; i < Animations.Length; i++)
+
+			for (int boneIndex = 0; boneIndex < SkeletonLength; boneIndex++)
 			{
-				CalculateAnimationKey(pIndex, i, ref position, ref rotation, ref scale);
+				LoopBones(pAnimatorIndex, boneIndex, firstAnimationIndex);
+			}
+		}
+
+		private void LoopBones(int pAnimatorIndex, int pBoneIndex, int pFirstAnimationIndex)
+		{
+			int localBoneIndex = pAnimatorIndex * SkeletonLength + pBoneIndex;
+			Vector3 position = Vector3.zero;
+			Quaternion rotation = Quaternion.identity;
+			Vector3 scale = Vector3.zero;
+			if (UseNextPoseAsTheBase)
+			{
+				position = NextPose[localBoneIndex].Position;
+				rotation = NextPose[localBoneIndex].Rotation;
+				scale = NextPose[localBoneIndex].Scale;
+				RemoveSkeletonKey(pBoneIndex, ref position, ref rotation, ref scale);
 			}
 
-			ApplySkeletonKey(pIndex, ref position, ref rotation, ref scale);
-			NextPose[pIndex] = NextPose[pIndex].Set(position, rotation, scale);
+			for (int i = pFirstAnimationIndex; i < Animations.Length; i++)
+			{
+				int localAnimationIndex = i + (pAnimatorIndex * Animations.Length);
+				CalculateAnimationKey(localBoneIndex, localAnimationIndex, ref position, ref rotation, ref scale);
+			}
+
+			ApplySkeletonKey(pBoneIndex, ref position, ref rotation, ref scale);
+			NextPose[localBoneIndex] = NextPose[localBoneIndex].Set(position, rotation, scale);
 		}
 
-		private void ApplySkeletonKey(int pIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
+		private void ApplySkeletonKey(int pBoneIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
 		{
-			rPosition += SkeletonKeys[pIndex].Position;
-			rRotation = SkeletonKeys[pIndex].Rotation.Add(rRotation);
-			rScale += SkeletonKeys[pIndex].Scale;
+			rPosition += SkeletonKeys[pBoneIndex].Position;
+			rRotation = SkeletonKeys[pBoneIndex].Rotation.Add(rRotation);
+			rScale += SkeletonKeys[pBoneIndex].Scale;
 		}
 
-		private void RemoveSkeletonKey(int pIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
+		private void RemoveSkeletonKey(int pBoneIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
 		{
-			rPosition -= SkeletonKeys[pIndex].Position;
-			rRotation = SkeletonKeys[pIndex].Rotation.Inverse().Add(rRotation);
-			rScale -= SkeletonKeys[pIndex].Scale;
+			rPosition -= SkeletonKeys[pBoneIndex].Position;
+			rRotation = SkeletonKeys[pBoneIndex].Rotation.Inverse().Add(rRotation);
+			rScale -= SkeletonKeys[pBoneIndex].Scale;
 		}
 
-		private void CalculateAnimationKey(int pIndex, int pAnimationIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
+		private void CalculateAnimationKey(int pLocalBoneIndex, int pLocalAnimationIndex, ref Vector3 rPosition, ref Quaternion rRotation, ref Vector3 rScale)
 		{
-			float weight01 = Weights[pAnimationIndex].Weight01;
+			float weight01 = Weights[pLocalAnimationIndex].Weight01;
 			if (weight01.IsNearZero())
 			{
 				return;
 			}
 
-			float progress01 = Weights[pAnimationIndex].Progress01;
-			progress01 = GetClips(progress01, Animations[pAnimationIndex], out int clipIndexA, out int clipIndexB);
-			progress01 = Easing.Ease(Animations[pAnimationIndex].Easing, progress01);
+			float progress01 = Weights[pLocalAnimationIndex].Progress01;
+			progress01 = GetClips(progress01, Animations[pLocalAnimationIndex], out int clipIndexA, out int clipIndexB);
+			progress01 = Easing.Ease(Animations[pLocalAnimationIndex].Easing, progress01);
 			// this.Log($"ClipA {clipIndexA}, ClipB {clipIndexB}, Progress {progress01}, Weight {weight01}");
-			PoseKey keyA = PoseKeys[(clipIndexA * SkeletonLength) + pIndex];
-			PoseKey keyB = PoseKeys[(clipIndexB * SkeletonLength) + pIndex];
+			PoseKey keyA = PoseKeys[(clipIndexA * SkeletonLength) + pLocalBoneIndex];
+			PoseKey keyB = PoseKeys[(clipIndexB * SkeletonLength) + pLocalBoneIndex];
 
 			Vector3 position = Vector3.LerpUnclamped(keyA.Position, keyB.Position, progress01);
 			Quaternion rotation = Quaternion.LerpUnclamped(keyA.Rotation, keyB.Rotation.normalized, progress01);

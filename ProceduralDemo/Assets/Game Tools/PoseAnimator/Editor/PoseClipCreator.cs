@@ -46,7 +46,7 @@ namespace ODev.PoseAnimator
 			foreach (PoseUtil.Bone bone in PoseUtil.GetAllBones(m_Skeleton, m_Root))
 			{
 				PoseKey skeletonKey = m_Skeleton.GetBone(bone.Index).Key;
-				PoseKey key = m_Clip.GetKey(bone.Index);
+				PoseKey key = m_Clip.Keys[bone.Index];
 
 				bone.Transform.SetLocalPositionAndRotation(
 					skeletonKey.Position + key.Position,

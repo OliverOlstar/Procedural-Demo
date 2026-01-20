@@ -7,8 +7,7 @@ namespace ODev.PoseAnimator
 {
     public struct ApplyTransformSystem : IJobParallelForTransform
 	{
-		[ReadOnly]
-		public NativeArray<PoseKey> NextPose;
+		[ReadOnly] public NativeArray<PoseKey> NextPose;
 
 		public void Execute(int pIndex, TransformAccess pBone)
 		{
