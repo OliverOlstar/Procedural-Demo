@@ -164,19 +164,19 @@ namespace ODev.Util
 
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(this T[] pElements, int pStartAtIndex, T pElement = null) where T : class
-			=> Foreach(pElements, pStartAtIndex, (T pItem, int _) => pItem == pElement);
+			=> Foreach(pElements, pStartAtIndex, (pItem, _) => pItem == pElement);
 
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(this List<T> pElements, int pStartAtIndex, T pElement = null) where T : class
-			=> For(pElements, pStartAtIndex, (T pItem, int _) => pItem == pElement);
+			=> For(pElements, pStartAtIndex, (pItem, _) => pItem == pElement);
 
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(ref T[] rElements, int pStartAtIndex, Func<T, bool> pPredicate)
-			=> Foreach(rElements, pStartAtIndex, (T pItem, int _) => !pPredicate(pItem));
+			=> Foreach(rElements, pStartAtIndex, (pItem, _) => !pPredicate(pItem));
 
 		/// <summary> Checks full collection starting at pStartAtIndex, -1 if failed </summary>
 		public static int IndexOf<T>(this List<T> pElements, int pStartAtIndex, Func<T, bool> pPredicate)
-			=> For(pElements, pStartAtIndex, (T pItem, int _) => !pPredicate(pItem));
+			=> For(pElements, pStartAtIndex, (pItem, _) => !pPredicate(pItem));
 
 		/// <summary> Iterate through collection starting at an index, returning false in predicate ends the loop </summary>
 		public static int Foreach<T>(this T[] pElements, int pStartAtIndex, Func<T, int, bool> pPredicate)

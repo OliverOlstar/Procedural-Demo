@@ -27,8 +27,8 @@ namespace ODev.PoseAnimator
         private NativeArray<PoseKey> m_SkeletonKeys;
         private NativeArray<PoseAnimation> m_Animations;
         private NativeArray<bool> m_IsAnimating;
-        private NativeArray<PoseWeight> m_Weights;
         private NativeArray<PoseKey> m_PoseKeys;
+        private NativeArray<PoseWeight> m_Weights;
         private NativeArray<PoseKey> m_NextPose;
         private TransformAccessArray m_AccessArray;
         private PoseBoneSystem m_BonePoseJob;
