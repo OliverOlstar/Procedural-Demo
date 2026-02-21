@@ -18,11 +18,12 @@ namespace ODev.PoseAnimator
 		{
 			return new PoseWeight()
 			{
-				Weight01 = Weight01(),
-				Progress01 = Mathf.Clamp01((Time - Montage.StartSeconds) / Montage.Seconds)
+				Weight01 = GetWeight01(),
+				Progress01 = GetProgress01()
 			};
 		}
-		private readonly float Weight01()
+
+		private readonly float GetWeight01()
 		{
 			float weightTime = WeightTime;
 			if (weightTime < Montage.FadeInSeconds)
@@ -34,6 +35,16 @@ namespace ODev.PoseAnimator
 				return ((Montage.TotalSeconds - weightTime) / Montage.FadeOutSeconds).Clamp01();
 			}
 			return 1.0f;
+		}
+
+		private readonly float GetProgress01()
+		{
+			return Mathf.Clamp01((Time - Montage.StartSeconds) / Montage.Seconds);
+		}
+
+		public void AddTime(float pSeconds)
+		{
+			Time += pSeconds;
 		}
 
 		public void StartFadeOut()
@@ -48,5 +59,4 @@ namespace ODev.PoseAnimator
 			Montage = null;
 		}
 	}
-
 }

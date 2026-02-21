@@ -9,7 +9,6 @@ namespace ODev.PoseAnimator
 		[SerializeField] private Transform m_Root = null;
 		[SerializeField, AssetNonNull] private SOPoseSkeleton m_Skeleton = null;
 		[SerializeField, AssetNonNull] private SOPoseAnimatorConfig m_Config = null;
-		// [SerializeField] private PoseMontageAnimator m_Montages = new();
 
 		private PoseSystem m_System;
 		private int m_SystemHandle = -1;
@@ -18,8 +17,6 @@ namespace ODev.PoseAnimator
 		{
 			m_System = PoseSystemManager.Instance.GetOrCreatePoseSystem(m_Skeleton, m_Config);
 			OnEnable();
-
-			// m_Montages.Initalize(m_Skeleton.BoneCount);
 		}
 
 		private void OnDestroy()
@@ -38,7 +35,7 @@ namespace ODev.PoseAnimator
 
 		private void OnDisable()
 		{
-			if (m_System == null)
+			if (Func.IsApplicationQuitting || m_System == null)
 			{
 				return;
 			}
@@ -76,7 +73,7 @@ namespace ODev.PoseAnimator
 			SetWeight(pIndex, progress, pWeight01);
 		}
 
-		// public int PlayMontage(SOPoseMontage pMontage) => m_Montages.PlayMontage(pMontage);
-		// public void CancelMontage(int pIndex) => m_Montages.CancelMontage(pIndex);
+		public int PlayMontage(SOPoseMontage pMontage) => m_System.PlayMontage(m_SystemHandle, pMontage);
+		public void CancelMontage(int pIndex) => m_System.CancelMontage(m_SystemHandle, pIndex);
 	}
 }

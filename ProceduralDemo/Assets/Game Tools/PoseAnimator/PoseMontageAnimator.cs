@@ -1,7 +1,6 @@
-using Unity.Jobs;
 using Unity.Collections;
 using ODev.Util;
-using Sirenix.OdinInspector;
+using System;
 
 namespace ODev.PoseAnimator
 {
@@ -10,37 +9,50 @@ namespace ODev.PoseAnimator
 	{
 		public const int NULL_HANDLE = int.MinValue;
 
-		private const int MAX_MONTAGE_COUNT = 2; // Active, Previous
-		private const int MAX_MONTAGE_POSE_COUNT = MAX_MONTAGE_COUNT * 4;
+		public const int MAX_MONTAGE_COUNT = 2; // Active, Previous
+		public const int MAX_MONTAGE_POSE_COUNT = 8;
+		public const int MAX_MONTAGE_POSE_COUNT_PER_ANIMATOR = MAX_MONTAGE_POSE_COUNT * MAX_MONTAGE_COUNT;
 
-		private const int ACTIVE_MONTAGE_INDEX = 1;
-		private const int PREVIOUS_MONTAGE_INDEX = 0;
+		public const int ACTIVE_MONTAGE_INDEX = 1;
+		public const int PREVIOUS_MONTAGE_INDEX = 0;
 
+		private PoseMontageAnimatorState[] m_MontageStates;
 		private NativeArray<PoseAnimation> m_Animations;
-		private NativeArray<PoseWeight> m_Weights;
+		private NativeArray<PoseWeight> m_PoseWeights;
 		private NativeArray<PoseKey> m_PoseKeys;
-		private PoseMontageAnimatorState m_ActiveMontage = new();
-		private PoseMontageAnimatorState m_PreviousMontage = new();
 		private int m_SkeletonKeyCount;
 		private int m_NextHandle = NULL_HANDLE + 1;
 
-		public void Initalize(int pSkeletonKeyCount)
+		public NativeArray<PoseAnimation> Animations => m_Animations;
+		public NativeArray<PoseWeight> PoseWeights => m_PoseWeights;
+		public NativeArray<PoseKey> PoseKeys => m_PoseKeys;
+
+		public void Initalize(int pSkeletonKeyCount, int pBatchSize)
 		{
 			m_SkeletonKeyCount = pSkeletonKeyCount;
-			m_Animations = new(MAX_MONTAGE_COUNT, Allocator.Persistent);
-			m_Weights = new(MAX_MONTAGE_COUNT, Allocator.Persistent);
-			m_PoseKeys = new(m_SkeletonKeyCount * MAX_MONTAGE_POSE_COUNT * MAX_MONTAGE_COUNT, Allocator.Persistent);
+			m_MontageStates = new PoseMontageAnimatorState[MAX_MONTAGE_COUNT * pBatchSize];
+			m_Animations = new(MAX_MONTAGE_COUNT * pBatchSize, Allocator.Persistent);
+			m_PoseKeys = new(MAX_MONTAGE_POSE_COUNT_PER_ANIMATOR * m_SkeletonKeyCount * pBatchSize, Allocator.Persistent);
+			m_PoseWeights = new(MAX_MONTAGE_COUNT * pBatchSize, Allocator.Persistent);
 		}
 
-		public void Destroy()
+		public void ResizeArrays(int pNewBatchSize)
 		{
-			m_Animations.Dispose();
-			m_Weights.Dispose();
-			m_PoseKeys.Dispose();
+			Array.Resize(ref m_MontageStates, MAX_MONTAGE_COUNT * pNewBatchSize);
+			PoseUtil.ResizeNative(ref m_Animations, MAX_MONTAGE_COUNT * pNewBatchSize);
+			PoseUtil.ResizeNative(ref m_PoseKeys, MAX_MONTAGE_POSE_COUNT_PER_ANIMATOR * m_SkeletonKeyCount * pNewBatchSize);
+			PoseUtil.ResizeNative(ref m_PoseWeights, MAX_MONTAGE_COUNT * pNewBatchSize);
 		}
 
-		[Button]
-		public int PlayMontage(SOPoseMontage pMontage)
+		public void Dispose()
+		{
+			m_MontageStates = null;
+			m_Animations.Dispose();
+			m_PoseKeys.Dispose();
+			m_PoseWeights.Dispose();
+		}
+
+		public int PlayMontage(int pAnimatorHandle, SOPoseMontage pMontage)
 		{
 			if (pMontage == null)
 			{
@@ -48,25 +60,26 @@ namespace ODev.PoseAnimator
 				return NULL_HANDLE;
 			}
 
-			int handle = ++m_NextHandle;
+			int montageHandle = ++m_NextHandle;
 			if (m_NextHandle == int.MaxValue)
 			{
 				m_NextHandle = NULL_HANDLE + 1;
 			}
 
-			SetActiveMontageToPrevious();
-			SetActiveMontage(pMontage, handle);
+			AnimatorHandleToMontageIndexes(pAnimatorHandle, out int activeMontageIndex, out int previousMontageIndex);
+			SetActiveMontageToPrevious(activeMontageIndex, previousMontageIndex);
+			SetActiveMontage(pMontage, montageHandle, activeMontageIndex);
 			// this.Log(pMontage.name);
 
-			return handle;
+			return montageHandle;
 		}
 
-		private void SetActiveMontage(SOPoseMontage pMontage, int pHandle)
+		private void SetActiveMontage(SOPoseMontage pMontage, int pMontageHandle, int pActiveMontageIndex)
 		{
-			m_Animations[ACTIVE_MONTAGE_INDEX] = new(pMontage.Animation, ACTIVE_MONTAGE_INDEX * MAX_MONTAGE_POSE_COUNT);
-			m_Weights[ACTIVE_MONTAGE_INDEX] = new PoseWeight(0.0f);
+			m_Animations[pActiveMontageIndex] = new(pMontage.Animation, pActiveMontageIndex * MAX_MONTAGE_POSE_COUNT);
+			// m_Weights[activeMontageIndex] = new PoseWeight(0.0f);
 
-			int montageStartIndex = m_SkeletonKeyCount * MAX_MONTAGE_POSE_COUNT * ACTIVE_MONTAGE_INDEX;
+			int montageStartIndex = m_SkeletonKeyCount * MAX_MONTAGE_POSE_COUNT * pActiveMontageIndex;
 			for (int m = 0; m < pMontage.Animation.Clips.Length; m++)
 			{
 				SOPoseAnimation.AnimationClip clip = pMontage.Animation.Clips[m];
@@ -80,92 +93,77 @@ namespace ODev.PoseAnimator
 				}
 			}
 
-			m_ActiveMontage = new PoseMontageAnimatorState()
+			m_MontageStates[pActiveMontageIndex] = new PoseMontageAnimatorState()
 			{
-				Handle = pHandle,
+				Handle = pMontageHandle,
 				Montage = pMontage
 			};
 		}
 
-		private void SetActiveMontageToPrevious()
+		private void SetActiveMontageToPrevious(int pActiveMontageIndex, int pPreviousMontageIndex)
 		{
-			if (m_ActiveMontage.IsComplete)
+			if (m_MontageStates[pActiveMontageIndex].IsComplete)
 			{
 				return;
 			}
-			m_Animations[PREVIOUS_MONTAGE_INDEX] = m_Animations[ACTIVE_MONTAGE_INDEX].SetClipsStartIndex(0);
-			m_Weights[PREVIOUS_MONTAGE_INDEX] = m_Weights[ACTIVE_MONTAGE_INDEX];
+			m_Animations[pPreviousMontageIndex] = m_Animations[pActiveMontageIndex].SetClipsStartIndex(0);
+			// m_Weights[previousMontageIndex] = m_Weights[activeMontageIndex];
 
-			int activeMontageIndex = m_SkeletonKeyCount * MAX_MONTAGE_POSE_COUNT * ACTIVE_MONTAGE_INDEX;
-			int previousMontageIndex = m_SkeletonKeyCount * MAX_MONTAGE_POSE_COUNT * PREVIOUS_MONTAGE_INDEX;
-			// this.Log($"montageIndex {activeMontageIndex}");
-			for (int m = 0; m < m_ActiveMontage.Montage.Animation.Clips.Length; m++)
+			int activeMontageIndex2 = m_SkeletonKeyCount * MAX_MONTAGE_POSE_COUNT * pActiveMontageIndex;
+			int previousMontageIndex2 = m_SkeletonKeyCount * MAX_MONTAGE_POSE_COUNT * pPreviousMontageIndex;
+			// this.Log($"montageIndex {activeMontageIndex2}");
+			for (int m = 0; m < m_MontageStates[ACTIVE_MONTAGE_INDEX].Montage.Animation.Clips.Length; m++)
 			{
 				int clipStartIndex = m * m_SkeletonKeyCount;
 				// this.Log($"clipStartIndex {clipStartIndex}");
 				for (int i = 0; i < m_SkeletonKeyCount; i++)
 				{
 					int index = clipStartIndex + i;
-					// this.Log($"Swapped Key {index} = {index + activeMontageIndex}");
-					m_PoseKeys[index + previousMontageIndex] = m_PoseKeys[index + activeMontageIndex];
+					// this.Log($"Swapped Key {index} = {index + activeMontageIndex2}");
+					m_PoseKeys[index + previousMontageIndex2] = m_PoseKeys[index + activeMontageIndex2];
 				}
 			}
 
-			m_PreviousMontage = m_ActiveMontage;
-			m_PreviousMontage.StartFadeOut();
-			m_ActiveMontage.Clear();
+			m_MontageStates[pPreviousMontageIndex] = m_MontageStates[pActiveMontageIndex];
+			m_MontageStates[pPreviousMontageIndex].StartFadeOut();
+			m_MontageStates[pActiveMontageIndex].Clear();
 		}
 
-		[Button]
-		public void CancelMontage(int pHandle)
+		public void CancelMontage(int pAnimatorHandle, int pMontageHandle)
 		{
-			if (m_ActiveMontage.Handle == pHandle)
+			int animatorIndex = pAnimatorHandle * 2;
+			int activeMontageIndex = animatorIndex + ACTIVE_MONTAGE_INDEX;
+			if (m_MontageStates[activeMontageIndex].Handle == pMontageHandle)
 			{
-				m_ActiveMontage.StartFadeOut();
+				m_MontageStates[activeMontageIndex].StartFadeOut();
+				return;
 			}
-			else if (m_PreviousMontage.Handle == pHandle)
+
+			int previousMontageIndex = animatorIndex + PREVIOUS_MONTAGE_INDEX;
+			if (m_MontageStates[previousMontageIndex].Handle == pMontageHandle)
 			{
-				m_PreviousMontage.StartFadeOut();
+				m_MontageStates[previousMontageIndex].StartFadeOut();
+				return;
 			}
 		}
-
-		public bool IsWeightFull() => m_Weights.IsCreated && m_Weights[ACTIVE_MONTAGE_INDEX].Weight01 >= 1.0f;
 
 		public void Tick(float pDeltaTime)
 		{
-			TickMontage(ref m_ActiveMontage, ACTIVE_MONTAGE_INDEX, pDeltaTime);
-			TickMontage(ref m_PreviousMontage, PREVIOUS_MONTAGE_INDEX, pDeltaTime);
-		}
-		private void TickMontage(ref PoseMontageAnimatorState montage, int pIndex, float pDeltaTime)
-		{
-			if (montage.IsComplete)
+			for (int i = 0; i < m_MontageStates.Length; i++)
 			{
-				return;
+				if (!m_MontageStates[i].IsComplete)
+				{
+					m_MontageStates[i].AddTime(pDeltaTime);
+					m_PoseWeights[i] = m_MontageStates[i].GetPoseWeight();
+				}
 			}
-			montage.Time += pDeltaTime;
-			m_Weights[pIndex] = montage.GetPoseWeight();
 		}
 
-		public JobHandle TickSchedule(NativeArray<PoseKey> pSkeletonKeys, NativeArray<PoseKey> pNextPose, JobHandle pDependsOn = default)
+		public static void AnimatorHandleToMontageIndexes(int pAnimatorHandle, out int oActiveMontageIndex, out int oPreviousMontageIndex)
 		{
-			if (m_ActiveMontage.IsComplete && m_PreviousMontage.IsComplete)
-			{
-				return pDependsOn;
-			}
-			// this.Log($"Active Weight01 {m_Weights[ACTIVE_MONTAGE_INDEX].Weight01}, Progress01 {m_Weights[ACTIVE_MONTAGE_INDEX].Progress01}");
-			// this.Log($"Previous Weight01 {m_Weights[PREVIOUS_MONTAGE_INDEX].Weight01}, Progress01 {m_Weights[PREVIOUS_MONTAGE_INDEX].Progress01}");
-			PoseBoneSystem poseBoneSystem = new()
-			{
-				SkeletonKeys = pSkeletonKeys,
-				SkeletonLength = pSkeletonKeys.Length,
-				Animations = m_Animations,
-				Weights = m_Weights,
-				PoseKeys = m_PoseKeys,
-				UseNextPoseAsTheBase = true,
-
-				NextPose = pNextPose, // Modify
-			};
-			return poseBoneSystem.Schedule(poseBoneSystem.SkeletonLength, poseBoneSystem.SkeletonLength, pDependsOn);
+			pAnimatorHandle *= MAX_MONTAGE_COUNT;
+			oActiveMontageIndex = pAnimatorHandle + ACTIVE_MONTAGE_INDEX;
+			oPreviousMontageIndex = pAnimatorHandle + PREVIOUS_MONTAGE_INDEX;
 		}
 	}
 }

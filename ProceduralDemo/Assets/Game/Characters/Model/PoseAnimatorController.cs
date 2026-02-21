@@ -67,14 +67,6 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 		}
 	}
 
-	public int PlayMontage(SOPoseMontage pMontage)
-	{
-		return -1;
-		// return m_Animator.PlayMontage(pMontage);
-	}
-
-	public void CancelMontage(int pIndex)
-	{
-		// m_Animator.CancelMontage(pIndex);
-	}
+	public int PlayMontage(SOPoseMontage pMontage) => m_Animator.PlayMontage(pMontage);
+	public void CancelMontage(int pIndex) => m_Animator.CancelMontage(pIndex);
 }

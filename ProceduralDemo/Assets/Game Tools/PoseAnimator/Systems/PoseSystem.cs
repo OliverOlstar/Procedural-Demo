@@ -20,25 +20,27 @@ namespace ODev.PoseAnimator
         // }
 
         private const int DEFAULT_BATCH_SIZE = 2;
+        private const int DEFAULT_BATCH_RESIZE = 4;
 
         private readonly SOPoseSkeleton m_Skeleton;
         private readonly SOPoseAnimatorConfig m_Config;
 
         private NativeArray<PoseKey> m_SkeletonKeys;
         private NativeArray<PoseAnimation> m_Animations;
-        private NativeArray<bool> m_IsAnimating;
-        private NativeArray<PoseKey> m_PoseKeys;
-        private NativeArray<PoseWeight> m_Weights;
-        private NativeArray<PoseKey> m_NextPose;
-        private TransformAccessArray m_AccessArray;
+        private NativeArray<bool> m_IsAnimating; // Size = Number of animators
+        private NativeArray<PoseKey> m_PoseKeys; // Size = Number of PoseKeys in Animations + montage animation keys
+        private NativeArray<PoseWeight> m_Weights; // Size = Animations count + montages
+        private NativeArray<PoseKey> m_NextPose; // Size = Bones count
+        private TransformAccessArray m_AccessArray; // Size = Bones count
         private PoseBoneSystem m_BonePoseJob;
         private ApplyTransformSystem m_ApplyTransformJob;
 
-        private JobHandle m_Handle;
+        private readonly PoseMontageAnimator m_Montages = new();
+
+        private JobHandle m_JobsHandle;
         private readonly List<int> m_FreeIndexes = new(DEFAULT_BATCH_SIZE);
         private bool m_IsDisposed = false;
         private int m_BatchSize = 0;
-        private readonly int m_PoseKeyCountInConfig;
 
         public PoseSystem(SOPoseSkeleton pSkeleton, SOPoseAnimatorConfig pConfig)
         {
@@ -48,23 +50,24 @@ namespace ODev.PoseAnimator
             m_SkeletonKeys = new NativeArray<PoseKey>(m_Skeleton.BoneCount, Allocator.Persistent);
             PoseUtil.CopySkeleton(m_SkeletonKeys, m_Skeleton);
 
-            m_PoseKeyCountInConfig = 0;
+            int poseKeyCountInConfig = 0;
             foreach (var animation in m_Config.Animations)
                 foreach (var clip in animation.Clips)
                 {
-                    m_PoseKeyCountInConfig += clip.Clip.Keys.Count;
+                    poseKeyCountInConfig += clip.Clip.Keys.Count;
                 }
-            m_PoseKeys = new NativeArray<PoseKey>(m_PoseKeyCountInConfig, Allocator.Persistent);
-            m_Animations = new NativeArray<PoseAnimation>(m_Config.Animations.Count, Allocator.Persistent);
+            poseKeyCountInConfig += m_Skeleton.BoneCount * PoseMontageAnimator.MAX_MONTAGE_POSE_COUNT * PoseMontageAnimator.MAX_MONTAGE_COUNT;
+            m_PoseKeys = new NativeArray<PoseKey>(poseKeyCountInConfig, Allocator.Persistent);
+            m_Animations = new NativeArray<PoseAnimation>(m_Config.Animations.Count + PoseMontageAnimator.MAX_MONTAGE_COUNT, Allocator.Persistent);
+
+            m_Montages.Initalize(pSkeleton.BoneCount, m_BatchSize);
 
             InitalizeAnimations();
-
-            // m_Montages.Initalize(m_Skeleton.BoneCount);
         }
 
         public void InitalizeAnimations()
         {
-            int poseKeyCount = 0;
+            int poseKeyIndex = 0;
             for (int i = 0; i < m_Config.Animations.Count; i++)
             {
                 var animation = m_Config.Animations[i];
@@ -73,18 +76,18 @@ namespace ODev.PoseAnimator
                     this.DevException($"Cannot add null animations at index {i}");
                 }
 
-                m_Animations[i] = new(animation, Mathf.FloorToInt(poseKeyCount / m_SkeletonKeys.Length));
+                m_Animations[i] = new(animation, Mathf.FloorToInt(poseKeyIndex / m_SkeletonKeys.Length));
 
                 foreach (var clip in animation.Clips)
                     foreach (var key in clip.Clip.Keys)
                     {
-                        m_PoseKeys[poseKeyCount] = new PoseKey()
+                        m_PoseKeys[poseKeyIndex] = new PoseKey()
                         {
                             Position = key.Position,
                             Rotation = key.Rotation,
                             Scale = key.Scale
                         };
-                        poseKeyCount++;
+                        poseKeyIndex++;
                     }
                 // this.Log($"[{animation.name}] m_Animations {m_Animations.Length} | m_Weights {m_Weights.Length} | m_PoseKeys {PoseKeys.Count}");
             }
@@ -102,14 +105,14 @@ namespace ODev.PoseAnimator
             if (!m_IsAnimating.IsCreated)
             {
                 m_IsAnimating = new NativeArray<bool>(m_BatchSize, Allocator.Persistent);
-                m_Weights = new NativeArray<PoseWeight>(m_Animations.Length * m_BatchSize, Allocator.Persistent);
+                m_Weights = new NativeArray<PoseWeight>((m_Animations.Length + PoseMontageAnimator.MAX_MONTAGE_COUNT) * m_BatchSize, Allocator.Persistent);
                 m_NextPose = new NativeArray<PoseKey>(m_SkeletonKeys.Length * m_BatchSize, Allocator.Persistent);
                 m_AccessArray = new TransformAccessArray(m_SkeletonKeys.Length * m_BatchSize);
             }
             else
             {
                 PoseUtil.ResizeNative(ref m_IsAnimating, m_BatchSize);
-                PoseUtil.ResizeNative(ref m_Weights, m_Animations.Length * m_BatchSize);
+                PoseUtil.ResizeNative(ref m_Weights, (m_Animations.Length + PoseMontageAnimator.MAX_MONTAGE_COUNT) * m_BatchSize);
                 PoseUtil.ResizeNative(ref m_NextPose, m_SkeletonKeys.Length * m_BatchSize);
                 m_AccessArray.capacity = m_SkeletonKeys.Length * m_BatchSize;
             }
@@ -118,6 +121,8 @@ namespace ODev.PoseAnimator
             {
                 m_AccessArray.Add(null);
             }
+
+            m_Montages.ResizeArrays(m_BatchSize);
 
             m_FreeIndexes.Capacity = m_BatchSize;
             for (int i = previousSize; i < m_BatchSize; i++)
@@ -135,10 +140,13 @@ namespace ODev.PoseAnimator
                 SkeletonKeys = m_SkeletonKeys,
                 SkeletonLength = m_SkeletonKeys.Length,
                 Animations = m_Animations,
-                Weights = m_Weights,
                 PoseKeys = m_PoseKeys,
+                Weights = m_Weights,
                 IsAnimating = m_IsAnimating,
-                UseNextPoseAsTheBase = false,
+                
+                MontageAnimations = m_Montages.Animations,
+                MontagePoseKeys = m_Montages.PoseKeys,
+                MontageWeights = m_Montages.PoseWeights,
 
                 NextPose = m_NextPose, // Modify
             };
@@ -151,8 +159,8 @@ namespace ODev.PoseAnimator
 
         public void Dispose()
         {
-            m_Handle.Complete();
-            // m_Montages.Destroy();
+            m_JobsHandle.Complete();
+            m_Montages.Dispose();
 
             m_SkeletonKeys.Dispose();
             m_Animations.Dispose();
@@ -169,24 +177,24 @@ namespace ODev.PoseAnimator
         {
             Profiler.BeginSample($"{nameof(PoseAnimator)}.{nameof(Tick)}");
 
-            // m_Montages.Tick(pDeltaTime);
+            m_Montages.Tick(pDeltaTime);
 
             // if (!m_Montages.IsWeightFull())
-            {
-                m_Handle = m_BonePoseJob.Schedule(m_BatchSize, DEFAULT_BATCH_SIZE, m_Handle);
-            }
+            // {
+                m_JobsHandle = m_BonePoseJob.Schedule(m_BatchSize, DEFAULT_BATCH_SIZE, m_JobsHandle);
+            // }
 
-            // m_Handle = m_Montages.TickSchedule(m_SkeletonKeys, m_NextPose, m_Handle);
+            // m_JobsHandle = m_Montages.TickSchedule(m_SkeletonKeys, m_NextPose, m_JobsHandle);
 
-            m_Handle = m_ApplyTransformJob.Schedule(m_AccessArray, m_Handle);
+            m_JobsHandle = m_ApplyTransformJob.Schedule(m_AccessArray, m_JobsHandle);
 
             Profiler.EndSample();
         }
 
         public void TickComplete(float pDeltaTime)
         {
-            m_Handle.Complete();
-            m_Handle = default;
+            m_JobsHandle.Complete();
+            m_JobsHandle = default;
         }
 
         public int AddAnimator(Transform pRoot)
@@ -195,7 +203,7 @@ namespace ODev.PoseAnimator
 
             if (m_FreeIndexes.Count == 0)
             {
-                ResizeArrays(1); // TODO: Change to a request and delay till next tick. This allows for resizing the arrays only once rather than 20 times in a single frame
+                ResizeArrays(DEFAULT_BATCH_RESIZE); // TODO: Change to a request and delay till next tick. This allows for resizing the arrays only once rather than 20 times in a single frame
             }
 
             int newIndex = m_FreeIndexes[0];
@@ -250,5 +258,8 @@ namespace ODev.PoseAnimator
             int keyIndex = (pHandle * m_Animations.Length) + pIndex;
             m_Weights[keyIndex] = poseWeight;
         }
+
+        public int PlayMontage(int pHandle, SOPoseMontage pMontage) => m_Montages.PlayMontage(pHandle, pMontage);
+        public void CancelMontage(int pHandle, int pMontageHandle) => m_Montages.CancelMontage(pHandle, pMontageHandle);
     }
 }
