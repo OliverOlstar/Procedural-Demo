@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using ODev.Picker;
 using ODev.Util;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Pool;
-using UnityEngine.XR;
 
 namespace ODev.PoseAnimator
 {

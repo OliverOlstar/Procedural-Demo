@@ -11,15 +11,7 @@ namespace ODev.PoseAnimator
 {
     public class PoseSystem
     {
-        // private struct AnimatorCollections
-        // {
-        //     public bool IsAnimating;
-        //     public NativeArray<PoseWeight> Weights;
-        //     public NativeArray<PoseKey> PoseKeys;
-        //     public NativeArray<PoseKey> NextPose;
-        // }
-
-        private const int DEFAULT_BATCH_SIZE = 2;
+        private const int DEFAULT_BATCH_SIZE = 1;
         private const int DEFAULT_BATCH_RESIZE = 4;
 
         private readonly SOPoseSkeleton m_Skeleton;
@@ -63,6 +55,8 @@ namespace ODev.PoseAnimator
             m_Montages.Initalize(pSkeleton.BoneCount, m_BatchSize);
 
             InitalizeAnimations();
+            ResizeArrays(DEFAULT_BATCH_SIZE);
+            CreateJobs();
         }
 
         public void InitalizeAnimations()
@@ -91,8 +85,6 @@ namespace ODev.PoseAnimator
                     }
                 // this.Log($"[{animation.name}] m_Animations {m_Animations.Length} | m_Weights {m_Weights.Length} | m_PoseKeys {PoseKeys.Count}");
             }
-
-            CreateJobs();
         }
 
         private void ResizeArrays(int pAmountRequired)
@@ -100,7 +92,7 @@ namespace ODev.PoseAnimator
             int previousSize = m_BatchSize;
             m_BatchSize += pAmountRequired;
             m_BatchSize = Mathf.CeilToInt((float)m_BatchSize / DEFAULT_BATCH_SIZE) * DEFAULT_BATCH_SIZE;
-            this.Log(m_BatchSize.ToString());
+            this.Log($"From {previousSize} to {m_BatchSize}");
 
             if (!m_IsAnimating.IsCreated)
             {
@@ -178,14 +170,7 @@ namespace ODev.PoseAnimator
             Profiler.BeginSample($"{nameof(PoseAnimator)}.{nameof(Tick)}");
 
             m_Montages.Tick(pDeltaTime);
-
-            // if (!m_Montages.IsWeightFull())
-            // {
-                m_JobsHandle = m_BonePoseJob.Schedule(m_BatchSize, DEFAULT_BATCH_SIZE, m_JobsHandle);
-            // }
-
-            // m_JobsHandle = m_Montages.TickSchedule(m_SkeletonKeys, m_NextPose, m_JobsHandle);
-
+            m_JobsHandle = m_BonePoseJob.Schedule(m_BatchSize, DEFAULT_BATCH_SIZE, m_JobsHandle);
             m_JobsHandle = m_ApplyTransformJob.Schedule(m_AccessArray, m_JobsHandle);
 
             Profiler.EndSample();

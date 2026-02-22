@@ -58,10 +58,6 @@ namespace ODev.Updateables
         {
             Assert.IsNotNull(pAciton, "Action is null");
             bool registered = IsRegistered;
-            if (registered)
-            {
-                m_Action = null;
-            }
             m_Action = pAciton;
             m_Predicate = pPredicate;
             m_TimeElapse = 0.0f;
