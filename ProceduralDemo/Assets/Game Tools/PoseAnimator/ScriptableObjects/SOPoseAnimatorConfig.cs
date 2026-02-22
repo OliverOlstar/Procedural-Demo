@@ -7,10 +7,14 @@ namespace ODev.PoseAnimator
 	[CreateAssetMenu(fileName = "New Pose Animator Config", menuName = "PoseAnimator/Config")]
 	public class SOPoseAnimatorConfig : ScriptableObject
 	{
+        [SerializeField, AssetNonNull] private SOPoseSkeleton m_PoseSkeleton; 
 		[SerializeField, AssetNonNull] private SOPoseAnimation[] m_PoseAnimations = new SOPoseAnimation[0];
+
         private readonly Dictionary<SOPoseAnimation, int> m_AnimationToIndex = new();
+        // private readonly 
 
         public IReadOnlyList<SOPoseAnimation> Animations => m_PoseAnimations;
+        public SOPoseSkeleton Skeleton => m_PoseSkeleton;
 
         public bool TryGetIndex(SOPoseAnimation animation, out int handle)
         {
@@ -27,5 +31,7 @@ namespace ODev.PoseAnimator
             }
         }
 		private void OnValidate() => OnEnable();
+
+        // private void 
 	}
 }

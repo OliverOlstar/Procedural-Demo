@@ -52,14 +52,13 @@ namespace ODev.PoseAnimator
             }
         }
 
-        public PoseSystem GetOrCreatePoseSystem(SOPoseSkeleton pSkeleton, SOPoseAnimatorConfig pConfig)
+        public PoseSystem GetOrCreatePoseSystem(SOPoseAnimatorConfig pConfig)
         {
-            var handle = HashCode.Combine(pSkeleton.GetHashCode(), pConfig.GetHashCode());
-
+            var handle = pConfig.GetHashCode();
             if (!m_Systems.TryGetValue(handle, out var system))
             {
-                this.Log($"New {nameof(PoseSystem)} created for {pSkeleton.name}+{pConfig.name} ({handle})");
-                system = new PoseSystem(pSkeleton, pConfig);
+                this.Log($"New {nameof(PoseSystem)} created for {pConfig.name}+{pConfig.Skeleton.name} ({handle})");
+                system = new PoseSystem(pConfig);
                 m_Systems.Add(handle, system);
             }
             return system;

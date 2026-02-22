@@ -14,7 +14,6 @@ namespace ODev.PoseAnimator
         private const int DEFAULT_BATCH_SIZE = 1;
         private const int DEFAULT_BATCH_RESIZE = 4;
 
-        private readonly SOPoseSkeleton m_Skeleton;
         private readonly SOPoseAnimatorConfig m_Config;
 
         private NativeArray<PoseKey> m_SkeletonKeys;
@@ -34,13 +33,12 @@ namespace ODev.PoseAnimator
         private bool m_IsDisposed = false;
         private int m_BatchSize = 0;
 
-        public PoseSystem(SOPoseSkeleton pSkeleton, SOPoseAnimatorConfig pConfig)
+        public PoseSystem(SOPoseAnimatorConfig pConfig)
         {
-            m_Skeleton = pSkeleton;
             m_Config = pConfig;
 
-            m_SkeletonKeys = new NativeArray<PoseKey>(m_Skeleton.BoneCount, Allocator.Persistent);
-            PoseUtil.CopySkeleton(m_SkeletonKeys, m_Skeleton);
+            m_SkeletonKeys = new NativeArray<PoseKey>(m_Config.Skeleton.BoneCount, Allocator.Persistent);
+            PoseUtil.CopySkeleton(m_SkeletonKeys, m_Config.Skeleton);
 
             int poseKeyCountInConfig = 0;
             foreach (var animation in m_Config.Animations)
@@ -48,11 +46,11 @@ namespace ODev.PoseAnimator
                 {
                     poseKeyCountInConfig += clip.Clip.Keys.Count;
                 }
-            poseKeyCountInConfig += m_Skeleton.BoneCount * PoseMontageAnimator.MAX_MONTAGE_POSE_COUNT * PoseMontageAnimator.MAX_MONTAGE_COUNT;
+            poseKeyCountInConfig += m_Config.Skeleton.BoneCount * PoseMontageAnimator.MAX_MONTAGE_POSE_COUNT * PoseMontageAnimator.MAX_MONTAGE_COUNT;
             m_PoseKeys = new NativeArray<PoseKey>(poseKeyCountInConfig, Allocator.Persistent);
             m_Animations = new NativeArray<PoseAnimation>(m_Config.Animations.Count + PoseMontageAnimator.MAX_MONTAGE_COUNT, Allocator.Persistent);
 
-            m_Montages.Initalize(pSkeleton.BoneCount, m_BatchSize);
+            m_Montages.Initalize(m_Config.Skeleton.BoneCount, m_BatchSize);
 
             InitalizeAnimations();
             ResizeArrays(DEFAULT_BATCH_SIZE);
@@ -205,7 +203,7 @@ namespace ODev.PoseAnimator
 
             int accessStartIndex = m_SkeletonKeys.Length * newIndex;
             int index = 0;
-            foreach (PoseUtil.Bone bone in PoseUtil.GetAllBones(m_Skeleton, pRoot)) // TODO: Ensure get all bones doesn't go more than the expect amount!
+            foreach (PoseUtil.Bone bone in PoseUtil.GetAllBones(m_Config.Skeleton, pRoot)) // TODO: Ensure get all bones doesn't go more than the expect amount!
             {
                 m_AccessArray[accessStartIndex + index] = bone.Transform;
                 index++;

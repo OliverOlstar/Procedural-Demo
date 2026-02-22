@@ -7,7 +7,6 @@ namespace ODev.PoseAnimator
 	public class PoseAnimator : MonoBehaviour
 	{
 		[SerializeField] private Transform m_Root = null;
-		[SerializeField, AssetNonNull] private SOPoseSkeleton m_Skeleton = null;
 		[SerializeField, AssetNonNull] private SOPoseAnimatorConfig m_Config = null;
 
 		private PoseSystem m_System;
@@ -15,7 +14,7 @@ namespace ODev.PoseAnimator
 
 		private void Start()
 		{
-			m_System = PoseSystemManager.Instance.GetOrCreatePoseSystem(m_Skeleton, m_Config);
+			m_System = PoseSystemManager.Instance.GetOrCreatePoseSystem(m_Config);
 			OnEnable();
 		}
 

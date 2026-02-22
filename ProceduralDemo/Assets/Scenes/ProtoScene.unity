@@ -2131,7 +2131,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 637153138}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &37545380 stripped
 Transform:
@@ -2994,7 +2993,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1637635523}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &53817116
 GameObject:
@@ -3729,7 +3727,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1234099802}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &58059989 stripped
 Transform:
@@ -4437,7 +4434,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1662862071}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &60325784 stripped
 Transform:
@@ -10598,7 +10594,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1334289613}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &158807168 stripped
 Transform:
@@ -13281,7 +13276,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 9641697}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &183897816 stripped
 GameObject:
@@ -13979,7 +13973,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1762894114}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &184763959 stripped
 Transform:
@@ -14722,7 +14715,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 83794786}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &200122351 stripped
 Transform:
@@ -16986,7 +16978,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 623197096}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &206552350 stripped
 Transform:
@@ -19555,7 +19546,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 932476045}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &260096820
 GameObject:
@@ -21235,7 +21225,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 632501854}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &276633789 stripped
 Transform:
@@ -23457,7 +23446,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 516033450}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &308768645
 GameObject:
@@ -28121,7 +28109,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 853733544}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &375788758 stripped
 Transform:
@@ -31403,7 +31390,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1436843105}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &403775113 stripped
 Transform:
@@ -32265,7 +32251,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1411746596}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &408694633 stripped
 Transform:
@@ -33017,7 +33002,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 2026493621}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &411577230 stripped
 Transform:
@@ -34661,7 +34645,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1884031124}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &436898754 stripped
 Transform:
@@ -35379,7 +35362,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1916314766}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &447269283 stripped
 Transform:
@@ -40494,7 +40476,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 741081549}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1001 &516857591
 PrefabInstance:
@@ -44208,7 +44189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 408694633}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &598356566 stripped
 Transform:
@@ -46284,7 +46264,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 899065901}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &622675040 stripped
 Transform:
@@ -47407,7 +47386,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1578424691}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &650566032 stripped
 Transform:
@@ -51205,8 +51183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1323546782}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
-  m_Config: {fileID: 0}
+  m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!114 &752309549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58140,7 +58117,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1005805472}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &792869362 stripped
 Transform:
@@ -60532,7 +60508,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1400797905}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &811512201 stripped
 Transform:
@@ -62649,7 +62624,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 520703030}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &845851805 stripped
 Transform:
@@ -65332,7 +65306,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 241882608}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &897007040 stripped
 Transform:
@@ -66035,7 +66008,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1472243146}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &898646179 stripped
 GameObject:
@@ -66733,7 +66705,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 682563686}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &899065901 stripped
 Transform:
@@ -67461,7 +67432,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 540694482}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &908945298 stripped
 Transform:
@@ -68260,7 +68230,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1708589240}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &919395090 stripped
 Transform:
@@ -68973,7 +68942,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 606399126}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &923412833 stripped
 GameObject:
@@ -69671,7 +69639,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 2059271879}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1001 &924610211
 PrefabInstance:
@@ -73820,7 +73787,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 15174921}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &971304351
 GameObject:
@@ -75630,7 +75596,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1612381115}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &990714135 stripped
 Transform:
@@ -76333,7 +76298,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1336277689}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &992366687 stripped
 Transform:
@@ -77981,7 +77945,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1721702247}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1008656074 stripped
 Transform:
@@ -80634,7 +80597,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1670233062}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &1040740263 stripped
 GameObject:
@@ -81332,7 +81294,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1624218640}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &1041681128
 GameObject:
@@ -85332,7 +85293,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1941813349}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1130291208 stripped
 Transform:
@@ -87157,7 +87117,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 2011670825}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1142976125 stripped
 Transform:
@@ -88708,7 +88667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1585801597}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1161187370 stripped
 Transform:
@@ -89728,7 +89686,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 769578722}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1185169260 stripped
 Transform:
@@ -91503,7 +91460,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 2128080217}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1221234628 stripped
 Transform:
@@ -93228,7 +93184,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1756824839}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1248996828 stripped
 Transform:
@@ -93931,7 +93886,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1662969502}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1250376004 stripped
 Transform:
@@ -94737,7 +94691,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1740788398}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1255163116 stripped
 Transform:
@@ -96959,7 +96912,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 187190143}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1295977243 stripped
 Transform:
@@ -101347,7 +101299,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 69774289}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1368983650 stripped
 Transform:
@@ -102526,7 +102477,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1845273739}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1386164868 stripped
 Transform:
@@ -104110,7 +104060,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1073376420}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1399642248 stripped
 Transform:
@@ -105252,7 +105201,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 112861605}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1415388863 stripped
 Transform:
@@ -106135,7 +106083,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 148753853}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1439422880 stripped
 Transform:
@@ -106868,7 +106815,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1032820029}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1443183362 stripped
 Transform:
@@ -108364,7 +108310,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 2137186408}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &1504284704
 GameObject:
@@ -113055,7 +113000,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 297286299}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1627142214 stripped
 Transform:
@@ -113885,7 +113829,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1819750773}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1635094723 stripped
 Transform:
@@ -115526,7 +115469,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1050085073}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1648407982 stripped
 Transform:
@@ -117047,7 +116989,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1495709867}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1661501179 stripped
 Transform:
@@ -119366,7 +119307,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 962992919}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1732980447 stripped
 Transform:
@@ -120207,7 +120147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 2093520291}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1740788398 stripped
 Transform:
@@ -121112,7 +121051,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 929437174}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1001 &1751886452
 PrefabInstance:
@@ -123905,7 +123843,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1261168907}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &1809212887 stripped
 GameObject:
@@ -125780,7 +125717,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 60325784}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1869775317 stripped
 Transform:
@@ -127179,7 +127115,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1004005857}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &1878450647 stripped
 GameObject:
@@ -127877,7 +127812,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1037745806}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1878469668 stripped
 Transform:
@@ -132067,7 +132001,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1510972837}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &1931206118 stripped
 Transform:
@@ -138263,7 +138196,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1808038559}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!1 &2009130281
 GameObject:
@@ -139970,7 +139902,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 790548289}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &2030418542 stripped
 Transform:
@@ -141501,7 +141432,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 767459624}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &2043421450 stripped
 Transform:
@@ -143758,7 +143688,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1227746189}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &2089850968 stripped
 Transform:
@@ -145075,7 +145004,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1735176031}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &2127399009 stripped
 Transform:
@@ -145183,7 +145111,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2128706076
 Transform:
   m_ObjectHideFlags: 0
@@ -145193,7 +145121,7 @@ Transform:
   m_GameObject: {fileID: 2128706075}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.02, y: 0.21, z: 5.87}
+  m_LocalPosition: {x: -15.02, y: 0.314, z: 5.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -146013,7 +145941,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 22605070}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!114 &2134169961
 MonoBehaviour:
@@ -147512,7 +147439,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Root: {fileID: 1364006614}
-  m_Skeleton: {fileID: 11400000, guid: 8a65df7fbb78d564295d836150a224cb, type: 2}
   m_Config: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}
 --- !u!4 &2141776920 stripped
 Transform:
