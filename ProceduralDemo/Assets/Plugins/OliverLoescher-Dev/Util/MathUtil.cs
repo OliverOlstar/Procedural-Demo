@@ -223,6 +223,7 @@ namespace ODev.Util
 		public static bool ApproximatelyOrGreaterThan(this int pA, int pB) => pA > pB || (pA - pB).IsNearZero();
 		public static bool ApproximatelyOrLessThan(this int pA, int pB) => pA < pB || (pA - pB).IsNearZero();
 
+		public static bool Approximately(this Vector3 pA, Vector3 pB) => (pA - pB).IsNearZero();
 		public static bool DistanceEqual(this Vector3 pA, Vector3 pB, float pDistance) => (pA - pB).sqrMagnitude == Mathf.Pow(pDistance, 2);
 		public static bool DistanceGreaterThan(this Vector3 pA, Vector3 pB, float pDistance) => (pA - pB).sqrMagnitude > Mathf.Pow(pDistance, 2);
 		public static bool DistanceEqualGreaterThan(this Vector3 pA, Vector3 pB, float pDistance) => (pA - pB).sqrMagnitude >= Mathf.Pow(pDistance, 2);
@@ -259,6 +260,12 @@ namespace ODev.Util
 		{
 			pVector.y = 0.0f;
 			return pVector.sqrMagnitude < NEARZERO;
+		}
+
+		public static bool IsNearIdentity(this Quaternion pQuaterion)
+		{
+			float angle = Quaternion.Angle(pQuaterion, Quaternion.identity);
+			return angle < 0.1f;
 		}
 		#endregion Compare
 	}

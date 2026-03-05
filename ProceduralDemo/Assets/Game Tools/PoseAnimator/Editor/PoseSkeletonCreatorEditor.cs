@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
@@ -16,6 +14,15 @@ namespace ODev.PoseAnimator
 			if (instance.Root == null || instance.Skeleton == null)
 			{
 				return;
+			}
+
+			if (GUILayout.Button(nameof(instance.EditorCopyRootPoseToClip)))
+			{
+				instance.EditorCopyRootPoseToClip();
+			}
+			if (GUILayout.Button(nameof(instance.EditorValidateRootMatchesSkeleton)))
+			{
+				instance.EditorValidateRootMatchesSkeleton();
 			}
 
 			GUILayout.FlexibleSpace();

@@ -8,12 +8,9 @@ namespace ODev.PoseAnimator
 {
 	public class PoseClipCreator : MonoBehaviour
 	{
-		[SerializeField, Asset]
-		private SOPoseClip m_Clip = null;
-		[SerializeField, AssetNonNull]
-		private SOPoseSkeleton m_Skeleton = null;
-		[SerializeField]
-		private Transform m_Root = null;
+		[SerializeField, Asset] private SOPoseClip m_Clip = null;
+		[SerializeField, AssetNonNull] private SOPoseSkeleton m_Skeleton = null;
+		[SerializeField] private Transform m_Root = null;
 
 		[Button]
 		private void CopyRootPoseToClip()

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using ODev.Util;
 using UnityEngine;
 
 namespace ODev.PoseAnimator
@@ -11,23 +8,24 @@ namespace ODev.PoseAnimator
 		[System.Serializable]
 		public struct Bone
 		{
-			public PoseKey Key;
+			public string Name; 
 			public int Depth;
+			public PoseKey Key;
 
-			public Bone(Vector3 pPosition, Quaternion pRotation, Vector3 pScale, int pDepth)
+			public Bone(Vector3 pPosition, Quaternion pRotation, Vector3 pScale, string pName, int pDepth)
 			{
+				Name = pName;
 				Key = new PoseKey(pPosition, pRotation, pScale);
 				Depth = pDepth;
 			}
 
 			public override readonly string ToString()
 			{
-				return $"[Bone] Depth {Depth}, Key {Key}";
+				return $"[Bone] Name {Name}, Depth {Depth}, Key {Key}";
 			}
 		}
 
-		[SerializeField]
-		private Bone[] m_Bones;
+		[SerializeField] private Bone[] m_Bones;
 
 		public int BoneCount => m_Bones.Length;
 

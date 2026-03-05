@@ -4,7 +4,7 @@ using System;
 
 namespace ODev.PoseAnimator
 {
-	[System.Serializable]
+	[Serializable]
 	public class PoseMontageAnimator
 	{
 		public const int NULL_HANDLE = int.MinValue;
