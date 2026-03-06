@@ -9,10 +9,9 @@ namespace ODev.GameStats
 	[CreateAssetMenu(menuName = "Variables/GameStat/FloatGameStat", fileName = "FloatGameStat", order = 0)]
 	public class FloatGameStat : FloatVariableSO
 	{
-		[SerializeField, AssetNonNull]
-		private List<FloatVariableSO> m_AddModifiers = new();
-		[SerializeField, AssetNonNull, Tooltip("-0.5 = -50%, 0 = 0%, 0.5 = 50%, 2 = 200%")]
-		private List<FloatVariableSO> m_PercentModifiers = new();
+		[SerializeField, AssetNonNull] private List<FloatVariableSO> m_AddModifiers = new();
+		[Tooltip("-0.5 = -50%, 0 = 0%, 0.5 = 50%, 2 = 200%")]
+		[SerializeField, AssetNonNull] private List<FloatVariableSO> m_PercentModifiers = new();
 
 		private readonly Dictionary<int, float> m_PureAddModifiers = new();
 		private readonly Dictionary<int, float> m_PurePercentModifiers = new();

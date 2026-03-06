@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a5e0dbefc317d49a41a585ebc88db2, type: 3}
   m_Name: PlayerSpearAirThrow
   m_EditorClassIdentifier: 
-  m_Tags: 1057792
-  m_CancelTags: 1048577
-  m_BlockTags: 0
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Spear.Throw.Air
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action
+  m_BlockTags:
+    m_SerializedExplicitTags: []
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 0.25
   m_CooldownTrigger: 1
   m_LogSelf: 0

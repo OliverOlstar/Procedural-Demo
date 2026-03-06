@@ -1,28 +1,22 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using ODev.Util;
 using ODev.Input;
-using ODev.Update;
 using UnityEngine.Pool;
 using ODev.Updateables;
+using BandoWare.GameplayTags;
 
 [Serializable]
 public class PlayerAbilities
 {
-	[FoldoutGroup("Events")]
-	public UnityEvent<AbilityTags> OnAbilityActivated = new();
-	[FoldoutGroup("Events")]
-	public UnityEvent<AbilityTags> OnAbilityDeactivated = new();
+	public event Action<GameplayTagContainer> OnAbilityActivated = delegate { };
+	public event Action<GameplayTagContainer> OnAbilityDeactivated = delegate { };
 
-	[SerializeField]
-	private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.CharacterAbility);
-	[SerializeField, DisableInPlayMode, ODev.Picker.AssetNonNull]
-	private SOCharacterAbility[] m_Abilities = new SOCharacterAbility[0];
-	[SerializeField]
-	private float m_InputBufferSeconds = 0.2f;
+	[SerializeField] private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.CharacterAbility);
+	[SerializeField, DisableInPlayMode, ODev.Picker.AssetNonNull] private SOCharacterAbility[] m_Abilities = new SOCharacterAbility[0];
+	[SerializeField] private float m_InputBufferSeconds = 0.2f;
 
 	private readonly List<ICharacterAbility> m_AbilityInstances = new();
 	private readonly List<int> m_LastInputedAbilities = new(2);
@@ -30,8 +24,8 @@ public class PlayerAbilities
 	private bool m_InputActivatedThisFrame = false;
 
 	private readonly List<ICharacterAbility> m_ActiveAbilities = new();
-	private AbilityTags m_ActiveTags = new();
-	private AbilityTags m_BlockedTags = new();
+	private GameplayTagContainer m_ActiveTags = GameplayTagContainer.Empty;
+	private GameplayTagContainer m_BlockedTags = GameplayTagContainer.Empty;
 
 	public void Initalize(PlayerRoot pRoot)
 	{
@@ -53,12 +47,12 @@ public class PlayerAbilities
 		m_Updateable.UnRegister();
 	}
 	
-	public void ActivateAbilityByTag(AbilityTags pTag)
+	public void ActivateAbilityByTag(GameplayTag pTag)
 	{
 		foreach (ICharacterAbility ability in m_AbilityInstances)
 		{
-			ability.GetTags(out AbilityTags m_Tags, out _);
-			if (!m_Tags.HasAnyFlag(pTag))
+			ability.GetTags(out GameplayTagContainer m_Tags, out _);
+			if (!m_Tags.HasTag(pTag))
 			{
 				continue;
 			}
@@ -147,7 +141,7 @@ public class PlayerAbilities
 
 	internal void RecievedAbilityActivated(ICharacterAbility pAbility)
 	{
-		pAbility.GetTags(out AbilityTags tags, out AbilityTags cancelTags);
+		pAbility.GetTags(out GameplayTagContainer tags, out GameplayTagContainer cancelTags);
 		OnAbilityActivated.Invoke(tags);
 
 		List<ICharacterAbility> tempList = ListPool<ICharacterAbility>.Get();
@@ -163,12 +157,12 @@ public class PlayerAbilities
 	}
 	internal void RecievedAbilityDeactivated(ICharacterAbility pAbility)
 	{
-		pAbility.GetTags(out AbilityTags tags, out _);
+		pAbility.GetTags(out GameplayTagContainer tags, out _);
 		OnAbilityDeactivated.Invoke(tags);
 		m_ActiveAbilities.Remove(pAbility);
 
-		m_ActiveTags = 0;
-		m_BlockedTags = 0;
+		m_ActiveTags = GameplayTagContainer.Empty;
+		m_BlockedTags = GameplayTagContainer.Empty;
 		foreach (ICharacterAbility ability in m_ActiveAbilities)
 		{
 			ability.AddTags(ref m_ActiveTags, ref m_BlockedTags);

@@ -1,0 +1,15 @@
+{
+  "Character.Action.Movement.Climb": {},
+  "Character.Action.Movement.Crouch": {},
+  "Character.Action.Movement.Glide": {},
+  "Character.Action.Movement.Jump": {},
+  "Character.Action.Movement.Mantle": {},
+  "Character.Action.Movement.Slide": {},
+  "Character.Action.Spear.Throw": {},
+  "Character.Action.Spear.Grapple": {},
+  "Character.Action.Spear.Jump": {},
+  "Character.Action.Spear.Pull": {},
+  "Character.Passive.Sprint": {},
+  "Character.Action.Spear.Throw.Air": {},
+  "Character.Action.Combat.Attack": {}
+}

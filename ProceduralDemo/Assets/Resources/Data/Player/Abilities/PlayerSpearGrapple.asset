@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c5b2461a39fd14b91dfea91eb9932f, type: 3}
   m_Name: PlayerSpearGrapple
   m_EditorClassIdentifier: 
-  m_Tags: 17409
-  m_CancelTags: 1
-  m_BlockTags: 0
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Spear.Grapple
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement
+  m_BlockTags:
+    m_SerializedExplicitTags: []
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 0.5
   m_CooldownTrigger: 1
   m_LogSelf: 0

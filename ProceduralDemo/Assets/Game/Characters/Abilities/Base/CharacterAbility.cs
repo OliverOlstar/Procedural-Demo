@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using ExcelDataReader.Log;
+using BandoWare.GameplayTags;
 using ODev.Input;
 using ODev.Util;
 using UnityEngine;
@@ -39,7 +39,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Initalize();
 	}
 
-	bool ICharacterAbility.TryActivate(AbilityTags pActiveTags, AbilityTags pBlockedTags)
+	bool ICharacterAbility.TryActivate(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags)
 	{
 		if (!CanSystemsCanActive(pActiveTags, pBlockedTags) || !CanActivate())
 		{
@@ -48,7 +48,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Activate();
 		return true;
 	}
-	bool ICharacterAbility.TryActivateUpdate(AbilityTags pActiveTags, AbilityTags pBlockedTags)
+	bool ICharacterAbility.TryActivateUpdate(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags)
 	{
 		if (!CanSystemsCanActive(pActiveTags, pBlockedTags) || !CanActivateUpdate())
 		{
@@ -57,7 +57,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Activate();
 		return true;
 	}
-	void ICharacterAbility.TryCancel(AbilityTags pActiveTags, AbilityTags pCancelTags)
+	void ICharacterAbility.TryCancel(GameplayTagContainer pActiveTags, GameplayTagContainer pCancelTags)
 	{
 		if (Data.ShouldCancel(pActiveTags, pCancelTags))
 		{
@@ -92,7 +92,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	protected abstract void ActivateInternal();
 	protected abstract void DeactivateInternal();
 
-	private bool CanSystemsCanActive(AbilityTags pActiveTags, AbilityTags pBlockedTags)
+	private bool CanSystemsCanActive(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags)
 	{
 		if (m_CooldownTime > 0.0f)
 		{
@@ -144,8 +144,15 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		}
 	}
 
-	public void AddTags(ref AbilityTags rActiveTags, ref AbilityTags rBlockedTags) => Data.AddTags(ref rActiveTags, ref rBlockedTags);
-	public void GetTags(out AbilityTags oTags, out AbilityTags oCancelTags) => Data.GetTags(out oTags, out oCancelTags);
+	public void AddTags(ref GameplayTagContainer rActiveTags, ref GameplayTagContainer rBlockedTags)
+	{
+		Data.AddTags(ref rActiveTags, ref rBlockedTags);
+	}
+
+	public void GetTags(out GameplayTagContainer oTags, out GameplayTagContainer oCancelTags)
+	{
+		Data.GetTags(out oTags, out oCancelTags);
+	}
 
 	#region Helpers
 	[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]

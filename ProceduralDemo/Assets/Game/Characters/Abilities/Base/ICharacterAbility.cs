@@ -1,3 +1,4 @@
+using BandoWare.GameplayTags;
 using ODev.Input;
 
 public interface ICharacterAbility
@@ -6,14 +7,14 @@ public interface ICharacterAbility
 	public IInputTrigger InputActivate { get; }
 
 	/// <summary> Calls Activate() if CanActivate() is true </summary>
-	public bool TryActivate(AbilityTags pActiveTags, AbilityTags pBlockedTags);
-	public bool TryActivateUpdate(AbilityTags pActiveTags, AbilityTags pBlockedTags);
+	public bool TryActivate(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags);
+	public bool TryActivateUpdate(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags);
 	public void Deactivate();
 	public void ActiveTick(float pDeltaTime);
 	public void SystemsTick(float pDeltaTime);
 	public void Destory();
 
-	public void TryCancel(AbilityTags pActiveTags, AbilityTags pCancelTags);
-	public void AddTags(ref AbilityTags rActiveTags, ref AbilityTags rBlockedTags);
-	public void GetTags(out AbilityTags oTags, out AbilityTags oCancelTags);
+	public void TryCancel(GameplayTagContainer pActiveTags, GameplayTagContainer pCancelTags);
+	public void AddTags(ref GameplayTagContainer rActiveTags, ref GameplayTagContainer rBlockedTags);
+	public void GetTags(out GameplayTagContainer oTags, out GameplayTagContainer oCancelTags);
 }

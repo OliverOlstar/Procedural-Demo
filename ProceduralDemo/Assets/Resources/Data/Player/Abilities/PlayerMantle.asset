@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37363a6ae986faa4baf7c95caab0f258, type: 3}
   m_Name: PlayerMantle
   m_EditorClassIdentifier: 
-  m_Tags: 257
-  m_CancelTags: 1048577
-  m_BlockTags: 0
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement.Mantle
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action
+  m_BlockTags:
+    m_SerializedExplicitTags: []
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 0.25
   m_CooldownTrigger: 1
   m_LogSelf: 0

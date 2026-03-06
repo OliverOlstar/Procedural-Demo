@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc815281e22cc04d977e20c018530c8, type: 3}
   m_Name: PlayerJump
   m_EditorClassIdentifier: 
-  m_Tags: 49
-  m_CancelTags: 1
-  m_BlockTags: 0
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement.Jump
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement
+  m_BlockTags:
+    m_SerializedExplicitTags: []
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 0.4
   m_CooldownTrigger: 0
   m_LogSelf: 0

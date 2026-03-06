@@ -12,11 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3138af8972ed7ee49a5138bad0b56335, type: 3}
   m_Name: PlayerSpearJump
   m_EditorClassIdentifier: 
-  m_Tags: 2065
-  m_CancelTags: 1
-  m_BlockTags: 144
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement.Jump
+    - Character.Action.Spear.Jump
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement
+  m_BlockTags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement.Jump
+    - Character.Action.Movement.Glide
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 1
   m_CooldownTrigger: 1
   m_LogSelf: 0

@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a9e604eb7ee0ab40a152f2ad4f9a1ff, type: 3}
   m_Name: PlayerWallJump
   m_EditorClassIdentifier: 
-  m_Tags: 81
-  m_CancelTags: 0
-  m_BlockTags: 0
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement.Jump
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement
+  m_BlockTags:
+    m_SerializedExplicitTags: []
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 0.25
   m_CooldownTrigger: 1
   m_LogSelf: 0

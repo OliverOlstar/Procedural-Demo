@@ -1,20 +1,19 @@
 using System;
+using BandoWare.GameplayTags;
 using ODev.Picker;
 using ODev.PoseAnimator;
 using ODev.Util;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class PoseAnimatorSlide : PoseAnimatorControllerBase
 {	
-	[SerializeField, AssetNonNull]
-	private SOPoseAnimation m_Animation = null;
+	[SerializeField, AssetNonNull] private SOPoseAnimation m_Animation = null;
+	[SerializeField] private GameplayTag m_SlideTag;
 
 	[Header("Overall Weight")]
-	[SerializeField]
-	private float m_WeightSpring = 100.0f;
-	[SerializeField]
-	private float m_WeightDamper = 10.0f;
+	[SerializeField] private float m_WeightSpring = 100.0f;
+	[SerializeField] private float m_WeightDamper = 10.0f;
 
 	private bool m_IsSliding = false;
 	private int m_Handle = -1;
@@ -28,14 +27,14 @@ public class PoseAnimatorSlide : PoseAnimatorControllerBase
 		m_Handle = Animator.GetHandle(m_Animation);
 		Controller.CenterOfMassBounce.AddBounce(m_Handle, 0.0f);
 
-		Root.Abilities.OnAbilityActivated.AddListener(OnAbilityActivated);
-		Root.Abilities.OnAbilityDeactivated.AddListener(OnAbilityDeactivated);
+		Root.Abilities.OnAbilityActivated += OnAbilityActivated;
+		Root.Abilities.OnAbilityDeactivated += OnAbilityDeactivated;
 	}
 
 	public override void Destroy()
 	{
-		Root.Abilities.OnAbilityActivated.RemoveListener(OnAbilityActivated);
-		Root.Abilities.OnAbilityDeactivated.RemoveListener(OnAbilityDeactivated);
+		Root.Abilities.OnAbilityActivated -= OnAbilityActivated;
+		Root.Abilities.OnAbilityDeactivated -= OnAbilityDeactivated;
 	}
 
 	public override void Tick(float pDeltaTime)
@@ -49,17 +48,17 @@ public class PoseAnimatorSlide : PoseAnimatorControllerBase
 		Animator.SetWeight(m_Handle, 0.0f, m_Weight01);
 	}
 
-	private void OnAbilityActivated(AbilityTags pTags)
+	private void OnAbilityActivated(GameplayTagContainer pTags)
 	{
-		if (pTags.HasFlag(AbilityTags.Slide))
+		if (pTags.HasTag(m_SlideTag))
 		{
 			m_IsSliding = true;
 		}
 	}
 
-	private void OnAbilityDeactivated(AbilityTags pTags)
+	private void OnAbilityDeactivated(GameplayTagContainer pTags)
 	{
-		if (pTags.HasFlag(AbilityTags.Slide))
+		if (pTags.HasTag(m_SlideTag))
 		{
 			m_IsSliding = false;
 		}

@@ -1,4 +1,4 @@
-using System;
+using BandoWare.GameplayTags;
 using ODev.Input;
 using ODev.Picker;
 using ODev.PoseAnimator;
@@ -8,10 +8,11 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Spear Pull Ability", menuName = "Character/Ability/Player Spear Pull")]
 public class SOPlayerAbilitySpearPull : SOCharacterAbility
 {
-	[Space, SerializeField, AssetNonNull]
-	private SOPoseMontage m_Montage = null;
+	[Space, SerializeField, AssetNonNull] private SOPoseMontage m_Montage = null;
+	[SerializeField] private GameplayTag m_SpearThrowTag;
 
 	public SOPoseMontage Montage => m_Montage;
+	public GameplayTag SpearThrowTag => m_SpearThrowTag;
 
 	public override ICharacterAbility CreateInstance(PlayerRoot pPlayer, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled) => new PlayerAbilitySpearPull(pPlayer, this, pOnInputPerformed, pOnInputCanceled);
 }
@@ -49,7 +50,7 @@ public class PlayerAbilitySpearPull : CharacterAbility<SOPlayerAbilitySpearPull>
 	{
 		if (pState == PlayerSpear.State.Stored)
 		{
-			Root.Abilities.ActivateAbilityByTag(AbilityTags.SpearThrow);
+			Root.Abilities.ActivateAbilityByTag(Data.SpearThrowTag);
 			Deactivate();
 		}
 	}

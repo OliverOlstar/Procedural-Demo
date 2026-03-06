@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4181a7b14e7bdc64d8f2a6c7f8e6c4cc, type: 3}
   m_Name: PlayerGlide
   m_EditorClassIdentifier: 
-  m_Tags: 129
-  m_CancelTags: 1082624
-  m_BlockTags: 0
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement.Glide
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action
+  m_BlockTags:
+    m_SerializedExplicitTags: []
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 0.25
   m_CooldownTrigger: 1
   m_LogSelf: 0

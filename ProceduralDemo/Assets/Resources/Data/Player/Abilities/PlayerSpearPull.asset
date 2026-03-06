@@ -12,12 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f2753f4a4f9a9a488a36fd0c03ea796, type: 3}
   m_Name: PlayerSpearPull
   m_EditorClassIdentifier: 
-  m_Tags: 5121
-  m_CancelTags: 1048577
-  m_BlockTags: 0
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Spear.Pull
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action
+  m_BlockTags:
+    m_SerializedExplicitTags: []
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 1
   m_CooldownTrigger: 0
   m_LogSelf: 0
   m_Montage: {fileID: 11400000, guid: 1ed7dd360f1acb243bcabf2cef47457c, type: 2}
+  m_SpearThrowTag:
+    m_Name: 

@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d612e5a307062340884fb3811f0fda8, type: 3}
   m_Name: PlayerCrouch
   m_EditorClassIdentifier: 
-  m_Tags: 5
-  m_CancelTags: 0
-  m_BlockTags: 0
-  m_CanceledByTags: 16
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement.Crouch
+  m_CancelTags:
+    m_SerializedExplicitTags: []
+  m_BlockTags:
+    m_SerializedExplicitTags:
+    - Character.Action.Movement.Slide
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 0
   m_CooldownTrigger: 0
   m_LogSelf: 0

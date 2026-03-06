@@ -2099,6 +2099,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -2110,6 +2114,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -2961,6 +2967,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -2972,6 +2982,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -3695,6 +3707,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -3706,6 +3722,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -4402,6 +4420,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -4413,6 +4435,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -6098,12 +6122,6 @@ MonoBehaviour:
   m_Camera: {fileID: 1813848490}
   m_Animator: {fileID: 2134169961}
   m_Abilities:
-    OnAbilityActivated:
-      m_PersistentCalls:
-        m_Calls: []
-    OnAbilityDeactivated:
-      m_PersistentCalls:
-        m_Calls: []
     m_Updateable:
       m_Type: 3
       m_Priority: 375
@@ -10562,6 +10580,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -10573,6 +10595,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -13244,6 +13268,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -13255,6 +13283,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -13941,6 +13971,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -13952,6 +13986,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -14683,6 +14719,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -14694,6 +14734,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -16946,6 +16988,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -16957,6 +17003,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -19514,6 +19562,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -19525,6 +19577,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -21193,6 +21247,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -21204,6 +21262,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -23414,6 +23474,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -23425,6 +23489,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -28080,6 +28146,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -28091,6 +28161,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -31361,6 +31433,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -31372,6 +31448,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -32222,6 +32300,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -32233,6 +32315,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -32973,6 +33057,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -32984,6 +33072,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -34616,6 +34706,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -34627,6 +34721,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -35333,6 +35429,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -35344,6 +35444,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -40447,6 +40549,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -40458,6 +40564,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -44160,6 +44268,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -44171,6 +44283,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -46235,6 +46349,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -46246,6 +46364,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -47357,6 +47477,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -47368,6 +47492,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -58102,6 +58228,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -58113,6 +58243,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -60493,6 +60625,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -60504,6 +60640,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -62609,6 +62747,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -62620,6 +62762,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -65291,6 +65435,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -65302,6 +65450,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -65993,6 +66143,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -66004,6 +66158,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -66690,6 +66846,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -66701,6 +66861,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -67417,6 +67579,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -67428,6 +67594,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -68215,6 +68383,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -68226,6 +68398,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -68927,6 +69101,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -68938,6 +69116,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -69624,6 +69804,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -69635,6 +69819,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -73772,6 +73958,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -73783,6 +73973,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -75581,6 +75773,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -75592,6 +75788,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -76283,6 +76481,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -76294,6 +76496,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -77930,6 +78134,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -77941,6 +78149,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -80582,6 +80792,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -80593,6 +80807,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -81279,6 +81495,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -81290,6 +81510,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -85278,6 +85500,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -85289,6 +85515,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -87102,6 +87330,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -87113,6 +87345,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -88652,6 +88886,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -88663,6 +88901,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -89671,6 +89911,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -89682,6 +89926,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -91445,6 +91691,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -91456,6 +91706,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -93169,6 +93421,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -93180,6 +93436,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -93871,6 +94129,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -93882,6 +94144,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -94676,6 +94940,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -94687,6 +94955,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -96897,6 +97167,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -96908,6 +97182,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -101284,6 +101560,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -101295,6 +101575,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -102462,6 +102744,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -102473,6 +102759,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -104045,6 +104333,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -104056,6 +104348,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -105186,6 +105480,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -105197,6 +105495,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -106068,6 +106368,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -106079,6 +106383,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -106800,6 +107106,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -106811,6 +107121,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -108295,6 +108607,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -108306,6 +108622,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -112985,6 +113303,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -112996,6 +113318,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -113814,6 +114138,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -113825,6 +114153,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -115454,6 +115784,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -115465,6 +115799,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -116974,6 +117310,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -116985,6 +117325,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -119292,6 +119634,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -119303,6 +119649,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -120132,6 +120480,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -120143,6 +120495,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -121036,6 +121390,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -121047,6 +121405,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -123828,6 +124188,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -123839,6 +124203,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -125702,6 +126068,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -125713,6 +126083,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -127100,6 +127472,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -127111,6 +127487,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -127797,6 +128175,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -127808,6 +128190,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -131986,6 +132370,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -131997,6 +132385,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -138181,6 +138571,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -138192,6 +138586,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -139887,6 +140283,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -139898,6 +140298,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -141417,6 +141819,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -141428,6 +141834,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -143673,6 +144081,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -143684,6 +144096,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -144989,6 +145403,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -145000,6 +145418,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -145998,6 +146418,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: Character.Action.Movement.Jump
+    m_CrouchTag:
+      m_Name: Character.Action.Movement.Crouch
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -146009,6 +146433,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: Character.Action.Movement.Slide
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:
@@ -147424,6 +147850,10 @@ MonoBehaviour:
   m_Crouch:
     m_IdleAnimation: {fileID: 11400000, guid: 092992434bed08a4a8c53ca9c694f7d0, type: 2}
     m_WalkAnimation: {fileID: 11400000, guid: 37d0ba9c242955e45aefe2d51f45474b, type: 2}
+    m_JumpTag:
+      m_Name: 
+    m_CrouchTag:
+      m_Name: 
     m_IdleAnimationSpeed: 0.4
     m_WalkVelocity: 3
     m_WalkDampening: 2
@@ -147435,6 +147865,8 @@ MonoBehaviour:
     m_LandVelocitySmoothStep: {x: -5, y: -25}
   m_Slide:
     m_Animation: {fileID: 11400000, guid: 54ca90f9591f0f045abee86d627a98db, type: 2}
+    m_SlideTag:
+      m_Name: 
     m_WeightSpring: 100
     m_WeightDamper: 10
   m_WheelRadius:

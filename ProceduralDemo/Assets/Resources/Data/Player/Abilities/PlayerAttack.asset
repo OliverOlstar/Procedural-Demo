@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9109e483153744199c10c3ada1f928, type: 3}
   m_Name: PlayerAttack
   m_EditorClassIdentifier: 
-  m_Tags: 3145728
-  m_CancelTags: 1048577
-  m_BlockTags: 1048577
-  m_CanceledByTags: 0
-  m_BlockedByTags: 0
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.Combat.Attack
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action
+  m_BlockTags:
+    m_SerializedExplicitTags: []
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
   m_Cooldown: 1
   m_CooldownTrigger: 0
   m_LogSelf: 0
