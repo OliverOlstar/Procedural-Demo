@@ -20,13 +20,8 @@ public class PlayerAbilitySprint : CharacterAbility<SOPlayerAbilitySprint>
 
 	public override IInputTrigger InputActivate => Root.Input.Sprint;
 
-	protected override void Initalize()
-	{
-	}
-	protected override void DestroyInternal()
-	{
-
-	}
+	protected override void Initalize() { }
+	protected override void DestroyInternal() { }
 
 	protected override bool CanActivate()
 	{

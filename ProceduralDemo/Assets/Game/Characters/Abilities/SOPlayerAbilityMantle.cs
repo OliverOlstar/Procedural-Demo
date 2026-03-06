@@ -58,14 +58,8 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 
 	private Transform Transform => Root.Movement.transform;
 
-	protected override void Initalize()
-	{
-
-	}
-	protected override void DestroyInternal()
-	{
-
-	}
+	protected override void Initalize() { }
+	protected override void DestroyInternal() { }
 
 	private Vector3 m_Direction;
 	private RaycastHit m_Hit;
@@ -78,7 +72,7 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 
 	protected override bool CanActivateUpdate()
 	{
-		if (!Root.OnWall.IsOnWall || Root.OnGround.IsOnGround || Root.Movement.VelocityY < Data.MinVelocity)
+		if (Root.Movement.VelocityY < Data.MinVelocity)
 		{
 			return false;
 		}

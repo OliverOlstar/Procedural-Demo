@@ -18,6 +18,7 @@ public abstract class SOCharacterAbility : ScriptableObject
 	[SerializeField] private GameplayTagContainer m_BlockTags;
 	[Space, SerializeField] private GameplayTagContainer m_CanceledByTags;
 	[SerializeField] private GameplayTagContainer m_BlockedByTags;
+	[SerializeField] private GameplayTagContainer m_RequiredTags; // Inverse of m_BlockedByTags
 
 	[Header("Cooldown")]
 	[SerializeField] private float m_Cooldown = 0.0f;
@@ -37,26 +38,26 @@ public abstract class SOCharacterAbility : ScriptableObject
 		_ => throw new NotImplementedException(),
 	};
 
-	public bool ShouldCancel(GameplayTagContainer othersTags, GameplayTagContainer othersCancelTags)
+	public bool ShouldCancel(IReadOnlyGameplayTagContainer othersTags, IReadOnlyGameplayTagContainer othersCancelTags)
 	{
 		return m_Tags.HasAny(othersCancelTags) || m_CanceledByTags.HasAny(othersTags);
 	}
 
-	public bool ShouldBlock(GameplayTagContainer othersTags, GameplayTagContainer othersBlockTags)
+	public bool HasRequired(IReadOnlyGameplayTagContainer othersTags)
 	{
-		return m_Tags.HasAny(othersBlockTags) || m_BlockedByTags.HasAny(othersTags);
+		return m_RequiredTags.IsEmpty || othersTags.HasAll(m_RequiredTags);
 	}
 
-	public void AddTags(ref GameplayTagContainer rActiveTags, ref GameplayTagContainer rBlockedTags)
+	public bool ShouldBlock(IReadOnlyGameplayTagContainer othersTags, IReadOnlyGameplayTagContainer othersBlockTags)
 	{
-		rActiveTags = GameplayTagContainer.Union(m_Tags, rActiveTags);
-		rBlockedTags = GameplayTagContainer.Union(m_BlockTags, rBlockedTags);
+		return othersBlockTags.HasAny(m_Tags) || othersTags.HasAny(m_BlockedByTags);
 	}
 
-	internal void GetTags(out GameplayTagContainer oTags, out GameplayTagContainer oCancelTags)
+	internal void GetTags(out IReadOnlyGameplayTagContainer oTags, out IReadOnlyGameplayTagContainer oCancelTags, out IReadOnlyGameplayTagContainer oBlockTags)
 	{
 		oTags = m_Tags;
 		oCancelTags = m_CancelTags;
+		oBlockTags = m_BlockTags;
 	}
 
 	public abstract ICharacterAbility CreateInstance(PlayerRoot pRoot, UnityAction pOnInputPerformed, UnityAction pOnInputCanceled);

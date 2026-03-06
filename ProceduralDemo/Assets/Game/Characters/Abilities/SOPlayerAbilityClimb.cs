@@ -38,10 +38,6 @@ public class PlayerAbilityClimb : CharacterAbility<SOPlayerAbilityClimb>
 
 	protected override bool CanActivateUpdate()
 	{
-		if (Root.OnGround.IsOnGround || !Root.OnWall.IsOnWall)
-		{
-			return false;
-		}
 		m_IsInputing = Root.Input.Move.Input.sqrMagnitude > Mathf.Pow(Data.InputDeadZone01, 2);
 		if (m_IsInputing)
 		{

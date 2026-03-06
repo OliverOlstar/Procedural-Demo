@@ -229,7 +229,7 @@ namespace ODev
 			timeScale *= m_BaseTimeScale;
 			timeScale *= m_EditorSlowMo / 100.0f;
             Time.timeScale = timeScale;
-			this.Log("TimeScale: " + Time.timeScale);
+			// this.Log("TimeScale: " + Time.timeScale);
             Time.fixedDeltaTime = m_BaseFixedTimeScale * timeScale;
 		}
 

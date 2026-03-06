@@ -1,13 +1,11 @@
 using System;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class PlayerSpearBehaviour
 {
-	[SerializeField]
-	private PlayerSpear m_Spear = null;
-	[SerializeField]
-	private SpringRope m_Rope = null;
+	[SerializeField] private PlayerSpear m_Spear = null;
+	[SerializeField] private SpringRope m_Rope = null;
 
 	private PlayerRoot m_Root;
 	private bool m_PlayerIsInTrigger = false;

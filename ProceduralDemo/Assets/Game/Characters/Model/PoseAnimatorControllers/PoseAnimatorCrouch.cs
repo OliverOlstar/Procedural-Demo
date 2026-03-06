@@ -86,7 +86,7 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 		Animator.SetWeight(m_WalkHandle, progress, m_WalkWeight01 * m_Weight01);
 	}
 
-	private void OnAbilityActivated(GameplayTagContainer pTags)
+	private void OnAbilityActivated(IReadOnlyGameplayTagContainer pTags)
 	{
 		if (pTags.HasTag(m_JumpTag))
 		{
@@ -98,7 +98,7 @@ public class PoseAnimatorCrouch : PoseAnimatorControllerBase
 		}
 	}
 
-	private void OnAbilityDeactivated(GameplayTagContainer pTags)
+	private void OnAbilityDeactivated(IReadOnlyGameplayTagContainer pTags)
 	{
 		if (pTags.HasTag(m_CrouchTag))
 		{

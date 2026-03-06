@@ -27,6 +27,9 @@ MonoBehaviour:
     m_SerializedExplicitTags: []
   m_BlockedByTags:
     m_SerializedExplicitTags: []
+  m_RequiredTags:
+    m_SerializedExplicitTags:
+    - OnGround.InAir
   m_Cooldown: 1
   m_CooldownTrigger: 1
   m_LogSelf: 0

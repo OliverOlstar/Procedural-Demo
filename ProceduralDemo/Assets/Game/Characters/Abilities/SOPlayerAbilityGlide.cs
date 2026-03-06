@@ -60,11 +60,6 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		m_WasOnGround = true;
 	}
 
-	protected override bool CanActivate()
-	{
-		return !Root.OnGround.IsOnGround;
-	}
-
 	protected override void ActivateInternal()
 	{
 		Data.AccelerationModifier.Apply(Root.Movement.AirAcceleration);
@@ -72,8 +67,6 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		Data.MaxVelocityModifier.Apply(Root.Movement.AirMaxVelocity);
 		Data.GravityUpModifier.Apply(Root.Movement.UpGravity);
 		Data.GravityDownModifier.Apply(Root.Movement.DownGravity);
-
-		Root.OnGround.OnAirExitEvent.AddListener(OnAirExit);
 
 		if (m_TempGlideObject != null)
 		{
@@ -99,13 +92,9 @@ public class PlayerAbilityGlide : CharacterAbility<SOPlayerAbilityGlide>
 		Data.GravityUpModifier.Remove(Root.Movement.UpGravity);
 		Data.GravityDownModifier.Remove(Root.Movement.DownGravity);
 
-		Root.OnGround.OnAirExitEvent.RemoveListener(OnAirExit);
-
 		if (m_TempGlideObject != null)
 		{
 			m_TempGlideObject.SetActive(false);
 		}
 	}
-
-	private void OnAirExit() => Deactivate();
 }

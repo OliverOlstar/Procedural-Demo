@@ -20,10 +20,14 @@ MonoBehaviour:
     - Character.Action.Movement
   m_BlockTags:
     m_SerializedExplicitTags: []
+  m_RequiredTags:
+    m_SerializedExplicitTags:
+    - OnGround.OnWall
   m_CanceledByTags:
     m_SerializedExplicitTags: []
   m_BlockedByTags:
-    m_SerializedExplicitTags: []
+    m_SerializedExplicitTags:
+    - OnGround.OnGround
   m_Cooldown: 0
   m_CooldownTrigger: 0
   m_LogSelf: 0

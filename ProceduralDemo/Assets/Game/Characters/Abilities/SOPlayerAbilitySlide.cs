@@ -52,10 +52,6 @@ public class PlayerAbilitySlide : CharacterAbility<SOPlayerAbilitySlide>
 	}
 	protected override bool CanActivate()
 	{
-		if (Root.OnGround.IsInAir)
-		{
-			return false;
-		}
 		if (Root.Movement.VelocityXZ.sqrMagnitude > Data.RequiredStartVelocity * Data.RequiredStartVelocity)
 		{
 			return true;

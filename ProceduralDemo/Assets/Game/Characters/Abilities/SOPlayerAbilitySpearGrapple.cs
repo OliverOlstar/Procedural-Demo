@@ -46,15 +46,7 @@ public class PlayerAbilitySpearGrapple : CharacterAbility<SOPlayerAbilitySpearGr
 
 	protected override bool CanActivate()
 	{
-		if (Root.OnGround.IsOnGround)
-		{
-			return false;
-		}
-		if (Root.Spear.State != PlayerSpear.State.Landed && Root.Spear.State != PlayerSpear.State.Thrown)
-		{
-			return false;
-		}
-		return true;
+		return Root.Spear.State == PlayerSpear.State.Landed || Root.Spear.State == PlayerSpear.State.Thrown;
 	}
 
 	protected override void ActivateInternal()

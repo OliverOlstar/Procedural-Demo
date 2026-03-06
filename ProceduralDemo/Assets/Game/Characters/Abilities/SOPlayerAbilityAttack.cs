@@ -8,13 +8,9 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Attack Ability", menuName = "Character/Ability/Player Attack")]
 public class SOPlayerAbilityAttack : SOCharacterAbility
 {
-	[Space, SerializeField, AssetNonNull]
-	private SOPoseMontage m_Montage = null;
-
-	[Space, SerializeField]
-	private AnimationCurve m_VelocityCurve = new();
-	[SerializeField]
-	private float m_Velocity = 0.0f;
+	[Space, SerializeField, AssetNonNull] private SOPoseMontage m_Montage = null;
+	[Space, SerializeField] private AnimationCurve m_VelocityCurve = new();
+	[SerializeField] private float m_Velocity = 0.0f;
 
 	public SOPoseMontage Montage => m_Montage;
 	public AnimationCurve VelocityCurve => m_VelocityCurve;
@@ -35,11 +31,6 @@ public class PlayerAbilityAttack : CharacterAbility<SOPlayerAbilityAttack>
 	private Vector3 m_Direction;
 	private int m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;
 	private float m_TimeElapsed;
-
-	protected override bool CanActivate()
-	{
-		return Root.OnGround.IsOnGround;
-	}
 
 	protected override void ActivateInternal()
 	{

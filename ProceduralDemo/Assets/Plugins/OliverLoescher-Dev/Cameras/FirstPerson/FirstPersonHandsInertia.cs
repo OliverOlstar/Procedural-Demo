@@ -5,35 +5,24 @@ namespace ODev.Camera
 	public class FirstPersonHandsInertia : MonoBehaviour
 	{
 		[Header("Tilt")]
-		[SerializeField]
-		private Vector2 m_TiltMagnitude = Vector2.one;
-		[SerializeField, Min(0)]
-		private Vector2 m_TiltMax = new(8.0f, 6.0f);
-		[SerializeField, Min(0)]
-		private Vector2 m_TiltDampening = Vector2.one;
+		[SerializeField] private Vector2 m_TiltMagnitude = Vector2.one;
+		[SerializeField, Min(0)] private Vector2 m_TiltMax = new(8.0f, 6.0f);
+		[SerializeField, Min(0)] private Vector2 m_TiltDampening = Vector2.one;
 
 		[Header("Movement")]
-		[SerializeField]
-		private Rigidbody m_Rigidbody = null;
-		[SerializeField, Range(0, 0.01f)]
-		private float m_TargetMagnitude = 5.0f;
-		[SerializeField, Min(0)]
-		private float m_MaxMagnitude = 1.0f;
-		[SerializeField]
-		private float m_MoveDampening = 1.0f;
-		[SerializeField]
-		private Vector3 m_MoveRelOffset = Vector3.zero;
+		[SerializeField] private Rigidbody m_Rigidbody = null;
+		[SerializeField, Range(0, 0.01f)] private float m_TargetMagnitude = 5.0f;
+		[SerializeField, Min(0)] private float m_MaxMagnitude = 1.0f;
+		[SerializeField] private float m_MoveDampening = 1.0f;
+		[SerializeField] private Vector3 m_MoveRelOffset = Vector3.zero;
+
+		[Space] // Bounce
+		[SerializeField] private OnGround m_Grounded = null;
+		[SerializeField] private AnimationCurve m_BounceCurve = new(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
+		[SerializeField] private float m_BounceFrequncy = 0.1f;
 
 		private Vector3 m_InitalRelOffset;
 		private float m_MoveValue = 0.0f;
-
-		[Space] // Bounce
-		[SerializeField]
-		private OnGround m_Grounded = null;
-		[SerializeField]
-		private AnimationCurve m_BounceCurve = new(new Keyframe(0.0f, 0.0f), new Keyframe(1.0f, 1.0f));
-		[SerializeField]
-		private float m_BounceFrequncy = 0.1f;
 
 		private Vector3 m_LastRotation;
 		private float m_BounceProgress = 0.0f;

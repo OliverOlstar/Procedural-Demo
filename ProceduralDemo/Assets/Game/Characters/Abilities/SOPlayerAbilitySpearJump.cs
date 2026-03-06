@@ -44,7 +44,7 @@ public class PlayerAbilitySpearJump : CharacterAbility<SOPlayerAbilitySpearJump>
 
 	protected override bool CanActivateUpdate()
 	{
-		return Root.Spear.PlayerIsInTrigger && Root.Spear.State == PlayerSpear.State.Landed && Root.Movement.VelocityY < 1.0f && Root.OnGround.IsInAir;
+		return Root.Spear.PlayerIsInTrigger && Root.Spear.State == PlayerSpear.State.Landed && Root.Movement.VelocityY < 1.0f;
 	}
 
 	// private int m_MontageHandle = PoseMontageAnimator.NULL_HANDLE;

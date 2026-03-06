@@ -7,14 +7,13 @@ public interface ICharacterAbility
 	public IInputTrigger InputActivate { get; }
 
 	/// <summary> Calls Activate() if CanActivate() is true </summary>
-	public bool TryActivate(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags);
-	public bool TryActivateUpdate(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags);
+	public bool TryActivate(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags);
+	public bool TryActivateUpdate(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags);
 	public void Deactivate();
 	public void ActiveTick(float pDeltaTime);
 	public void SystemsTick(float pDeltaTime);
 	public void Destory();
 
-	public void TryCancel(GameplayTagContainer pActiveTags, GameplayTagContainer pCancelTags);
-	public void AddTags(ref GameplayTagContainer rActiveTags, ref GameplayTagContainer rBlockedTags);
-	public void GetTags(out GameplayTagContainer oTags, out GameplayTagContainer oCancelTags);
+	public void TryCancel(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pCancelTags);
+	public void GetTags(out IReadOnlyGameplayTagContainer oTags, out IReadOnlyGameplayTagContainer oCancelTags, out IReadOnlyGameplayTagContainer oBlockTags);
 }

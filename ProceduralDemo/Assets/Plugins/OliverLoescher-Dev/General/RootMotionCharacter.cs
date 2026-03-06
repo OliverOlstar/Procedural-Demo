@@ -8,23 +8,16 @@ namespace ODev
 		public bool IgnoreYValue = false;
 
 		[Header("Root Motion")]
-		[SerializeField]
-		private CharacterController m_Character = null;
-		[SerializeField]
-		private OnGround m_Grounded = null;
+		[SerializeField] private CharacterController m_Character = null;
+		[SerializeField] private OnGround m_Grounded = null;
+		[Space, SerializeField] private float m_Gravity = 9.81f;
+		[SerializeField] private float m_StepDown = 0.1f;
+		[Space, SerializeField] private float m_PushPower = 2.0f;
+
 		private Animator m_Animator = null;
-
-		[Space, SerializeField]
-		private float m_Gravity = 9.81f;
-		[SerializeField]
-		private float m_StepDown = 0.1f;
-
 		private bool m_InAir = false;
 		private Vector3 m_RootMotion = new();
 		private Vector3 m_Velocity = Vector3.zero;
-
-		[Space, SerializeField]
-		private float m_PushPower = 2.0f;
 
 		void Start()
 		{

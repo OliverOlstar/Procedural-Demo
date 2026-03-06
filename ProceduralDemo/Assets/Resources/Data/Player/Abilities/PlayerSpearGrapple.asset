@@ -23,6 +23,9 @@ MonoBehaviour:
   m_CanceledByTags:
     m_SerializedExplicitTags: []
   m_BlockedByTags:
+    m_SerializedExplicitTags:
+    - OnGround.OnGround
+  m_RequiredTags:
     m_SerializedExplicitTags: []
   m_Cooldown: 0.5
   m_CooldownTrigger: 1

@@ -88,38 +88,25 @@ namespace ODev
 			}
 		}
 
-		[SerializeField]
-		private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.OnGround);
-		[SerializeField]
-		private Transform m_Transform;
-		[SerializeField]
-		private Linecast[] m_Lines = new Linecast[0];
-		[SerializeField]
-		private Spherecast[] m_Spheres = new Spherecast[1];
-		[SerializeField]
-		private LayerMask m_LayerMask = new();
-		[SerializeField]
-		private float m_SlopeLimit = 45;
-		[SerializeField]
-		private bool m_FollowGround = false;
+		[SerializeField] private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.OnGround);
+		[SerializeField] private Transform m_Transform;
+		[SerializeField] private Linecast[] m_Lines = new Linecast[0];
+		[SerializeField] private Spherecast[] m_Spheres = new Spherecast[1];
+		[SerializeField] private LayerMask m_LayerMask = new();
+		[SerializeField] private float m_SlopeLimit = 45;
+		[SerializeField] private bool m_FollowGround = false;
 
-		[FoldoutGroup("Events")]
-		public UnityEvent OnAirEnterEvent;
-		[FoldoutGroup("Events")]
-		public UnityEvent OnAirExitEvent;
-		[FoldoutGroup("Events")]
-		public UnityEvent OnSlopeEnterEvent;
-		[FoldoutGroup("Events")]
-		public UnityEvent OnSlopeExitEvent;
-		[FoldoutGroup("Events")]
-		public UnityEvent OnGroundEnterEvent;
-		[FoldoutGroup("Events")]
-		public UnityEvent OnGroundExitEvent;
+		[FoldoutGroup("Events")] public UnityEvent OnAirEnterEvent;
+		[FoldoutGroup("Events")] public UnityEvent OnAirExitEvent;
+		[FoldoutGroup("Events")] public UnityEvent OnSlopeEnterEvent;
+		[FoldoutGroup("Events")] public UnityEvent OnSlopeExitEvent;
+		[FoldoutGroup("Events")] public UnityEvent OnGroundEnterEvent;
+		[FoldoutGroup("Events")] public UnityEvent OnGroundExitEvent;
 
 		private State m_State = State.None;
 		private readonly TransformFollower m_Follower = new();
 		private TransformFollower.IMotionReciver m_MotionReciever;
-		private OnGroundTimes m_Times = new();
+		private readonly OnGroundTimes m_Times = new();
 
 		public bool IsInAir => m_State == State.InAir;
 		public bool IsOnSlope => m_State == State.OnSlope;
@@ -319,11 +306,11 @@ namespace ODev
 			}
 			foreach (Linecast line in m_Lines)
 			{
-				line.OnDrawGizmos(m_Transform, m_LayerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
+				line.OnDrawGizmos(m_Transform, m_LayerMask, pHit => IsGroundValidInternal(pHit.normal));
 			}
 			foreach (Spherecast sphere in m_Spheres)
 			{
-				sphere.OnDrawGizmos(m_Transform, m_LayerMask, (RaycastHit pHit) => IsGroundValidInternal(pHit.normal));
+				sphere.OnDrawGizmos(m_Transform, m_LayerMask, pHit => IsGroundValidInternal(pHit.normal));
 			}
 			m_Follower.OnDrawGizmos();
 		}

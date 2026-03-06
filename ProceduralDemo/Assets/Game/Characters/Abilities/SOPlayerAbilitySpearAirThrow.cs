@@ -9,14 +9,10 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Spear Air Throw Ability", menuName = "Character/Ability/Player Spear Air Throw")]
 public class SOPlayerAbilitySpearAirThrow : SOCharacterAbility
 {
-	[Space, SerializeField, AssetNonNull]
-	private SOPoseMontage m_MontageStart = null;
-	[SerializeField, AssetNonNull]
-	private SOPoseMontage m_MontageEnd = null;
-	[SerializeField]
-	private float m_TimeScale = 0.15f;
-	[SerializeField]
-	private float m_TimeScaleSeconds = 1.0f;
+	[Space, SerializeField, AssetNonNull] private SOPoseMontage m_MontageStart = null;
+	[SerializeField, AssetNonNull] private SOPoseMontage m_MontageEnd = null;
+	[SerializeField] private float m_TimeScale = 0.15f;
+	[SerializeField] private float m_TimeScaleSeconds = 1.0f;
 
 	public SOPoseMontage MontageStart => m_MontageStart;
 	public SOPoseMontage MontageEnd => m_MontageEnd;
@@ -42,7 +38,7 @@ public class PlayerAbilitySpearAirThrow : CharacterAbility<SOPlayerAbilitySpearA
 
 	protected override bool CanActivate()
 	{
-		return Root.Spear.State == PlayerSpear.State.Stored /*&& !Root.OnGround.IsOnGround*/;
+		return Root.Spear.State == PlayerSpear.State.Stored;
 	}
 
 	protected override void ActivateInternal()

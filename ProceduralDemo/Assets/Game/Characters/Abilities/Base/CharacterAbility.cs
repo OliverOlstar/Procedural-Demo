@@ -39,7 +39,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Initalize();
 	}
 
-	bool ICharacterAbility.TryActivate(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags)
+	bool ICharacterAbility.TryActivate(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags)
 	{
 		if (!CanSystemsCanActive(pActiveTags, pBlockedTags) || !CanActivate())
 		{
@@ -48,7 +48,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Activate();
 		return true;
 	}
-	bool ICharacterAbility.TryActivateUpdate(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags)
+	bool ICharacterAbility.TryActivateUpdate(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags)
 	{
 		if (!CanSystemsCanActive(pActiveTags, pBlockedTags) || !CanActivateUpdate())
 		{
@@ -57,7 +57,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Activate();
 		return true;
 	}
-	void ICharacterAbility.TryCancel(GameplayTagContainer pActiveTags, GameplayTagContainer pCancelTags)
+	void ICharacterAbility.TryCancel(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pCancelTags)
 	{
 		if (Data.ShouldCancel(pActiveTags, pCancelTags))
 		{
@@ -92,18 +92,11 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	protected abstract void ActivateInternal();
 	protected abstract void DeactivateInternal();
 
-	private bool CanSystemsCanActive(GameplayTagContainer pActiveTags, GameplayTagContainer pBlockedTags)
+	private bool CanSystemsCanActive(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags)
 	{
-		if (m_CooldownTime > 0.0f)
-		{
-			return false;
-		}
-		if (Data.ShouldBlock(pActiveTags, pBlockedTags))
-		{
-			// LogMethod("Blocked");
-			return false;
-		}
-		return true;
+		return m_CooldownTime <= 0.0f &&
+			Data.HasRequired(pActiveTags) &&
+			!Data.ShouldBlock(pActiveTags, pBlockedTags);
 	}
 
 	protected void Activate()
@@ -144,14 +137,9 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		}
 	}
 
-	public void AddTags(ref GameplayTagContainer rActiveTags, ref GameplayTagContainer rBlockedTags)
+	public void GetTags(out IReadOnlyGameplayTagContainer oTags, out IReadOnlyGameplayTagContainer oCancelTags, out IReadOnlyGameplayTagContainer oBlockTags)
 	{
-		Data.AddTags(ref rActiveTags, ref rBlockedTags);
-	}
-
-	public void GetTags(out GameplayTagContainer oTags, out GameplayTagContainer oCancelTags)
-	{
-		Data.GetTags(out oTags, out oCancelTags);
+		Data.GetTags(out oTags, out oCancelTags, out oBlockTags);
 	}
 
 	#region Helpers

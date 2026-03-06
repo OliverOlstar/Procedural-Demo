@@ -31,15 +31,8 @@ public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 
 	public override IInputTrigger InputActivate => Root.Input.Jump;
 
-	protected override void Initalize()
-	{
-		Root.OnGround.OnGroundEnterEvent.AddListener(OnGroundEnter);
-	}
-
-	protected override void DestroyInternal()
-	{
-		Root.OnGround.OnGroundEnterEvent.RemoveListener(OnGroundEnter);
-	}
+	protected override void Initalize() { }
+	protected override void DestroyInternal() { }
 
 	protected override bool CanActivate()
 	{
@@ -58,10 +51,5 @@ public class PlayerAbilityJump : CharacterAbility<SOPlayerAbilityJump>
 		}
 		float velocity = Mathf.Max(Root.Movement.VelocityY * Data.CancelVelocityPercent, Data.CancelMinVelocity);
 		Root.Movement.SetVelocityY(velocity);
-	}
-
-	private void OnGroundEnter()
-	{
-		Deactivate();
 	}
 }

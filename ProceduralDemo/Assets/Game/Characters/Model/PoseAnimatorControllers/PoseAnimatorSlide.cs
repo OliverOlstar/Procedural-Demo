@@ -48,7 +48,7 @@ public class PoseAnimatorSlide : PoseAnimatorControllerBase
 		Animator.SetWeight(m_Handle, 0.0f, m_Weight01);
 	}
 
-	private void OnAbilityActivated(GameplayTagContainer pTags)
+	private void OnAbilityActivated(IReadOnlyGameplayTagContainer pTags)
 	{
 		if (pTags.HasTag(m_SlideTag))
 		{
@@ -56,7 +56,7 @@ public class PoseAnimatorSlide : PoseAnimatorControllerBase
 		}
 	}
 
-	private void OnAbilityDeactivated(GameplayTagContainer pTags)
+	private void OnAbilityDeactivated(IReadOnlyGameplayTagContainer pTags)
 	{
 		if (pTags.HasTag(m_SlideTag))
 		{

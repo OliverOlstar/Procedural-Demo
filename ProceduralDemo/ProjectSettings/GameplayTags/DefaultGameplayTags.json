@@ -11,5 +11,9 @@
   "Character.Action.Spear.Pull": {},
   "Character.Passive.Sprint": {},
   "Character.Action.Spear.Throw.Air": {},
-  "Character.Action.Combat.Attack": {}
+  "Character.Action.Combat.Attack": {},
+  "OnGround.OnSlope": {},
+  "OnGround.InAir": {},
+  "OnGround.OnWall": {},
+  "OnGround.OnGround": {}
 }

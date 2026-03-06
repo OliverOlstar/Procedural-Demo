@@ -6076,6 +6076,7 @@ GameObject:
   - component: {fileID: 82955118}
   - component: {fileID: 82955119}
   - component: {fileID: 82955120}
+  - component: {fileID: 82955121}
   m_Layer: 0
   m_Name: Player Root
   m_TagString: Untagged
@@ -6140,6 +6141,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 0de1b503910d6d645b30d1cd6955e161, type: 2}
     - {fileID: 11400000, guid: e7d3092aedd5df94395da5f25397ba4b, type: 2}
     m_InputBufferSeconds: 0.2
+    m_ActiveTags: {fileID: 82955121}
   m_Spear:
     m_Spear: {fileID: 841119741}
     m_Rope: {fileID: 1111095069}
@@ -6155,6 +6157,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131c540a40cee634e98134ba9b5d0c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &82955121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82955117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821334785215dfc47822ec49bd291438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PersistentTags:
+    m_SerializedExplicitTags: []
 --- !u!4 &83794786 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400206, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}
@@ -137732,6 +137748,7 @@ GameObject:
   - component: {fileID: 2004640778}
   - component: {fileID: 2004640780}
   - component: {fileID: 2004640779}
+  - component: {fileID: 2004640781}
   m_Layer: 19
   m_Name: Character
   m_TagString: Untagged
@@ -137892,6 +137909,29 @@ MonoBehaviour:
   OnWallExit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2004640781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004640774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73a3cc7d08ae8d94ca614197a70330be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OnGround: {fileID: 2004640778}
+  m_OnWall: {fileID: 2004640780}
+  m_GameplayTags: {fileID: 82955121}
+  m_OnGroundTag:
+    m_Name: OnGround.OnGround
+  m_OnSlopeTag:
+    m_Name: OnGround.OnSlope
+  m_InAirTag:
+    m_Name: OnGround.InAir
+  m_OnWallTag:
+    m_Name: OnGround.OnWall
 --- !u!4 &2005142189 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400010, guid: e57e9b8cd5e115f4f8d7736473e5c7fd, type: 3}

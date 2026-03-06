@@ -7,33 +7,22 @@ using ODev.Updateables;
 
 public class CharacterOnWall : MonoBehaviour
 {
-	[SerializeField]
-	private PlayerRoot m_Root = null;
-	[SerializeField]
-	private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.OnGround);
+	[SerializeField] private PlayerRoot m_Root = null;
+	[SerializeField] private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.OnGround);
 
 	[Header("Cast")]
-	[SerializeField]
-	private float m_Distance = 1.0f;
-	[SerializeField]
-	private LayerMask m_WallLayer = new();
-	[SerializeField, Range(0, 90.0f)]
-	private float m_MaxSlope = 45.0f;
+	[SerializeField] private float m_Distance = 1.0f;
+	[SerializeField] private LayerMask m_WallLayer = new();
+	[SerializeField, Range(0, 90.0f)] private float m_MaxSlope = 45.0f;
 
 	[Header("Capsule")]
-	[SerializeField]
-	private float m_Offset = 1.0f;
-	[SerializeField]
-	private float m_Radius = 0.5f;
-	[SerializeField]
-	private float m_Height = 2.0f;
+	[SerializeField] private float m_Offset = 1.0f;
+	[SerializeField] private float m_Radius = 0.5f;
+	[SerializeField] private float m_Height = 2.0f;
 
-	[FoldoutGroup("Events")]
-	public UnityEventsUtil.BoolEvent OnWallChanged = new();
-	[FoldoutGroup("Events")]
-	public UnityEvent OnWallEnter = new();
-	[FoldoutGroup("Events")]
-	public UnityEvent OnWallExit = new();
+	[FoldoutGroup("Events")] public UnityEventsUtil.BoolEvent OnWallChanged = new();
+	[FoldoutGroup("Events")] public UnityEvent OnWallEnter = new();
+	[FoldoutGroup("Events")] public UnityEvent OnWallExit = new();
 
 	private RaycastHit m_HitInfo = new();
 	private bool m_IsOnWall = false;

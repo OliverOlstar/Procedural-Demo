@@ -5,28 +5,19 @@ using UnityEngine;
 
 public class TestCharacter : UpdateableMonoBehaviour
 {
-	[SerializeField]
-	private float Speed = 10.0f;
-	[SerializeField]
-	private float Drag = 1.0f;
-	[SerializeField]
-	private float AirSpeed = 5.0f;
-	[SerializeField]
-	private float AirDrag = 0.1f;
-	[SerializeField]
-	private float Jump = 10.0f;
-	[SerializeField]
-	private float Gravity = -9.81f;
-	[SerializeField]
-	private float TerminalVelocity = -10.0f;
-
-	public Vector3 Velocity = Vector3.zero;
+	[SerializeField] private float Speed = 10.0f;
+	[SerializeField] private float Drag = 1.0f;
+	[SerializeField] private float AirSpeed = 5.0f;
+	[SerializeField] private float AirDrag = 0.1f;
+	[SerializeField] private float Jump = 10.0f;
+	[SerializeField] private float Gravity = -9.81f;
+	[SerializeField] private float TerminalVelocity = -10.0f;
 
 	[Header("References")]
-	[SerializeField]
-	private CharacterController Controller = null;
-	[SerializeField]
-	private OnGround Grounded = null;
+	[SerializeField] private CharacterController Controller = null;
+	[SerializeField] private OnGround Grounded = null;
+
+	public Vector3 Velocity = Vector3.zero;
 
 	public void Move(Vector3 pVector)
 	{

@@ -20,6 +20,9 @@ MonoBehaviour:
     - Character.Action
   m_BlockTags:
     m_SerializedExplicitTags: []
+  m_RequiredTags:
+    m_SerializedExplicitTags:
+    - OnGround.OnGround
   m_CanceledByTags:
     m_SerializedExplicitTags: []
   m_BlockedByTags:
