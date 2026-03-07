@@ -1,7 +1,5 @@
-using System;
 using BandoWare.GameplayTags;
 using ODev;
-using ODev.Util;
 using UnityEngine;
 
 public class OnGroundGameplayTags : MonoBehaviour
@@ -42,6 +40,18 @@ public class OnGroundGameplayTags : MonoBehaviour
 		{
 			OnWallEnter();
 		}
+	}
+
+	private void OnDestroy()
+	{
+		m_OnGround.OnGroundEnterEvent.RemoveListener(OnGroundEnter);
+		m_OnGround.OnGroundExitEvent.RemoveListener(OnGroundExit);
+		m_OnGround.OnSlopeEnterEvent.RemoveListener(OnSlopeEnter);
+		m_OnGround.OnSlopeExitEvent.RemoveListener(OnSlopeExit);
+		m_OnGround.OnAirEnterEvent.RemoveListener(OnAirEnter);
+		m_OnGround.OnAirExitEvent.RemoveListener(OnAirExit);
+		m_OnWall.OnWallEnter.RemoveListener(OnWallEnter);
+		m_OnWall.OnWallEnter.RemoveListener(OnWallExit);
 	}
 
 	private void OnGroundEnter()

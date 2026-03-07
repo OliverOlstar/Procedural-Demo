@@ -1,3 +1,4 @@
+using BandoWare.GameplayTags;
 using ODev.Input;
 using ODev.Picker;
 using ODev.PoseAnimator;
@@ -9,33 +10,21 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Mantle Ability", menuName = "Character/Ability/Player Mantle")]
 public class SOPlayerAbilityMantle : SOCharacterAbility
 {
-	[Space, SerializeField, AssetNonNull]
-	private SOPoseMontage m_Montage = null;
-	[SerializeField]
-	private AnimationCurve m_XZCurve = new();
-	[SerializeField]
-	private AnimationCurve m_YCurve = new();
-
-	[Space, SerializeField]
-	private float m_CompleteVelocity = 0.0f;
+	[Space, SerializeField, AssetNonNull] private SOPoseMontage m_Montage = null;
+	[SerializeField] private AnimationCurve m_XZCurve = new();
+	[SerializeField] private AnimationCurve m_YCurve = new();
+	[Space, SerializeField] private float m_CompleteVelocity = 0.0f;
 
 	[Header("Raycast")]
-	[SerializeField]
-	private float m_ForwardDistance = 1.0f;
-	[SerializeField]
-	private float m_MaxUpDistance = 2.0f;
-	[SerializeField]
-	private LayerMask m_GroundLayers = new();
+	[SerializeField] private float m_ForwardDistance = 1.0f;
+	[SerializeField] private float m_MaxUpDistance = 2.0f;
+	[SerializeField] private LayerMask m_GroundLayers = new();
 
 	[Header("Valid")]
-	[SerializeField]
-	private float m_MinTimeOffGround = 0.5f;
-	[SerializeField]
-	private float m_MinVelocity = -1.0f;
-	[SerializeField, Range(0.0f, 1.0f)]
-	private float m_TopSlopeMin = 0.5f;
-	[SerializeField, MinMaxSlider(-1.0f, 1.0f, ShowFields = true)]
-	private Vector2 m_SideSlopeLimit = new(-0.5f, 0.5f);
+	[SerializeField] private float m_MinTimeOffGround = 0.5f;
+	[SerializeField] private float m_MinVelocity = -1.0f;
+	[SerializeField, Range(0.0f, 1.0f)] private float m_TopSlopeMin = 0.5f;
+	[SerializeField, MinMaxSlider(-1.0f, 1.0f, ShowFields = true)] private Vector2 m_SideSlopeLimit = new(-0.5f, 0.5f);
 
 	public SOPoseMontage Montage => m_Montage;
 	public AnimationCurve XZCurve => m_XZCurve;
@@ -90,6 +79,23 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 			return false;
 		}
 		if (m_Hit.normal.y < Data.TopSlopeMin)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	protected override bool CanSystemsCanActive(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags)
+	{
+		if (m_CooldownTime > 0.0f)
+		{
+			return false;
+		}
+		if (!Data.HasRequired(pActiveTags))
+		{
+			return false;
+		}
+		if (Data.ShouldBlock(pActiveTags, pBlockedTags))
 		{
 			return false;
 		}

@@ -13,7 +13,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	private readonly UnityAction m_OnInputPerformed;
 	private readonly UnityAction m_OnInputCanceled;
 	private bool m_IsActive = false;
-	private float m_CooldownTime = 0.0f;
+	protected float m_CooldownTime = 0.0f;
 
 	public PlayerRoot Root => m_Root;
 	protected TData Data => m_Data;
@@ -48,6 +48,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Activate();
 		return true;
 	}
+
 	bool ICharacterAbility.TryActivateUpdate(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags)
 	{
 		if (!CanSystemsCanActive(pActiveTags, pBlockedTags) || !CanActivateUpdate())
@@ -57,6 +58,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		Activate();
 		return true;
 	}
+
 	void ICharacterAbility.TryCancel(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pCancelTags)
 	{
 		if (Data.ShouldCancel(pActiveTags, pCancelTags))
@@ -65,11 +67,14 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 			Deactivate();
 		}
 	}
+
 	void ICharacterAbility.Deactivate() => Deactivate();
+
 	void ICharacterAbility.SystemsTick(float pDeltaTime)
 	{
 		m_CooldownTime -= pDeltaTime;
 	}
+
 	void ICharacterAbility.Destory()
 	{
 		LogMethod();
@@ -92,7 +97,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	protected abstract void ActivateInternal();
 	protected abstract void DeactivateInternal();
 
-	private bool CanSystemsCanActive(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags)
+	protected virtual bool CanSystemsCanActive(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags)
 	{
 		return m_CooldownTime <= 0.0f &&
 			Data.HasRequired(pActiveTags) &&
