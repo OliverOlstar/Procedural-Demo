@@ -21,7 +21,7 @@ public class OnGroundGameplayTags : MonoBehaviour
 		m_OnGround.OnAirEnterEvent.AddListener(OnAirEnter);
 		m_OnGround.OnAirExitEvent.AddListener(OnAirExit);
 		m_OnWall.OnWallEnter.AddListener(OnWallEnter);
-		m_OnWall.OnWallEnter.AddListener(OnWallExit);
+		m_OnWall.OnWallExit.AddListener(OnWallExit);
 
 		if (m_OnGround.IsOnGround)
 		{
@@ -51,7 +51,7 @@ public class OnGroundGameplayTags : MonoBehaviour
 		m_OnGround.OnAirEnterEvent.RemoveListener(OnAirEnter);
 		m_OnGround.OnAirExitEvent.RemoveListener(OnAirExit);
 		m_OnWall.OnWallEnter.RemoveListener(OnWallEnter);
-		m_OnWall.OnWallEnter.RemoveListener(OnWallExit);
+		m_OnWall.OnWallExit.RemoveListener(OnWallExit);
 	}
 
 	private void OnGroundEnter()
