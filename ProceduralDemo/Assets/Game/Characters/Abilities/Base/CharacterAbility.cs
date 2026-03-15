@@ -16,7 +16,8 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	protected float m_CooldownTime = 0.0f;
 
 	public PlayerRoot Root => m_Root;
-	protected TData Data => m_Data;
+	public TData Data => m_Data;
+	SOCharacterAbility ICharacterAbility.Data => m_Data;
 	public bool IsActive => m_IsActive;
 	public virtual IInputTrigger InputActivate => null;
 
@@ -114,7 +115,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 		m_IsActive = true;
 		LogMethod();
 
-		m_Root.Abilities.RecievedAbilityActivated(this);
+		m_Root.Abilities.HandleAbilityActivated(this);
 		TriggerCooldown(true);
 		ActivateInternal();
 	}
@@ -130,7 +131,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 
 		DeactivateInternal();
 		TriggerCooldown(false);
-		m_Root.Abilities.RecievedAbilityDeactivated(this);
+		m_Root.Abilities.HandleAbilityDeactivated(this);
 	}
 
 	protected void TriggerCooldown(bool pOnActive)

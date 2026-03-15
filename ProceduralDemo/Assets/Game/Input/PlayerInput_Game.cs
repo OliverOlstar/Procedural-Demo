@@ -163,6 +163,42 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HolsterA"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f34f546-6675-4967-a2e7-c2a6fc57f773"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HolsterB"",
+                    ""type"": ""Button"",
+                    ""id"": ""deeea774-d40d-443e-a65d-170bab9f7735"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HolsterC"",
+                    ""type"": ""Button"",
+                    ""id"": ""b7127dd4-3213-453c-8570-b04f2ecf02d7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HolsterD"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8ea03f0-f9c4-4302-b582-84a2f854d7d9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -396,6 +432,94 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""action"": ""AbilityTertiary"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23b3464a-4811-4bf3-8b81-87aed4095769"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HolsterA"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""895657e4-a014-4967-a4ae-a6bf3456f721"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HolsterA"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5837086f-ab38-4d27-8d9b-8a3c3671c24b"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HolsterB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79645463-1e5d-4270-a245-e72377b784db"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HolsterB"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""386fe922-1e97-4b04-878b-230dc7b3f001"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HolsterC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cbfac944-2b82-46b9-a8aa-dfa02c71f511"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HolsterC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d7a44e8-a1eb-4a8d-ad9c-12efb1c5026d"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HolsterD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8c79a10-28b2-4412-9b53-77c636f1689f"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""HolsterD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -407,7 +531,7 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
                     ""name"": ""Exit"",
                     ""type"": ""Button"",
                     ""id"": ""560289ab-8826-444d-ab7e-aff89665b780"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -616,6 +740,10 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         m_PlayerCharacter_AbilityPrimary = m_PlayerCharacter.FindAction("AbilityPrimary", throwIfNotFound: true);
         m_PlayerCharacter_AbilitySecondary = m_PlayerCharacter.FindAction("AbilitySecondary", throwIfNotFound: true);
         m_PlayerCharacter_AbilityTertiary = m_PlayerCharacter.FindAction("AbilityTertiary", throwIfNotFound: true);
+        m_PlayerCharacter_HolsterA = m_PlayerCharacter.FindAction("HolsterA", throwIfNotFound: true);
+        m_PlayerCharacter_HolsterB = m_PlayerCharacter.FindAction("HolsterB", throwIfNotFound: true);
+        m_PlayerCharacter_HolsterC = m_PlayerCharacter.FindAction("HolsterC", throwIfNotFound: true);
+        m_PlayerCharacter_HolsterD = m_PlayerCharacter.FindAction("HolsterD", throwIfNotFound: true);
         // BuildMode
         m_BuildMode = asset.FindActionMap("BuildMode", throwIfNotFound: true);
         m_BuildMode_Exit = m_BuildMode.FindAction("Exit", throwIfNotFound: true);
@@ -711,6 +839,10 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCharacter_AbilityPrimary;
     private readonly InputAction m_PlayerCharacter_AbilitySecondary;
     private readonly InputAction m_PlayerCharacter_AbilityTertiary;
+    private readonly InputAction m_PlayerCharacter_HolsterA;
+    private readonly InputAction m_PlayerCharacter_HolsterB;
+    private readonly InputAction m_PlayerCharacter_HolsterC;
+    private readonly InputAction m_PlayerCharacter_HolsterD;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerCharacter".
     /// </summary>
@@ -754,6 +886,22 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerCharacter/AbilityTertiary".
         /// </summary>
         public InputAction @AbilityTertiary => m_Wrapper.m_PlayerCharacter_AbilityTertiary;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerCharacter/HolsterA".
+        /// </summary>
+        public InputAction @HolsterA => m_Wrapper.m_PlayerCharacter_HolsterA;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerCharacter/HolsterB".
+        /// </summary>
+        public InputAction @HolsterB => m_Wrapper.m_PlayerCharacter_HolsterB;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerCharacter/HolsterC".
+        /// </summary>
+        public InputAction @HolsterC => m_Wrapper.m_PlayerCharacter_HolsterC;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerCharacter/HolsterD".
+        /// </summary>
+        public InputAction @HolsterD => m_Wrapper.m_PlayerCharacter_HolsterD;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -804,6 +952,18 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @AbilityTertiary.started += instance.OnAbilityTertiary;
             @AbilityTertiary.performed += instance.OnAbilityTertiary;
             @AbilityTertiary.canceled += instance.OnAbilityTertiary;
+            @HolsterA.started += instance.OnHolsterA;
+            @HolsterA.performed += instance.OnHolsterA;
+            @HolsterA.canceled += instance.OnHolsterA;
+            @HolsterB.started += instance.OnHolsterB;
+            @HolsterB.performed += instance.OnHolsterB;
+            @HolsterB.canceled += instance.OnHolsterB;
+            @HolsterC.started += instance.OnHolsterC;
+            @HolsterC.performed += instance.OnHolsterC;
+            @HolsterC.canceled += instance.OnHolsterC;
+            @HolsterD.started += instance.OnHolsterD;
+            @HolsterD.performed += instance.OnHolsterD;
+            @HolsterD.canceled += instance.OnHolsterD;
         }
 
         /// <summary>
@@ -839,6 +999,18 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
             @AbilityTertiary.started -= instance.OnAbilityTertiary;
             @AbilityTertiary.performed -= instance.OnAbilityTertiary;
             @AbilityTertiary.canceled -= instance.OnAbilityTertiary;
+            @HolsterA.started -= instance.OnHolsterA;
+            @HolsterA.performed -= instance.OnHolsterA;
+            @HolsterA.canceled -= instance.OnHolsterA;
+            @HolsterB.started -= instance.OnHolsterB;
+            @HolsterB.performed -= instance.OnHolsterB;
+            @HolsterB.canceled -= instance.OnHolsterB;
+            @HolsterC.started -= instance.OnHolsterC;
+            @HolsterC.performed -= instance.OnHolsterC;
+            @HolsterC.canceled -= instance.OnHolsterC;
+            @HolsterD.started -= instance.OnHolsterD;
+            @HolsterD.performed -= instance.OnHolsterD;
+            @HolsterD.canceled -= instance.OnHolsterD;
         }
 
         /// <summary>
@@ -1090,6 +1262,34 @@ public partial class @PlayerInput_Game: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAbilityTertiary(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HolsterA" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHolsterA(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HolsterB" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHolsterB(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HolsterC" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHolsterC(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "HolsterD" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHolsterD(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "BuildMode" which allows adding and removing callbacks.

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35843043e5a0bb04daac969fb12bffe4, type: 3}
+  m_Name: SpearHolsterableItem
+  m_EditorClassIdentifier: 
+  m_Tag:
+    m_Name: Item.Weapon.Spear
+  m_HolsterLocatorId: {fileID: 11400000, guid: 283c0afb1393aea458277306d7cbd8ff, type: 2}
+  m_EquippedLocatorId: {fileID: 11400000, guid: 842dd0cfcb34f7841ae03d5d845d1423, type: 2}
+  m_Prefab: {fileID: 6643016623527510536, guid: 25426a7d1c6627b41bb3acc8bb32dca9, type: 3}
+  m_Abilities:
+  - {fileID: 11400000, guid: 8c000312db1db5941be58d8f7f230418, type: 2}
+  - {fileID: 11400000, guid: e7d3092aedd5df94395da5f25397ba4b, type: 2}
+  - {fileID: 11400000, guid: c1d7f5b8421c3914c978e16021c5afec, type: 2}
+  - {fileID: 11400000, guid: 0de1b503910d6d645b30d1cd6955e161, type: 2}
+  - {fileID: 11400000, guid: d1aa55805d5651e4599db25551dca6a2, type: 2}

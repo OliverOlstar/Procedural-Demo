@@ -15,24 +15,26 @@ public class PlayerAbilities
 	public event Action<IReadOnlyGameplayTagContainer> OnAbilityDeactivated = delegate { };
 
 	[SerializeField] private Updateable m_Updateable = new(UpdateableType.Fixed, UpdateablePriority.CharacterAbility);
-	[SerializeField, DisableInPlayMode, ODev.Picker.AssetNonNull] private SOCharacterAbility[] m_Abilities = new SOCharacterAbility[0];
+	[SerializeField, DisableInPlayMode, ODev.Picker.AssetNonNull] private SOCharacterAbility[] m_DefaultAbilities = new SOCharacterAbility[0];
 	[SerializeField] private float m_InputBufferSeconds = 0.2f;
+	[SerializeField] private GameObjectGameplayTagContainer m_ActiveTags;
 
 	private readonly List<ICharacterAbility> m_AbilityInstances = new();
 	private readonly List<int> m_LastInputedAbilities = new(2);
 	private float m_LastInputedSeconds = 0.0f;
 	private bool m_InputActivatedThisFrame = false;
 	private readonly List<ICharacterAbility> m_ActiveAbilities = new();
-
-	[SerializeField] private GameObjectGameplayTagContainer m_ActiveTags;
 	private readonly GameplayTagCountContainer m_BlockedTags = new();
+	private PlayerRoot m_Root;
 
 	public void Initalize(PlayerRoot pRoot)
 	{
-		for (int i = 0; i < m_Abilities.Length; i++)
+		m_Root = pRoot;
+		for (int i = 0; i < m_DefaultAbilities.Length; i++)
 		{
 			int index = i;
-			m_AbilityInstances.Add(m_Abilities[i].CreateInstance(pRoot, () => OnAbilityInputRecieved(index, true), () => OnAbilityInputRecieved(index, false)));
+			m_AbilityInstances.Add(m_DefaultAbilities[i].CreateInstance(m_Root, () => OnAbilityInputRecieved(index, true), () => OnAbilityInputRecieved(index, false)));
+			AddAbility(m_DefaultAbilities[i]);
 		}
 		m_Updateable.Register(Tick);
 	}
@@ -45,6 +47,43 @@ public class PlayerAbilities
 		}
 		m_AbilityInstances.Clear();
 		m_Updateable.UnRegister();
+	}
+
+	public void AddAbility(SOCharacterAbility pAbility)
+	{
+		int index = m_AbilityInstances.Count;
+		var instance = pAbility.CreateInstance(m_Root, () => OnAbilityInputRecieved(index, true), () => OnAbilityInputRecieved(index, false));
+		m_AbilityInstances.Add(instance);
+	}
+
+	public void AddAbilities(IEnumerable<SOCharacterAbility> pAbilities)
+	{
+		foreach (var ability in pAbilities)
+		{
+			AddAbility(ability);
+		}
+	}
+
+	public void RemoveAbility(SOCharacterAbility pAbility)
+	{
+		for (int i = 0; i < m_AbilityInstances.Count; i++)
+		{
+			if (m_AbilityInstances[i].Data != pAbility)
+			{
+				continue;
+			}
+			m_AbilityInstances[i].Deactivate();
+			m_AbilityInstances.RemoveAt(i);
+			return;
+		}
+	}
+
+	public void RemoveAbilities(IEnumerable<SOCharacterAbility> pAbilities)
+	{
+		foreach (var ability in pAbilities)
+		{
+			RemoveAbility(ability);
+		}
 	}
 
 	public void ActivateAbilityByTag(GameplayTag pTag)
@@ -139,7 +178,7 @@ public class PlayerAbilities
 		m_LastInputedAbilities.Add(pIndex);
 	}
 
-	internal void RecievedAbilityActivated(ICharacterAbility pAbility)
+	internal void HandleAbilityActivated(ICharacterAbility pAbility)
 	{
 		pAbility.GetTags(out var tags, out var cancelTags, out var blockTags);
 		OnAbilityActivated.Invoke(tags);
@@ -157,7 +196,7 @@ public class PlayerAbilities
 		m_BlockedTags.AddTags(blockTags);
 	}
 
-	internal void RecievedAbilityDeactivated(ICharacterAbility pAbility)
+	internal void HandleAbilityDeactivated(ICharacterAbility pAbility)
 	{
 		pAbility.GetTags(out var tags, out _, out var blockTags);
 		OnAbilityDeactivated.Invoke(tags);

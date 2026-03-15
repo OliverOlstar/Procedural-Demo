@@ -15,5 +15,6 @@
   "OnGround.OnSlope": {},
   "OnGround.InAir": {},
   "OnGround.OnWall": {},
-  "OnGround.OnGround": {}
+  "OnGround.OnGround": {},
+  "Item.Weapon.Spear": {}
 }

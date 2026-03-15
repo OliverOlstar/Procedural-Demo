@@ -133,12 +133,6 @@ public class PlayerAbilityMantle : CharacterAbility<SOPlayerAbilityMantle>
 		m_CurrentPosition.y = Mathf.LerpUnclamped(m_FromPosition.y, m_ToPosition.y, yProgress);
 		m_CurrentPosition.z = Mathf.LerpUnclamped(m_FromPosition.z, m_ToPosition.z, xzProgress);
 		Transform.position = m_CurrentPosition;
-
-		// if (Input.GetKey(KeyCode.Q))
-		// {
-		// 	this.Log("CANCEL");
-		// 	Deactivate();
-		// }
 	}
 
 	protected override void DeactivateInternal()

@@ -24,7 +24,7 @@ public class CharacterInventory
 
 	}
 
-	public void Destroy()
+	public void Dispose()
 	{
 
 	}
