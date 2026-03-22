@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b633d893bff289b47a2ec2e14165077a, type: 3}
+  m_Name: PlayerEquipItem
+  m_EditorClassIdentifier: 
+  m_Tags:
+    m_SerializedExplicitTags:
+    - Character.Action.EquipItem
+  m_CancelTags:
+    m_SerializedExplicitTags:
+    - Character.Action
+  m_BlockTags:
+    m_SerializedExplicitTags:
+    - Character.Action
+  m_CanceledByTags:
+    m_SerializedExplicitTags: []
+  m_BlockedByTags:
+    m_SerializedExplicitTags: []
+  m_RequiredTags:
+    m_SerializedExplicitTags: []
+  m_Cooldown: 0
+  m_CooldownTrigger: 0
+  m_LogSelf: 1
+  m_EquipItemEvent: {fileID: 11400000, guid: 7b1c4c11a380643488bd9a9d19aba809, type: 2}
+  m_EquippedItemVariable: {fileID: 11400000, guid: f35a22173683b8642b7a575cf61e32e2, type: 2}
+  m_InMontage: {fileID: 11400000, guid: 398b4d4fd2e192041950a40cdeb049fd, type: 2}
+  m_OutMontage: {fileID: 11400000, guid: 398b4d4fd2e192041950a40cdeb049fd, type: 2}

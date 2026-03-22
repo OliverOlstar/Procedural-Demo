@@ -5,28 +5,18 @@ using UnityEngine;
 
 public class PoseAnimatorController : UpdateableMonoBehaviour
 {
-	[SerializeField]
-	private PoseAnimator m_Animator = null;
-	[SerializeField]
-	private PlayerRoot m_Root = null;
-	[SerializeField]
-	private CardinalWheel m_Wheel = null;
+	[SerializeField] private PoseAnimator m_Animator = null;
+	[SerializeField] private PlayerRoot m_Root = null;
+	[SerializeField] private CardinalWheel m_Wheel = null;
 
 	[Header("Controllers")]
-	[SerializeField]
-	private PoseAnimatorIdle m_Idle = new();
-	[SerializeField]
-	private PoseAnimatorLocomotion m_Locomotion = new();
-	[SerializeField]
-	private PoseAnimatorJump m_Jump = new();
-	[SerializeField]
-	private PoseAnimatorCrouch m_Crouch = new();
-	[SerializeField]
-	private PoseAnimatorSlide m_Slide = new();
-	[SerializeField]
-	private CardinalWheelRadius m_WheelRadius = new();
-	[SerializeField]
-	private CenterOfMassBounce m_CenterOfMassBounce = new();
+	[SerializeField] private PoseAnimatorIdle m_Idle = new();
+	[SerializeField] private PoseAnimatorLocomotion m_Locomotion = new();
+	[SerializeField] private PoseAnimatorJump m_Jump = new();
+	[SerializeField] private PoseAnimatorCrouch m_Crouch = new();
+	[SerializeField] private PoseAnimatorSlide m_Slide = new();
+	[SerializeField] private CardinalWheelRadius m_WheelRadius = new();
+	[SerializeField] private CenterOfMassBounce m_CenterOfMassBounce = new();
 
 	public CardinalWheel Wheel => m_Wheel;
 	public CardinalWheelRadius WheelRadius => m_WheelRadius;
@@ -67,6 +57,7 @@ public class PoseAnimatorController : UpdateableMonoBehaviour
 		}
 	}
 
+	public void SwitchConfig(SOPoseAnimatorConfig pConfig) => m_Animator.SwitchConfig(pConfig);
 	public int PlayMontage(SOPoseMontage pMontage) => m_Animator.PlayMontage(pMontage);
 	public void CancelMontage(int pIndex) => m_Animator.CancelMontage(pIndex);
 }

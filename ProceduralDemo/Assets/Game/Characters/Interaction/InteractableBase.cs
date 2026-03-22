@@ -84,7 +84,7 @@ public abstract class InteractableBase : MonoBehaviour
 		m_Interactors.Clear();
 	}
 
-	[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+	[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
 	private void Log(string pMessage, [CallerMemberName] string pMethodName = "")
 	{
 		if (m_LogInteractable)

@@ -16,5 +16,6 @@
   "OnGround.InAir": {},
   "OnGround.OnWall": {},
   "OnGround.OnGround": {},
-  "Item.Weapon.Spear": {}
+  "Item.Weapon.Spear": {},
+  "Character.Action.EquipItem": {}
 }

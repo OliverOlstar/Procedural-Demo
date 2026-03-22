@@ -29,6 +29,7 @@ public abstract class SOCharacterAbility : ScriptableObject
 
 	public bool LogSelf => m_LogSelf;
 	public float Cooldown => m_Cooldown;
+	public GameplayTagContainer Tags => m_Tags;
 
 	public bool IsCooldownTrigger(bool pOnActive) => m_CooldownTrigger switch
 	{

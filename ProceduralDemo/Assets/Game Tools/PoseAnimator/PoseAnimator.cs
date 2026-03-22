@@ -43,6 +43,18 @@ namespace ODev.PoseAnimator
 			m_SystemHandle = -1;
 		}
 
+		public void SwitchConfig(SOPoseAnimatorConfig pConfig)
+		{
+			if (m_Config == pConfig)
+			{
+				return;
+			}
+
+			OnDisable();
+			m_Config = pConfig;
+			OnEnable();
+		}
+
 		public int GetHandle(SOPoseAnimation pAnimation)
 		{
 			if (!m_Config.TryGetIndex(pAnimation, out int handle))

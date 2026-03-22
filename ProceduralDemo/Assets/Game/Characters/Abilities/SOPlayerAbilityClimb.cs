@@ -7,16 +7,11 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "New Climb Ability", menuName = "Character/Ability/Player Climb")]
 public class SOPlayerAbilityClimb : SOCharacterAbility
 {
-	[Space, SerializeField]
-	private float m_Force = 20.0f;
-	[SerializeField, Range(-1.0f, 1.0f)]
-	private float m_MinDot = 0.75f;
-	[SerializeField, Range(0.0f, 1.0f)]
-	private float m_InputDeadZone01 = 0.2f;
-	[SerializeField]
-	private float m_AccelerationPercentModify = 0.0f;
-	[SerializeField]
-	private float m_DragPercentModify = 1.0f;
+	[Space, SerializeField] private float m_Force = 20.0f;
+	[SerializeField, Range(-1.0f, 1.0f)] private float m_MinDot = 0.75f;
+	[SerializeField, Range(0.0f, 1.0f)] private float m_InputDeadZone01 = 0.2f;
+	[SerializeField] private float m_AccelerationPercentModify = 0.0f;
+	[SerializeField] private float m_DragPercentModify = 1.0f;
 
 	public float Force => m_Force;
 	public float MinDot => m_MinDot;

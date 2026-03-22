@@ -33,7 +33,6 @@ public class PlayerAbilities
 		for (int i = 0; i < m_DefaultAbilities.Length; i++)
 		{
 			int index = i;
-			m_AbilityInstances.Add(m_DefaultAbilities[i].CreateInstance(m_Root, () => OnAbilityInputRecieved(index, true), () => OnAbilityInputRecieved(index, false)));
 			AddAbility(m_DefaultAbilities[i]);
 		}
 		m_Updateable.Register(Tick);
@@ -47,6 +46,20 @@ public class PlayerAbilities
 		}
 		m_AbilityInstances.Clear();
 		m_Updateable.UnRegister();
+	}
+
+	public bool TryGetAbility<T>(out T oAbility) where T : SOCharacterAbility
+	{
+		foreach (var ability in m_AbilityInstances)
+		{
+			if (ability is T castedAbility)
+			{
+				oAbility = castedAbility;
+				return true;
+			}
+		}
+		oAbility = null;
+		return false;
 	}
 
 	public void AddAbility(SOCharacterAbility pAbility)
@@ -90,8 +103,7 @@ public class PlayerAbilities
 	{
 		foreach (ICharacterAbility ability in m_AbilityInstances)
 		{
-			ability.GetTags(out var tags, out _, out _);
-			if (!tags.HasTag(pTag))
+			if (!ability.Tags.HasTag(pTag))
 			{
 				continue;
 			}
@@ -100,6 +112,11 @@ public class PlayerAbilities
 				break;
 			}
 		}
+	}
+
+	public bool TryActivateAbilityInstance(ICharacterAbility pAbility)
+	{
+		return pAbility.TryActivate(m_ActiveTags.GameplayTagContainer, m_BlockedTags);
 	}
 
 	public void CancelAllAbilities()

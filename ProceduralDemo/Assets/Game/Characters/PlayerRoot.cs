@@ -1,3 +1,4 @@
+using BandoWare.GameplayTags;
 using ODev;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 	[SerializeField] private PlayerAbilities m_Abilities = new();
 	[SerializeField] private PlayerSpearBehaviour m_Spear = null;
 	[SerializeField] private CharacterHolsterInventory m_HolsterInventory = new();
-	[SerializeField] private CharacterEquippedInventory m_EquippedInventory = new();
+	[SerializeField] private GameObjectGameplayTagContainer m_GameplayTagContainer;
 
 	public PlayerModeController Mode => m_Mode;
 	public InputBridge_PlayerCharacter Input => m_Input;
@@ -28,14 +29,13 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 	public PlayerAbilities Abilities => m_Abilities;
 	public PlayerSpearBehaviour Spear => m_Spear;
 	public CharacterHolsterInventory HolsterInventory => m_HolsterInventory;
-	public CharacterEquippedInventory EquippedInventory => m_EquippedInventory;
+	public GameplayTagCountContainer GameplayTags => m_GameplayTagContainer.GameplayTagContainer;
 
 	private void Start()
 	{
 		m_Inventory.Initalize();
 		m_Abilities.Initalize(this);
 		m_HolsterInventory.Initalize();
-		m_EquippedInventory.Initalize(this);
 		m_Spear.Initalize(this);
 	}
 
@@ -44,7 +44,6 @@ public class PlayerRoot : MonoBehaviour, PlayerModeController.IMode
 		m_Inventory.Dispose();
 		m_Abilities.Destroy();
 		m_HolsterInventory.Dispose();
-		m_EquippedInventory.Dispose();
 		m_Spear.Destroy();
 	}
 

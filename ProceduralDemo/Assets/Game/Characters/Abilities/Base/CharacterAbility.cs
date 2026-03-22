@@ -17,6 +17,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 
 	public PlayerRoot Root => m_Root;
 	public TData Data => m_Data;
+	public GameplayTagContainer Tags => m_Data.Tags;
 	SOCharacterAbility ICharacterAbility.Data => m_Data;
 	public bool IsActive => m_IsActive;
 	public virtual IInputTrigger InputActivate => null;
@@ -109,7 +110,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	{
 		if (m_IsActive)
 		{
-			Root.LogError("Ability is already active");
+			this.LogError($"Ability is already active ({Root.name})");
 			return;
 		}
 		m_IsActive = true;
@@ -149,7 +150,7 @@ public abstract class CharacterAbility<TData> : ICharacterAbility where TData : 
 	}
 
 	#region Helpers
-	[Conditional("ENABLE_DEBUG_LOGGING"), HideInCallstack]
+	[Conditional("ENABLE_DEBUG_LOGS"), HideInCallstack]
 	private void LogMethod(string pMessage = "", [CallerMemberName] string pMethodName = "")
 	{
 		if (Data.LogSelf)

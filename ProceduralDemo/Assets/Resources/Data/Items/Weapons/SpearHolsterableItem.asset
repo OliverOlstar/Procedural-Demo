@@ -23,3 +23,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c1d7f5b8421c3914c978e16021c5afec, type: 2}
   - {fileID: 11400000, guid: 0de1b503910d6d645b30d1cd6955e161, type: 2}
   - {fileID: 11400000, guid: d1aa55805d5651e4599db25551dca6a2, type: 2}
+  m_AnimatorConfig: {fileID: 11400000, guid: c65ec33369a36384d84405d692208c46, type: 2}

@@ -6,6 +6,7 @@ public interface ICharacterAbility
 	public bool IsActive { get; }
 	public IInputTrigger InputActivate { get; }
 	public SOCharacterAbility Data { get; }
+	public GameplayTagContainer Tags { get; }
 
 	/// <summary> Calls Activate() if CanActivate() is true </summary>
 	public bool TryActivate(IReadOnlyGameplayTagContainer pActiveTags, IReadOnlyGameplayTagContainer pBlockedTags);

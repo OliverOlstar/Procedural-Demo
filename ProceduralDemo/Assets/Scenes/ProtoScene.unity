@@ -6134,6 +6134,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4df49c86a85e10149ae56ad86a41dc97, type: 2}
     - {fileID: 11400000, guid: 2c4fecb7b14e74142a6125637d579707, type: 2}
     - {fileID: 11400000, guid: 5a1aae85de20d62458e9c3613bdbd6b5, type: 2}
+    - {fileID: 11400000, guid: f00dd80fd2c6b344bb23f9f18ac682c0, type: 2}
     m_InputBufferSeconds: 0.2
     m_ActiveTags: {fileID: 82955121}
   m_Spear:
@@ -6148,9 +6149,7 @@ MonoBehaviour:
     - {fileID: -9215352899929244915, guid: ae8b5a45a25f8f346bea6bbf914993bc, type: 3}
     m_HolsterItemAddedEvent: {fileID: 11400000, guid: df3f3cd5d61976f418ab8ccb49954a13, type: 2}
     m_HolsterItemRemovedEvent: {fileID: 11400000, guid: 59003ac75ce5116448145a40209e6ef0, type: 2}
-  m_EquippedInventory:
-    m_EquippedItemVariable: {fileID: 11400000, guid: f35a22173683b8642b7a575cf61e32e2, type: 2}
-    m_GameplayTagsContainer: {fileID: 82955121}
+  m_GameplayTagContainer: {fileID: 82955121}
 --- !u!114 &82955120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99225,6 +99224,7 @@ MonoBehaviour:
   m_Renderer: {fileID: 1334118127}
   m_InteractCue: {fileID: 11400000, guid: b9c7a419c3d00a14db9c8c12501c9c3c, type: 2}
   m_Item: {fileID: 11400000, guid: a22aa504a52326e408b5037171eed9b7, type: 2}
+  m_EquipItemEvent: {fileID: 11400000, guid: 7b1c4c11a380643488bd9a9d19aba809, type: 2}
 --- !u!54 &1334118125
 Rigidbody:
   m_ObjectHideFlags: 0
