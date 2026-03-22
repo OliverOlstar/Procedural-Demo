@@ -42,6 +42,10 @@ public class PlayerAbilityEquipItem : CharacterAbility<SOPlayerAbilityEquipItem>
 	private void OnQueuedEquipItemChanged(CharacterEquippedItem pItem)
 	{
 		m_ToEquipItem = pItem;
+		if (IsActive)
+		{
+			Deactivate();
+		}
 		Root.Abilities.TryActivateAbilityInstance(this);
 	}
 

@@ -45,6 +45,9 @@ public class PlayerAbilities
 			m_AbilityInstances[i].Destory();
 		}
 		m_AbilityInstances.Clear();
+		m_ActiveAbilities.Clear();
+		m_BlockedTags.Clear();
+		m_LastInputedAbilities.Clear();
 		m_Updateable.UnRegister();
 	}
 
