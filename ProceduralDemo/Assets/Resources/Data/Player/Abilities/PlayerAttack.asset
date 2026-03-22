@@ -20,13 +20,14 @@ MonoBehaviour:
     - Character.Action
   m_BlockTags:
     m_SerializedExplicitTags: []
-  m_RequiredTags:
-    m_SerializedExplicitTags:
-    - OnGround.OnGround
   m_CanceledByTags:
     m_SerializedExplicitTags: []
   m_BlockedByTags:
-    m_SerializedExplicitTags: []
+    m_SerializedExplicitTags:
+    - Item.Weapon
+  m_RequiredTags:
+    m_SerializedExplicitTags:
+    - OnGround.OnGround
   m_Cooldown: 1
   m_CooldownTrigger: 0
   m_LogSelf: 0

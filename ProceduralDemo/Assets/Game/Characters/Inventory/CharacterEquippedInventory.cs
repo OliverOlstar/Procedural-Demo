@@ -1,9 +1,11 @@
+using BandoWare.GameplayTags;
 using UnityEngine;
 
 [System.Serializable]
 public class CharacterEquippedInventory
 {
 	[SerializeField] private CharacterEquippedItemVariableSO m_EquippedItemVariable;
+	[SerializeField] private GameObjectGameplayTagContainer m_GameplayTagsContainer;
 
 	private CharacterHolsterInventory m_HolsterInventory;
 	private PlayerAbilities m_Abilities;
@@ -30,6 +32,7 @@ public class CharacterEquippedInventory
 		m_EquippedItemVariable.SetValue(equippedItem);
 		m_HolsterInventory.TryAddItem(equippedItem);
 		m_Abilities.AddAbilities(pItem.Abilities);
+		m_GameplayTagsContainer.GameplayTagContainer.AddTag(pItem.Tag);
 	}
 
 	public void UnEquipCurrentItem()
@@ -38,7 +41,9 @@ public class CharacterEquippedInventory
 		{
 			return;
 		}
-		m_Abilities.RemoveAbilities(m_EquippedItemVariable.Value.Data.Abilities);
+		var equippedItem = m_EquippedItemVariable.Value.Data;
+		m_Abilities.RemoveAbilities(equippedItem.Abilities);
+		m_GameplayTagsContainer.GameplayTagContainer.RemoveTag(equippedItem.Tag);
 		m_EquippedItemVariable.SetValue(null);
 		// TODO: If has item equipped but it doesn't have a holster. Drop it!
 	}

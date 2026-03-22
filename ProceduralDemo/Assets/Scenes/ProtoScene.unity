@@ -6150,6 +6150,7 @@ MonoBehaviour:
     m_HolsterItemRemovedEvent: {fileID: 11400000, guid: 59003ac75ce5116448145a40209e6ef0, type: 2}
   m_EquippedInventory:
     m_EquippedItemVariable: {fileID: 11400000, guid: f35a22173683b8642b7a575cf61e32e2, type: 2}
+    m_GameplayTagsContainer: {fileID: 82955121}
 --- !u!114 &82955120
 MonoBehaviour:
   m_ObjectHideFlags: 0
